@@ -1,0 +1,30 @@
+#summary View Recipe Tests.
+
+== Introduction ==
+
+Information visualization design patterns and recipes are tested to develop workflow pipelines.
+
+== Status ==
+
+*Relational*
+  # Tree
+  * Single-Cycle
+  * Radial
+  * Parent-Centered
+  * Hierarchical Tree
+  * Cone Tree
+  * Balloon
+  * Sunburst
+  * Hyperbolic
+  # Network
+  * Force Directed
+  * Orthogonal
+  # Edge Layouts
+  * Routing
+  * Bundling
+  * Visual Properties
+  # Node Rendering
+  * Visual Properties
+
+*Quantitative*
+  # Cartesian
