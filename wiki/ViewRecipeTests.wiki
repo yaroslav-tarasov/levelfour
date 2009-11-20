@@ -6,8 +6,8 @@ Information visualization design patterns and recipes are tested to develop work
 
 == Status ==
 
-*Relational*
-  # Tree
+===Relational===
+_Tree_
   * Single-Cycle
   * Radial
   * Parent-Centered
@@ -16,15 +16,71 @@ Information visualization design patterns and recipes are tested to develop work
   * Balloon
   * Sunburst
   * Hyperbolic
-  # Network
+_Network_
   * Force Directed
   * Orthogonal
-  # Edge Layouts
+_Edge Layouts_
   * Routing
   * Bundling
   * Visual Properties
-  # Node Rendering
+_Node Rendering_
   * Visual Properties
 
-*Quantitative*
-  # Cartesian
+===Quantitative===
+_Cartesian_
+  * Area
+  * Bar
+  * Column
+  * Line
+  * Scatter
+  * Bubble
+  * Path (e.g. Minard)
+
+_Polar_
+  * Pie
+  * Spider, Radar, etc.
+  * Coxcomb, Rose
+
+_Trilinear_
+
+_Parallel Coordinates Plot
+
+===Spatial===
+_Geo_
+  * Vector Features
+  * Choropleth
+  * Prisim
+  * Cartogram (contiguous, noncontiguous, shape)
+  * Symbolized (proportional, semiographic)
+  * Flow
+  * Thematic (heatmap, dot, contour, terrain )
+  * Raster
+_Metaphor_
+  * MDS
+  * SOM
+
+===Temporal===
+_Motion_
+  * Motion graph
+  * Time track
+
+===Semiographic===
+
+  * Isotype
+  * Glyph
+
+===Specialized===
+
+  * Treemap
+  * Trellis, Small Multiples
+
+===Hybird===
+
+  * Space aquarium
+  * Model mapping
+  * Map-Graph (e.g. VisAware)
+  * Graph-Chart (e.g. Circos)
+
+
+
+===Textual===
