@@ -74,13 +74,21 @@ _Motion_
   * Treemap
   * Trellis, Small Multiples
 
-===Hybird===
+===Hybrid===
 
   * Space aquarium
   * Model mapping
   * Map-Graph (e.g. VisAware)
   * Graph-Chart (e.g. Circos)
 
+===General===
 
+  * Layering
+  * Collision and Physics
 
 ===Textual===
+
+  * Flat
+  * Pivot
+  * Tree
+  * Unstructured
