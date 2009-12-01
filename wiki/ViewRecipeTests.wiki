@@ -16,13 +16,18 @@ _Tree_
   * Balloon
   * Sunburst
   * Hyperbolic
+  * Icicle
+  * Cosmo
+
 _Network_
   * Force Directed
   * Orthogonal
+
 _Edge Layouts_
   * Routing
   * Bundling
   * Visual Properties
+
 _Node Rendering_
   * Visual Properties
 
@@ -55,6 +60,7 @@ _Geo_
   * Flow
   * Thematic (heatmap, dot, contour, terrain )
   * Raster
+
 _Metaphor_
   * MDS
   * SOM
