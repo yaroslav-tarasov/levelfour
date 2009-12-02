@@ -1,4 +1,5 @@
 #summary L4 Visualization Toolkit.
+#labels Featured
 
 === Introduction ===
 
