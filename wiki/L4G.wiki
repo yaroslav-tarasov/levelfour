@@ -1,4 +1,5 @@
 #summary L4 Grammar.
+#labels Featured
 
 === Introduction ===
 
