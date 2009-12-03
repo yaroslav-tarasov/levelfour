@@ -3,7 +3,7 @@
 
 === Introduction ===
 
-L4TK is the visualization engine for L4AE. The tooklit provides the needed functions and methods for encoding data to visual representations. The project is based on development and the integration/adoption of related open source libraries (see attributions).
+L4TK is the visualization engine for L4AE. The tookkit provides the needed functions and methods for encoding data to visual representations. The project is based on development and the integration/adoption of related open source libraries (see attributions).
 
 === Details ===
 
