@@ -27,4 +27,4 @@ The environment is heavily influenced by concepts of the "digital content creati
   * Render Viewport: to render 3d scenes
   * Data Viewports: to render tabular data
 
-L4AE is based on the excellent works of OGRE (Object-Oriented Graphics Rendering Engine) and Frapper (Filmakademie Application Framework).
+L4AE is based on the excellent works of OSG (OpenSceneGraph) and VTK Designer.
