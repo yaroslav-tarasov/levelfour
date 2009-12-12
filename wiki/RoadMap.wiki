@@ -1,0 +1,49 @@
+#summary Project roadmap.
+
+Roadmap
+
+===Pipeline===
+
+*Data-to-Model*
+
+  * VTK Node integration
+  * VTK -> OSG Bridge (a.k.a. ActorToOSG)
+
+*Model-to-Render*
+
+  * Actor -> OSG Render (scene)
+  * OSG Node integration (camera, light, shaders, texture, etc.)
+
+===Interfaces===
+
+*Project*
+
+  * Open, create, save pipeline
+  * Open, save render (collada, svg, raster)
+
+*Compositing*
+
+  * Recipe Explorer
+  * Pattern Explorer
+  * Node-Link Modeler
+  * Method Inspector
+
+*Scene Management*
+
+  * Scenegraph Manager
+  * Property Inspector
+
+*Rendering*
+
+  * Render Viewport (OSG viewer)
+  * Table Viewport (tabular data)
+  * Tree Viewport (hierarchical tree data)
+
+*Interactivity and Controls*
+
+  * Event Manager
+  * GUI Instrumentation
+
+*Animation and Motion*
+
+  * Animation Controller (timeline)
