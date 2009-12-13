@@ -1,0 +1,54 @@
+<nodes id="1" label="1" color="5" >
+	<node id="2" label="1" color="5" >
+		<node id="2" label="1" color="5" >
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+		</node>
+		<node id="2" label="1" color="5" >
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+		</node>
+		<node id="2" label="1" color="5" >
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+		</node>
+	</node>
+	<node id="2" label="1" color="5" >
+		<node id="2" label="1" color="5" >
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+		</node>
+		<node id="2" label="1" color="5" >
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+		</node>
+		<node id="2" label="1" color="5" >
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+			<node id="2" label="1" color="5" />
+		</node>
+	</node>
+</nodes>
