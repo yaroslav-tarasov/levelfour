@@ -1,9 +1,13 @@
-#summary Attributions.
+#summary Thanks...
 
-=== Introduction ===
+=== Attributions ===
 
-Under edit.
+Level Four is an integration of many excellent works of others generously provided as open source:
 
-=== Details ===
+*VTK* - The Visualization Toolkit (VTK) is an open-source, freely available software system for 3D computer graphics, image processing and visualization. VTK supports a wide variety of visualization algorithms including: scalar, vector, tensor, texture, and volumetric methods; and advanced modeling techniques such as: implicit modeling, polygon reduction, mesh smoothing, cutting, contouring, and Delaunay triangulation. (http://www.vtk.org/)
 
-Under edit.
+*OSG* - The OpenSceneGraph is an open source high performance 3D graphics toolkit, used by application developers in fields such as visual simulation, games, virtual reality, scientific visualization and modelling. Written entirely in Standard C++ and OpenGL it runs on all Windows platforms, OSX, GNU/Linux, IRIX, Solaris, HP-Ux, AIX and FreeBSD operating systems. The OpenSceneGraph is now well established as the world leading scene graph technology, used widely in the vis-sim, space, scientific, oil-gas, games and virtual reality industries. (http://www.openscenegraph.org/projects/osg)
+
+*VTK Designer* - VTK Designer 2 is visual editor for creating and editing VTK pipelines. It is built using Qt, VTK and Generic Component Framework (GCF). It is a highly flexible, extensible system; attributed to its use of GCF. (http://www.vcreatelogic.com/products/vtkd/)
+
+*Generic Component Framework* - A custom component framework built using Qt 4.4.x. Design and develop applications as a collection of decoupled and independent entities. (http://www.vcreatelogic.com/products/gcf/)
