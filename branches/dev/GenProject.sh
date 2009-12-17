@@ -1,0 +1,1 @@
+/usr/local/Trolltech/Qt-4.4.0/bin/qmake -recursive "PROJECT_BASE=`pwd`" "GCF_BASE=`pwd`/GCF"

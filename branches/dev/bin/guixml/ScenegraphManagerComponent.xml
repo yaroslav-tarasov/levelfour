@@ -1,0 +1,4 @@
+<component title="ScenegraphManagerComponent" name="ScenegraphManagerComponent" >
+ 	<widget title="Scenegraph Manager" name="sgmContainer" parentWidget="MainWindowComponent.leftDockArea" />
+	<object name="controller" />
+</component>

@@ -1,0 +1,59 @@
+Generic Component Framework from VCreate Logic
+
+How To Compile
+--------------------
+
+To compile GCF you will need to check out a copy of the code and then 
+execute the following command in the directory where you can see include 
+and source as child directories
+
+On Linux - 
+- cd ~/GCF
+- qmake -recursive "GCF_BASE=`pwd`"
+- make
+
+On Windows (with Visual Studio 2005) - 
+- cd C:\GCF
+- qmake -tp vc -recursive "GCF_BASE=%cd%"
+- Open VS 2005 and Build All
+
+On Windows (with MinGW)
+- cd C:\GCF
+- qmake -recursive "GCF_BASE=%cd%" "GCF_DISABLE_ACTIVEX=1"
+- mingw32-make
+
+Essentially GCF_BASE should be the complete path of the directory where 
+the code is available
+
+System Requirements
+--------------------
+1. Operating System
+    - Windows XP or Windows Vista
+    - GNU/Linux (I guess all distros come in this)
+2. Compiler
+    - Windows:
+        Microsoft Visual Studio 2005 with SP1 or later
+        MinGW
+        Microsoft Visual Studio Express Edition 2005
+    - GNU/Linux
+        GCC 4.2+
+3. Qt
+    - Qt Version 4.4.x and later
+    
+Supported Environments
+--------------------
+1. Windows XP/Vista
+    Qt Version 4.4.x (both open-source and commercial editions)
+    Microsoft Visual Studio 2005 with SP1
+    MinGW 
+    
+2. GNU/Linux (RHEL5 and OpenSuSE 10.2)
+    Qt Version 4.4.x
+    GCC 4.2
+
+You can still write to us if you have questions about other platforms. 
+We will try and get back to you as soon as possible.
+    
+EMail: support-gcf@vcreatelogic.com
+
+

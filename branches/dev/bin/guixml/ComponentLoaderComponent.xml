@@ -1,0 +1,55 @@
+<component title="Component Loader Component" version="1.0" name="ComponentLoaderComponent" >
+    <object title="" name="controller" />
+    <method param1="MessageLogComponent" 
+            param2="MessageLog" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="UtilsComponent" 
+            param2="Utils" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="ProjectManagerComponent" 
+            param2="ProjectManager" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="PropertyEditorComponent" 
+            param2="PropertyEditor" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="CVisSystemNodeClassExplorerComponent" 
+            param2="VisSystemNodeClassExplorer" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="CVisSystemCanvasComponent" 
+            param2="VisSystemCanvas" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="ScriptEditorComponent" 
+            param2="ScriptEditor" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="CVtkVisSystemComponent" 
+            param2="VTKSystem" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="CVTKFullscreenComponent" 
+            param2="VTKFullscreen" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="CDataFileLoaderComponent" 
+            param2="DataFileLoader" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="TemplateManagerComponent"
+            param2="TemplateManager"
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="M2DComponent" 
+            param2="M2D" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="M2MComponent" 
+            param2="M2M" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="SceneViewComponent" 
+            param2="SceneView" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="TreeViewComponent" 
+            param2="TreeView" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="TableViewComponent" 
+            param2="TableView" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="ScenegraphManagerComponent" 
+            param2="ScenegraphManager" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+
+</component>
