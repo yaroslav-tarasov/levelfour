@@ -1,0 +1,5 @@
+<component title="Component Loader Component" version="1.0" name="ComponentLoaderComponent" >
+  <object title="" name="controller" />
+  <method param1="${APPDIR}" methodName="ComponentLoaderComponent.controller::addComponentDirectory" />
+  <method methodName="ComponentLoaderComponent.controller::registerComponents" />
+</component>

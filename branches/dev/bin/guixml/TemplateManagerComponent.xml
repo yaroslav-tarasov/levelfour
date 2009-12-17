@@ -1,0 +1,19 @@
+<component title="TemplateManagerComponent" name="TemplateManagerComponent" >
+
+    <object name="controller" />
+
+    <action name="loadTemplate" title="Load Template" icon=":/ProjectManager/open.png"
+            triggerSlot="TemplateManagerComponent.controller::slotLoadFromTemplate()" />
+    <action name="saveAsTemplate" title="Save Template" icon=":/ProjectManager/save.png"
+            triggerSlot="TemplateManagerComponent.controller::slotSaveAsTemplate()" />
+
+    <menu mergeWith="MainWindowComponent.fileMenu" >
+        <menuitem before="MainWindowComponent.fileQuit"/>
+        <menuItem actionName="TemplateManagerComponent.loadTemplate" before="MainWindowComponent.fileQuit"/>
+        <menuItem actionName="TemplateManagerComponent.saveAsTemplate" before="MainWindowComponent.fileQuit"/>
+        <menuitem before="MainWindowComponent.fileQuit"/>
+    </menu>
+
+    <property key="TemplateManagerComponent.controller::TemplatesDirectory" value="${APPDIR}/Templates" />
+
+</component>

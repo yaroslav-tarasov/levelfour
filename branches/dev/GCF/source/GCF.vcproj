@@ -1,0 +1,1010 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9,00"
+	Name="GCF"
+	ProjectGUID="{66C28BCB-12CE-3836-B6CE-1017511C65CD}"
+	Keyword="Qt4VSv1.0">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="2"
+			IntermediateDirectory="..\..\tmp\gcf\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;..\..\..\Qt\4.5.3\include\QtCore&quot;,&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot;,&quot;..\..\..\Qt\4.5.3\include\QtGui&quot;,&quot;..\..\..\Qt\4.5.3\include\QtXml&quot;,&quot;..\..\..\Qt\4.5.3\include&quot;,&quot;..\include&quot;,&quot;core&quot;,&quot;ipc&quot;,&quot;menustrip&quot;,&quot;updater&quot;,&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot;,&quot;..\..\tmp\gcf&quot;,&quot;..\..\tmp\gcf&quot;,..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
+				AssemblerListingLocation="..\..\tmp\gcf\"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="0"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\tmp\gcf\"
+				Optimization ="2"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,VCL_MAKE_DLL,QT_DLL,QT_NO_DEBUG,QT_XML_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,NDEBUG"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="2"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="c:\Qt\4.5.3\lib\QtXml4.lib c:\Qt\4.5.3\lib\QtGui4.lib c:\Qt\4.5.3\lib\QtNetwork4.lib c:\Qt\4.5.3\lib\QtCore4.lib"
+				AdditionalLibraryDirectories="c:\Qt\4.5.3\lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				GenerateDebugInformation="false"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="0"
+				OutputFile="..\..\lib\GCF2.dll"
+				ProgramDatabaseFile=""
+				SubSystem="2"
+				SuppressStartupBanner="true"
+				Version="2.21"/>
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="copy  &quot;$(TargetPath)&quot; &quot;..\..\bin&quot;"
+				Description="Copy GCF2.dll to ..\..\bin"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,VCL_MAKE_DLL,QT_DLL,QT_NO_DEBUG,QT_XML_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="."
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="2"
+			IntermediateDirectory="..\..\tmp\gcf\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;..\..\..\Qt\4.5.3\include\QtCore&quot;,&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot;,&quot;..\..\..\Qt\4.5.3\include\QtGui&quot;,&quot;..\..\..\Qt\4.5.3\include\QtXml&quot;,&quot;..\..\..\Qt\4.5.3\include&quot;,&quot;..\include&quot;,&quot;core&quot;,&quot;ipc&quot;,&quot;menustrip&quot;,&quot;updater&quot;,&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot;,&quot;..\..\tmp\gcf&quot;,&quot;..\..\tmp\gcf&quot;,..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
+				AssemblerListingLocation="..\..\tmp\gcf\"
+				BufferSecurityCheck="false"
+				DebugInformationFormat="3"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\tmp\gcf\"
+				Optimization ="4"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,VCL_MAKE_DLL,QT_DLL,QT_XML_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="3"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="c:\Qt\4.5.3\lib\QtXmld4.lib c:\Qt\4.5.3\lib\QtGuid4.lib c:\Qt\4.5.3\lib\QtNetworkd4.lib c:\Qt\4.5.3\lib\QtCored4.lib"
+				AdditionalLibraryDirectories="c:\Qt\4.5.3\lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="..\..\lib\GCF2.dll"
+				ProgramDatabaseFile=""
+				SubSystem="2"
+				SuppressStartupBanner="true"
+				Version="2.21"/>
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="copy  &quot;$(TargetPath)&quot; &quot;..\..\bin&quot;"
+				Description="Copy GCF2.dll to ..\..\bin"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,VCL_MAKE_DLL,QT_DLL,QT_XML_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,_DEBUG"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="core\AbstractComponent.cpp"/>
+			<File
+				RelativePath="menustrip\ActionContainerWidget.cpp"/>
+			<File
+				RelativePath="menustrip\ActionDocumentMapper.cpp"/>
+			<File
+				RelativePath="ipc\AppAccessPoint.cpp"/>
+			<File
+				RelativePath="ipc\AppAccessPointComponent.cpp"/>
+			<File
+				RelativePath="core\ComponentFactory.cpp"/>
+			<File
+				RelativePath="core\ComponentGui.cpp"/>
+			<File
+				RelativePath="core\ComponentLoaderComponent.cpp"/>
+			<File
+				RelativePath="core\ComponentSettings.cpp"/>
+			<File
+				RelativePath="core\ConfigurationDialog.cpp"/>
+			<File
+				RelativePath="core\ConfigurationDialogComponent.cpp"/>
+			<File
+				RelativePath="core\DataStore.cpp"/>
+			<File
+				RelativePath="updater\FileDownloader.cpp"/>
+			<File
+				RelativePath="menustrip\GenericSignalSpy.cpp"/>
+			<File
+				RelativePath="updater\IconCache.cpp"/>
+			<File
+				RelativePath="core\Logger.cpp"/>
+			<File
+				RelativePath="menustrip\Menu.cpp"/>
+			<File
+				RelativePath="ipc\Message.cpp"/>
+			<File
+				RelativePath="ipc\MethodInvocationHelper.cpp"/>
+			<File
+				RelativePath="core\ObjectIterator.cpp"/>
+			<File
+				RelativePath="ipc\RemoteAppAccessPoint.cpp"/>
+			<File
+				RelativePath="ipc\RemoteAppDiscovery.cpp"/>
+			<File
+				RelativePath="ipc\RemoteObject.cpp"/>
+			<File
+				RelativePath="menustrip\SignalMultiplexer.cpp"/>
+			<File
+				RelativePath="updater\UpdateDownloaderThread.cpp"/>
+			<File
+				RelativePath="updater\UpdateFinderThread.cpp"/>
+			<File
+				RelativePath="updater\UpdateInfo.cpp"/>
+			<File
+				RelativePath="updater\UpdateSelectionDialog.cpp"/>
+			<File
+				RelativePath="updater\UpdateXMLParser.cpp"/>
+			<File
+				RelativePath="updater\UpdaterComponent.cpp"/>
+			<File
+				RelativePath="updater\UpdaterConfigPage.cpp"/>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\include\GCF\AbstractComponent.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\AbstractComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\AbstractComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_AbstractComponent.cpp"
+						Description="MOC ..\include\GCF\AbstractComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_AbstractComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\AbstractComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\AbstractComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_AbstractComponent.cpp"
+						Description="MOC ..\include\GCF\AbstractComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_AbstractComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\ActionContainerWidget.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ActionContainerWidget.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ActionContainerWidget.h -o c:\VTKDesigner2\tmp\gcf\moc_ActionContainerWidget.cpp"
+						Description="MOC ..\include\GCF\ActionContainerWidget.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ActionContainerWidget.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ActionContainerWidget.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ActionContainerWidget.h -o c:\VTKDesigner2\tmp\gcf\moc_ActionContainerWidget.cpp"
+						Description="MOC ..\include\GCF\ActionContainerWidget.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ActionContainerWidget.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\ActionDocumentMapper.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ActionDocumentMapper.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ActionDocumentMapper.h -o c:\VTKDesigner2\tmp\gcf\moc_ActionDocumentMapper.cpp"
+						Description="MOC ..\include\GCF\ActionDocumentMapper.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ActionDocumentMapper.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ActionDocumentMapper.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ActionDocumentMapper.h -o c:\VTKDesigner2\tmp\gcf\moc_ActionDocumentMapper.cpp"
+						Description="MOC ..\include\GCF\ActionDocumentMapper.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ActionDocumentMapper.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\AppAccessPoint.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\AppAccessPoint.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\AppAccessPoint.h -o c:\VTKDesigner2\tmp\gcf\moc_AppAccessPoint.cpp"
+						Description="MOC ..\include\GCF\AppAccessPoint.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_AppAccessPoint.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\AppAccessPoint.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\AppAccessPoint.h -o c:\VTKDesigner2\tmp\gcf\moc_AppAccessPoint.cpp"
+						Description="MOC ..\include\GCF\AppAccessPoint.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_AppAccessPoint.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\AppAccessPointComponent.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\AppAccessPointComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\AppAccessPointComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_AppAccessPointComponent.cpp"
+						Description="MOC ..\include\GCF\AppAccessPointComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_AppAccessPointComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\AppAccessPointComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\AppAccessPointComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_AppAccessPointComponent.cpp"
+						Description="MOC ..\include\GCF\AppAccessPointComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_AppAccessPointComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\ComponentFactory.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ComponentFactory.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ComponentFactory.h -o c:\VTKDesigner2\tmp\gcf\moc_ComponentFactory.cpp"
+						Description="MOC ..\include\GCF\ComponentFactory.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ComponentFactory.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ComponentFactory.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ComponentFactory.h -o c:\VTKDesigner2\tmp\gcf\moc_ComponentFactory.cpp"
+						Description="MOC ..\include\GCF\ComponentFactory.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ComponentFactory.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="core\ComponentFactoryTable"/>
+			<File
+				RelativePath="..\include\GCF\ComponentGui.h"/>
+			<File
+				RelativePath="..\include\GCF\ComponentLoaderComponent.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ComponentLoaderComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ComponentLoaderComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_ComponentLoaderComponent.cpp"
+						Description="MOC ..\include\GCF\ComponentLoaderComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ComponentLoaderComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ComponentLoaderComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ComponentLoaderComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_ComponentLoaderComponent.cpp"
+						Description="MOC ..\include\GCF\ComponentLoaderComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ComponentLoaderComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\ComponentSettings.h"/>
+			<File
+				RelativePath="..\include\GCF\ConfigurationDialog.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ConfigurationDialog.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ConfigurationDialog.h -o c:\VTKDesigner2\tmp\gcf\moc_ConfigurationDialog.cpp"
+						Description="MOC ..\include\GCF\ConfigurationDialog.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ConfigurationDialog.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ConfigurationDialog.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ConfigurationDialog.h -o c:\VTKDesigner2\tmp\gcf\moc_ConfigurationDialog.cpp"
+						Description="MOC ..\include\GCF\ConfigurationDialog.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ConfigurationDialog.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\ConfigurationDialogComponent.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ConfigurationDialogComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ConfigurationDialogComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_ConfigurationDialogComponent.cpp"
+						Description="MOC ..\include\GCF\ConfigurationDialogComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ConfigurationDialogComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\ConfigurationDialogComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\ConfigurationDialogComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_ConfigurationDialogComponent.cpp"
+						Description="MOC ..\include\GCF\ConfigurationDialogComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_ConfigurationDialogComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\DataStore.h"/>
+			<File
+				RelativePath="updater\FileDownloader.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\FileDownloader.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\FileDownloader.h -o c:\VTKDesigner2\tmp\gcf\moc_FileDownloader.cpp"
+						Description="MOC updater\FileDownloader.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_FileDownloader.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\FileDownloader.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\FileDownloader.h -o c:\VTKDesigner2\tmp\gcf\moc_FileDownloader.cpp"
+						Description="MOC updater\FileDownloader.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_FileDownloader.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\GenericSignalSpy.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\GenericSignalSpy.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\GenericSignalSpy.h -o c:\VTKDesigner2\tmp\gcf\moc_GenericSignalSpy.cpp"
+						Description="MOC ..\include\GCF\GenericSignalSpy.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_GenericSignalSpy.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\GenericSignalSpy.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\GenericSignalSpy.h -o c:\VTKDesigner2\tmp\gcf\moc_GenericSignalSpy.cpp"
+						Description="MOC ..\include\GCF\GenericSignalSpy.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_GenericSignalSpy.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="updater\IconCache.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\IconCache.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\IconCache.h -o c:\VTKDesigner2\tmp\gcf\moc_IconCache.cpp"
+						Description="MOC updater\IconCache.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_IconCache.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\IconCache.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\IconCache.h -o c:\VTKDesigner2\tmp\gcf\moc_IconCache.cpp"
+						Description="MOC updater\IconCache.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_IconCache.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\Logger.h"/>
+			<File
+				RelativePath="..\include\GCF\Menu.h"/>
+			<File
+				RelativePath="..\include\GCF\Message.h"/>
+			<File
+				RelativePath="..\include\GCF\MethodInvocationHelper.h"/>
+			<File
+				RelativePath="..\include\GCF\ObjectIterator.h"/>
+			<File
+				RelativePath="..\include\GCF\RemoteAppAccessPoint.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\RemoteAppAccessPoint.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\RemoteAppAccessPoint.h -o c:\VTKDesigner2\tmp\gcf\moc_RemoteAppAccessPoint.cpp"
+						Description="MOC ..\include\GCF\RemoteAppAccessPoint.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_RemoteAppAccessPoint.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\RemoteAppAccessPoint.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\RemoteAppAccessPoint.h -o c:\VTKDesigner2\tmp\gcf\moc_RemoteAppAccessPoint.cpp"
+						Description="MOC ..\include\GCF\RemoteAppAccessPoint.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_RemoteAppAccessPoint.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\RemoteAppDiscovery.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\RemoteAppDiscovery.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\RemoteAppDiscovery.h -o c:\VTKDesigner2\tmp\gcf\moc_RemoteAppDiscovery.cpp"
+						Description="MOC ..\include\GCF\RemoteAppDiscovery.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_RemoteAppDiscovery.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\RemoteAppDiscovery.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\RemoteAppDiscovery.h -o c:\VTKDesigner2\tmp\gcf\moc_RemoteAppDiscovery.cpp"
+						Description="MOC ..\include\GCF\RemoteAppDiscovery.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_RemoteAppDiscovery.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\RemoteObject.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\RemoteObject.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\RemoteObject.h -o c:\VTKDesigner2\tmp\gcf\moc_RemoteObject.cpp"
+						Description="MOC ..\include\GCF\RemoteObject.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_RemoteObject.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\RemoteObject.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\RemoteObject.h -o c:\VTKDesigner2\tmp\gcf\moc_RemoteObject.cpp"
+						Description="MOC ..\include\GCF\RemoteObject.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_RemoteObject.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\include\GCF\SignalMultiplexer.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\SignalMultiplexer.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\SignalMultiplexer.h -o c:\VTKDesigner2\tmp\gcf\moc_SignalMultiplexer.cpp"
+						Description="MOC ..\include\GCF\SignalMultiplexer.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_SignalMultiplexer.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\SignalMultiplexer.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\SignalMultiplexer.h -o c:\VTKDesigner2\tmp\gcf\moc_SignalMultiplexer.cpp"
+						Description="MOC ..\include\GCF\SignalMultiplexer.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_SignalMultiplexer.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="updater\UpdateDownloaderThread.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\UpdateDownloaderThread.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\UpdateDownloaderThread.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdateDownloaderThread.cpp"
+						Description="MOC updater\UpdateDownloaderThread.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdateDownloaderThread.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\UpdateDownloaderThread.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\UpdateDownloaderThread.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdateDownloaderThread.cpp"
+						Description="MOC updater\UpdateDownloaderThread.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdateDownloaderThread.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="updater\UpdateFinderThread.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\UpdateFinderThread.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\UpdateFinderThread.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdateFinderThread.cpp"
+						Description="MOC updater\UpdateFinderThread.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdateFinderThread.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\UpdateFinderThread.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\UpdateFinderThread.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdateFinderThread.cpp"
+						Description="MOC updater\UpdateFinderThread.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdateFinderThread.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="updater\UpdateInfo.h"/>
+			<File
+				RelativePath="updater\UpdateSelectionDialog.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\UpdateSelectionDialog.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\UpdateSelectionDialog.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdateSelectionDialog.cpp"
+						Description="MOC updater\UpdateSelectionDialog.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdateSelectionDialog.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\UpdateSelectionDialog.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\UpdateSelectionDialog.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdateSelectionDialog.cpp"
+						Description="MOC updater\UpdateSelectionDialog.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdateSelectionDialog.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="updater\UpdateXMLParser.h"/>
+			<File
+				RelativePath="..\include\GCF\UpdaterComponent.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\UpdaterComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\UpdaterComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdaterComponent.cpp"
+						Description="MOC ..\include\GCF\UpdaterComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdaterComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\include\GCF\UpdaterComponent.h;C:\Qt\4.5.3\bin\moc.exe"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\include\GCF\UpdaterComponent.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdaterComponent.cpp"
+						Description="MOC ..\include\GCF\UpdaterComponent.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdaterComponent.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="updater\UpdaterConfigPage.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\UpdaterConfigPage.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\UpdaterConfigPage.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdaterConfigPage.cpp"
+						Description="MOC updater\UpdaterConfigPage.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdaterConfigPage.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\moc.exe;updater\UpdaterConfigPage.h"
+						CommandLine="C:\Qt\4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DVCL_MAKE_DLL -DQT_DLL -DQT_XML_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\Qt\4.5.3\include\QtCore&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtGui&quot; -I&quot;..\..\..\Qt\4.5.3\include\QtXml&quot; -I&quot;..\..\..\Qt\4.5.3\include&quot; -I&quot;..\include&quot; -I&quot;core&quot; -I&quot;ipc&quot; -I&quot;menustrip&quot; -I&quot;updater&quot; -I&quot;..\..\..\Qt\4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\gcf&quot; -I&quot;..\..\tmp\gcf&quot; -I..\..\..\Qt\4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 updater\UpdaterConfigPage.h -o c:\VTKDesigner2\tmp\gcf\moc_UpdaterConfigPage.cpp"
+						Description="MOC updater\UpdaterConfigPage.h"
+						Outputs="c:\VTKDesigner2\tmp\gcf\moc_UpdaterConfigPage.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File
+				RelativePath="c:\VTKDesigner2\tmp\gcf\GCF_resource.res"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_AbstractComponent.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_ActionContainerWidget.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_ActionDocumentMapper.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_AppAccessPoint.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_AppAccessPointComponent.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_ComponentFactory.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_ComponentLoaderComponent.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_ConfigurationDialog.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_ConfigurationDialogComponent.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_FileDownloader.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_GenericSignalSpy.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_IconCache.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_RemoteAppAccessPoint.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_RemoteAppDiscovery.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_RemoteObject.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_SignalMultiplexer.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_UpdateDownloaderThread.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_UpdateFinderThread.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_UpdateSelectionDialog.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_UpdaterComponent.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\moc_UpdaterConfigPage.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\qrc_source.cpp"/>
+			<File
+				RelativePath="..\..\tmp\gcf\ui_AddPropertyDialog.h"/>
+			<File
+				RelativePath="..\..\tmp\gcf\ui_AddRemoteAppDialog.h"/>
+			<File
+				RelativePath="..\..\tmp\gcf\ui_AppAccessPointConfigPage.h"/>
+			<File
+				RelativePath="..\..\tmp\gcf\ui_ComponentLoaderConfigPage.h"/>
+			<File
+				RelativePath="..\..\tmp\gcf\ui_ComponentPropertyEditorPage.h"/>
+			<File
+				RelativePath="..\..\tmp\gcf\ui_ConfigurationDialog.h"/>
+			<File
+				RelativePath="..\..\tmp\gcf\ui_UpdateSelectionDialog.h"/>
+			<File
+				RelativePath="..\..\tmp\gcf\ui_UpdaterConfigPage.h"/>
+		</Filter>
+		<Filter
+			Name="Form Files"
+			Filter="ui"
+			UniqueIdentifier="{99349809-55BA-4b9d-BF79-8FDBB0286EB3}"
+			ParseFiles="false">
+			<File
+				RelativePath="core\AddPropertyDialog.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;core\AddPropertyDialog.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe core\AddPropertyDialog.ui -o c:\VTKDesigner2\tmp\gcf\ui_AddPropertyDialog.h"
+						Description="UIC core\AddPropertyDialog.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_AddPropertyDialog.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;core\AddPropertyDialog.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe core\AddPropertyDialog.ui -o c:\VTKDesigner2\tmp\gcf\ui_AddPropertyDialog.h"
+						Description="UIC core\AddPropertyDialog.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_AddPropertyDialog.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ipc\AddRemoteAppDialog.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;ipc\AddRemoteAppDialog.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe ipc\AddRemoteAppDialog.ui -o c:\VTKDesigner2\tmp\gcf\ui_AddRemoteAppDialog.h"
+						Description="UIC ipc\AddRemoteAppDialog.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_AddRemoteAppDialog.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;ipc\AddRemoteAppDialog.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe ipc\AddRemoteAppDialog.ui -o c:\VTKDesigner2\tmp\gcf\ui_AddRemoteAppDialog.h"
+						Description="UIC ipc\AddRemoteAppDialog.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_AddRemoteAppDialog.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ipc\AppAccessPointConfigPage.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;ipc\AppAccessPointConfigPage.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe ipc\AppAccessPointConfigPage.ui -o c:\VTKDesigner2\tmp\gcf\ui_AppAccessPointConfigPage.h"
+						Description="UIC ipc\AppAccessPointConfigPage.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_AppAccessPointConfigPage.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;ipc\AppAccessPointConfigPage.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe ipc\AppAccessPointConfigPage.ui -o c:\VTKDesigner2\tmp\gcf\ui_AppAccessPointConfigPage.h"
+						Description="UIC ipc\AppAccessPointConfigPage.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_AppAccessPointConfigPage.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="core\ComponentLoaderConfigPage.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;core\ComponentLoaderConfigPage.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe core\ComponentLoaderConfigPage.ui -o c:\VTKDesigner2\tmp\gcf\ui_ComponentLoaderConfigPage.h"
+						Description="UIC core\ComponentLoaderConfigPage.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_ComponentLoaderConfigPage.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;core\ComponentLoaderConfigPage.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe core\ComponentLoaderConfigPage.ui -o c:\VTKDesigner2\tmp\gcf\ui_ComponentLoaderConfigPage.h"
+						Description="UIC core\ComponentLoaderConfigPage.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_ComponentLoaderConfigPage.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="core\ComponentPropertyEditorPage.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;core\ComponentPropertyEditorPage.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe core\ComponentPropertyEditorPage.ui -o c:\VTKDesigner2\tmp\gcf\ui_ComponentPropertyEditorPage.h"
+						Description="UIC core\ComponentPropertyEditorPage.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_ComponentPropertyEditorPage.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;core\ComponentPropertyEditorPage.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe core\ComponentPropertyEditorPage.ui -o c:\VTKDesigner2\tmp\gcf\ui_ComponentPropertyEditorPage.h"
+						Description="UIC core\ComponentPropertyEditorPage.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_ComponentPropertyEditorPage.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="core\ConfigurationDialog.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;core\ConfigurationDialog.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe core\ConfigurationDialog.ui -o c:\VTKDesigner2\tmp\gcf\ui_ConfigurationDialog.h"
+						Description="UIC core\ConfigurationDialog.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_ConfigurationDialog.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;core\ConfigurationDialog.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe core\ConfigurationDialog.ui -o c:\VTKDesigner2\tmp\gcf\ui_ConfigurationDialog.h"
+						Description="UIC core\ConfigurationDialog.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_ConfigurationDialog.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="updater\UpdateSelectionDialog.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;updater\UpdateSelectionDialog.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe updater\UpdateSelectionDialog.ui -o c:\VTKDesigner2\tmp\gcf\ui_UpdateSelectionDialog.h"
+						Description="UIC updater\UpdateSelectionDialog.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_UpdateSelectionDialog.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;updater\UpdateSelectionDialog.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe updater\UpdateSelectionDialog.ui -o c:\VTKDesigner2\tmp\gcf\ui_UpdateSelectionDialog.h"
+						Description="UIC updater\UpdateSelectionDialog.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_UpdateSelectionDialog.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="updater\UpdaterConfigPage.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;UpdaterConfigPage.h;updater\UpdaterConfigPage.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe updater\UpdaterConfigPage.ui -o c:\VTKDesigner2\tmp\gcf\ui_UpdaterConfigPage.h"
+						Description="UIC updater\UpdaterConfigPage.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_UpdaterConfigPage.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\uic.exe;UpdaterConfigPage.h;updater\UpdaterConfigPage.ui"
+						CommandLine="C:\Qt\4.5.3\bin\uic.exe updater\UpdaterConfigPage.ui -o c:\VTKDesigner2\tmp\gcf\ui_UpdaterConfigPage.h"
+						Description="UIC updater\UpdaterConfigPage.ui"
+						Outputs="c:\VTKDesigner2\tmp\gcf\ui_UpdaterConfigPage.h"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="qrc;*"
+			UniqueIdentifier="{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}"
+			ParseFiles="false">
+			<File
+				RelativePath="guixml\AppAccessPointComponent.xml"/>
+			<File
+				RelativePath="guixml\ComponentLoaderConfigComponent.xml"/>
+			<File
+				RelativePath="guixml\ConfigurationDialogComponent.xml"/>
+			<File
+				RelativePath="guixml\UpdaterComponent.xml"/>
+			<File
+				RelativePath="icons\checkForUpdates.png"/>
+			<File
+				RelativePath="icons\configure.png"/>
+			<File
+				RelativePath="source.qrc">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\rcc.exe;guixml\AppAccessPointComponent.xml;guixml\ComponentLoaderConfigComponent.xml;guixml\ConfigurationDialogComponent.xml;guixml\UpdaterComponent.xml;icons\checkForUpdates.png;icons\configure.png;source.qrc"
+						CommandLine="C:\Qt\4.5.3\bin\rcc.exe -name source source.qrc -o c:\VTKDesigner2\tmp\gcf\qrc_source.cpp"
+						Description="RCC source.qrc"
+						Outputs="c:\VTKDesigner2\tmp\gcf\qrc_source.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="C:\Qt\4.5.3\bin\rcc.exe;guixml\AppAccessPointComponent.xml;guixml\ComponentLoaderConfigComponent.xml;guixml\ConfigurationDialogComponent.xml;guixml\UpdaterComponent.xml;icons\checkForUpdates.png;icons\configure.png;source.qrc"
+						CommandLine="C:\Qt\4.5.3\bin\rcc.exe -name source source.qrc -o c:\VTKDesigner2\tmp\gcf\qrc_source.cpp"
+						Description="RCC source.qrc"
+						Outputs="c:\VTKDesigner2\tmp\gcf\qrc_source.cpp"
+						Path="c:\Qt\4.5.3\bin"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<File
+			RelativePath="c:\VTKDesigner2\GCF\source\GCF_resource.rc"/>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>
