@@ -25,6 +25,8 @@
 #include <QMessageBox>
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QTreeView>
+#include <QDirModel>
 
 GCF_DEFINE_COMPONENT(TemplateManagerComponent)
 
@@ -37,6 +39,11 @@ struct TemplateManagerComponentData
     GCF::AbstractComponent* projectComp;
 
     QString templatesDirectory;
+
+	// New Dir Browser
+
+	QTreeView* dirView;
+	QDirModel* dirModel;
 };
 
 TemplateManagerComponent & TemplateManagerComponent::instance()
@@ -48,6 +55,16 @@ TemplateManagerComponent & TemplateManagerComponent::instance()
 TemplateManagerComponent::TemplateManagerComponent()
 {
     d = new TemplateManagerComponentData;
+
+	// New Dir Browser
+	d->dirView = new QTreeView;
+	d->dirModel = new QDirModel;
+
+	d->dirView->setModel(d->dirModel);
+
+	// Need to set templates directory
+	for(int i=1; i<d->dirModel->columnCount(); i++)
+		d->dirView->setColumnHidden(i, true);
 }
 
 TemplateManagerComponent::~TemplateManagerComponent()
@@ -80,6 +97,10 @@ QObject* TemplateManagerComponent::fetchObject(const QString& completeName) cons
 QWidget* TemplateManagerComponent::fetchWidget(const QString& completeName) const
 {
     QStringList comps = completeName.split('.');
+
+	// New dir browser
+	if(comps.last() == "dirView")
+		return d->dirView;
 
     return 0;
 }
