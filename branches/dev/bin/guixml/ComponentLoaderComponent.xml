@@ -57,6 +57,10 @@
     <method param1="PropertyInspectorComponent" 
             param2="PropertyInspector" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="SceneExporterComponent" 
+            param2="SceneExporter" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+
 
 
 </component>
