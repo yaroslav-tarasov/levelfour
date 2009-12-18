@@ -39,6 +39,9 @@
     <method param1="M2MComponent" 
             param2="M2M" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="M2RComponent" 
+            param2="M2R" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="SceneViewComponent" 
             param2="SceneView" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
