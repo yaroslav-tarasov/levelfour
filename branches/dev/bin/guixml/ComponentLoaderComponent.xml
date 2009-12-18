@@ -54,5 +54,9 @@
     <method param1="ScenegraphManagerComponent" 
             param2="ScenegraphManager" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="PropertyInspectorComponent" 
+            param2="PropertyInspector" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+
 
 </component>

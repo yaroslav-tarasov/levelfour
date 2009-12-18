@@ -2,9 +2,9 @@
 
     <object name="controller" />
 
-    <action name="loadTemplate" title="Load Template" icon=":/ProjectManager/open.png"
+    <action name="loadTemplate" title="Load Recipe" icon=":/ProjectManager/open.png"
             triggerSlot="TemplateManagerComponent.controller::slotLoadFromTemplate()" />
-    <action name="saveAsTemplate" title="Save Template" icon=":/ProjectManager/save.png"
+    <action name="saveAsTemplate" title="Save Recipe" icon=":/ProjectManager/save.png"
             triggerSlot="TemplateManagerComponent.controller::slotSaveAsTemplate()" />
 
     <menu mergeWith="MainWindowComponent.fileMenu" >
@@ -15,5 +15,8 @@
     </menu>
 
     <property key="TemplateManagerComponent.controller::TemplatesDirectory" value="${APPDIR}/Templates" />
+
+    <widget name="dirView" parentWidget="MainWindowComponent.leftDockArea"
+		title="Recipe Explorer" />
 
 </component>
