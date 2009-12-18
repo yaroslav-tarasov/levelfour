@@ -23,6 +23,7 @@ SUBDIRS     = LevelFour \
 		  TreeView \
 		  ScenegraphManager \
 		  PropertyInspector \
+		  SceneExporter \
 		  Clipboard
               
            
