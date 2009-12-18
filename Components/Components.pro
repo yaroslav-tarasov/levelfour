@@ -22,6 +22,7 @@ SUBDIRS     = LevelFour \
 		  TableView \
 		  TreeView \
 		  ScenegraphManager \
+		  PropertyInspector \
 		  Clipboard
               
            

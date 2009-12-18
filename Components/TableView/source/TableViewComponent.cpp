@@ -17,12 +17,13 @@
 #include "TableViewComponent.h"
 #include <GCF/ComponentFactory>
 #include <GCF/IComponentPlugin>
+#include <QTableView>
 
 GCF_DEFINE_COMPONENT(TableViewComponent)
 
 struct TableViewComponentData
 {
-
+	QTableView* tableView;
 };
 
 TableViewComponent & TableViewComponent::instance()
@@ -34,6 +35,8 @@ TableViewComponent & TableViewComponent::instance()
 TableViewComponent::TableViewComponent()
 {
     d = new TableViewComponentData;
+
+	d->tableView = new QTableView;
 }
 
 TableViewComponent::~TableViewComponent()
@@ -56,6 +59,10 @@ QObject* TableViewComponent::fetchObject(const QString& completeName) const
 QWidget* TableViewComponent::fetchWidget(const QString& completeName) const
 {
     QStringList comps = completeName.split('.');
+
+	// New dir browser
+	if(comps.last() == "tableView")
+		return d->tableView;
 
     return 0;
 }
