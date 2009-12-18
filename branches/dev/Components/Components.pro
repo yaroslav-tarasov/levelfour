@@ -15,8 +15,9 @@ SUBDIRS     = LevelFour \
               ScriptEditor \
               MainWindow \
               HelpSystem \
-		  M2D \
+		  D2M \
 		  M2M \
+		  M2R \
 		  SceneView \
 		  TableView \
 		  TreeView \
