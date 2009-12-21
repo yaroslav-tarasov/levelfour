@@ -237,7 +237,7 @@ HEADERS += CVtkObject.h \
            Wrappers/Filters/CVtkGenericGeometryFilter.h \
            Wrappers/Filters/CVtkGenericGlyph3DFilter.h \
            Wrappers/Filters/CVtkGenericStreamTracer.h \
-           Wrappers/Filters/CVtkStreamTracer.h \
+#           Wrappers/Filters/CVtkStreamTracer.h \
            Wrappers/Filters/CVtkLoopSubdivisionFilter.h \
            Wrappers/Filters/CVtkInterpolatingSubdivisionFilter.h \
            Wrappers/Filters/CVtkButterflySubdivisionFilter.h \
@@ -463,7 +463,7 @@ SOURCES += CVtkObject.cpp \
            Wrappers/Filters/CVtkGenericGeometryFilter.cpp \
            Wrappers/Filters/CVtkGenericGlyph3DFilter.cpp \
            Wrappers/Filters/CVtkGenericStreamTracer.cpp \
-           Wrappers/Filters/CVtkStreamTracer.cpp \
+#           Wrappers/Filters/CVtkStreamTracer.cpp \
            Wrappers/Filters/CVtkLoopSubdivisionFilter.cpp \
            Wrappers/Filters/CVtkInterpolatingSubdivisionFilter.cpp \
            Wrappers/Filters/CVtkButterflySubdivisionFilter.cpp \
