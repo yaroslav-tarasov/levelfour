@@ -3,12 +3,12 @@
 ######################################################################
 
 win32{
-VTK5_INCLUDE_DIR  = $${PROJECT_BASE}/VTK5/include/vtk-5.4
+VTK5_INCLUDE_DIR  = $${PROJECT_BASE}/VTK5/include/vtk-5.5
 } else {
 VTK5_INCLUDE_DIR  = $${PROJECT_BASE}/VTK5/include/
 }
 win32 {
-VTK5_LIB_DIR      = $${PROJECT_BASE}/VTK5/lib/vtk-5.4
+VTK5_LIB_DIR      = $${PROJECT_BASE}/VTK5/lib/vtk-5.5
 } else {
 VTK5_LIB_DIR      = $${PROJECT_BASE}/VTK5/bin/
 }
