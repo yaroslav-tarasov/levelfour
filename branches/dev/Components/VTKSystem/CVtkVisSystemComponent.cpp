@@ -726,7 +726,7 @@ void CVtkVisSystemComponent::timerEvent(QTimerEvent* te)
 #include "CVtkGenericGeometryFilter.h"
 #include "CVtkGenericGlyph3DFilter.h"
 #include "CVtkGenericStreamTracer.h"
-#include "CVtkStreamTracer.h"
+// #include "CVtkStreamTracer.h"
 #include "CVtkBYUReader.h"
 #include "CVtkColorTransferFunction.h"
 #include "CVtkLookupTable.h"
@@ -928,7 +928,7 @@ void CVtkVisSystemComponent::initializeComponent()
     ADD_WRAPPER(CVtkGenericGeometryFilter)
     ADD_WRAPPER(CVtkGenericGlyph3DFilter)
     ADD_WRAPPER(CVtkGenericStreamTracer)
-    ADD_WRAPPER(CVtkStreamTracer)
+    // ADD_WRAPPER(CVtkStreamTracer)
     ADD_WRAPPER(CVtkBYUReader)
     ADD_WRAPPER(CVtkColorTransferFunction)
     ADD_WRAPPER(CVtkLookupTable)
