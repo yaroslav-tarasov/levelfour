@@ -123,7 +123,7 @@ struct CVisSystemCanvasData
     CVisSystemCanvasConnectionItem* connectionItemAt(QPointF pos, bool scenePos=false);
 
     // Data for drawing the canvas background
-    QColor bgTopColor, bgMidColor, bgBottomColor;
+    QColor bgColor, gridColor;
 
     // Undo Redo Stuff
     CUndoRedoStack undoStack;
@@ -161,12 +161,10 @@ CVisSystemCanvas::CVisSystemCanvas(QWidget* parent)
 	d->scene->setSceneRect(-5000, -5000, 10000, 10000);
     setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
-    d->bgTopColor = palette().highlight().color();
-    d->bgMidColor = QColor( (d->bgTopColor.red()+255)/2, (d->bgTopColor.green()+255)/2, (d->bgTopColor.blue()+255)/2 );
-    d->bgBottomColor = QColor( (d->bgTopColor.red()+128)/2, (d->bgTopColor.green()+128)/2, (d->bgTopColor.blue()+128)/2 );
-    d->bgTopColor.setAlphaF(0.1);
-    d->bgMidColor.setAlphaF(0.2);
-    d->bgBottomColor.setAlphaF(0.1);
+	d->bgColor = QColor(139,139,139);
+    d->gridColor = QColor(150,150,150);
+    d->bgColor.setAlphaF(0.9);
+    d->gridColor.setAlphaF(0.9);
 
     CCanvasUndoRedoCmd::VisNetwork = d->network;
     CCanvasUndoRedoCmd::VisNetworkCanvas = this;
@@ -1144,12 +1142,12 @@ bool CVisSystemCanvas::hasConnection(IVisNetworkConnection* con)
 
 void CVisSystemCanvas::drawBackground(QPainter * paint, const QRectF & rect)
 {
-    QLinearGradient grad(QPointF(0,0), QPointF(0,1000));
-    grad.setColorAt(0.0, d->bgTopColor);
-    grad.setColorAt(0.5, d->bgMidColor);
-    grad.setColorAt(1.0, d->bgBottomColor);
-    paint->fillRect(rect, grad);
-    paint->fillRect(rect, QBrush(d->bgMidColor, Qt::CrossPattern));
+    // QLinearGradient grad(QPointF(0,0), QPointF(0,1000));
+    // grad.setColorAt(0.0, d->bgTopColor);
+    // grad.setColorAt(1, d->bgMidColor);
+    // grad.setColorAt(1.0, d->bgBottomColor);
+    paint->fillRect(rect, d->bgColor);
+    paint->fillRect(rect, QBrush(d->gridColor, Qt::CrossPattern));
 }
 
 void CVisSystemCanvas::paintEvent(QPaintEvent* pe)

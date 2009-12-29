@@ -3,7 +3,6 @@
     
     <action title="Fullscreen" 
             triggerSlot="CVTKFullscreenComponent.controller::showCurrentRenderWindowFullScreen()" 
-            icon=":/VTKFullscreen/fullscreen.png" 
             name="viewFullscreen" 
             shortcut="F11"/>
 
@@ -15,10 +14,8 @@
     </menu>
 
     <toolbar mergeWith="MainWindowComponent.viewTools" >
-        <toolbaritem />
         <toolbaritem actionName="CVTKFullscreenComponent.viewFullscreen" colSpan="2" rowSpan="2"
-                  hideWhenInactive="false"/>
-        <toolbaritem />
+                  hideWhenInactive="true"/>
     </toolbar>
 
 </component>

@@ -208,7 +208,7 @@ void CVisSystemCanvasNodeItem::updateConnectionItems()
     d->updateConnectionItemsScheduled = false;
 }
 
-#define MEAN_COLOR(c1, c2) QColor( (c1.red()+c2.red())/2, (c1.green()+c2.green())/2, (c1.blue()+c2.blue())/2 );
+#define MEAN_COLOR(c1, c2) QColor( 88,88,88 );
 
 void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem* opt, QWidget* widget)
 {
@@ -250,34 +250,41 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     }
 
     // Draw the node rectangle.
-    double alpha = 0.60;
-    if(this->isSelected())
+    double alpha = 0.90;
+	
+    
+	if(this->isSelected())
         alpha = 0.95;
 
     if(this->isSelected())
-        p->setPen( QPen(opt->palette.highlight().color(), 2) );
+	{   
+		// Stroke for highlight on select 218;165;32 / 24;116;205 / 229;229;229
+		QColor penSelectColor = QColor(99,99,99);
+		p->setPen( QPen(penSelectColor, 3) );
+	}
     else
     {
-		QColor penColor = opt->palette.highlight().color();
-        penColor.setAlphaF(0.85);
-        p->setPen( QPen(penColor, 2) );
+		// QColor penColor = opt->palette.highlight().color();
+        QColor penLightColor = QColor(127,127,127);
+		penLightColor.setAlphaF(0.85);
+        p->setPen( QPen(penLightColor, 2) );
     }
 
 	if(opt->levelOfDetail >= 0.75)
     {
-        QColor topColor = opt->palette.highlight().color();
-        QColor midColor = opt->palette.light().color();
-        QColor bottomColor = topColor;
-
-        topColor.setAlphaF(alpha);
-        midColor.setAlphaF(alpha);
-        bottomColor.setAlphaF(alpha);
-
+        // Base node style
+		QColor darkColor = QColor(71,71,71);
+		QColor midColor = QColor(183,183,183);
+		QColor lightColor = QColor(150,150,150);
+		
+		darkColor.setAlphaF(alpha);
+		midColor.setAlphaF(alpha);
+        lightColor.setAlphaF(alpha);
+        
         QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
-        grad.setColorAt(0, topColor);
-        grad.setColorAt(0.2, midColor);
-        grad.setColorAt(0.8, midColor);
-        grad.setColorAt(1, bottomColor);
+        grad.setColorAt(0, midColor);
+        grad.setColorAt(0.5, lightColor);
+        grad.setColorAt(1, midColor);
 
         QPainterPath path;
         path.addRoundRect(r2.adjusted(1,1,-1,-1), 10, 10);
