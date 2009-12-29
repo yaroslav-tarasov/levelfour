@@ -318,14 +318,16 @@ QColor CVisSystemCanvasConnectionItemData::connectionItemColor(IVisNetworkConnec
     if(pathTypeColorMap.contains(pathDataType))
         return pathTypeColorMap[pathDataType];
 
-    QColor c;
-    double r = randomNumber(0.0f, 1.0f);
-    double g = randomNumber(0.0f, 1.0f);
-    double b = randomNumber(0.0f, 1.0f);
-    c.setRgbF(r, g, b);
+	// This is where link color is set...
+    // QColor c; 24;116;205
+	QColor linkColor = QColor(187,187,187);
+    // double r = randomNumber(0.0f, 1.0f);
+    // double g = randomNumber(0.0f, 1.0f);
+    // double b = randomNumber(0.0f, 1.0f);
+    // c.setRgbF(r, g, b);
 
-    pathTypeColorMap[pathDataType] = c;
-    return c;
+    pathTypeColorMap[pathDataType] = linkColor;
+    return linkColor;
 }
 
 

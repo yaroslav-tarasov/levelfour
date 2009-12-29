@@ -2,9 +2,9 @@
 
     <object name="controller" />
 
-    <action name="loadTemplate" title="Load Recipe" icon=":/ProjectManager/open.png"
+    <action name="loadTemplate" title="Load Recipe" 
             triggerSlot="TemplateManagerComponent.controller::slotLoadFromTemplate()" />
-    <action name="saveAsTemplate" title="Save Recipe" icon=":/ProjectManager/save.png"
+    <action name="saveAsTemplate" title="Save Recipe" 
             triggerSlot="TemplateManagerComponent.controller::slotSaveAsTemplate()" />
 
     <menu mergeWith="MainWindowComponent.fileMenu" >
@@ -13,6 +13,11 @@
         <menuItem actionName="TemplateManagerComponent.saveAsTemplate" before="MainWindowComponent.fileQuit"/>
         <menuitem before="MainWindowComponent.fileQuit"/>
     </menu>
+
+	<toolbar mergeWith="MainWindowComponent.recipeTools" >
+        <toolbaritem actionName="TemplateManagerComponent.loadTemplate" />
+        <toolbaritem actionName="TemplateManagerComponent.saveAsTemplate" />
+      </toolbar>
 
     <property key="TemplateManagerComponent.controller::TemplatesDirectory" value="${APPDIR}/Templates" />
 
