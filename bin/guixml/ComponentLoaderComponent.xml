@@ -33,8 +33,8 @@
     <method param1="TemplateManagerComponent"
             param2="TemplateManager"
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
-    <method param1="M2DComponent" 
-            param2="M2D" 
+    <method param1="InfoVisComponent" 
+            param2="D2M" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="M2MComponent" 
             param2="M2M" 
@@ -60,7 +60,4 @@
     <method param1="SceneExporterComponent" 
             param2="SceneExporter" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
-
-
-
 </component>

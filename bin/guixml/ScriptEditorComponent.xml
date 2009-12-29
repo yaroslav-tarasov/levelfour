@@ -17,7 +17,6 @@
             triggerSlot="ScriptEditorComponent.controller::executeMainScript()" 
             hideWhenInactive="false" 
             shortcut="F5" 
-            icon=":/ScriptEditor/execute.png" 
             name="executeMainScript" />
     <action title="Copy" 
             triggerSlot="ScriptEditorComponent.scriptEditor::copy()" 
@@ -34,7 +33,6 @@
     <action title="Goto Line" 
             triggerSlot="ScriptEditorComponent.scriptEditor::showGotoLineDialog()" 
             shortcut="Ctrl+G" 
-            icon=":/ScriptEditor/gotoline.png" 
             name="editGotoLine" />
     <action title="Undo" 
             triggerSlot="ScriptEditorComponent.scriptEditor::undo()" 
@@ -48,7 +46,6 @@
             triggerSlot="ScriptEditorComponent.scriptEditor::showFindDialog()" 
             shortcut="Ctrl+F" 
             default="true" 
-            icon=":/ScriptEditor/find.png" 
             name="editFind" />
     <action title="Find Next" 
             triggerSlot="ScriptEditorComponent.scriptEditor::findNext()" 
@@ -61,18 +58,15 @@
     <action title="Find And Replace" 
             triggerSlot="ScriptEditorComponent.scriptEditor::showFindAndReplaceDialog()" 
             shortcut="Ctrl+H" 
-            icon=":/ScriptEditor/findreplace.png" 
             name="editFindAndReplace" />
     <action title="Load UI" 
             triggerSlot="ScriptEditorComponent.controller::loadForm()" 
             shortcut="Ctrl+M" 
             hideWhenInactive="false" 
-            icon=":/ScriptEditor/loadform.png" 
             name="fileLoadForm" />
     <action title="Unload UI" 
             triggerSlot="ScriptEditorComponent.controller::unloadForm()" 
             shortcut="Ctrl+U" hideWhenInactive="false" 
-            icon=":/ScriptEditor/unloadform.png" 
             name="fileUnloadForm" />
     
     <menu title="Find" icon=":/ScriptEditor/find.png" name="findMenu" >
@@ -95,9 +89,8 @@
         <menuitem widgetName="ScriptEditorComponent.configPageSheet" hideWhenInactive="true" />
     </menu>
     
-    <toolbar name="scriptTools" title="Script Tools" hideWhenInactive="false" >
+    <toolbar mergeWith="MainWindowComponent.componentTools" >
         <toolbaritem actionName="ScriptEditorComponent.executeMainScript" hideWhenInactive="false" />
-        <toolbaritem />
         <toolbaritem actionName="ScriptEditorComponent.fileLoadForm" hideWhenInactive="false" />
         <toolbaritem actionName="ScriptEditorComponent.fileUnloadForm" hideWhenInactive="false" />        
     </toolbar>

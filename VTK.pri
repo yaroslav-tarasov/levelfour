@@ -46,9 +46,28 @@ unix:LIBS         += -L$$VTK5_LIB_DIR \
                     -lvtkViews \
                     -lvtkVolumeRendering \
                     -lvtkWidgets \
-                    -lvtkzlib
+                    -lvtkzlib \
+                    -lvtkInfovis
 
-win32:LIBS        += $$VTK5_LIB_DIR/vtkCommon.lib $$VTK5_LIB_DIR/vtkGraphics.lib $$VTK5_LIB_DIR/vtkFiltering.lib $$VTK5_LIB_DIR/vtkGenericFiltering.lib $$VTK5_LIB_DIR/vtkRendering.lib $$VTK5_LIB_DIR/vtkImaging.lib $$VTK5_LIB_DIR/vtkIO.lib $$VTK5_LIB_DIR/QVTK.lib $$VTK5_LIB_DIR/vtkWidgets.lib $$VTK5_LIB_DIR/vtkHybrid.lib $$VTK5_LIB_DIR/vtkzlib.lib $$VTK5_LIB_DIR/vtkfreetype.lib $$VTK5_LIB_DIR/vtkexpat.lib $$VTK5_LIB_DIR/vtkexoIIc.lib $$VTK5_LIB_DIR/vtkDICOMParser.lib $$VTK5_LIB_DIR/vtksys.lib $$VTK5_LIB_DIR/QVTK.lib
+win32:LIBS +=   $$VTK5_LIB_DIR/vtkCommon.lib \ 
+                $$VTK5_LIB_DIR/vtkGraphics.lib \ 
+                $$VTK5_LIB_DIR/vtkFiltering.lib \ 
+                $$VTK5_LIB_DIR/vtkGenericFiltering.lib \ 
+                $$VTK5_LIB_DIR/vtkRendering.lib \ 
+                $$VTK5_LIB_DIR/vtkImaging.lib \ 
+                $$VTK5_LIB_DIR/vtkIO.lib \ 
+                $$VTK5_LIB_DIR/QVTK.lib \ 
+                $$VTK5_LIB_DIR/vtkWidgets.lib \ 
+                $$VTK5_LIB_DIR/vtkHybrid.lib \ 
+                $$VTK5_LIB_DIR/vtkzlib.lib \ 
+                $$VTK5_LIB_DIR/vtkfreetype.lib \ 
+                $$VTK5_LIB_DIR/vtkexpat.lib \ 
+                $$VTK5_LIB_DIR/vtkexoIIc.lib \ 
+                $$VTK5_LIB_DIR/vtkDICOMParser.lib \ 
+                $$VTK5_LIB_DIR/vtksys.lib \ 
+                $$VTK5_LIB_DIR/QVTK.lib \
+                $$VTK5_LIB_DIR/vtkInfovis.lib
+
 QT                += opengl
 
 

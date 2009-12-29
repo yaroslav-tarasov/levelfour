@@ -24,6 +24,7 @@
 #include "MainWindowComponent.h"
 #include "MainWindow.h"
 
+
 #ifdef Q_WS_WIN
 #include <QFile>
 #include <QFont>
@@ -46,16 +47,15 @@ int main(int argc, char** argv)
 		
 		a.setStyle ("plastique");
         // set styleSheet here...
-        // QFile qss("styles/levelfour.qss");
-        // qss.open(QFile::ReadOnly);
-        // a.setStyleSheet(qss.readAll());
-        // qss.close();
+        QFile qss("styles/levelfour.qss");
+        qss.open(QFile::ReadOnly);
+        a.setStyleSheet(qss.readAll());
+        qss.close();
         // set font
         QFont newFont( "Tahoma" );
         newFont.setPointSize( 8 );
         newFont.setWeight( QFont::Normal );
         a.setFont(newFont);
-
 
 #endif
 
@@ -77,8 +77,8 @@ int main(int argc, char** argv)
 
     // Create the host main-window
     GCF::AbstractComponent::setMenuStripEnabled(true);
-    GCF::Components::MainWindowComponent::instance().setApplicationLogo(":/VTKDesigner2/vtkdesigner.png");
-    GCF::Components::MainWindowComponent::instance().setSplashImage(":/VTKDesigner2/splash.png");
+    GCF::Components::MainWindowComponent::instance().setApplicationLogo(":/LevelFour/vtkdesigner.png");
+    GCF::Components::MainWindowComponent::instance().setSplashImage(":/LevelFour/splash.png");
     GCF::Components::MainWindowComponent::instance().initialize();
 
     // Start the updater component immediately to check for updates..
@@ -96,7 +96,7 @@ int main(int argc, char** argv)
 
     // Show the main-window
     GCF::Components::MainWindow::instance().show();
-    GCF::Components::MainWindow::instance().setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    GCF::Components::MainWindow::instance().setToolButtonStyle(Qt::ToolButtonTextOnly);
 
     return a.exec();
 }

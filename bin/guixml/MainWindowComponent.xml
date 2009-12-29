@@ -9,54 +9,46 @@
     <object title="" name="controller" autoDelete="false" />
     <action title="Preferences" 
             triggerSlot="MainWindowComponent.window::showConfigurationDialog()" 
-            icon=":/MainWindow/configure.png" 
             name="configure" />
     <action title="Exit" 
             triggerSlot="MainWindowComponent.window::close()" 
-            icon=":/MainWindow/exit.png" 
             name="fileQuit" 
             shortcut="Ctrl+Q"/>
     <action title="About" 
             triggerSlot="MainWindowComponent.window::about()" 
-            icon=":/MainWindow/appIcon.png" 
             name="helpAbout" />
     <action title="Panels Menu" 
             triggerSlot="MainWindowComponent.window::togglePanelAction()" 
             name="togglePanelAction" />
     <action title="Cut"
             shortcut="Ctrl+X"
-            icon=":/MainWindow/cut.png"
             name="cut" />
     <action title="Copy"
             shortcut="Ctrl+C"
-            icon=":/MainWindow/copy.png"
             name="copy" />
     <action title="Paste"
             shortcut="Ctrl+V"
-            icon=":/MainWindow/paste.png"
             name="paste" />
     <action title="Undo"
             shortcut="Ctrl+Z"
-            icon=":/MainWindow/undo.png"
             name="undo" />
     <action title="Redo" 
             shortcut="Ctrl+Y"
-            icon=":/MainWindow/redo.png"
             name="redo" />
     <action title="Snapshot" 
             shortcut="F8" 
             tooltip="Capture's snapshot of the current tab to the clipboard" 
-            icon=":/VTKDesigner2/camera.png" name="captureSnapshot" />
+            name="captureSnapshot" />
     <action title="Manual" 
             name="manual" 
             tooltip="VTK Designer User Manual" 
             url="file:///${APPDIR}/UserManual/Manual.pdf" 
-            icon=":/MainWindow/help.png" />
+            />
     <action title="Website" 
             name="vclWeb" 
             tooltip="VTK Designer Website" 
             url="http://www.vcreatelogic.com/oss/vtkdesigner" 
-            icon=":/MainWindow/appIcon.png" />
+            />
 
     <menu title="&amp;File" name="fileMenu">
         <!-- This is a dummy place holder for file menu items -->
@@ -69,7 +61,6 @@
         <menuitem actionName="MainWindowComponent.paste" />
         <menuitem actionName="MainWindowComponent.undo" />
         <menuitem actionName="MainWindowComponent.redo" />
-        <menuitem />
         <menuitem actionName="MainWindowComponent.configure" />"
     </menu>
 
@@ -80,26 +71,33 @@
 
     <menu title="&amp;Help" name="helpMenu" >
         <menuitem actionName="MainWindowComponent.manual" />
-        <menuitem />
         <menuitem actionName="MainWindowComponent.vclWeb" />
         <menuitem actionName="MainWindowComponent.helpAbout" />
     </menu>
 
     <toolbar title="File Tools" name="fileTools">
+	</toolbar>
 
-    </toolbar>
+    <toolbar title="Recipe Tools" name="recipeTools">
+	</toolbar>
 
-    <toolbar title="Edit Tools" name="editTools">
-        <toolbaritem actionName="MainWindowComponent.copy" />
+    <toolbar title="Util Tools" name="utilTools">
+	  <toolbaritem actionName="MainWindowComponent.copy" />
         <toolbaritem actionName="MainWindowComponent.cut" />
         <toolbaritem actionName="MainWindowComponent.paste" />
         <toolbaritem actionName="MainWindowComponent.undo" />
         <toolbaritem actionName="MainWindowComponent.redo" />
     </toolbar>
 
+    <toolbar title="Node Tools" name="nodeTools">
+	</toolbar>
+
+    <toolbar title="Component Tools" name="componentTools">
+	</toolbar>
+
     <toolbar title="View Tools" name="viewTools">
-        <toolbaritem actionName="MainWindowComponent.captureSnapshot" />
-    </toolbar>
+	<toolbaritem actionName="MainWindowComponent.captureSnapshot" />
+	</toolbar>
 
     <property key="MainWindowComponent.leftDockArea::minimumWidth" value="250" />
     <property key="MainWindowComponent.rightDockArea::minimumHeight" value="200" />

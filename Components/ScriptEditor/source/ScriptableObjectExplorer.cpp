@@ -274,9 +274,9 @@ QTreeWidgetItem* GCF::Components::ScriptableObjectExplorerData::loadObjectInfo(Q
     if(!treeWidget && !item)
         return 0;
 
-    static QColor eventColor = Qt::blue;
-    static QColor propertyColor = Qt::red;
-    static QColor methodColor = Qt::darkYellow;
+    static QColor eventColor = Qt::gray;
+    static QColor propertyColor = Qt::gray;
+    static QColor methodColor = Qt::gray;
 
     if(name.isEmpty())
         name = object->objectName();

@@ -2,7 +2,7 @@
 
    <object name="controller" />
    
-   <widget name="outputViewer" title="Data View"
+   <widget name="outputViewer" title="InfoVis Output"
            parentWidget="MainWindowComponent.workspace" />
    
 </component>
