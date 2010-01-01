@@ -3,9 +3,13 @@
     <object name="controller" />
 
     <action name="loadTemplate" title="Load Recipe" 
-            triggerSlot="TemplateManagerComponent.controller::slotLoadFromTemplate()" />
+            triggerSlot="TemplateManagerComponent.controller::slotLoadFromTemplate()"
+		icon=":/TemplateManager/loadtemplate.png"
+		 />
     <action name="saveAsTemplate" title="Save Recipe" 
-            triggerSlot="TemplateManagerComponent.controller::slotSaveAsTemplate()" />
+            triggerSlot="TemplateManagerComponent.controller::slotSaveAsTemplate()"
+		icon=":/TemplateManager/savetemplate.png"
+		 />
 
     <menu mergeWith="MainWindowComponent.fileMenu" >
         <menuitem before="MainWindowComponent.fileQuit"/>

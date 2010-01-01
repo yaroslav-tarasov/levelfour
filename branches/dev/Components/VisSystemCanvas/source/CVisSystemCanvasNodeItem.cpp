@@ -240,7 +240,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     // Draw the node shadow
 	if(opt->levelOfDetail >= 0.75)
     {
-        QColor color1 = opt->palette.shadow().color();
+        QColor color1 = QColor(10,10,10);
         color1.setAlphaF(this->isSelected() ? 0.4 : 0.3);
 
         int shadowSize = this->isSelected() ? 5 : 3;
@@ -259,15 +259,15 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     if(this->isSelected())
 	{   
 		// Stroke for highlight on select 218;165;32 / 24;116;205 / 229;229;229
-		QColor penSelectColor = QColor(99,99,99);
-		p->setPen( QPen(penSelectColor, 3) );
+		QColor penSelectColor = QColor(249,249,249);
+		p->setPen( QPen(penSelectColor, 1) );
 	}
     else
     {
 		// QColor penColor = opt->palette.highlight().color();
-        QColor penLightColor = QColor(127,127,127);
+        QColor penLightColor = QColor(229,229,229);
 		penLightColor.setAlphaF(0.85);
-        p->setPen( QPen(penLightColor, 2) );
+        p->setPen( QPen(penLightColor, 1) );
     }
 
 	if(opt->levelOfDetail >= 0.75)

@@ -48,9 +48,6 @@
     <method param1="TreeViewComponent" 
             param2="TreeView" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
-    <method param1="TableViewComponent" 
-            param2="TableView" 
-            methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="ScenegraphManagerComponent" 
             param2="ScenegraphManager" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />

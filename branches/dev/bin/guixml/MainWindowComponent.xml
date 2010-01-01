@@ -8,36 +8,45 @@
     <object title="" name="application" autoDelete="false" />
     <object title="" name="controller" autoDelete="false" />
     <action title="Preferences" 
-            triggerSlot="MainWindowComponent.window::showConfigurationDialog()" 
+            triggerSlot="MainWindowComponent.window::showConfigurationDialog()"
+		icon=":/MainWindow/configure.png" 
             name="configure" />
     <action title="Exit" 
             triggerSlot="MainWindowComponent.window::close()" 
-            name="fileQuit" 
+            name="fileQuit"
+		icon=":/MainWindow/exit.png"
             shortcut="Ctrl+Q"/>
     <action title="About" 
-            triggerSlot="MainWindowComponent.window::about()" 
+            triggerSlot="MainWindowComponent.window::about()"
+		icon=":/MainWindow/appIcon.png" 
             name="helpAbout" />
     <action title="Panels Menu" 
             triggerSlot="MainWindowComponent.window::togglePanelAction()" 
             name="togglePanelAction" />
     <action title="Cut"
             shortcut="Ctrl+X"
+		icon=":/MainWindow/cut.png"
             name="cut" />
     <action title="Copy"
             shortcut="Ctrl+C"
+		icon=":/MainWindow/copy.png"
             name="copy" />
     <action title="Paste"
             shortcut="Ctrl+V"
+		icon=":/MainWindow/paste.png"
             name="paste" />
     <action title="Undo"
             shortcut="Ctrl+Z"
+		icon=":/MainWindow/undo.png"
             name="undo" />
     <action title="Redo" 
             shortcut="Ctrl+Y"
+		icon=":/MainWindow/redo.png"
             name="redo" />
     <action title="Snapshot" 
             shortcut="F8" 
-            tooltip="Capture's snapshot of the current tab to the clipboard" 
+            tooltip="Capture's snapshot of the current tab to the clipboard"
+		icon=":/LevelFour/camera.png" 
             name="captureSnapshot" />
     <action title="Manual" 
             name="manual" 
@@ -46,7 +55,8 @@
             />
     <action title="Website" 
             name="vclWeb" 
-            tooltip="VTK Designer Website" 
+            tooltip="VTK Designer Website"
+		icon=":/MainWindow/appIcon.png"
             url="http://www.vcreatelogic.com/oss/vtkdesigner" 
             />
 
