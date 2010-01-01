@@ -4,7 +4,7 @@
     <object title="" name="scriptEngineManager" />
     <widget title="Script Editor" 
             name="scriptEditor" 
-            parentWidget="MainWindowComponent.workspace" />
+            parentWidget="MainWindowComponent.rightDockArea" />
     <widget title="Scriptable Objects" 
             hideWhenInactive="false" 
             name="scriptableObjectExplorer" 
@@ -15,7 +15,8 @@
     
     <action title="Execute"
             triggerSlot="ScriptEditorComponent.controller::executeMainScript()" 
-            hideWhenInactive="false" 
+            hideWhenInactive="false"
+		icon=":/ScriptEditor/execute.png" 
             shortcut="F5" 
             name="executeMainScript" />
     <action title="Copy" 
@@ -62,11 +63,14 @@
     <action title="Load UI" 
             triggerSlot="ScriptEditorComponent.controller::loadForm()" 
             shortcut="Ctrl+M" 
-            hideWhenInactive="false" 
+            hideWhenInactive="false"
+		icon=":/ScriptEditor/loadform.png" 
             name="fileLoadForm" />
     <action title="Unload UI" 
             triggerSlot="ScriptEditorComponent.controller::unloadForm()" 
-            shortcut="Ctrl+U" hideWhenInactive="false" 
+            shortcut="Ctrl+U"
+		hideWhenInactive="false"
+		icon=":/ScriptEditor/unloadform.png" 
             name="fileUnloadForm" />
     
     <menu title="Find" icon=":/ScriptEditor/find.png" name="findMenu" >

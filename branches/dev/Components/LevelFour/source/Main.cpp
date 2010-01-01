@@ -96,7 +96,7 @@ int main(int argc, char** argv)
 
     // Show the main-window
     GCF::Components::MainWindow::instance().show();
-    GCF::Components::MainWindow::instance().setToolButtonStyle(Qt::ToolButtonTextOnly);
+    GCF::Components::MainWindow::instance().setToolButtonStyle(Qt::ToolButtonIconOnly);
 
     return a.exec();
 }

@@ -18,3 +18,6 @@ UI_DIR          = $${PROJECT_BASE}/tmp/TemplateManager
 
 HEADERS         += source/TemplateManagerComponent.h
 SOURCES         += source/TemplateManagerComponent.cpp
+
+RESOURCES = TemplateManager.qrc
+

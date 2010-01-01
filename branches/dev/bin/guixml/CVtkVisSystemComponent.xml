@@ -8,7 +8,7 @@
             name="captureSnapshot" 
             mergeWith="MainWindowComponent.captureSnapshot" />
     
-    <widget title="VTK Output" 
+    <widget title="Scene View" 
             name="vtkOutputDisplay" 
             parentWidget="MainWindowComponent.workspace" 
             parentWidgetHint="RightDockWidgetArea" />
