@@ -161,8 +161,8 @@ CVisSystemCanvas::CVisSystemCanvas(QWidget* parent)
 	d->scene->setSceneRect(-5000, -5000, 10000, 10000);
     setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
-	d->bgColor = QColor(139,139,139);
-    d->gridColor = QColor(150,150,150);
+	d->bgColor = QColor(67,67,67);
+    d->gridColor = QColor(57,57,57);
     d->bgColor.setAlphaF(0.9);
     d->gridColor.setAlphaF(0.9);
 
@@ -1147,7 +1147,7 @@ void CVisSystemCanvas::drawBackground(QPainter * paint, const QRectF & rect)
     // grad.setColorAt(1, d->bgMidColor);
     // grad.setColorAt(1.0, d->bgBottomColor);
     paint->fillRect(rect, d->bgColor);
-    paint->fillRect(rect, QBrush(d->gridColor, Qt::CrossPattern));
+    paint->fillRect(rect, QBrush(d->gridColor, Qt::Dense7Pattern));
 }
 
 void CVisSystemCanvas::paintEvent(QPaintEvent* pe)

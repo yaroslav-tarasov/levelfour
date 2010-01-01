@@ -1,3 +1,4 @@
 <component title="PropertyInspectorComponent" name="PropertyInspectorComponent" >
+ <widget title="Property Inspector" name="piContainer" parentWidget="MainWindowComponent.rightDockArea" />
  <object name="controller" />
 </component>

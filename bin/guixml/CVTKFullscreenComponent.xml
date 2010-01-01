@@ -2,7 +2,8 @@
     <object title="" name="controller" />
     
     <action title="Fullscreen" 
-            triggerSlot="CVTKFullscreenComponent.controller::showCurrentRenderWindowFullScreen()" 
+            triggerSlot="CVTKFullscreenComponent.controller::showCurrentRenderWindowFullScreen()"
+		icon=":/VTKFullscreen/fullscreen.png" 
             name="viewFullscreen" 
             shortcut="F11"/>
 
