@@ -316,9 +316,16 @@ QSlider::sub-page:vertical {
 
 QTableView
 {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #666666, stop: 1 #696969);
 	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0.5, y2: 0.5,
-      stop: 0 #333333, stop: 1 #222222);
+      stop: 0 #404040, stop: 1 #444444);
 }
+
+QTableView::item:hover {
+     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #bababa, stop: 1 #cacaca);
+     border: 1px solid #CDCDC1;
+ }
+
 
 /* TreeView - d5d6d7 -> bababa */
 
