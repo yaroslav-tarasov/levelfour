@@ -273,9 +273,9 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 	if(opt->levelOfDetail >= 0.75)
     {
         // Base node style
-		QColor darkColor = QColor(71,71,71);
-		QColor midColor = QColor(183,183,183);
-		QColor lightColor = QColor(150,150,150);
+		QColor darkColor = QColor(190,180,120);
+		QColor midColor = QColor(190,176,95);
+		QColor lightColor = QColor(190,180,120);
 		
 		darkColor.setAlphaF(alpha);
 		midColor.setAlphaF(alpha);
