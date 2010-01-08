@@ -20,13 +20,14 @@ button color: #2b2b2b
 /* Set the selection colors for all widgets. */
 QWidget
 {
-color: #c8c8c8;
-background-color: #404040;
-selection-color: #606060;
-selection-background-color: #d2b450;
+	color: #aaaaaa;
+	background-color: #404040;
+	selection-color: #606060;
+	selection-background-color: #d2b450;
 }
 
-QMainWindow::separator {
+QMainWindow::separator
+{
      background: #333333;
      width: 5px; /* when vertical */
      height: 5px; /* when horizontal */
@@ -38,55 +39,63 @@ QMainWindow::separator:hover
 }
 
 /* Combobox */
-QComboBox {
-border: 1px solid #393939;
-border-radius: 1px;
-padding: 1px 18px 1px 3px;
-min-width: 6em;
-color: #2b2b2b;
-background: #565656;
-
+QComboBox 
+{
+	border: 1px solid #393939;
+	border-radius: 1px;
+	padding: 1px 18px 1px 3px;
+	min-width: 6em;
+	color: #2b2b2b;
+	background: #565656;
 }
 
-QComboBox:editable {
-background: #393939;
+QComboBox:editable
+{
+	background: #393939;
 }
 
-QComboBox:!editable, QComboBox::drop-down:editable {
-color: #2b2b2b;
-background: #565656;
+QComboBox:!editable, QComboBox::drop-down:editable
+{
+	color: #2b2b2b;
+	background: #565656;
 }
 
 /* QComboBox gets the "on" state when the popup is open */
-QComboBox:!editable:on, QComboBox::drop-down:editable:on {
-color: #2b2b2b;
-background: #565656;
-
+QComboBox:!editable:on, QComboBox::drop-down:editable:on
+{
+	color: #2b2b2b;
+	background: #565656;
 }
 
-QComboBox:on { /* shift the text when the popup opens */
-padding-top: 3px;
-padding-left: 4px;
+QComboBox:on
+{ 
+	/* shift the text when the popup opens */
+	padding-top: 3px;
+	padding-left: 4px;
 }
 
-QComboBox::drop-down {
-subcontrol-origin: padding;
-subcontrol-position: top right;
-width: 15px;
-border-left-width: 1px;
-border-left-color: darkgray;
-border-left-style: solid; /* just a single line */
-border-top-right-radius: 3px; /* same radius as the QComboBox */
-border-bottom-right-radius: 3px;
+QComboBox::drop-down
+{
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 15px;
+	border-left-width: 1px;
+	border-left-color: darkgray;
+	border-left-style: solid; /* just a single line */
+	border-top-right-radius: 3px; /* same radius as the QComboBox */
+	border-bottom-right-radius: 3px;
 }
 
-QComboBox::down-arrow {
-color: #CCCCCC;
+QComboBox::down-arrow
+{
+	color: #CCCCCC;
 }
 
-QComboBox::down-arrow:on { /* shift the arrow when popup is open */
-top: 1px;
-left: 1px;
+QComboBox::down-arrow:on
+{
+	/* shift the arrow when popup is open */
+	top: 1px;
+	left: 1px;
 }
 
 QDockWidget
@@ -100,101 +109,112 @@ QDockWidget
      /* titlebar-normal-icon: url(undock.png); */
 }
 
-QDockWidget::title {
+QDockWidget::title
+{
      	text-align: left; /* align the text to the left */
      	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 	stop: 0 #535353, stop: 1.0 #4f4f4f);
 	padding-left: 5px;
 }
 
-QDockWidget::close-button, QDockWidget::float-button {
+QDockWidget::close-button, QDockWidget::float-button
+{
      border: 1px solid transparent;
      background: darkgray;
      padding: 0px;
 }
 
-QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+QDockWidget::close-button:hover, QDockWidget::float-button:hover
+{
      background: gray;
 }
 
-QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed
+{
      padding: 1px -1px -1px 1px;
 }
 
 /* Header for ... */
-QHeaderView::section {
-color: #8c8c8c;
-background: #565656;
-padding-left: 4px;
-border: 1px solid #303030;
+QHeaderView::section
+{
+	color: #8c8c8c;
+	background: #565656;
+	padding-left: 4px;
+	border: 1px solid #303030;
 }
 
 /* style the sort indicator */
 QHeaderView::down-arrow
 {
-image: url(down_arrow.png);
+	image: url(down_arrow.png);
 }
 
 QHeaderView::up-arrow
 {
-image: url(up_arrow.png);
+	image: url(up_arrow.png);
 }
 
 /* Text input box */
 QLineEdit
 {
-color: #c8c8c8;
-background: #565656;
-border-top: 1px solid #2b2b2b;
-border-left: 1px solid #2b2b2b;
-border-bottom: 1px solid #818181;
-border-right: 1px solid #818181;
-border-radius: 0px;
-padding: 0 8px;
-selection-background-color: #606060;
+	color: #c8c8c8;
+	background: #565656;
+	border-top: 1px solid #2b2b2b;
+	border-left: 1px solid #2b2b2b;
+	border-bottom: 1px solid #818181;
+	border-right: 1px solid #818181;
+	border-radius: 0px;
+	padding: 0 8px;
+	selection-background-color: #606060;
 }
 
 QMenu
 {
-background-color: #606060; /* sets background of the menu */
-border: 1px solid #5d5d5d;
+	background-color: #404040; /* sets background of the menu */
+	border: 1px solid #5d5d5d;
 }
 
 QMenu::item
 {
-/* sets background of menu item. set this to something non-transparent
-if you want menu color and menu item color to be different */
-background-color: transparent;
+	/* sets background of menu item. set this to something non-transparent
+	if you want menu color and menu item color to be different */
+	background-color: transparent;
 }
 
 QMenu::item:selected
-{ /* when user selects item using mouse or keyboard */
-background-color: #404040;
+{
+	/* when user selects item using mouse or keyboard */
+	background-color: #606060;
+	color: #e5e5e5;
 }
 
-QMenuBar {
-background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-stop: 0 #434343, stop: 0.6 #333333,
-stop: 0.6 #333333, stop: 1.0 #2a2a2a);
-color: #CCCCCC;
-border: 0px;
+QMenuBar
+{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+	stop: 0 #434343, stop: 0.6 #333333,
+	stop: 0.6 #333333, stop: 1.0 #2a2a2a);
+	color: #aaaaaa;
+	border: 0px;
 }
 
-QMenuBar::item {
-spacing: 3px; /* spacing between menu bar items */
-padding: 1px 4px;
-background: transparent;
-border-radius: 4px;
+QMenuBar::item
+{
+	spacing: 3px; /* spacing between menu bar items */
+	padding: 1px 4px;
+	background: transparent;
+	border-radius: 4px;
 }
 
 /* when selected using mouse or keyboard */
 
-QMenuBar::item:selected {
-background: #606060;
+QMenuBar::item:selected
+{
+	background: #606060;
 }
 
-QMenuBar::item:pressed {
-background: #606060;
+QMenuBar::item:pressed
+{
+	background: #606060;
 }
 
 QPushButton
@@ -222,31 +242,32 @@ QPushButton:pressed
 	background: #505050;
 }
 
-
-/* spacing between menu bar items */
-
-QScrollBar:horizontal {
+QScrollBar:horizontal
+{
      border: 1px #222222;
      background: #404040;
      height: 10px;
      margin: 0px 20px 0 20px;
- }
+}
 
-QScrollBar::handle:horizontal {
+QScrollBar::handle:horizontal
+{
 	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 	stop: 0 #606060, stop: 1 #565656);
 	min-width: 20px;
- }
+}
 
-QScrollBar::add-line:horizontal {
+QScrollBar::add-line:horizontal
+{
      border: 0px solid grey;
      background: #404040;
      width: 20px;
      subcontrol-position: right;
      subcontrol-origin: margin;
- }
+}
 
-QScrollBar::sub-line:horizontal {
+QScrollBar::sub-line:horizontal
+{
      border: 0px #222222;
      background: #404040;
      width: 20px;
@@ -262,8 +283,6 @@ QScrollBar:left-arrow:horizontal, QScrollBar::right-arrow:horizontal
      background: #606060;
 }
 
-/* spacing between menu bar items */
-
 QScrollBar:vertical 
 {
 	border: 1px #222222;
@@ -272,21 +291,24 @@ QScrollBar:vertical
 	margin: 20px 0 20px 0;
 }
 
-QScrollBar::handle:vertical {
+QScrollBar::handle:vertical
+{
      	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 	stop: 0 #606060, stop: 1 #565656);
 	min-height: 20px;
- }
+}
 
-QScrollBar::add-line:vertical {
+QScrollBar::add-line:vertical
+{
      border: 0px solid #222222;
      background: #404040;
      height: 20px;
      subcontrol-position: top;
      subcontrol-origin: margin;
- }
+}
 
-QScrollBar::sub-line:vertical {
+QScrollBar::sub-line:vertical
+{
      border: 0px #222222;
      background: #404040;
      height: 20px;
@@ -327,7 +349,6 @@ QSlider::sub-page:vertical
 }
 
 /* Table View */
-
 QTableView
 {
 	selection-background-color: #565656;
@@ -356,28 +377,30 @@ QTreeView::item:selected:active
  	background: #505050;
 }
 
- QTreeView::item:selected:!active {
+QTreeView::item:selected:!active
+{
      background: #505050;
- }
+}
 
 /* The tab widget frame */
 QTabWidget::pane
 {
-border: 1px solid #474747;
+	border: 1px solid #474747;
 }
 
 /* Style the tab using the tab sub-control. */
-QTabBar::tab {
-color: #8c8c8c;
-background: #3c3c3c;
-border: 1px solid #5d5d5d;
-border-top-left-radius: 6px;
-border-top-right-radius: 6px;
-padding: 4px;
-margin-left: 2px;
-margin-right: 2px;
-margin-top: 2px;
-margin-bottom: 0px;
+QTabBar::tab
+{
+	color: #8c8c8c;
+	background: #3c3c3c;
+	border: 1px solid #5d5d5d;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	padding: 4px;
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 2px;
+	margin-bottom: 0px;
 }
 
 QTabBar::tab:hover
@@ -406,23 +429,28 @@ QToolBar
 {
 	border: 1px solid #393939;
 	background: #404040;
-	spacing: 5px; /* spacing between items in the tool bar */
+	spacing: 3px; /* spacing between items in the tool bar */
 	padding-top: 2px;
 	padding-bottom: 2px;
-	min-height: 20px;
+	min-height: 21px;
 }
 
 /* All types of tool button */
 QToolButton
 {
-	border: 0px solid #393939;
-	border-radius: 1px;
-	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #424242, stop: 1 #404040);
+	border-top: 1px solid #818181;
+	border-left: 1px solid #818181;
+	border-bottom: 1px solid #2b2b2b;
+	border-right: 1px solid #2b2b2b;
+	border-radius: 5px;
+	background: #565656;
+	width: 17px;
+	height: 17px;	
 }
 
 QToolButton[popupMode="1"]
-{ /* only for MenuButtonPopup */
+{
+	/* only for MenuButtonPopup */
 	padding-right: 20px; /* make way for the popup button */
 }
 
@@ -437,10 +465,7 @@ QToolButton::menu-button
 QToolButton:hover
 {
 	background: #565656;
-	border: 1px solid #787878;
-	border-top: 1px solid #787878;
-	border-left: 1px solid #787878;
-	border-bottom-color: #474747; 
+	border: 1px solid #d2b450;
 }
 
 QToolButton:pressed
@@ -448,11 +473,12 @@ QToolButton:pressed
 	background: #565656;
 }
 
-QToolTip {
-border: 1px solid #555555;
-background: #222222;
-padding: 1px;
-border-radius: 5px;
-opacity: 200;
-color: #CCCCCC;
+QToolTip
+{
+	border: 1px solid #555555;
+	background: #222222;
+	padding: 1px;
+	border-radius: 5px;
+	opacity: 200;
+	color: #CCCCCC;
 }
