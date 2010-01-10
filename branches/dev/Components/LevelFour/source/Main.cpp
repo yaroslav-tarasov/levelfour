@@ -53,7 +53,7 @@ int main(int argc, char** argv)
         qss.close();
         // set font
         QFont newFont( "Tahoma" );
-        newFont.setPointSize( 8 );
+        newFont.setPointSize( 7 );
         newFont.setWeight( QFont::Normal );
         a.setFont(newFont);
 

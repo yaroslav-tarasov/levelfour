@@ -76,6 +76,7 @@ CVisSystemCanvasNodeItem::CVisSystemCanvasNodeItem(IVisSystemNode* node, CVisSys
         connect(object, SIGNAL(nodeNameChanged()), this, SLOT(updateNode()));
 
     setFlags(ItemIsSelectable|ItemIsMovable|ItemIsFocusable);
+
 }
 
 CVisSystemCanvasNodeItem::~CVisSystemCanvasNodeItem()
@@ -220,6 +221,10 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     QRectF r = this->rect();
     QPen pen = p->pen();
 
+	// Isometric rotations
+	// p->rotate(30);
+	p->shear(0,0.6);
+
 #ifdef USE_SYSTEM_STYLE
     QStyleOptionButton hopt;
     hopt.rect = r.toRect();
@@ -245,7 +250,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 
         int shadowSize = this->isSelected() ? 5 : 3;
         QPainterPath path;
-        path.addRoundRect(r2.adjusted(shadowSize,shadowSize,shadowSize,shadowSize), 10, 10);
+        path.addRoundedRect(r2.adjusted(shadowSize,shadowSize,shadowSize,shadowSize), 10, 10);
         p->fillPath(path, color1);
     }
 
@@ -254,28 +259,28 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 	
     
 	if(this->isSelected())
-        alpha = 0.95;
+        alpha = 1.0;
 
     if(this->isSelected())
 	{   
 		// Stroke for highlight on select 218;165;32 / 24;116;205 / 229;229;229
-		QColor penSelectColor = QColor(249,249,249);
-		p->setPen( QPen(penSelectColor, 1) );
+		QColor penSelectColor = QColor(51,51,51);
+		p->setPen( QPen(penSelectColor, 3) );
 	}
     else
     {
 		// QColor penColor = opt->palette.highlight().color();
-        QColor penLightColor = QColor(229,229,229);
+        QColor penLightColor = QColor(102,102,102);
 		penLightColor.setAlphaF(0.85);
-        p->setPen( QPen(penLightColor, 1) );
+        p->setPen( QPen(penLightColor, 3) );
     }
 
 	if(opt->levelOfDetail >= 0.75)
     {
         // Base node style
 		QColor darkColor = QColor(190,180,120);
-		QColor midColor = QColor(190,176,95);
-		QColor lightColor = QColor(190,180,120);
+		QColor midColor = QColor(240,240,240);
+		QColor lightColor = QColor(230,230,230);
 		
 		darkColor.setAlphaF(alpha);
 		midColor.setAlphaF(alpha);
@@ -283,12 +288,13 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
         
         QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
         grad.setColorAt(0, midColor);
-        grad.setColorAt(0.5, lightColor);
+        grad.setColorAt(0.2, lightColor);
+        grad.setColorAt(0.8, lightColor);
         grad.setColorAt(1, midColor);
 
         QPainterPath path;
         path.addRoundRect(r2.adjusted(1,1,-1,-1), 10, 10);
-        p->fillPath(path, grad);
+		p->fillPath(path, grad);
         p->drawPath(path);
     }
 	else
@@ -318,6 +324,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 
     // Draw the node text
     p->setPen(pen);
+
 
 	if(opt->levelOfDetail >= 0.75)
 	{
@@ -357,7 +364,8 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
         p->setBrush(brush);
         p->drawRect(it.value());
         p->setPen(pen);
-        d->node->paintConnectionPath(it.key(), p, it.value(), *opt);
+
+		d->node->paintConnectionPath(it.key(), p, it.value(), *opt);
         ++it;
     }
 }
