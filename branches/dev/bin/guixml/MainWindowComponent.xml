@@ -75,8 +75,11 @@
     </menu>
 
     <menu title="&amp;View" name="viewMenu" >
-        <menuitem actionName="MainWindowComponent.togglePanelAction" />
         <menuitem actionName="MainWindowComponent.captureSnapshot" />
+    </menu>
+
+    <menu title="&amp;Layout" name="layoutMenu" >
+	  <menuitem actionName="MainWindowComponent.togglePanelAction" />
     </menu>
 
     <menu title="&amp;Help" name="helpMenu" >
