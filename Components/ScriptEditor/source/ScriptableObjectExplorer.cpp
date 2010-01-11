@@ -44,7 +44,10 @@ struct GCF::Components::ScriptableObjectExplorerData
     QList<QTreeWidgetItem*> objectItems;
     QMap<QObject*, QTreeWidgetItem*> objectItemMap; // Maybe we can skip objectItems then???
 
-    QPixmap methodPm;
+    QPixmap methodPmDir;
+    QPixmap propertyPmDir;
+    QPixmap eventPmDir;
+	QPixmap methodPm;
     QPixmap propertyPm;
     QPixmap eventPm;
     QPixmap objectPm;
@@ -63,6 +66,9 @@ GCF::Components::ScriptableObjectExplorer::ScriptableObjectExplorer(QWidget* par
     header()->hide();
     setSelectionMode(SingleSelection);
 
+    d->methodPmDir = QPixmap(":/ScriptEditor/methodDir.png");
+    d->propertyPmDir = QPixmap(":/ScriptEditor/propertyDir.png");
+    d->eventPmDir = QPixmap(":/ScriptEditor/eventDir.png");
     d->methodPm = QPixmap(":/ScriptEditor/method.png");
     d->propertyPm = QPixmap(":/ScriptEditor/property.png");
     d->eventPm = QPixmap(":/ScriptEditor/event.png");
@@ -274,9 +280,9 @@ QTreeWidgetItem* GCF::Components::ScriptableObjectExplorerData::loadObjectInfo(Q
     if(!treeWidget && !item)
         return 0;
 
-    static QColor eventColor = Qt::gray;
-    static QColor propertyColor = Qt::gray;
-    static QColor methodColor = Qt::gray;
+    static QColor eventColor = Qt::black;
+    static QColor propertyColor = Qt::black;
+    static QColor methodColor = Qt::black;
 
     if(name.isEmpty())
         name = object->objectName();
@@ -300,10 +306,10 @@ QTreeWidgetItem* GCF::Components::ScriptableObjectExplorerData::loadObjectInfo(Q
     QTreeWidgetItem* propertyItem = new QTreeWidgetItem(objectItem, QStringList() << "Properties");
     QTreeWidgetItem* childrenItem = new QTreeWidgetItem(objectItem, QStringList() << "Children");
 
-    eventItem->setIcon(0, treeWidget->style()->standardIcon(QStyle::SP_DirIcon));
-    methodItem->setIcon(0, treeWidget->style()->standardIcon(QStyle::SP_DirIcon));
-    propertyItem->setIcon(0, treeWidget->style()->standardIcon(QStyle::SP_DirIcon));
-    childrenItem->setIcon(0, treeWidget->style()->standardIcon(QStyle::SP_DirIcon));
+    eventItem->setIcon(0, eventPmDir);
+    methodItem->setIcon(0, methodPmDir);
+    propertyItem->setIcon(0, propertyPmDir);
+    childrenItem->setIcon(0, propertyPmDir);
 
     // add items.
     const QMetaObject* mo = object->metaObject();
@@ -359,10 +365,10 @@ QTreeWidgetItem* GCF::Components::ScriptableObjectExplorerData::loadObjectInfo(Q
         }
     }
 
-    objectItem->setExpanded(true);
+    objectItem->setExpanded(false);
 
     if(eventItem->childCount())
-        eventItem->setExpanded(true);
+        eventItem->setExpanded(false);
     else
         delete eventItem;
 
@@ -377,7 +383,7 @@ QTreeWidgetItem* GCF::Components::ScriptableObjectExplorerData::loadObjectInfo(Q
         delete propertyItem;
 
     if(childrenItem->childCount())
-        childrenItem->setExpanded(true);
+        childrenItem->setExpanded(false);
     else
         delete childrenItem;
 
