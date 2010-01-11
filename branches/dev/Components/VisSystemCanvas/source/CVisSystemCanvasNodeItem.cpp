@@ -223,7 +223,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 
 	// Isometric rotations
 	// p->rotate(30);
-	p->shear(0,0.6);
+	// p->shear(0,0.6);
 
 #ifdef USE_SYSTEM_STYLE
     QStyleOptionButton hopt;
