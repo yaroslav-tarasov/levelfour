@@ -101,7 +101,7 @@ void CVisSystemNodeClassExplorerComponent::setSearchForWidget(QWidget* widget)
 
         QWidget* searchFor = new QWidget(d->explorerContainer);
         QVBoxLayout* layout = new QVBoxLayout(searchFor);
-        QLabel* label = new QLabel("&Look for", searchFor);
+		QLabel* label = new QLabel("&Search:", searchFor);
         QLineEdit* lineEdit = new QLineEdit(searchFor);
         layout->addWidget(label);
         layout->addWidget(lineEdit);

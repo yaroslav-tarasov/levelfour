@@ -16,5 +16,8 @@
     <file alias="method.png">icons/method.png</file>
     <file alias="event.png">icons/event.png</file>
     <file alias="object.png">icons/object.png</file>
+    <file alias="eventDir.png">icons/eventDir.png</file>
+    <file alias="methodDir.png">icons/methodDir.png</file>
+    <file alias="propertyDir.png">icons/propertyDir.png</file>
 </qresource>
 </RCC>
