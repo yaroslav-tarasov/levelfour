@@ -58,6 +58,9 @@
     <file>images/hscroll.png</file>
     <file>images/vscroll.png</file>
 
+    <file>images/right_arrow.png</file>
+    <file>images/left_arrow.png</file>
+
     
 </qresource>
 </RCC>

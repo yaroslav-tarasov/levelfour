@@ -395,12 +395,22 @@ QScrollBar::sub-line:horizontal
 
 QScrollBar:left-arrow:horizontal
 {
-	image: url(:/MainWindow/images/up_arrow.png);
+	image: url(:/MainWindow/images/left_arrow.png);
+	min-width: 6px;
+	min-height: 11px;
+	max-width: 6px;
+	max-height: 11px;
+
 }
 
 QScrollBar::right-arrow:horizontal
 {
-	image: url(:/MainWindow/images/up_arrow.png);
+	image: url(:/MainWindow/images/right_arrow.png);
+	min-width: 6px;
+	min-height: 11px;
+	max-width: 6px;
+	max-height: 11px;
+
 }
 
 QScrollBar:vertical 
@@ -439,11 +449,21 @@ QScrollBar::sub-line:vertical
 QScrollBar:up-arrow:vertical
 {
 	image: url(:/MainWindow/images/up_arrow.png);
+	min-width: 11px;
+	min-height: 6px;
+	max-width: 11px;
+	max-height: 6px;
+
 }
 
 QScrollBar::down-arrow:vertical
 {
 	image: url(:/MainWindow/images/down_arrow.png);
+	min-width: 11px;
+	min-height: 6px;
+	max-width: 11px;
+	max-height: 6px;
+
 }
 
 

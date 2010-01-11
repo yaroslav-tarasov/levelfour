@@ -205,7 +205,7 @@ void CVisSystemNodeClassExplorerTreeWidgetDelegate::paint(QPainter* paint, const
     tempRect.setLeft(opt.rect.left()+20);
     paint->drawText(tempRect, Qt::AlignLeft|Qt::AlignVCenter, text);
 
-    // Draw custom brach indicators.
+    // Draw custom branch indicators.
     QStyleOption branchOption;
     QRect r = opt.rect;
     branchOption.rect = QRect(r.left() + indRectConst/2, r.top() + (r.height() - indRectConst)/2,
