@@ -320,7 +320,7 @@ QColor CVisSystemCanvasConnectionItemData::connectionItemColor(IVisNetworkConnec
 
 	// This is where link color is set...
     // QColor c; 24;116;205
-	QColor linkColor = QColor(110,110,110);
+	QColor linkColor = QColor(240,240,240);
     // double r = randomNumber(0.0f, 1.0f);
     // double g = randomNumber(0.0f, 1.0f);
     // double b = randomNumber(0.0f, 1.0f);
