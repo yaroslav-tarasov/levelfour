@@ -1,0 +1,9 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/D2M">
+
+    <file alias="source.png">icons/source.png</file>
+    <file alias="filter.png">icons/filter.png</file>
+    <file alias="mapper.png">icons/mapper.png</file>
+    
+</qresource>
+</RCC>

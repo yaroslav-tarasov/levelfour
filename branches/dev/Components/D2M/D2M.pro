@@ -156,3 +156,4 @@ SOURCES +=  $${PROJECT_BASE}/Components/VTKSystem/IOData/CVtk3DWidgetData.cpp \
             $${PROJECT_BASE}/Components/VTKSystem/IOData/CVtkUniformGrid.cpp \
             $${PROJECT_BASE}/Components/VTKSystem/IOData/CVtkUnstructuredGrid.cpp 
             
+RESOURCES = D2M.qrc

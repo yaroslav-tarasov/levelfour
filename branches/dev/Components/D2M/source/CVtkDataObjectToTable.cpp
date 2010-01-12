@@ -23,7 +23,7 @@ DEFINE_VIS_NODE(CVtkDataObjectToTable, CVtkTableAlgorithm)
     pDesc->setNodeClassCategory("InfoVis");
     pDesc->setNodeClassName("vtkDataObjectToTable");
     pDesc->setNodeClassDescription("vtkDataObjectToTable");
-    pDesc->setNodeIcon( InfoVisComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( InfoVisComponent::instance().mapperIcon() );
 
     // Uncomment and use the following code template to add input/output paths
     /*
