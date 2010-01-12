@@ -23,7 +23,7 @@ DEFINE_VIS_NODE(CVtkQtTableModelAdapter, CVtkQtAbstractModelAdapter)
     pDesc->setNodeClassCategory("InfoVis");
     pDesc->setNodeClassName("vtkQtTableModelAdapter");
     pDesc->setNodeClassDescription("vtkQtTableModelAdapter");
-    pDesc->setNodeIcon( InfoVisComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( InfoVisComponent::instance().mapperIcon() );
 
     // Uncomment and use the following code template to add input/output paths
     /*

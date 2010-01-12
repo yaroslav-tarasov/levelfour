@@ -83,9 +83,28 @@ InfoVisComponent::~InfoVisComponent()
     delete d;
 }
 
+// Temporary customization to configure node icon hints
 QIcon InfoVisComponent::nodeIcon()
 {
     return qApp->windowIcon();
+}
+
+QIcon InfoVisComponent::sourceIcon()
+{
+    // return qApp->windowIcon();
+	return QIcon(":/D2M/source.png");
+}
+
+QIcon InfoVisComponent::filterIcon()
+{
+    // return qApp->windowIcon();
+	return QIcon(":/D2M/filter.png");
+}
+
+QIcon InfoVisComponent::mapperIcon()
+{
+    // return qApp->windowIcon();
+	return QIcon(":/D2M/mapper.png");
 }
 
 QObject* InfoVisComponent::containerObject()
