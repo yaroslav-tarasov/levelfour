@@ -23,7 +23,7 @@ DEFINE_VIS_NODE(CVtkFixedWidthTextReader, CVtkTableAlgorithm)
     pDesc->setNodeClassCategory("InfoVis");
     pDesc->setNodeClassName("vtkFixedWidthTextReader");
     pDesc->setNodeClassDescription("vtkFixedWidthTextReader");
-    pDesc->setNodeIcon( InfoVisComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( InfoVisComponent::instance().sourceIcon() );
 
     // Uncomment and use the following code template to add input/output paths
     /*

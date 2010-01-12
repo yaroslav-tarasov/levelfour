@@ -35,6 +35,9 @@ public:
     ~InfoVisComponent();
 
     static QIcon nodeIcon();
+	static QIcon sourceIcon();
+	static QIcon filterIcon();
+	static QIcon mapperIcon();
 
     // IContainer implementation
     QObject* containerObject();
