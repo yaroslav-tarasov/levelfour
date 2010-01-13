@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 		
 		a.setStyle ("plastique");
         // set styleSheet here...
-        QFile qss("styles/levelfour.qss");
+		QFile qss(":/LevelFour/levelfour.qss");
         qss.open(QFile::ReadOnly);
         a.setStyleSheet(qss.readAll());
         qss.close();
