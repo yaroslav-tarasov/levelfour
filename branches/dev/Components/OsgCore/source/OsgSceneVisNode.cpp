@@ -297,9 +297,31 @@ bool OsgSceneVisNode::canLoadSaveProperty(int index)
 
 #endif
 
+osg::QOSGScene* OsgSceneVisNode::createDefaultSceneFromActor(vtkActor* actor)
+{
+	osg::ref_ptr<osg::Geode> geode = vtkActorToOSG(actor, 0, 0).get();
 
+	osg::ref_ptr<osg::Light> light = new osg::Light;
+	light->setLightNum(2);
+	light->setAmbient(osg::Vec4(.1f, .1f, .1f, .1f));
+	light->setDiffuse(osg::Vec4(.8f, .8f, .8f, .1f));
+	light->setSpecular(osg::Vec4(.8f, .8f, .8f, .1f));
+	light->setPosition(osg::Vec4(.0f, .0f, .0f, .0f));
+	light->setDirection(osg::Vec3(.1f, .0f, .0f));
+	light->setSpotCutoff(25.f);
+	osg::LightSource * lightSource = new osg::LightSource;
+	lightSource->setLight(light.get());
 
+	osg::ref_ptr<osg::Group> group = new osg::Group;
+	group->addChild(geode);
 
+	osg::QOSGScene *pScene = new osg::QOSGScene;
+
+	pScene->setCameraManipulator(new osgGA::TrackballManipulator);
+	pScene->setSceneData(group.get());
+	pScene->setLight(light);
+	return pScene;
+}
 
 osg::QOSGScene * OsgSceneVisNode::createTestScene()
 {
@@ -365,28 +387,3 @@ osg::QOSGScene * OsgSceneVisNode::createTestScene()
 	return pScene;
 }
 
-osg::QOSGScene* OsgSceneVisNode::createDefaultSceneFromActor(vtkActor* actor)
-{
-	osg::ref_ptr<osg::Geode> geode = vtkActorToOSG(actor, 0, 0).get();
-
-	osg::ref_ptr<osg::Light> light = new osg::Light;
-	light->setLightNum(2);
-	light->setAmbient(osg::Vec4(.1f, .1f, .1f, .1f));
-	light->setDiffuse(osg::Vec4(.8f, .8f, .8f, .1f));
-	light->setSpecular(osg::Vec4(.8f, .8f, .8f, .1f));
-	light->setPosition(osg::Vec4(.0f, .0f, .0f, .0f));
-	light->setDirection(osg::Vec3(.1f, .0f, .0f));
-	light->setSpotCutoff(25.f);
-	osg::LightSource * lightSource = new osg::LightSource;
-	lightSource->setLight(light.get());
-
-	osg::ref_ptr<osg::Group> group = new osg::Group;
-	group->addChild(geode);
-
-	osg::QOSGScene *pScene = new osg::QOSGScene;
-
-	pScene->setCameraManipulator(new osgGA::TrackballManipulator);
-	pScene->setSceneData(group.get());
-	pScene->setLight(light);
-	return pScene;
-}
