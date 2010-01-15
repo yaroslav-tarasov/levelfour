@@ -169,10 +169,6 @@ bool OsgGroupVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNod
 		if (success && inputLightData)
 		{
 			d->inputLight = inputLightData->getOsgLight();
-	d->inputLight->setAmbient(osg::Vec4(1, 1, 1, 1));
-	d->inputLight->setDiffuse(osg::Vec4(.8f, .8f, .8f, .1f));
-	d->inputLight->setSpecular(osg::Vec4(.8f, .8f, .8f, .1f));
-	d->inputLight->setSpotCutoff(25.f);
 			osg::LightSource * lightSource = new osg::LightSource;
 			lightSource->setLight(d->inputLight.get());
 			d->outputScene->setLight(d->inputLight);

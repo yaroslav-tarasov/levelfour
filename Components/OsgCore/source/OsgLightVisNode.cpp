@@ -52,6 +52,11 @@ OsgLightVisNode::OsgLightVisNode()
     OsgLightVisNode::InitializeNodeDesc();
     d = new OsgLightVisNodeData;
 	d->outputLight = new osg::Light;
+	d->outputLight->setAmbient(osg::Vec4(.3f, .3f, .3f, .3f));
+	d->outputLight->setDiffuse(osg::Vec4(.8f, .8f, .8f, .1f));
+	d->outputLight->setSpecular(osg::Vec4(.8f, .8f, .8f, .1f));
+	d->outputLight->setSpotCutoff(25.f);
+	setLightNum(2);
 }
 
 OsgLightVisNode::~OsgLightVisNode()

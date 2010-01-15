@@ -1,859 +1,540 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding = "Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="OsgCore"
 	ProjectGUID="{E6F0F43F-C5E6-308E-AC12-4349AB4478A4}"
-	RootNamespace="OsgCore"
-	Keyword="Qt4VSv1.0"
-	TargetFrameworkVersion="0"
-	>
+	Keyword="Qt4VSv1.0">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
+			Name="Win32"/>
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="."
-			IntermediateDirectory="..\..\tmp\OsgCore\"
-			ConfigurationType="2"
-			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				WarningLevel="0"
-				DefaultCharType="0"
-				EnableErrorChecks="1"
-			/>
+			ConfigurationType="2"
+			IntermediateDirectory="..\..\tmp\OsgCore\"
+			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
-				Optimization="2"
 				AdditionalIncludeDirectories="&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot;,&quot;..\..\GCF\include&quot;,&quot;.&quot;,&quot;source&quot;,&quot;..\..\Interfaces&quot;,&quot;..\..\Common&quot;,&quot;..\PropertyEditor\interfaces&quot;,&quot;..\Utils\interfaces&quot;,&quot;..\ScriptEditor\interfaces&quot;,&quot;..\ProjectManager\interfaces&quot;,&quot;..\MainWindow\source&quot;,&quot;..\..\VTK5\include\vtk-5.5&quot;,&quot;d:\LevelFour\dev\GCF\Components&quot;,&quot;..\VTKSystem\Interfaces&quot;,&quot;..\VTKSystem\IOData&quot;,&quot;..\..\Common&quot;,&quot;Interfaces&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot;,&quot;..\..\tmp\OsgCore&quot;,..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008"
-				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,QT_DLL,QT_NO_DEBUG,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,NDEBUG"
-				GeneratePreprocessedFile="0"
-				ExceptionHandling="1"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="false"
-				TreatWChar_tAsBuiltInType="false"
-				RuntimeTypeInfo="true"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
 				AssemblerListingLocation="..\..\tmp\OsgCore\"
-				ObjectFile="..\..\tmp\OsgCore\"
-				ProgramDataBaseFileName=".\"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
+				BufferSecurityCheck="false"
 				DebugInformationFormat="0"
-			/>
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\tmp\OsgCore\"
+				Optimization ="2"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,QT_DLL,QT_NO_DEBUG,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,NDEBUG"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="2"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,QT_DLL,QT_NO_DEBUG,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				IgnoreImportLibrary="true"
-				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib D:\LevelFour\dev/lib/GCF2.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkCommon.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkGraphics.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkFiltering.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkGenericFiltering.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkRendering.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkImaging.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkIO.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/QVTK.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkWidgets.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkHybrid.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkzlib.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkfreetype.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkexpat.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkexoIIc.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkDICOMParser.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtksys.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/QVTK.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkInfovis.lib osgd.lib osgGAd.lib osgViewerd.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtGuid4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtCored4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtOpenGLd4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtXml4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtOpenGL4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtGui4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtNetwork4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtCore4.lib"
-				OutputFile="..\..\lib\OsgCore.dll"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="d:\Qt\qt-all-opensource-src-4.5.3\lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="false"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="0"
+				OutputFile="..\..\lib\OsgCore.dll"
 				ProgramDatabaseFile=""
 				SubSystem="2"
-				LinkTimeCodeGeneration="0"
-			/>
+				SuppressStartupBanner="true"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0"/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Copy OsgCore.dll to ..\..\bin"
 				CommandLine="copy  &quot;$(TargetPath)&quot; &quot;..\..\bin&quot;"
-			/>
+				Description="Copy OsgCore.dll to ..\..\bin"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="QT_NO_DEBUG,NDEBUG,_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,QT_DLL,QT_NO_DEBUG,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="."
-			IntermediateDirectory="..\..\tmp\OsgCore\"
-			ConfigurationType="2"
-			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				WarningLevel="0"
-				DefaultCharType="0"
-				EnableErrorChecks="1"
-			/>
+			ConfigurationType="2"
+			IntermediateDirectory="..\..\tmp\OsgCore\"
+			UseOfMfc="0">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
-				Optimization="4"
 				AdditionalIncludeDirectories="&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot;,&quot;..\..\GCF\include&quot;,&quot;.&quot;,&quot;source&quot;,&quot;..\..\Interfaces&quot;,&quot;..\..\Common&quot;,&quot;..\PropertyEditor\interfaces&quot;,&quot;..\Utils\interfaces&quot;,&quot;..\ScriptEditor\interfaces&quot;,&quot;..\ProjectManager\interfaces&quot;,&quot;..\MainWindow\source&quot;,&quot;..\..\VTK5\include\vtk-5.5&quot;,&quot;d:\LevelFour\dev\GCF\Components&quot;,&quot;..\VTKSystem\Interfaces&quot;,&quot;..\VTKSystem\IOData&quot;,&quot;..\..\Common&quot;,&quot;Interfaces&quot;,&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot;,&quot;..\..\tmp\OsgCore&quot;,..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,QT_DLL,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"
-				GeneratePreprocessedFile="0"
-				ExceptionHandling="1"
-				RuntimeLibrary="3"
-				BufferSecurityCheck="false"
-				TreatWChar_tAsBuiltInType="false"
-				RuntimeTypeInfo="true"
+				AdditionalOptions="-Zm200 -w34100 -w34189 -w34100 -w34189"
 				AssemblerListingLocation="..\..\tmp\OsgCore\"
-				ObjectFile="..\..\tmp\OsgCore\"
-				ProgramDataBaseFileName=".\"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
+				BufferSecurityCheck="false"
 				DebugInformationFormat="3"
-			/>
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile="..\..\tmp\OsgCore\"
+				Optimization ="4"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,QT_DLL,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT"
+				ProgramDataBaseFileName=".\"
+				RuntimeLibrary="3"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="false"
+				WarningLevel="3"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,QT_DLL,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,_DEBUG"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				IgnoreImportLibrary="true"
-				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				AdditionalDependencies="opengl32.lib glu32.lib gdi32.lib user32.lib D:\LevelFour\dev/lib/GCF2.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkCommon.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkGraphics.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkFiltering.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkGenericFiltering.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkRendering.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkImaging.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkIO.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/QVTK.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkWidgets.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkHybrid.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkzlib.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkfreetype.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkexpat.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkexoIIc.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkDICOMParser.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtksys.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/QVTK.lib D:\LevelFour\dev/VTK5/lib/vtk-5.5/vtkInfovis.lib osgd.lib osgGAd.lib osgViewerd.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtGuid4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtCored4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtOpenGLd4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtXmld4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtOpenGLd4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtGuid4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtNetworkd4.lib d:\Qt\qt-all-opensource-src-4.5.3\lib\QtCored4.lib"
-				OutputFile="..\..\lib\OsgCore.dll"
-				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="d:\Qt\qt-all-opensource-src-4.5.3\lib"
+				AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot;"
 				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="..\..\lib\OsgCore.dll"
 				ProgramDatabaseFile=""
 				SubSystem="2"
-				LinkTimeCodeGeneration="0"
-			/>
+				SuppressStartupBanner="true"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0"/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Copy OsgCore.dll to ..\..\bin"
 				CommandLine="copy  &quot;$(TargetPath)&quot; &quot;..\..\bin&quot;"
-			/>
+				Description="Copy OsgCore.dll to ..\..\bin"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,-D_CRT_SECURE_NO_DEPRECATE,QT_DLL,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_THREAD_SUPPORT,_DEBUG"/>
 		</Configuration>
 	</Configurations>
-	<References>
-	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
-			>
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\..\Common\CGenericVisNodeBase.cpp"
-				>
-			</File>
+				RelativePath="..\..\Common\CGenericVisNodeBase.cpp"/>
 			<File
-				RelativePath="..\..\Common\CGenericVisNodeDesc.cpp"
-				>
-			</File>
+				RelativePath="..\..\Common\CGenericVisNodeDesc.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtk3DWidgetData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtk3DWidgetData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAbstractMapper3DData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAbstractMapper3DData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAbstractMapperData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAbstractMapperData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAbstractPickerData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAbstractPickerData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAbstractTransformData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAbstractTransformData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkActor2DData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkActor2DData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkActorData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkActorData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAlgorithmData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAlgorithmData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkCameraData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkCameraData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkDataObject.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkDataObject.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkDataSet.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkDataSet.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkDataSetMapperData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkDataSetMapperData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkImageData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkImageData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkImplicitFunctionData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkImplicitFunctionData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkImporterData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkImporterData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkInteractorObserverData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkInteractorObserverData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkLocatorData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkLocatorData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkLookupTableData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkLookupTableData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkMapper2DData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkMapper2DData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkMapperData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkMapperData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkObjectIOData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkObjectIOData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPiecewiseFunctionData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPiecewiseFunctionData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPointSet.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPointSet.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPolyData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPolyData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPolyDataMapperData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPolyDataMapperData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkProp3DData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkProp3DData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPropertyData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPropertyData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkRectilinearGrid.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkRectilinearGrid.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkRendererData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkRenderWindowData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkRenderWindowData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkRenderWindowInteractorData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkRenderWindowInteractorData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkRendererData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkScalarsToColorsData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkScalarsToColorsData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkStructuredGrid.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkStructuredGrid.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkStructuredPoints.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkStructuredPoints.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkTextureData.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkTextureData.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkUniformGrid.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkUniformGrid.cpp"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkUnstructuredGrid.cpp"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkUnstructuredGrid.cpp"/>
 			<File
-				RelativePath="source\OsgCompositeViewVisNode.cpp"
-				>
-			</File>
+				RelativePath="source\OsgCompositeViewVisNode.cpp"/>
 			<File
-				RelativePath="source\OsgCoreComponent.cpp"
-				>
-			</File>
+				RelativePath="source\OsgCoreComponent.cpp"/>
 			<File
-				RelativePath="source\OsgGeodeFromActorVisNode.cpp"
-				>
-			</File>
+				RelativePath="source\OsgGeodeFromActorVisNode.cpp"/>
 			<File
-				RelativePath="source\OsgGeodeFromActorVisNodeIOData.cpp"
-				>
-			</File>
+				RelativePath="source\OsgGeodeFromActorVisNodeIOData.cpp"/>
 			<File
-				RelativePath="source\OsgGroupVisNode.cpp"
-				>
-			</File>
+				RelativePath="source\OsgGroupVisNode.cpp"/>
 			<File
-				RelativePath="source\OsgGroupVisNodeIOData.cpp"
-				>
-			</File>
+				RelativePath="source\OsgGroupVisNodeIOData.cpp"/>
 			<File
-				RelativePath="source\OsgLightVisNode.cpp"
-				>
-			</File>
+				RelativePath="source\OsgLightVisNode.cpp"/>
 			<File
-				RelativePath=".\source\OsgLightVisNodeIOData.cpp"
-				>
-			</File>
+				RelativePath="source\OsgLightVisNodeIOData.cpp"/>
 			<File
-				RelativePath="source\OsgSceneVisNode.cpp"
-				>
-			</File>
+				RelativePath="source\OsgSceneVisNode.cpp"/>
 			<File
-				RelativePath="source\OsgSceneVisNodeIOData.cpp"
-				>
-			</File>
+				RelativePath="source\OsgSceneVisNodeIOData.cpp"/>
 			<File
-				RelativePath="source\OsgSimpleViewVisNode.cpp"
-				>
-			</File>
+				RelativePath="source\OsgSimpleViewVisNode.cpp"/>
 			<File
-				RelativePath="source\QOSGGraphics.cpp"
-				>
-			</File>
+				RelativePath="source\QOSGGraphics.cpp"/>
 			<File
-				RelativePath="source\QOSGWidget.cpp"
-				>
-			</File>
+				RelativePath="source\QOSGWidget.cpp"/>
 			<File
-				RelativePath="source\vtkActorToOSG.cpp"
-				>
-			</File>
+				RelativePath="source\vtkActorToOSG.cpp"/>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="..\..\Common\CGenericVisNodeBase.h"
-				>
+				RelativePath="..\..\Common\CGenericVisNodeBase.h">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC ..\..\Common\CGenericVisNodeBase.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\..\Common\CGenericVisNodeBase.h -o d:\LevelFour\dev\tmp\OsgCore\moc_CGenericVisNodeBase.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="..\..\Common\CGenericVisNodeBase.h;D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe"
-						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_CGenericVisNodeBase.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\..\Common\CGenericVisNodeBase.h -o d:\LevelFour\dev\tmp\OsgCore\moc_CGenericVisNodeBase.cpp"
 						Description="MOC ..\..\Common\CGenericVisNodeBase.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\..\Common\CGenericVisNodeBase.h -o d:\LevelFour\dev\tmp\OsgCore\moc_CGenericVisNodeBase.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="..\..\Common\CGenericVisNodeBase.h;D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe"
 						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_CGenericVisNodeBase.cpp"
-					/>
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="..\..\Common\CGenericVisNodeBase.h;D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 ..\..\Common\CGenericVisNodeBase.h -o d:\LevelFour\dev\tmp\OsgCore\moc_CGenericVisNodeBase.cpp"
+						Description="MOC ..\..\Common\CGenericVisNodeBase.h"
+						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_CGenericVisNodeBase.cpp"
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\Common\CGenericVisNodeDesc.h"
-				>
-			</File>
+				RelativePath="..\..\Common\CGenericVisNodeDesc.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtk3DWidgetData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtk3DWidgetData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAbstractMapper3DData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAbstractMapper3DData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAbstractMapperData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAbstractMapperData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAbstractPickerData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAbstractPickerData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAbstractTransformData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAbstractTransformData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkActor2DData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkActor2DData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkActorData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkActorData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkAlgorithmData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkAlgorithmData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkCameraData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkCameraData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkDataObject.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkDataObject.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkDataSet.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkDataSet.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkDataSetMapperData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkDataSetMapperData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkImageData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkImageData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkImplicitFunctionData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkImplicitFunctionData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkImporterData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkImporterData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkInteractorObserverData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkInteractorObserverData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkLocatorData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkLocatorData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkLookupTableData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkLookupTableData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkMapper2DData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkMapper2DData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkMapperData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkMapperData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkObjectIOData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkObjectIOData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPiecewiseFunctionData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPiecewiseFunctionData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPointSet.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPointSet.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPolyData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPolyData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPolyDataMapperData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPolyDataMapperData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkProp3DData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkProp3DData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkPropertyData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkPropertyData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkRectilinearGrid.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkRectilinearGrid.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkRendererData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkRenderWindowData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkRenderWindowData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkRenderWindowInteractorData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkRenderWindowInteractorData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkRendererData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkScalarsToColorsData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkScalarsToColorsData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkStructuredGrid.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkStructuredGrid.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkStructuredPoints.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkStructuredPoints.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkTextureData.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkTextureData.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkUniformGrid.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkUniformGrid.h"/>
 			<File
-				RelativePath="..\VTKSystem\IOData\CVtkUnstructuredGrid.h"
-				>
-			</File>
+				RelativePath="..\VTKSystem\IOData\CVtkUnstructuredGrid.h"/>
 			<File
-				RelativePath="source\OsgCompositeViewVisNode.h"
-				>
+				RelativePath="source\OsgCompositeViewVisNode.h">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC source\OsgCompositeViewVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgCompositeViewVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgCompositeViewVisNode.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgCompositeViewVisNode.h"
-						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgCompositeViewVisNode.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgCompositeViewVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgCompositeViewVisNode.cpp"
 						Description="MOC source\OsgCompositeViewVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgCompositeViewVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgCompositeViewVisNode.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgCompositeViewVisNode.h"
 						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgCompositeViewVisNode.cpp"
-					/>
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgCompositeViewVisNode.h"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgCompositeViewVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgCompositeViewVisNode.cpp"
+						Description="MOC source\OsgCompositeViewVisNode.h"
+						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgCompositeViewVisNode.cpp"
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="source\OsgCoreComponent.h"
-				>
+				RelativePath="source\OsgCoreComponent.h">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC source\OsgCoreComponent.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgCoreComponent.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgCoreComponent.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgCoreComponent.h"
-						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgCoreComponent.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgCoreComponent.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgCoreComponent.cpp"
 						Description="MOC source\OsgCoreComponent.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgCoreComponent.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgCoreComponent.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgCoreComponent.h"
 						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgCoreComponent.cpp"
-					/>
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgCoreComponent.h"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgCoreComponent.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgCoreComponent.cpp"
+						Description="MOC source\OsgCoreComponent.h"
+						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgCoreComponent.cpp"
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="source\OsgGeodeFromActorVisNode.h"
-				>
+				RelativePath="source\OsgGeodeFromActorVisNode.h">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC source\OsgGeodeFromActorVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgGeodeFromActorVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgGeodeFromActorVisNode.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgGeodeFromActorVisNode.h"
-						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgGeodeFromActorVisNode.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgGeodeFromActorVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgGeodeFromActorVisNode.cpp"
 						Description="MOC source\OsgGeodeFromActorVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgGeodeFromActorVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgGeodeFromActorVisNode.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgGeodeFromActorVisNode.h"
 						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgGeodeFromActorVisNode.cpp"
-					/>
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgGeodeFromActorVisNode.h"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgGeodeFromActorVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgGeodeFromActorVisNode.cpp"
+						Description="MOC source\OsgGeodeFromActorVisNode.h"
+						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgGeodeFromActorVisNode.cpp"
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="source\OsgGeodeFromActorVisNodeIOData.h"
-				>
-			</File>
+				RelativePath="source\OsgGeodeFromActorVisNodeIOData.h"/>
 			<File
-				RelativePath="source\OsgGroupVisNode.h"
-				>
+				RelativePath="source\OsgGroupVisNode.h">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC source\OsgGroupVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgGroupVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgGroupVisNode.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgGroupVisNode.h"
-						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgGroupVisNode.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgGroupVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgGroupVisNode.cpp"
 						Description="MOC source\OsgGroupVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgGroupVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgGroupVisNode.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgGroupVisNode.h"
 						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgGroupVisNode.cpp"
-					/>
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgGroupVisNode.h"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgGroupVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgGroupVisNode.cpp"
+						Description="MOC source\OsgGroupVisNode.h"
+						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgGroupVisNode.cpp"
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="source\OsgGroupVisNodeIOData.h"
-				>
-			</File>
+				RelativePath="source\OsgGroupVisNodeIOData.h"/>
 			<File
-				RelativePath="source\OsgLightVisNode.h"
-				>
+				RelativePath="source\OsgLightVisNode.h">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC source\OsgLightVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgLightVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgLightVisNode.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgLightVisNode.h"
-						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgLightVisNode.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgLightVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgLightVisNode.cpp"
 						Description="MOC source\OsgLightVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgLightVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgLightVisNode.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgLightVisNode.h"
 						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgLightVisNode.cpp"
-					/>
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgLightVisNode.h"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgLightVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgLightVisNode.cpp"
+						Description="MOC source\OsgLightVisNode.h"
+						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgLightVisNode.cpp"
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\source\OsgLightVisNodeIOData.h"
-				>
-			</File>
+				RelativePath="source\OsgLightVisNodeIOData.h"/>
 			<File
-				RelativePath="source\OsgSceneVisNode.h"
-				>
+				RelativePath="source\OsgSceneVisNode.h">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC source\OsgSceneVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgSceneVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgSceneVisNode.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgSceneVisNode.h"
-						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgSceneVisNode.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgSceneVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgSceneVisNode.cpp"
 						Description="MOC source\OsgSceneVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgSceneVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgSceneVisNode.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgSceneVisNode.h"
 						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgSceneVisNode.cpp"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="source\OsgSceneVisNodeIOData.h"
-				>
-			</File>
-			<File
-				RelativePath="source\OsgSimpleViewVisNode.h"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC source\OsgSimpleViewVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgSimpleViewVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgSimpleViewVisNode.h"
-						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp"
-					/>
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|Win32"
-					>
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC source\OsgSimpleViewVisNode.h"
-						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgSimpleViewVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgSimpleViewVisNode.h"
-						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp"
-					/>
+						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgSceneVisNode.h"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgSceneVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgSceneVisNode.cpp"
+						Description="MOC source\OsgSceneVisNode.h"
+						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgSceneVisNode.cpp"
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="source\QOSGGraphics.h"
-				>
+				RelativePath="source\OsgSceneVisNodeIOData.h"/>
+			<File
+				RelativePath="source\OsgSimpleViewVisNode.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgSimpleViewVisNode.h"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgSimpleViewVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp"
+						Description="MOC source\OsgSimpleViewVisNode.h"
+						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp"
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe;source\OsgSimpleViewVisNode.h"
+						CommandLine="D:\Qt\qt-all-opensource-src-4.5.3\bin\moc.exe  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -D-D_CRT_SECURE_NO_DEPRECATE -DQT_DLL -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtCore&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtNetwork&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtGui&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtOpenGL&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\QtXml&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include&quot; -I&quot;..\..\GCF\include&quot; -I&quot;.&quot; -I&quot;source&quot; -I&quot;..\..\Interfaces&quot; -I&quot;..\..\Common&quot; -I&quot;..\PropertyEditor\interfaces&quot; -I&quot;..\Utils\interfaces&quot; -I&quot;..\ScriptEditor\interfaces&quot; -I&quot;..\ProjectManager\interfaces&quot; -I&quot;..\MainWindow\source&quot; -I&quot;..\..\VTK5\include\vtk-5.5&quot; -I&quot;d:\LevelFour\dev\GCF\Components&quot; -I&quot;..\VTKSystem\Interfaces&quot; -I&quot;..\VTKSystem\IOData&quot; -I&quot;..\..\Common&quot; -I&quot;Interfaces&quot; -I&quot;..\..\..\..\Qt\qt-all-opensource-src-4.5.3\include\ActiveQt&quot; -I&quot;..\..\tmp\OsgCore&quot; -I..\..\..\..\Qt\qt-all-opensource-src-4.5.3\mkspecs\win32-msvc2008 -D_MSC_VER=1500 -DWIN32 source\OsgSimpleViewVisNode.h -o d:\LevelFour\dev\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp"
+						Description="MOC source\OsgSimpleViewVisNode.h"
+						Outputs="d:\LevelFour\dev\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp"
+						Path="d:\Qt\qt-all-opensource-src-4.5.3\bin"/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="source\QOSGWidget.h"
-				>
-			</File>
+				RelativePath="source\QOSGGraphics.h"/>
 			<File
-				RelativePath="source\vtkActorToOSG.h"
-				>
-			</File>
+				RelativePath="source\QOSGWidget.h"/>
+			<File
+				RelativePath="source\vtkActorToOSG.h"/>
 		</Filter>
 		<Filter
 			Name="Generated Files"
 			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
-			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}"
-			>
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
 			<File
-				RelativePath="..\..\tmp\OsgCore\moc_CGenericVisNodeBase.cpp"
-				>
-			</File>
+				RelativePath="..\..\tmp\OsgCore\moc_CGenericVisNodeBase.cpp"/>
 			<File
-				RelativePath="..\..\tmp\OsgCore\moc_OsgCompositeViewVisNode.cpp"
-				>
-			</File>
+				RelativePath="..\..\tmp\OsgCore\moc_OsgCompositeViewVisNode.cpp"/>
 			<File
-				RelativePath="..\..\tmp\OsgCore\moc_OsgCoreComponent.cpp"
-				>
-			</File>
+				RelativePath="..\..\tmp\OsgCore\moc_OsgCoreComponent.cpp"/>
 			<File
-				RelativePath="..\..\tmp\OsgCore\moc_OsgGeodeFromActorVisNode.cpp"
-				>
-			</File>
+				RelativePath="..\..\tmp\OsgCore\moc_OsgGeodeFromActorVisNode.cpp"/>
 			<File
-				RelativePath="..\..\tmp\OsgCore\moc_OsgGroupVisNode.cpp"
-				>
-			</File>
+				RelativePath="..\..\tmp\OsgCore\moc_OsgGroupVisNode.cpp"/>
 			<File
-				RelativePath="..\..\tmp\OsgCore\moc_OsgLightVisNode.cpp"
-				>
-			</File>
+				RelativePath="..\..\tmp\OsgCore\moc_OsgLightVisNode.cpp"/>
 			<File
-				RelativePath="..\..\tmp\OsgCore\moc_OsgSceneVisNode.cpp"
-				>
-			</File>
+				RelativePath="..\..\tmp\OsgCore\moc_OsgSceneVisNode.cpp"/>
 			<File
-				RelativePath="..\..\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp"
-				>
-			</File>
+				RelativePath="..\..\tmp\OsgCore\moc_OsgSimpleViewVisNode.cpp"/>
 		</Filter>
 	</Files>
 	<Globals>
