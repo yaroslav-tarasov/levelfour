@@ -1,0 +1,7 @@
+<component title="OsgCoreComponent" name="OsgCoreComponent" >
+ <object name="controller" />
+  <widget title="OSG Core View" 
+		name="osgOutputView" 
+		parentWidget="MainWindowComponent.workspace" 
+		parentWidgetHint="RightDockWidgetArea" />
+</component>
