@@ -222,9 +222,9 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     QPen pen = p->pen();
 
 	// Isometric rotations
+	// p->shear(0,0.5); - this works as sy = 0.5 (sine(30 deg))
 	// p->rotate(30);
-	// p->shear(0,0.6);
-
+	
 #ifdef USE_SYSTEM_STYLE
     QStyleOptionButton hopt;
     hopt.rect = r.toRect();
@@ -264,23 +264,23 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     if(this->isSelected())
 	{   
 		// Stroke for highlight on select 218;165;32 / 24;116;205 / 229;229;229
-		QColor penSelectColor = QColor(51,51,51);
-		p->setPen( QPen(penSelectColor, 3) );
+		QColor penSelectColor = QColor(155,155,155);
+		p->setPen( QPen(penSelectColor, 1) );
 	}
     else
     {
 		// QColor penColor = opt->palette.highlight().color();
-        QColor penLightColor = QColor(102,102,102);
+        QColor penLightColor = QColor(150,150,150);
 		penLightColor.setAlphaF(0.85);
-        p->setPen( QPen(penLightColor, 3) );
+        p->setPen( QPen(penLightColor, 1) );
     }
 
 	if(opt->levelOfDetail >= 0.75)
     {
         // Base node style
 		QColor darkColor = QColor(190,180,120);
-		QColor midColor = QColor(240,240,240);
-		QColor lightColor = QColor(230,230,230);
+		QColor midColor = QColor(108,108,108);
+		QColor lightColor = QColor(108,108,108);
 		
 		darkColor.setAlphaF(alpha);
 		midColor.setAlphaF(alpha);
