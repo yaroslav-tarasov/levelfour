@@ -201,7 +201,7 @@ void CVisSystemCanvasConnectionItem::updateConnection()
 	d->drawShape = path;
 
 	QPainterPathStroker stroker;
-	stroker.setWidth(10);
+	stroker.setWidth(5);
 	stroker.setCapStyle(Qt::FlatCap);
 	d->itemShape = stroker.createStroke(path);
 	d->boundingRect = d->itemShape.boundingRect();
