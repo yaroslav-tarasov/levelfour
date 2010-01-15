@@ -42,9 +42,6 @@
     <method param1="M2RComponent" 
             param2="M2R" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
-    <method param1="SceneViewComponent" 
-            param2="SceneView" 
-            methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="TreeViewComponent" 
             param2="TreeView" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
@@ -56,5 +53,8 @@
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="SceneExporterComponent" 
             param2="SceneExporter" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="OsgCoreComponent" 
+            param2="OsgCore" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
 </component>
