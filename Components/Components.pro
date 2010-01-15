@@ -18,7 +18,7 @@ SUBDIRS     = LevelFour \
 		  D2M \
 		  M2M \
 		  M2R \
-		  SceneView \
+		  OsgCore \
 		  TableView \
 		  TreeView \
 		  ScenegraphManager \
