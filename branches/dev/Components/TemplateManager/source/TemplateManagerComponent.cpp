@@ -26,7 +26,7 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QTreeView>
-#include <QDirModel>
+#include <QFileSystemModel>
 
 GCF_DEFINE_COMPONENT(TemplateManagerComponent)
 
@@ -43,7 +43,8 @@ struct TemplateManagerComponentData
 	// New Dir Browser
 
 	QTreeView* dirView;
-	QDirModel* dirModel;
+	QFileSystemModel* dirModel;
+	
 };
 
 TemplateManagerComponent & TemplateManagerComponent::instance()
@@ -58,13 +59,7 @@ TemplateManagerComponent::TemplateManagerComponent()
 
 	// New Dir Browser
 	d->dirView = new QTreeView;
-	d->dirModel = new QDirModel;
-
-	d->dirView->setModel(d->dirModel);
-
-	// Need to set templates directory
-	for(int i=1; i<d->dirModel->columnCount(); i++)
-		d->dirView->setColumnHidden(i, true);
+	d->dirModel = new QFileSystemModel;
 }
 
 TemplateManagerComponent::~TemplateManagerComponent()
@@ -100,6 +95,15 @@ QWidget* TemplateManagerComponent::fetchWidget(const QString& completeName) cons
 
 	// New dir browser
 	if(comps.last() == "dirView")
+		
+		d->dirModel->setRootPath(d->templatesDirectory);
+		d->dirView->setModel(d->dirModel);
+		d->dirView->setRootIndex(d->dirModel->setRootPath(d->templatesDirectory));
+		
+		// Show only the file name
+		for(int i=1; i<d->dirModel->columnCount(); i++)
+		   d->dirView->setColumnHidden(i, true);
+		
 		return d->dirView;
 
     return 0;

@@ -18,17 +18,11 @@
     <method param1="CVisSystemCanvasComponent" 
             param2="VisSystemCanvas" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
-    <method param1="ScriptEditorComponent" 
-            param2="ScriptEditor" 
-            methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="CVtkVisSystemComponent" 
             param2="VTKSystem" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="CVTKFullscreenComponent" 
             param2="VTKFullscreen" 
-            methodName="ComponentLoaderComponent.controller::loadComponent2" />
-    <method param1="CDataFileLoaderComponent" 
-            param2="DataFileLoader" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="TemplateManagerComponent"
             param2="TemplateManager"
@@ -42,14 +36,8 @@
     <method param1="M2RComponent" 
             param2="M2R" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
-    <method param1="TreeViewComponent" 
-            param2="TreeView" 
-            methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="ScenegraphManagerComponent" 
             param2="ScenegraphManager" 
-            methodName="ComponentLoaderComponent.controller::loadComponent2" />
-    <method param1="PropertyInspectorComponent" 
-            param2="PropertyInspector" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="SceneExporterComponent" 
             param2="SceneExporter" 
@@ -57,4 +45,8 @@
     <method param1="OsgCoreComponent" 
             param2="OsgCore" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="ScriptEditorComponent" 
+            param2="ScriptEditor" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    
 </component>
