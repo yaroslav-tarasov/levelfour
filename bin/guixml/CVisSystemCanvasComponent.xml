@@ -3,11 +3,15 @@
             scriptName="VisNetwork" 
             name="visSystemCanvas" 
             parentWidget="MainWindowComponent.workspace" />
+    
+    <!-- This will become an overlay
     <widget title="Pipeline Map" 
             name="canvasThumbView" 
             parentWidget="MainWindowComponent.window" 
             parentWidgetHint="RightDockWidgetArea" 
             hideWhenInactive="false" />
+    -->
+    
     <action title="Zoom In" 
             triggerSlot="CVisSystemCanvasComponent.visSystemCanvas::zoomIn()"
 		icon=":/VisSystemCanvas/zoomin.png" 
