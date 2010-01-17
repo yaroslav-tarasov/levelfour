@@ -280,10 +280,10 @@ QDockWidget* GCF::Components::MainWindow::dockWidget(Qt::DockWidgetArea area)
         switch(area)
         {
         case Qt::LeftDockWidgetArea:
-            tabWidget->setTabPosition(QTabWidget::West);
+            tabWidget->setTabPosition(QTabWidget::North);
             break;
         case Qt::RightDockWidgetArea:
-            tabWidget->setTabPosition(QTabWidget::East);
+            tabWidget->setTabPosition(QTabWidget::North);
             break;
         case Qt::TopDockWidgetArea:
             tabWidget->setTabPosition(QTabWidget::North);
@@ -291,7 +291,7 @@ QDockWidget* GCF::Components::MainWindow::dockWidget(Qt::DockWidgetArea area)
             // ret->setFixedHeight(150);
             break;
         case Qt::BottomDockWidgetArea:
-            tabWidget->setTabPosition(QTabWidget::South);
+            tabWidget->setTabPosition(QTabWidget::North);
             // tabWidget->setFixedHeight(150);
             // ret->setFixedHeight(150);
             break;
