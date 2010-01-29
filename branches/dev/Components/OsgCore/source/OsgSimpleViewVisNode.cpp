@@ -15,11 +15,25 @@
 ****************************************************************************/
 
 #include "OsgSimpleViewVisNode.h"
+#include "OsgGroupVisNodeIOData.h"
 #include "OsgCoreComponent.h"
-#include "OsgSceneVisNodeIOData.h"
+#include "OsgLightVisNodeIOData.h"
+
+#include <osgGA/TrackballManipulator>
+
+#include <osgDB/WriteFile>
+#include <osgDB/ReadFile>
+#include <osg/Node>
+#include <osg/ref_ptr>
+#include <osg/LightSource>
 
 #include <QTabWidget>
 #include <QSize>
+#include <QtGui/QPushButton>
+#include <QtGui/QDialog>
+#include <QtGui/QVBoxLayout>
+
+#include "QOSGBox.h"
 
 DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
 {
@@ -32,9 +46,18 @@ DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
     
     pDesc->addConnectionPath(
         new CGenericVisNodeConnectionPath(
-                "OsgSceneInput",                                 // Name of the path
+                "OsgGroupInput",                                 // Name of the path
                 IVisSystemNodeConnectionPath::InputPath,   // Path type can be OutputPath or InputPath
-                "osg::QOSGScene",                                 // Data type of the path
+                "osg::ref_ptr<osg::Group>",                                 // Data type of the path
+                0,                                          // Path index (don't change)
+                false                                       // Allow Multiple Inputs Flag
+            )
+        );
+    pDesc->addConnectionPath(
+        new CGenericVisNodeConnectionPath(
+                "OsgLightInput",                                 // Name of the path
+                IVisSystemNodeConnectionPath::InputPath,   // Path type can be OutputPath or InputPath
+                "osg::ref_ptr<osg::Light>",                                 // Data type of the path
                 0,                                          // Path index (don't change)
                 false                                       // Allow Multiple Inputs Flag
             )
@@ -43,12 +66,14 @@ DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
 
 struct OsgSimpleViewVisNodeData
 {
-	OsgSimpleViewVisNodeData() : scene(0) {}
+	OsgSimpleViewVisNodeData() : scene(0), inputGroup(0) {}
     osg::QOSGScene * scene;
-	OsgSceneVisNodeIOData inputData;
+	osg::ref_ptr<osg::Group> inputGroup;
+	OsgGroupVisNodeIOData inputData;
+	osg::ref_ptr<osg::Light> inputLight;
 };
 
-OsgSimpleViewVisNode::OsgSimpleViewVisNode() : m_osgOutputWidget(0)
+OsgSimpleViewVisNode::OsgSimpleViewVisNode() 
 {
     OsgSimpleViewVisNode::InitializeNodeDesc();
     d = new OsgSimpleViewVisNodeData;
@@ -56,6 +81,22 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode() : m_osgOutputWidget(0)
 	m_osgOutputWidget = new osg::QGLGraphicsView;
 
 	OsgCoreComponent::instance().osgOutputWidget()->addTab(m_osgOutputWidget, this->nodeName());
+
+	d->scene = new osg::QOSGScene;
+	m_osgOutputWidget->setScene(d->scene);
+	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
+
+	d->inputLight = new osg::Light;
+	d->inputLight->setLightNum(2);
+	d->inputLight->setAmbient(osg::Vec4(.1f, .1f, .1f, .1f));
+	d->inputLight->setDiffuse(osg::Vec4(.8f, .8f, .8f, .1f));
+	d->inputLight->setSpecular(osg::Vec4(.8f, .8f, .8f, .1f));
+	d->inputLight->setPosition(osg::Vec4(.0f, .0f, .0f, .0f));
+	d->inputLight->setDirection(osg::Vec3(.1f, .0f, .0f));
+	d->inputLight->setSpotCutoff(25.f);
+	osg::LightSource * lightSource = new osg::LightSource;
+	lightSource->setLight(d->inputLight.get());
+	d->scene->setLight(d->inputLight);
 }
 
 OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
@@ -76,13 +117,57 @@ void OsgSimpleViewVisNode::render()
 
 void OsgSimpleViewVisNode::command_Render()
 {
+	delete d->scene;
+	d->scene = new osg::QOSGScene;
+	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
+	d->scene->setLight(d->inputLight);
+	d->scene->setSceneData(d->inputGroup.get());
+	m_osgOutputWidget->setScene(d->scene);
+	QSize s(m_osgOutputWidget->size());
+	if (d->scene)
+		d->scene->setSceneRect(0, 0, s.width(), s.height());
+
+/*	QDialog dialog;
+	QVBoxLayout* layout = new QVBoxLayout;
+	dialog.setLayout(layout);
+	dialog.resize(300, 200);
+
+	QPushButton changeShapeBtn("Change shape", &dialog);
+	changeShapeBtn.resize(100,30);
+	QObject::connect(&changeShapeBtn, SIGNAL(clicked()), &d->shape, SLOT(changeShape()));
+
+	dialog.exec();
+-----
+	d->scene->frame();
 	if (m_osgOutputWidget)
 	{
 		QSize s(m_osgOutputWidget->size());
+		d->scene = *(d->inputScene);
 		if (d->scene)
 			d->scene->setSceneRect(0, 0, s.width(), s.height());
+
+		m_osgOutputWidget->invalidateScene();
 		m_osgOutputWidget->setScene(d->scene);
-	}
+		m_osgOutputWidget->updateGeometry();
+	}*/
+}
+
+void OsgSimpleViewVisNode::saveOSG()
+{
+    command_SaveOSG();
+}
+
+void OsgSimpleViewVisNode::command_SaveOSG()
+{
+	if (!d->scene)
+		return;
+
+	osg::ref_ptr<osg::Node> root = d->scene->getSceneData();
+	if (!root.valid())
+		return;
+
+	osgDB::writeNodeFile(*(root.get()), "test.osg");
+	system("D:\\OSG-2.9.6\\bin\\osgviewerQTd.exe test.osg");
 }
 
 bool OsgSimpleViewVisNode::hasInput(IVisSystemNodeConnectionPath* path)
@@ -95,8 +180,8 @@ bool OsgSimpleViewVisNode::hasInput(IVisSystemNodeConnectionPath* path)
     then you will have to handle inputs here
     */
 
-	if (path->pathName() == "OsgSceneInput")
-		return d->scene != 0;
+	if (path->pathName() == "OsgGroupInput")
+		return d->inputGroup != 0;
     return CGenericVisNodeBase::hasInput(path);
 }
 
@@ -110,19 +195,35 @@ bool OsgSimpleViewVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSyst
     then you will have to handle inputs here
     */
 
-	if (path->pathName() == "OsgSceneInput")
+	if (path->pathName() == "OsgGroupInput")
 	{
-		OsgSceneVisNodeIOData * data = 0;
-		bool success = inputData->queryInterface("OsgSceneVisNodeIOData", (void**)&data);
+		OsgGroupVisNodeIOData * data = 0;
+		bool success = inputData->queryInterface("OsgGroupVisNodeIOData", (void**)&data);
 		if (success && data)
 		{
-			d->scene = data->getOsgScene();
-		    command_Render();
+			d->inputData.setOsgGroup(d->inputGroup = data->getOsgGroup());
+			command_Render();
 
 			return true;
 		}
 	}
-    return CGenericVisNodeBase::setInput(path, inputData);
+
+	if (path->pathName() == "OsgLightInput")
+	{
+		OsgLightVisNodeIOData * inputLightData = 0;
+		bool success = inputData->queryInterface("OsgLightVisNodeIOData", (void**)&inputLightData);
+
+		if (success && inputLightData)
+		{
+			d->inputLight = inputLightData->getOsgLight();
+			osg::LightSource * lightSource = new osg::LightSource;
+			lightSource->setLight(d->inputLight.get());
+			d->scene->setLight(d->inputLight);
+			return true;
+		}
+	}
+
+	return CGenericVisNodeBase::setInput(path, inputData);
 }
 
 bool OsgSimpleViewVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData)
@@ -135,19 +236,31 @@ bool OsgSimpleViewVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisS
     then you will have to handle inputs here
     */
 
-	if (path->pathName() == "OsgSceneInput")
+	if (path->pathName() == "OsgGroupInput")
 	{
-		OsgSceneVisNodeIOData * data = 0;
-		bool success = inputData->queryInterface("OsgSceneVisNodeIOData", (void**)&data);
-		if (success && data && data->getOsgScene() == dynamic_cast<osg::QOSGScene*>(d->scene))
+		OsgGroupVisNodeIOData * data = 0;
+		bool success = inputData->queryInterface("OsgGroupVisNodeIOData", (void**)&data);
+		if (success && data && data->getOsgGroup() == d->inputGroup)
 		{
-			d->inputData.setOsgScene(d->scene = 0);
-		    command_Render();
+			d->inputData.setOsgGroup(d->inputGroup = 0);
 
 			return  true;
 		}
 	}
-    return CGenericVisNodeBase::removeInput(path, inputData);
+
+	if (path->pathName() == "OsgLightInput")
+	{
+		OsgLightVisNodeIOData * inputLightData = 0;
+		bool success = inputData->queryInterface("OsgLightVisNodeIOData", (void**)&inputLightData);
+
+		if (success && inputLightData)
+		{
+			d->scene->setLight(d->inputLight = 0);
+			return true;
+		}
+	}
+
+	return CGenericVisNodeBase::removeInput(path, inputData);
 }
 
 bool OsgSimpleViewVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData** outputData)

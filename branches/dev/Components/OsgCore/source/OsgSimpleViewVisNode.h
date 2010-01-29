@@ -21,7 +21,7 @@
 #include "CGenericVisNodeBase.h"
 #include "QOSGGraphics.h"
 #include <QTabWidget>
-
+#include <QTimer>
 
 #ifdef ENABLE_ADVANCED_PROPERTIES
 #include "IEditableProperties.h"
@@ -76,18 +76,20 @@ public:
 #endif
 
     Q_INVOKABLE void render();
+    Q_INVOKABLE void saveOSG();
 
 protected:
 
 protected slots:
 	void command_Render();
+	void command_SaveOSG();
 
 private:
     OsgSimpleViewVisNodeData* d;
 
 	osg::QGLGraphicsView * m_osgOutputWidget;
-	
-	void clearSceneWidgetTab();
+
+	QTimer timer;
 	void removeSceneWidget();
 };
 
