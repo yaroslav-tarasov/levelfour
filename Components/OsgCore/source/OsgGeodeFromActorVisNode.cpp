@@ -20,6 +20,7 @@
 #include <osg/ref_ptr>
 #include "CVtkActorData.h"
 #include "vtkActorToOSG.h"
+#include "vtkUpdateCallback.h"
 
 DEFINE_VIS_NODE(OsgGeodeFromActorVisNode, CGenericVisNodeBase)
 {
@@ -55,14 +56,18 @@ struct OsgGeodeFromActorVisNodeData
 	osg::ref_ptr<osg::Geode> outputGeode;
 	OsgGeodeFromActorVisNodeIOData outputData;
 	vtkActor* inputActor;
+	vtkUpdateCallback* onUpdate;
+	unsigned long timestamp;
 };
 
 OsgGeodeFromActorVisNode::OsgGeodeFromActorVisNode()
 {
     OsgGeodeFromActorVisNode::InitializeNodeDesc();
     d = new OsgGeodeFromActorVisNodeData;
+	d->onUpdate = vtkUpdateCallback::New();
 
-    
+	d->outputGeode = new osg::Geode;
+	d->outputData.setOsgGeode(d->outputGeode);
 }
 
 OsgGeodeFromActorVisNode::~OsgGeodeFromActorVisNode()
@@ -82,9 +87,15 @@ void OsgGeodeFromActorVisNode::update()
 
 void OsgGeodeFromActorVisNode::command_Update()
 {
-	d->outputData.setOsgGeode(createGeodeFromActor(d->inputActor));
-	d->outputGeode = d->outputData.getOsgGeode();
+	if (!d->inputActor)
+		return;
 
+	unsigned long timestamp = d->inputActor->GetRedrawMTime();
+	if (d->timestamp != timestamp)
+	{
+		d->timestamp = timestamp;
+		vtkActorToOSG(d->inputActor, d->outputGeode);
+	}
 }
 
 bool OsgGeodeFromActorVisNode::hasInput(IVisSystemNodeConnectionPath* path)
@@ -118,9 +129,11 @@ bool OsgGeodeFromActorVisNode::setInput(IVisSystemNodeConnectionPath* path, IVis
 		if (success && actorData)
 		{
 			d->inputActor = actorData->getVtkActor();
-			d->outputData.setOsgGeode(createGeodeFromActor(d->inputActor));
+			d->inputActor->AddObserver(vtkCommand::UpdateEvent, d->onUpdate);
+			d->outputData.setOsgGeode(vtkActorToOSG(d->inputActor, d->outputGeode));
 			d->outputGeode = d->outputData.getOsgGeode();
 
+			d->timestamp = d->inputActor->GetRedrawMTime();
 			return true;
 		}
 	}
@@ -144,6 +157,8 @@ bool OsgGeodeFromActorVisNode::removeInput(IVisSystemNodeConnectionPath* path, I
 		if (success && actorData && actorData->getVtkActor() == vtkActor::SafeDownCast(d->inputActor))
 		{
 			d->inputActor = 0;
+			d->outputGeode->removeDrawables(0, d->outputGeode->getNumDrawables());
+			d->timestamp = 0;
 
 			return  true;
 		}
@@ -186,14 +201,6 @@ bool OsgGeodeFromActorVisNode::outputDerefed(IVisSystemNodeConnectionPath* path,
     return CGenericVisNodeBase::outputDerefed(path, outputData);
 }
 
-osg::ref_ptr<osg::Geode> OsgGeodeFromActorVisNode::createGeodeFromActor(vtkActor* actor)
-{
-	osg::ref_ptr<osg::Geode> geode = vtkActorToOSG(actor, 0, 0).get();
-	if (!geode)
-		geode = new osg::Geode;
-
-	return geode;
-}
 
 #ifdef ENABLE_ADVANCED_PROPERTIES
 

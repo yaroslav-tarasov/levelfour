@@ -21,11 +21,20 @@ typedef double vtkReal;
 
 osg::ref_ptr< osg::Geode > vtkActorToOSG(vtkActor *actor, osg::ref_ptr< osg::Geode > geode, int verbose) {
 
+	// if geode doesn't exist, then create a new one
+	if ( !geode.valid() )
+		geode = new osg::Geode();
+
+	geode->removeDrawables((unsigned int)0, geode->getNumDrawables());//removeDrawable(0);
+
 	// make actor current
 	vtkMapper* mapper = actor->GetMapper();
 
 	if (!mapper)
+	{
+		// remove old gsets and delete them
 		return NULL;
+	}
 
 	actor->GetMapper()->Update();
 
@@ -33,12 +42,9 @@ osg::ref_ptr< osg::Geode > vtkActorToOSG(vtkActor *actor, osg::ref_ptr< osg::Geo
 	if (strcmp(actor->GetMapper()->GetInput()->GetClassName(), "vtkPolyData")) {
 		std::cerr << "ERROR! Actor must use a vtkPolyDataMapper." << std::endl;
 		std::cerr << "If you are using a vtkDataSetMapper, use vtkGeometryFilter instead." << std::endl;
+		// remove old gsets and delete them
 		return NULL;
 	}
-
-	// if geode doesn't exist, then create a new one
-	if ( !geode.valid() )
-		geode = new osg::Geode();
 
 	// get poly data
 	vtkPolyData *polyData = (vtkPolyData *) actor->GetMapper()->GetInput();
@@ -47,19 +53,30 @@ osg::ref_ptr< osg::Geode > vtkActorToOSG(vtkActor *actor, osg::ref_ptr< osg::Geo
 	osg::ref_ptr< osg::Geometry > points, lines, polys, strips;
 
 	// create new Geometry for the Geode
-   points = processPrimitive(actor, polyData->GetVerts(), osg::PrimitiveSet::POINTS, verbose);
+	points = processPrimitive(actor, polyData->GetVerts(), osg::PrimitiveSet::POINTS, verbose);
 	lines = processPrimitive(actor, polyData->GetLines(), osg::PrimitiveSet::LINE_STRIP, verbose);
 	polys = processPrimitive(actor, polyData->GetPolys(), osg::PrimitiveSet::POLYGON, verbose);
 	strips = processPrimitive(actor, polyData->GetStrips(), osg::PrimitiveSet::TRIANGLE_STRIP, verbose);
 
+
+	if( points.valid() )
+	{
+		geode->addDrawable( points.get() );
+	}
+	if( lines.valid() ) 
+	{
+		geode->addDrawable( lines.get() );
+	}
+	if( polys.valid() ) 
+	{
+		geode->addDrawable( polys.get() );
+	}
+	if( strips.valid() ) 
+	{
+		geode->addDrawable( strips.get() );
+	}
+
 	// remove old gsets and delete them
-   while( geode->getNumDrawables() ) geode->removeDrawable((unsigned int)0);//removeDrawable(0);
-
-	if( points.valid() ) geode->addDrawable( points.get() );
-	if( lines.valid() ) geode->addDrawable( lines.get() );
-	if( polys.valid() ) geode->addDrawable( polys.get() );
-	if( strips.valid() ) geode->addDrawable( strips.get() );
-
 	return geode;
 }
 
@@ -74,6 +91,7 @@ osg::ref_ptr< osg::Geometry > processPrimitive(vtkActor *actor, vtkCellArray *pr
 
 	//Initialize the Geometry
 	osg::ref_ptr< osg::Geometry > geom = new osg::Geometry;
+	geom->setDataVariance(osg::Object::DYNAMIC);
 
 	// get number of indices in the vtk prim array. Each vtkCell has the length
 	// (not counted), followed by the indices.

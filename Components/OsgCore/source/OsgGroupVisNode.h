@@ -73,13 +73,6 @@ public:
     bool canLoadSaveProperty(int index);
 #endif
 
-    Q_INVOKABLE void update();
-
-protected:
-
-protected slots:
-	void command_Update();
-    
 
 private:
     OsgGroupVisNodeData* d;
