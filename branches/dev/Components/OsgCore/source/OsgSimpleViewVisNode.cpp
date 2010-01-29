@@ -33,8 +33,6 @@
 #include <QtGui/QDialog>
 #include <QtGui/QVBoxLayout>
 
-#include "QOSGBox.h"
-
 DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
 {
     pDesc->setNodeClassCategory("OsgCore");
@@ -66,9 +64,9 @@ DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
 
 struct OsgSimpleViewVisNodeData
 {
-	OsgSimpleViewVisNodeData() : scene(0), inputGroup(0) {}
+	OsgSimpleViewVisNodeData() : scene(0), inputNode(0) {}
     osg::QOSGScene * scene;
-	osg::ref_ptr<osg::Group> inputGroup;
+	osg::ref_ptr<osg::Node> inputNode;
 	OsgGroupVisNodeIOData inputData;
 	osg::ref_ptr<osg::Light> inputLight;
 };
@@ -121,35 +119,11 @@ void OsgSimpleViewVisNode::command_Render()
 	d->scene = new osg::QOSGScene;
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 	d->scene->setLight(d->inputLight);
-	d->scene->setSceneData(d->inputGroup.get());
+	d->scene->setSceneData(d->inputNode);
 	m_osgOutputWidget->setScene(d->scene);
 	QSize s(m_osgOutputWidget->size());
 	if (d->scene)
 		d->scene->setSceneRect(0, 0, s.width(), s.height());
-
-/*	QDialog dialog;
-	QVBoxLayout* layout = new QVBoxLayout;
-	dialog.setLayout(layout);
-	dialog.resize(300, 200);
-
-	QPushButton changeShapeBtn("Change shape", &dialog);
-	changeShapeBtn.resize(100,30);
-	QObject::connect(&changeShapeBtn, SIGNAL(clicked()), &d->shape, SLOT(changeShape()));
-
-	dialog.exec();
------
-	d->scene->frame();
-	if (m_osgOutputWidget)
-	{
-		QSize s(m_osgOutputWidget->size());
-		d->scene = *(d->inputScene);
-		if (d->scene)
-			d->scene->setSceneRect(0, 0, s.width(), s.height());
-
-		m_osgOutputWidget->invalidateScene();
-		m_osgOutputWidget->setScene(d->scene);
-		m_osgOutputWidget->updateGeometry();
-	}*/
 }
 
 void OsgSimpleViewVisNode::saveOSG()
@@ -181,7 +155,7 @@ bool OsgSimpleViewVisNode::hasInput(IVisSystemNodeConnectionPath* path)
     */
 
 	if (path->pathName() == "OsgGroupInput")
-		return d->inputGroup != 0;
+		return d->inputNode != 0;
     return CGenericVisNodeBase::hasInput(path);
 }
 
@@ -198,10 +172,10 @@ bool OsgSimpleViewVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSyst
 	if (path->pathName() == "OsgGroupInput")
 	{
 		OsgGroupVisNodeIOData * data = 0;
-		bool success = inputData->queryInterface("OsgGroupVisNodeIOData", (void**)&data);
+		bool success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&data);
 		if (success && data)
 		{
-			d->inputData.setOsgGroup(d->inputGroup = data->getOsgGroup());
+			d->inputData.setOsgNode(d->inputNode = data->getOsgNode());
 			command_Render();
 
 			return true;
@@ -239,10 +213,10 @@ bool OsgSimpleViewVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisS
 	if (path->pathName() == "OsgGroupInput")
 	{
 		OsgGroupVisNodeIOData * data = 0;
-		bool success = inputData->queryInterface("OsgGroupVisNodeIOData", (void**)&data);
-		if (success && data && data->getOsgGroup() == d->inputGroup)
+		bool success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&data);
+		if (success && data && data->getOsgNode() == d->inputNode)
 		{
-			d->inputData.setOsgGroup(d->inputGroup = 0);
+			d->inputData.setOsgNode(d->inputNode = 0);
 
 			return  true;
 		}

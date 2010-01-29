@@ -17,12 +17,42 @@
 #include "SceneViewComponent.h"
 #include <GCF/ComponentFactory>
 #include <GCF/IComponentPlugin>
+#include <QtOpenGL/QGLWidget>
+
+#include <QtGui/QGraphicsScene>
+#include <QtGui/QGraphicsProxyWidget>
+#include "QOSGGraphics.h"
+#include <osgViewer/Viewer>
+#include <osgViewer/CompositeViewer>
+#include <osgViewer/ViewerEventHandlers>
+#include <osgGA/TrackballManipulator>
+#include <iostream>
+
+#include "vtkConeSource.h"
+#include "vtkPolyDataMapper.h"
+#include "vtkRenderWindow.h"
+#include "vtkCamera.h"
+#include "vtkActor.h"
+#include "vtkProperty.h"
+#include "vtkRenderer.h"
+#include "vtkActorToOSG.h"
+
+#include "vtkGlyph3D.h"
+#include "vtkSphereSource.h"
+#include "vtkPolyDataNormals.h"
+#include "vtkGlyph3D.h"
+#include "vtkGlyph3D.h"
+
+#include <osg/Geode>
+#include <osg/ref_ptr>
+#include <osgDB/WriteFile>
+#include <osg/MatrixTransform>
 
 GCF_DEFINE_COMPONENT(SceneViewComponent)
 
 struct SceneViewComponentData
 {
-
+	osg::QGLGraphicsView sceneView;
 };
 
 SceneViewComponent & SceneViewComponent::instance()
@@ -55,9 +85,73 @@ QObject* SceneViewComponent::fetchObject(const QString& completeName) const
 
 QWidget* SceneViewComponent::fetchWidget(const QString& completeName) const
 {
-    QStringList comps = completeName.split('.');
+		QStringList comps = completeName.split('.');
+		if(comps.last() == "sceneView")
+		{
+	vtkConeSource *cone;
+vtkSphereSource *sphere;
+vtkActor *sphereActor, *spikeActor;
+  vtkGlyph3D *glyph;
+  vtkPolyDataMapper *sphereMapper, *spikeMapper;
 
-    return 0;
+  sphere = vtkSphereSource::New();
+  sphereMapper = vtkPolyDataMapper::New();
+    sphereMapper->SetInput(sphere->GetOutput());
+  sphereActor = vtkActor::New();
+    sphereActor->SetMapper(sphereMapper);
+  sphereActor->GetProperty()->SetColor(0.407263, 1, 0.278904);
+
+  sphereActor->GetProperty()->SetOpacity(1.0);
+
+  cone = vtkConeSource::New();
+
+  glyph = vtkGlyph3D::New();
+
+  glyph->SetInput((vtkDataSet *) sphere->GetOutput());
+
+  glyph->SetSource(cone->GetOutput());
+  glyph->SetVectorModeToUseNormal();
+  glyph->SetScaleModeToScaleByVector();
+  glyph->SetScaleFactor(0.25);
+
+  vtkPolyDataNormals *spikeNormals = vtkPolyDataNormals::New();
+  spikeNormals->SetInput(glyph->GetOutput());
+
+  spikeMapper = vtkPolyDataMapper::New();
+  spikeMapper->SetInput(spikeNormals->GetOutput());
+
+  spikeActor = vtkActor::New();
+  spikeActor->SetMapper(spikeMapper);
+  spikeActor->GetProperty()->SetColor(0.7, 0.2, 0.2);
+
+	osg::ref_ptr<osg::Geode> loadedModel = vtkActorToOSG(sphereActor, 0, 0).get();
+	osg::ref_ptr<osg::Geode> loadedModel1 = vtkActorToOSG(spikeActor, 0, 0).get();
+
+	osg::ref_ptr<osg::Light> light = new osg::Light;
+	light->setLightNum(2);
+	light->setAmbient(osg::Vec4(.1f, .1f, .1f, .1f));
+	light->setDiffuse(osg::Vec4(.8f, .8f, .8f, .1f));
+	light->setSpecular(osg::Vec4(.8f, .8f, .8f, .1f));
+	light->setPosition(osg::Vec4(.0f, .0f, .0f, .0f));
+	light->setDirection(osg::Vec3(.1f, .0f, .0f));
+	light->setSpotCutoff(25.f);
+	osg::LightSource * lightSource = new osg::LightSource;
+	lightSource->setLight(light.get());
+
+	osg::ref_ptr<osg::Group> group = new osg::Group;
+	group->addChild(loadedModel);
+	group->addChild(loadedModel1);
+
+	osg::QOSGScene *pScene = new osg::QOSGScene;
+
+	d->sceneView.setScene( pScene );
+	pScene->setCameraManipulator(new osgGA::TrackballManipulator);
+    pScene->setSceneData(group.get());
+	pScene->setLight(light);
+
+		return &(d->sceneView);
+	}
+	return 0;
 }
 
 /*
