@@ -40,6 +40,8 @@ HEADERS += source/OsgCoreComponent.h \
 			source/vtkActorToOSG.h \
 			source/vtkUpdateCallback.h \
 			source/OsgNodeVisNodeIOData.h \
+           source/OsgCylinderVisNode.h \
+		   source/OsgDrawableVisNodeIOData.h \
 				
 SOURCES += source/OsgCoreComponent.cpp \
            source/OsgSimpleViewVisNode.cpp \
@@ -57,7 +59,9 @@ SOURCES += source/OsgCoreComponent.cpp \
            source/OsgGeodeVisNode.cpp \
            source/OsgBoxVisNode.cpp \
            source/OsgSphereVisNode.cpp \
+           source/OsgCylinderVisNode.cpp \
 			source/OsgNodeVisNodeIOData.cpp \
+		   source/OsgDrawableVisNodeIOData.cpp \
 
 
 LIBS			+= -losgd \
