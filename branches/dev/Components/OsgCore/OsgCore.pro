@@ -27,7 +27,6 @@ HEADERS += source/OsgCoreComponent.h \
            source/OsgSimpleViewVisNode.h \
            source/OsgCompositeViewVisNode.h \
            source/OsgLightVisNode.h \
-           source/OsgSceneVisNode.h \
            source/OsgGroupVisNode.h \
            source/OsgGeodeFromActorVisNode.h \
            source/OsgGeodeFromActorVisNodeIOData.h \
@@ -35,14 +34,12 @@ HEADERS += source/OsgCoreComponent.h \
 			source/QOSGGraphics.h \
 			source/vtkActorToOSG.h \
 			source/OsgGroupVisNodeIOData.h \
-			source/OsgSceneVisNodeIOData.h \
 			source/OsgLightVisNodeIOData.h \
 				
 SOURCES += source/OsgCoreComponent.cpp \
            source/OsgSimpleViewVisNode.cpp \
            source/OsgCompositeViewVisNode.cpp \
            source/OsgLightVisNode.cpp \
-           source/OsgSceneVisNode.cpp \
            source/OsgGroupVisNode.cpp \
            source/OsgGeodeFromActorVisNode.cpp \
            source/OsgGeodeFromActorVisNodeIOData.cpp \
@@ -50,13 +47,13 @@ SOURCES += source/OsgCoreComponent.cpp \
 			source/QOSGGraphics.cpp \
 			source/vtkActorToOSG.cpp \
 			source/OsgGroupVisNodeIOData.cpp \
-			source/OsgSceneVisNodeIOData.cpp \
 			source/OsgLightVisNodeIOData.cpp \
 
 
 LIBS			+= -losgd \
 				-losgGAd \
 				-losgViewerd \
+				-losgDBd \
 				-lQtGuid4 \
 				-lQtCored4 \
 				-lQtOpenGLd4 \

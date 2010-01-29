@@ -18,7 +18,6 @@
 #include "OsgCoreComponent.h"
 #include "OsgGeodeFromActorVisNodeIOData.h"
 #include "OsgLightVisNodeIOData.h"
-#include "OsgSceneVisNodeIOData.h"
 #include <osgGA/TrackballManipulator>
 #include <osg/LightSource>
 
@@ -43,29 +42,9 @@ DEFINE_VIS_NODE(OsgGroupVisNode, CGenericVisNodeBase)
 
     pDesc->addConnectionPath(
         new CGenericVisNodeConnectionPath(
-                "OsgScene",                                 // Name of the path
-                IVisSystemNodeConnectionPath::OutputPath,   // Path type can be OutputPath or InputPath
-                "osg::QOSGScene",                                 // Data type of the path
-                0,                                          // Path index (don't change)
-                false                                       // Allow Multiple Inputs Flag
-            )
-        );
-
-    pDesc->addConnectionPath(
-        new CGenericVisNodeConnectionPath(
                 "OsgNodeInput",                                 // Name of the path
                 IVisSystemNodeConnectionPath::InputPath,   // Path type can be OutputPath or InputPath
                 "osg::ref_ptr<osg::Node>",                                 // Data type of the path
-                0,                                          // Path index (don't change)
-                true                                       // Allow Multiple Inputs Flag
-            )
-        );
-
-    pDesc->addConnectionPath(
-        new CGenericVisNodeConnectionPath(
-                "OsgLightInput",                                 // Name of the path
-                IVisSystemNodeConnectionPath::InputPath,   // Path type can be OutputPath or InputPath
-                "osg::ref_ptr<osg::Light>",                                 // Data type of the path
                 0,                                          // Path index (don't change)
                 true                                       // Allow Multiple Inputs Flag
             )
@@ -74,12 +53,9 @@ DEFINE_VIS_NODE(OsgGroupVisNode, CGenericVisNodeBase)
 
 struct OsgGroupVisNodeData
 {
-	OsgGroupVisNodeData() : outputGroup(0), outputScene(0), inputLight(0) { }
-	osg::ref_ptr<osg::Light> inputLight;
+	OsgGroupVisNodeData() : outputGroup(0) { }
 	osg::ref_ptr<osg::Group> outputGroup;
 	OsgGroupVisNodeIOData outputGroupData;
-	osg::QOSGScene * outputScene;
-	OsgSceneVisNodeIOData outputSceneData;
 };
 
 OsgGroupVisNode::OsgGroupVisNode()
@@ -87,9 +63,7 @@ OsgGroupVisNode::OsgGroupVisNode()
     OsgGroupVisNode::InitializeNodeDesc();
     d = new OsgGroupVisNodeData;
 
-	d->outputScene = new osg::QOSGScene;
-	d->outputScene->setCameraManipulator(new osgGA::TrackballManipulator);
-	d->outputScene->setSceneData(d->outputGroup.get());
+	d->outputGroup = new osg::Group;
 }
 
 OsgGroupVisNode::~OsgGroupVisNode()
@@ -98,20 +72,9 @@ OsgGroupVisNode::~OsgGroupVisNode()
     // subclass, then you have to delete it now.
     // d->VtkObjectPointer->Delete();
 
-    
     delete d;
 }
 
-void OsgGroupVisNode::update()
-{
-    command_Update();
-}
-
-void OsgGroupVisNode::command_Update()
-{
-	d->outputScene->setSceneData(d->outputGroup);
-	d->outputSceneData.setOsgScene(d->outputScene);
-}
 
 bool OsgGroupVisNode::hasInput(IVisSystemNodeConnectionPath* path)
 {
@@ -125,9 +88,6 @@ bool OsgGroupVisNode::hasInput(IVisSystemNodeConnectionPath* path)
 
 	if (path->pathName() == "OsgNodeInput")
 		return d->outputGroup && d->outputGroup->referenceCount() > 0;
-
-	if (path->pathName() == "OsgLightInput")
-		return d->inputLight != 0;
 
 	return CGenericVisNodeBase::hasInput(path);
 }
@@ -149,32 +109,13 @@ bool OsgGroupVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNod
 
 		if (success = inputData->queryInterface("OsgGeodeFromActorVisNodeIOData", (void**)&geodeData)
 			&& geodeData)
-			d->outputGroupData.addOsgNode((osg::ref_ptr<osg::Node>) geodeData->getOsgGeode());
+			d->outputGroup->addChild(geodeData->getOsgGeode().get());
 		else if (success = inputData->queryInterface("OsgGroupVisNodeIOData", (void**)&groupData)
 			&& groupData)
-				d->outputGroupData.addOsgNode((osg::ref_ptr<osg::Node>) groupData->getOsgGroup());
+			d->outputGroup->addChild(groupData->getOsgGroup().get());
 
 		if (success)
-		{
-				d->outputGroup = d->outputGroupData.getOsgGroup();
 				return true;
-		}
-	}
-
-	if (path->pathName() == "OsgLightInput")
-	{
-		OsgLightVisNodeIOData * inputLightData = 0;
-		bool success = inputData->queryInterface("OsgLightVisNodeIOData", (void**)&inputLightData);
-
-		if (success && inputLightData)
-		{
-			d->inputLight = inputLightData->getOsgLight();
-			osg::LightSource * lightSource = new osg::LightSource;
-			lightSource->setLight(d->inputLight.get());
-			d->outputScene->setLight(d->inputLight);
-			d->outputGroup = d->outputGroupData.getOsgGroup();
-			return true;
-		}
 	}
 
 	return CGenericVisNodeBase::setInput(path, inputData);
@@ -197,27 +138,15 @@ bool OsgGroupVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystem
 
 		if (success = inputData->queryInterface("OsgGeodeFromActorVisNodeIOData", (void**)&geodeData)
 			&& geodeData)
-			d->outputGroup->removeChild((osg::ref_ptr<osg::Node>) geodeData->getOsgGeode());
+			d->outputGroup->removeChild((osg::ref_ptr<osg::Node>) geodeData->getOsgGeode().get());
 		else if (success = inputData->queryInterface("OsgGroupVisNodeIOData", (void**)&groupData)
 			&& groupData)
-			d->outputGroup->removeChild((osg::ref_ptr<osg::Node>) groupData->getOsgGroup());
+			d->outputGroup->removeChild((osg::ref_ptr<osg::Node>) groupData->getOsgGroup().get());
 
 		if (success)
 		{
 				d->outputGroupData.setOsgGroup(d->outputGroup);
 				return true;
-		}
-	}
-
-	if (path->pathName() == "OsgLightInput")
-	{
-		OsgLightVisNodeIOData * inputLightData = 0;
-		bool success = inputData->queryInterface("OsgLightVisNodeIOData", (void**)&inputLightData);
-
-		if (success && inputLightData)
-		{
-			d->outputScene->setLight(d->inputLight = 0);
-			return true;
 		}
 	}
 
@@ -237,14 +166,6 @@ bool OsgGroupVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSystem
 	{
 		d->outputGroupData.setOsgGroup(d->outputGroup);
 		*outputData = &d->outputGroupData;
-		return true;
-	}
-
-	if (path->pathName() == "OsgScene")
-	{
-		d->outputScene->setSceneData(d->outputGroup);
-		d->outputSceneData.setOsgScene(d->outputScene);
-		*outputData = &d->outputSceneData;
 		return true;
 	}
 

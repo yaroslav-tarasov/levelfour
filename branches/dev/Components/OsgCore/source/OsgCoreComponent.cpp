@@ -32,7 +32,6 @@
 #include "OsgSimpleViewVisNode.h"
 #include "OsgCompositeViewVisNode.h"
 #include "OsgLightVisNode.h"
-#include "OsgSceneVisNode.h"
 #include "OsgGroupVisNode.h"
 #include "OsgGeodeFromActorVisNode.h"
 
@@ -204,7 +203,6 @@ QString OsgCoreComponent::copyrightStatement() const
 void OsgCoreComponent::initializeComponent()
 {
     REGISTER_NODE(OsgSimpleViewVisNode, d->nodeDescMap);
-    REGISTER_NODE(OsgSceneVisNode, d->nodeDescMap);
     REGISTER_NODE(OsgGroupVisNode, d->nodeDescMap);
     REGISTER_NODE(OsgGeodeFromActorVisNode, d->nodeDescMap);
     REGISTER_NODE(OsgLightVisNode, d->nodeDescMap);
