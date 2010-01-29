@@ -214,8 +214,7 @@ void OsgCoreComponent::initializeComponent()
 	REGISTER_NODE(OsgBoxVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgSphereVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgCylinderVisNode, d->nodeDescMap);
-/*    REGISTER_NODE(OsgGroupFromActorVisNode, d->nodeDescMap);
-    REGISTER_NODE(OsgCompositeViewVisNode, d->nodeDescMap);
+/*    REGISTER_NODE(OsgCompositeViewVisNode, d->nodeDescMap);
 */}
 
 void OsgCoreComponent::finalizeComponent()
