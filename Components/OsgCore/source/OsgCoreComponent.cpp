@@ -33,6 +33,9 @@
 #include "OsgCompositeViewVisNode.h"
 #include "OsgLightVisNode.h"
 #include "OsgGroupVisNode.h"
+#include "OsgGeodeVisNode.h"
+#include "OsgBoxVisNode.h"
+#include "OsgSphereVisNode.h"
 #include "OsgGeodeFromActorVisNode.h"
 
 #include "QOSGGraphics.h"
@@ -206,6 +209,9 @@ void OsgCoreComponent::initializeComponent()
     REGISTER_NODE(OsgGroupVisNode, d->nodeDescMap);
     REGISTER_NODE(OsgGeodeFromActorVisNode, d->nodeDescMap);
     REGISTER_NODE(OsgLightVisNode, d->nodeDescMap);
+	REGISTER_NODE(OsgGeodeVisNode, d->nodeDescMap);
+	REGISTER_NODE(OsgBoxVisNode, d->nodeDescMap);
+	REGISTER_NODE(OsgSphereVisNode, d->nodeDescMap);
 /*    REGISTER_NODE(OsgGroupFromActorVisNode, d->nodeDescMap);
     REGISTER_NODE(OsgCompositeViewVisNode, d->nodeDescMap);
 */}

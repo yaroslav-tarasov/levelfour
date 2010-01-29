@@ -110,9 +110,9 @@ bool OsgGroupVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNod
 		if (success = inputData->queryInterface("OsgGeodeFromActorVisNodeIOData", (void**)&geodeData)
 			&& geodeData)
 			d->outputGroup->addChild(geodeData->getOsgGeode().get());
-		else if (success = inputData->queryInterface("OsgGroupVisNodeIOData", (void**)&groupData)
+		else if (success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&groupData)
 			&& groupData)
-			d->outputGroup->addChild(groupData->getOsgGroup().get());
+			d->outputGroup->addChild(groupData->getOsgNode());
 
 		if (success)
 				return true;
@@ -139,13 +139,13 @@ bool OsgGroupVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystem
 		if (success = inputData->queryInterface("OsgGeodeFromActorVisNodeIOData", (void**)&geodeData)
 			&& geodeData)
 			d->outputGroup->removeChild((osg::ref_ptr<osg::Node>) geodeData->getOsgGeode().get());
-		else if (success = inputData->queryInterface("OsgGroupVisNodeIOData", (void**)&groupData)
+		else if (success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&groupData)
 			&& groupData)
-			d->outputGroup->removeChild((osg::ref_ptr<osg::Node>) groupData->getOsgGroup().get());
+			d->outputGroup->removeChild((osg::Node *) groupData->getOsgNode());
 
 		if (success)
 		{
-				d->outputGroupData.setOsgGroup(d->outputGroup);
+				d->outputGroupData.setOsgNode(d->outputGroup);
 				return true;
 		}
 	}
@@ -164,7 +164,7 @@ bool OsgGroupVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSystem
     */
 	if (path->pathName() == "OsgGroup")
 	{
-		d->outputGroupData.setOsgGroup(d->outputGroup);
+		d->outputGroupData.setOsgNode(d->outputGroup);
 		*outputData = &d->outputGroupData;
 		return true;
 	}
