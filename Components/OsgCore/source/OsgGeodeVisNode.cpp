@@ -66,6 +66,7 @@ OsgGeodeVisNode::OsgGeodeVisNode()
 	
 	d->outputGeode = new osg::Geode;
 	d->outputGeodeData.setOsgNode(d->outputGeode);
+	_visible = true;
 }
 
 OsgGeodeVisNode::~OsgGeodeVisNode()
@@ -76,6 +77,27 @@ OsgGeodeVisNode::~OsgGeodeVisNode()
 
     
     delete d;
+}
+
+bool OsgGeodeVisNode::getVisibility() const
+{
+	return _visible;
+}
+
+void OsgGeodeVisNode::setVisibility(bool visible)
+{
+	if (_visible != visible)
+	{
+		_visible = visible;
+
+		if (!d->outputGeode)
+			return;
+
+		if (_visible)
+			d->outputGeode->setNodeMask(1);
+		else 
+			d->outputGeode->setNodeMask(0);
+	}
 }
 
 bool OsgGeodeVisNode::hasInput(IVisSystemNodeConnectionPath* path)

@@ -37,10 +37,14 @@ class OsgGroupVisNode : public CGenericVisNodeBase
     Q_INTERFACES(IEditableProperties IEditablePropertiesExt)
 #endif
     DECLARE_VIS_NODE
+	Q_PROPERTY(bool Visible READ getVisibility WRITE setVisibility)
 
 public:
     OsgGroupVisNode();
     ~OsgGroupVisNode();
+
+	bool getVisibility() const;
+	void setVisibility(bool visible);
 
 protected:
     bool hasInput(IVisSystemNodeConnectionPath* path);
@@ -76,6 +80,7 @@ public:
 
 private:
     OsgGroupVisNodeData* d;
+	bool _visible;
 };
 
 #endif
