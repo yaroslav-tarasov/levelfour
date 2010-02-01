@@ -37,6 +37,7 @@ class OsgPATVisNode : public CGenericVisNodeBase
 #endif
     DECLARE_VIS_NODE
 
+	Q_PROPERTY(bool Visible READ getVisibility WRITE setVisibility)
 	Q_PROPERTY(double PosX READ posX WRITE setPosX)
 	Q_PROPERTY(double PosY READ posY WRITE setPosY)
 	Q_PROPERTY(double PosZ READ posZ WRITE setPosZ)
@@ -44,6 +45,9 @@ class OsgPATVisNode : public CGenericVisNodeBase
 public:
     OsgPATVisNode();
     ~OsgPATVisNode();
+
+	bool getVisibility() const;
+	void setVisibility(bool visible);
 
 	double posX() const;
 	void setPosX(double l);
@@ -90,6 +94,7 @@ protected:
 
 private:
     OsgPATVisNodeData* d;
+	bool _visible;
 };
 
 #endif

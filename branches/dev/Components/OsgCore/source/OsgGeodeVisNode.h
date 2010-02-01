@@ -37,9 +37,14 @@ class OsgGeodeVisNode : public CGenericVisNodeBase
 #endif
     DECLARE_VIS_NODE
 
+	Q_PROPERTY(bool Visible READ getVisibility WRITE setVisibility)
+
 public:
     OsgGeodeVisNode();
     ~OsgGeodeVisNode();
+
+	bool getVisibility() const;
+	void setVisibility(bool visible);
 
 protected:
     bool hasInput(IVisSystemNodeConnectionPath* path);
@@ -77,6 +82,7 @@ protected:
 
 private:
     OsgGeodeVisNodeData* d;
+	bool _visible;
 };
 
 #endif

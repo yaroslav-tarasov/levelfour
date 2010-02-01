@@ -63,6 +63,7 @@ OsgGroupVisNode::OsgGroupVisNode()
     d = new OsgGroupVisNodeData;
 
 	d->outputGroup = new osg::Group;
+	_visible = true;
 }
 
 OsgGroupVisNode::~OsgGroupVisNode()
@@ -74,6 +75,26 @@ OsgGroupVisNode::~OsgGroupVisNode()
     delete d;
 }
 
+bool OsgGroupVisNode::getVisibility() const
+{
+	return _visible;
+}
+
+void OsgGroupVisNode::setVisibility(bool visible)
+{
+	if (_visible != visible)
+	{
+		_visible = visible;
+
+		if (!d->outputGroup)
+			return;
+
+		if (_visible)
+			d->outputGroup->setNodeMask(1);
+		else 
+			d->outputGroup->setNodeMask(0);
+	}
+}
 
 bool OsgGroupVisNode::hasInput(IVisSystemNodeConnectionPath* path)
 {
