@@ -1,8 +1,0 @@
-<component title="SceneViewComponent" name="SceneViewComponent" >
- <object name="controller" />
- <widget title="OSG test  View" 
-		name="sceneView" 
-		parentWidget="MainWindowComponent.workspace" 
-		parentWidgetHint="RightDockWidgetArea" />
-
-</component>

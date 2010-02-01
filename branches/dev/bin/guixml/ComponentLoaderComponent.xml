@@ -24,9 +24,6 @@
     <method param1="ScenegraphManagerComponent" 
             param2="ScenegraphManager" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
-    <method param1="SceneExporterComponent" 
-            param2="SceneExporter" 
-            methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="OsgCoreComponent" 
             param2="OsgCore" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
