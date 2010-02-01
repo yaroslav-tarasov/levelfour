@@ -15,22 +15,6 @@ isEmpty(PROJECT_BASE) {
 
 }
 
-!exists( $$PROJECT_BASE/VTK5 ) {
-    error( "Cannot find VTK 5 directory" );
-}
-
-!exists( $$PROJECT_BASE/VTK5/include ) {
-    error( "Cannot find VTK 5's inlude directory" );
-}
-
-!exists( $$PROJECT_BASE/VTK5/lib ) {
-    error( "Cannot find VTK 5's lib directory" );
-}
-
-!exists( $$PROJECT_BASE/VTK5/bin ) {
-    error( "Cannot find VTK 5's bin directory" );
-}
-
 exists( $$PROJECT_BASE/VTKDesigner2.pro ) {
 
     TEMPLATE       = subdirs

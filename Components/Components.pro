@@ -5,9 +5,7 @@ TARGET      = Components
 SUBDIRS     = LevelFour \
 		  VisSystemCanvas \
               VisSystemNodeClassExplorer \
-		  VTKFullscreen \
-              VTKSystem \
-              TemplateManager \
+		  TemplateManager \
               PropertyEditor \
               Utils \
               ProjectManager \
@@ -15,14 +13,8 @@ SUBDIRS     = LevelFour \
               ScriptEditor \
               MainWindow \
               HelpSystem \
-		  D2M \
-		  M2M \
-		  M2R \
 		  OsgCore \
-		  TableView \
-		  TreeView \
 		  ScenegraphManager \
-		  PropertyInspector \
 		  SceneExporter \
 		  Clipboard
               
