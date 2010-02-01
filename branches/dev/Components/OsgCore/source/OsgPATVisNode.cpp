@@ -62,6 +62,7 @@ OsgPATVisNode::OsgPATVisNode()
     d = new OsgPATVisNodeData;
 
 	d->outputPAT = new osg::PositionAttitudeTransform;
+	_visible = true;
 }
 
 OsgPATVisNode::~OsgPATVisNode()
@@ -72,6 +73,27 @@ OsgPATVisNode::~OsgPATVisNode()
 
     
     delete d;
+}
+
+bool OsgPATVisNode::getVisibility() const
+{
+	return _visible;
+}
+
+void OsgPATVisNode::setVisibility(bool visible)
+{
+	if (_visible != visible)
+	{
+		_visible = visible;
+
+		if (!d->outputPAT)
+			return;
+
+		if (_visible)
+			d->outputPAT->setNodeMask(1);
+		else 
+			d->outputPAT->setNodeMask(0);
+	}
 }
 
 double OsgPATVisNode::posX() const
