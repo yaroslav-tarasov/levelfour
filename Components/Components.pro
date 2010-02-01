@@ -15,7 +15,6 @@ SUBDIRS     = LevelFour \
               HelpSystem \
 		  OsgCore \
 		  ScenegraphManager \
-		  SceneExporter \
 		  Clipboard
               
            
