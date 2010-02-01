@@ -14,8 +14,8 @@
 **
 ****************************************************************************/
 
-#ifndef OSGLIGHTVISNODE_VIS_NODE_H
-#define OSGLIGHTVISNODE_VIS_NODE_H
+#ifndef OSGCONEVISNODE_VIS_NODE_H
+#define OSGCONEVISNODE_VIS_NODE_H
 
 #include "UserDefinedDataTypes.h"
 #include "CGenericVisNodeBase.h"
@@ -24,8 +24,8 @@
 #include "IEditableProperties.h"
 #endif
 
-struct OsgLightVisNodeData;
-class OsgLightVisNode : public CGenericVisNodeBase
+struct OsgConeVisNodeData;
+class OsgConeVisNode : public CGenericVisNodeBase
 #ifdef ENABLE_ADVANCED_PROPERTIES
                        , virtual public IEditableProperties
                        , virtual public IEditablePropertiesExt
@@ -37,42 +37,9 @@ class OsgLightVisNode : public CGenericVisNodeBase
 #endif
     DECLARE_VIS_NODE
 
-	Q_PROPERTY(int LightNum READ lightNum WRITE setLightNum)
-	Q_PROPERTY(double PosX READ posX WRITE setPosX)
-	Q_PROPERTY(double PosY READ posY WRITE setPosY)
-	Q_PROPERTY(double PosZ READ posZ WRITE setPosZ)	
-	Q_PROPERTY(double PosW READ posW WRITE setPosW)
-	Q_PROPERTY(double DirectionX READ directionX WRITE setDirectionX)
-	Q_PROPERTY(double DirectionY READ directionY WRITE setDirectionY)
-	Q_PROPERTY(double DirectionZ READ directionZ WRITE setDirectionZ)
-
 public:
-    OsgLightVisNode();
-    ~OsgLightVisNode();
-
-	int lightNum() const;
-	void setLightNum(int l);
-	
-	double posX() const;
-	void setPosX(double l);
-
-	double posY() const;
-	void setPosY(double l);
-
-	double posZ() const;
-	void setPosZ(double l);
-
-	double posW() const;
-	void setPosW(double l);
-
-	double directionX() const;
-	void setDirectionX(double l);
-
-	double directionY() const;
-	void setDirectionY(double l);
-
-	double directionZ() const;
-	void setDirectionZ(double l);
+    OsgConeVisNode();
+    ~OsgConeVisNode();
 
 protected:
     bool hasInput(IVisSystemNodeConnectionPath* path);
@@ -109,7 +76,7 @@ protected:
     
 
 private:
-    OsgLightVisNodeData* d;
+    OsgConeVisNodeData* d;
 };
 
 #endif

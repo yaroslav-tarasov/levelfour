@@ -24,8 +24,8 @@
 DEFINE_VIS_NODE(OsgCylinderVisNode, CGenericVisNodeBase)
 {
     pDesc->setNodeClassCategory("OsgCore");
-    pDesc->setNodeClassName("OsgCylinder");
-    pDesc->setNodeClassDescription("OsgCylinder");
+    pDesc->setNodeClassName("Cylinder");
+    pDesc->setNodeClassDescription("Cylinder");
     pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
 
     // Uncomment and use the following code template to add input/output paths

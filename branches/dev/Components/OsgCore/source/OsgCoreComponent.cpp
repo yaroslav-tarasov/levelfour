@@ -36,8 +36,12 @@
 #include "OsgGeodeVisNode.h"
 #include "OsgBoxVisNode.h"
 #include "OsgSphereVisNode.h"
+#include "OsgConeVisNode.h"
 #include "OsgCylinderVisNode.h"
-#include "OsgGeodeFromActorVisNode.h"
+#include "OsgMatrixTransformVisNode.h"
+#include "OsgMatrixVisNode.h"
+#include "OsgSwitchVisNode.h"
+#include "OsgPATVisNode.h"
 
 #include "QOSGGraphics.h"
 
@@ -208,12 +212,16 @@ void OsgCoreComponent::initializeComponent()
 {
     REGISTER_NODE(OsgSimpleViewVisNode, d->nodeDescMap);
     REGISTER_NODE(OsgGroupVisNode, d->nodeDescMap);
-    REGISTER_NODE(OsgGeodeFromActorVisNode, d->nodeDescMap);
     REGISTER_NODE(OsgLightVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgGeodeVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgBoxVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgSphereVisNode, d->nodeDescMap);
+	REGISTER_NODE(OsgConeVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgCylinderVisNode, d->nodeDescMap);
+	REGISTER_NODE(OsgMatrixTransformVisNode, d->nodeDescMap);
+	REGISTER_NODE(OsgMatrixVisNode, d->nodeDescMap);
+	REGISTER_NODE(OsgSwitchVisNode, d->nodeDescMap);
+	REGISTER_NODE(OsgPATVisNode, d->nodeDescMap);
 /*    REGISTER_NODE(OsgCompositeViewVisNode, d->nodeDescMap);
 */}
 
