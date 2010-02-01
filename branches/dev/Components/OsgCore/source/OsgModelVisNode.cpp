@@ -14,49 +14,51 @@
 **
 ****************************************************************************/
 
-#include "OsgCylinderVisNode.h"
+#include "OsgModelVisNode.h"
 #include "OsgCoreComponent.h"
 #include "OsgNodeVisNodeIOData.h"
-#include <osg/ShapeDrawable>
-#include "OsgDrawableVisNodeIOData.h"
+#include <osg/ref_ptr>
+#include <osg/Node>
+#include <osgDB/ReadFile>
+#include <QtCore/QString>
 
-
-DEFINE_VIS_NODE(OsgCylinderVisNode, CGenericVisNodeBase)
+DEFINE_VIS_NODE(OsgModelVisNode, CGenericVisNodeBase)
 {
     pDesc->setNodeClassCategory("OsgCore");
-    pDesc->setNodeClassName("Cylinder");
-    pDesc->setNodeClassDescription("Cylinder");
+    pDesc->setNodeClassName("Model");
+    pDesc->setNodeClassDescription("Load osg model");
     pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
 
     // Uncomment and use the following code template to add input/output paths
-    pDesc->addConnectionPath(
+
+	pDesc->addConnectionPath(
         new CGenericVisNodeConnectionPath(
-                "OsgDrawable",                                 // Name of the path
+                "OsgModel",                                 // Name of the path
                 IVisSystemNodeConnectionPath::OutputPath,   // Path type can be OutputPath or InputPath
-				"osg::Drawable",                                 // Data type of the path
+				"osg::ref_ptr<osg::Node>",                                 // Data type of the path
                 0,                                          // Path index (don't change)
                 false                                       // Allow Multiple Inputs Flag
             )
         );
 }
 
-struct OsgCylinderVisNodeData
+struct OsgModelVisNodeData
 {
-	OsgCylinderVisNodeData() : outputDrawable(0) {}
-	osg::ShapeDrawable * outputDrawable;
-	OsgDrawableVisNodeIOData outputDrawableData;
+	OsgModelVisNodeData() : outputNode(0) {}
+	osg::ref_ptr<osg::Group> outputNode;
+	OsgNodeVisNodeIOData outputModelData;
 };
 
-OsgCylinderVisNode::OsgCylinderVisNode()
+OsgModelVisNode::OsgModelVisNode()
 {
-    OsgCylinderVisNode::InitializeNodeDesc();
-    d = new OsgCylinderVisNodeData;
+    OsgModelVisNode::InitializeNodeDesc();
+    d = new OsgModelVisNodeData;
 
-	d->outputDrawableData.setDrawable(d->outputDrawable = new osg::ShapeDrawable(new osg::Cylinder));
-    
+	d->outputNode = new osg::Group;
+	d->outputModelData.setOsgNode(d->outputNode);
 }
 
-OsgCylinderVisNode::~OsgCylinderVisNode()
+OsgModelVisNode::~OsgModelVisNode()
 {
     // This would be a good time to delete the backend object. If the backend object is a vtkObject
     // subclass, then you have to delete it now.
@@ -66,7 +68,29 @@ OsgCylinderVisNode::~OsgCylinderVisNode()
     delete d;
 }
 
-bool OsgCylinderVisNode::hasInput(IVisSystemNodeConnectionPath* path)
+QString OsgModelVisNode::source() const
+{
+	return _source;
+}
+
+void OsgModelVisNode::setSource(QString source)
+{
+	if (_source.compare(source) != 0)
+	{
+		_source = source;
+
+		d->outputNode->removeChildren(0, d->outputNode->getNumChildren());
+
+		osg::ref_ptr<osg::Node> model = osgDB::readNodeFile(_source.toStdString());
+
+		if (!model)
+			return;
+		
+		d->outputNode->addChild(model);
+	}
+}
+
+bool OsgModelVisNode::hasInput(IVisSystemNodeConnectionPath* path)
 {
     if(!path)
         return false;
@@ -79,7 +103,7 @@ bool OsgCylinderVisNode::hasInput(IVisSystemNodeConnectionPath* path)
     return CGenericVisNodeBase::hasInput(path);
 }
 
-bool OsgCylinderVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData)
+bool OsgModelVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData)
 {
     if(!path || !inputData)
         return false;
@@ -92,7 +116,7 @@ bool OsgCylinderVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystem
     return CGenericVisNodeBase::setInput(path, inputData);
 }
 
-bool OsgCylinderVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData)
+bool OsgModelVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData)
 {
     if(!path || !inputData)
         return false;
@@ -105,7 +129,7 @@ bool OsgCylinderVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSys
     return CGenericVisNodeBase::removeInput(path, inputData);
 }
 
-bool OsgCylinderVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData** outputData)
+bool OsgModelVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData** outputData)
 {
     if(!path || !outputData)
         return false;
@@ -114,16 +138,17 @@ bool OsgCylinderVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSys
     If you have added output paths in the description block at the header of this file,
     then you will have to handle outputs here
     */
-	if (path->pathName() == "OsgDrawable")
+	if (path->pathName() == "OsgModel")
 	{
-		*outputData = &d->outputDrawableData;
+		d->outputModelData.setOsgNode(d->outputNode);
+		*outputData = &d->outputModelData;
 		return true;
 	}
 
     return CGenericVisNodeBase::fetchOutput(path, outputData);
 }
 
-bool OsgCylinderVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* outputData)
+bool OsgModelVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* outputData)
 {
     if(!path || !outputData)
         return false;
@@ -132,7 +157,7 @@ bool OsgCylinderVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVisS
     If you have added output paths in the description block at the header of this file,
     then you will have to handle outputs here
     */
-	if (path->pathName() == "OsgCylinder")
+	if (path->pathName() == "OsgModel")
 		return true;
 
     return CGenericVisNodeBase::outputDerefed(path, outputData);
@@ -140,61 +165,61 @@ bool OsgCylinderVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVisS
 
 #ifdef ENABLE_ADVANCED_PROPERTIES
 
-int OsgCylinderVisNode::propertyCount()
+int OsgModelVisNode::propertyCount()
 {
     return 0;
 }
 
-QString OsgCylinderVisNode::propertyName(int index)
+QString OsgModelVisNode::propertyName(int index)
 {
     Q_UNUSED(index);
     return QString();
 }
 
-QString OsgCylinderVisNode::propertyGroup(int index)
+QString OsgModelVisNode::propertyGroup(int index)
 {
     Q_UNUSED(index);
     return QString();
 }
 
-QVariant OsgCylinderVisNode::propertyValue(int index)
+QVariant OsgModelVisNode::propertyValue(int index)
 {
     Q_UNUSED(index);
     return QVariant();
 }
 
-void OsgCylinderVisNode::setPropertyValue(int index, QVariant value)
+void OsgModelVisNode::setPropertyValue(int index, QVariant value)
 {
     Q_UNUSED(index);
     Q_UNUSED(value);
 }
 
-bool OsgCylinderVisNode::hasEditor(int index)
+bool OsgModelVisNode::hasEditor(int index)
 {
     Q_UNUSED(index);
     return false;
 }
 
-QWidget* OsgCylinderVisNode::createEditor(int index)
+QWidget* OsgModelVisNode::createEditor(int index)
 {
     Q_UNUSED(index);
     return 0;
 }
 
-void OsgCylinderVisNode::setEditorValue(int index, QWidget* widget, QVariant value)
+void OsgModelVisNode::setEditorValue(int index, QWidget* widget, QVariant value)
 {
     Q_UNUSED(index);
     Q_UNUSED(widget);
     Q_UNUSED(value);
 }
 
-QVariant OsgCylinderVisNode::editorValue(int index, QWidget* widget)
+QVariant OsgModelVisNode::editorValue(int index, QWidget* widget)
 {
     Q_UNUSED(index);
     Q_UNUSED(widget);
 }
 
-void OsgCylinderVisNode::connectEditor(int index, QWidget* widget, QObject* receiver, const char* member)
+void OsgModelVisNode::connectEditor(int index, QWidget* widget, QObject* receiver, const char* member)
 {
     Q_UNUSED(index);
     Q_UNUSED(widget);
@@ -202,13 +227,13 @@ void OsgCylinderVisNode::connectEditor(int index, QWidget* widget, QObject* rece
     Q_UNUSED(member);
 }
 
-QString OsgCylinderVisNode::propertyValueString(int index)
+QString OsgModelVisNode::propertyValueString(int index)
 {
     Q_UNUSED(index);
     return QString();
 }
 
-QVariant OsgCylinderVisNode::propertyValueFromString(int index, QString valueStr)
+QVariant OsgModelVisNode::propertyValueFromString(int index, QString valueStr)
 {
     Q_UNUSED(index);
     Q_UNUSED(valueStr);
@@ -216,7 +241,7 @@ QVariant OsgCylinderVisNode::propertyValueFromString(int index, QString valueStr
     return QVariant();
 }
 
-bool OsgCylinderVisNode::canLoadSaveProperty(int index)
+bool OsgModelVisNode::canLoadSaveProperty(int index)
 {
     Q_UNUSED(index);
 
