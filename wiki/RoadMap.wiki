@@ -3,15 +3,25 @@
 
 ===Pipeline===
 
-*Data-to-Model*
+*OSG*
 
-  * VTK Node integration
-  * VTK -> OSG Bridge (a.k.a. ActorToOSG)
+  * osgCore
+  * osgUtil
+  * osgDB
+  * osgFX
+  * osgParticle
+  * osgSim
+  * osgManipulator
+  * osgShadow
+  * osgTerrain
+  * osgText
+  * osgAnimation
+  * osgVolume
 
-*Model-to-Render*
+*Specialized*
 
-  * Actor -> OSG Render (scene)
-  * OSG Node integration (camera, light, shaders, texture, etc.)
+  * osgGIS
+  * osgEarth
 
 ===Interfaces===
 
@@ -23,8 +33,8 @@
 *Compositing*
 
   * Recipe Explorer
-  * Pattern Explorer
-  * Node-Link Modeler
+  * Pattern Catalog
+  * Pipeline Designer
   * Method Inspector
 
 *Scene Management*
@@ -35,8 +45,7 @@
 *Rendering*
 
   * Render Viewport (OSG viewer)
-  * Table Viewport (tabular data)
-  * Tree Viewport (hierarchical tree data)
+  * Data Viewport (tabular, tree data)
 
 *Interactivity and Controls*
 
