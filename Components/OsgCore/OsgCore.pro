@@ -44,6 +44,7 @@ HEADERS += source/OsgCoreComponent.h \
 		   source/OsgSwitchVisNode.h \
 		   source/OsgPATVisNode.h \
 		   source/OsgPATVisNodeIOData.h \
+		   source/OsgModelVisNode.h \
 				
 SOURCES += source/OsgCoreComponent.cpp \
            source/OsgSimpleViewVisNode.cpp \
@@ -66,6 +67,7 @@ SOURCES += source/OsgCoreComponent.cpp \
 		   source/OsgSwitchVisNode.cpp \
 		   source/OsgPATVisNode.cpp \
 		   source/OsgPATVisNodeIOData.cpp \
+		   source/OsgModelVisNode.cpp \
 
 
 LIBS			+= -losgd \

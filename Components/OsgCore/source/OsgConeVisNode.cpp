@@ -130,7 +130,7 @@ bool OsgConeVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVisSyste
     If you have added output paths in the description block at the header of this file,
     then you will have to handle outputs here
     */
-	if (path->pathName() == "OsgBox")
+	if (path->pathName() == "OsgCone")
 		return true;
 
     return CGenericVisNodeBase::outputDerefed(path, outputData);

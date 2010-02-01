@@ -42,6 +42,7 @@
 #include "OsgMatrixVisNode.h"
 #include "OsgSwitchVisNode.h"
 #include "OsgPATVisNode.h"
+#include "OsgModelVisNode.h"
 
 #include "QOSGGraphics.h"
 
@@ -222,6 +223,7 @@ void OsgCoreComponent::initializeComponent()
 	REGISTER_NODE(OsgMatrixVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgSwitchVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgPATVisNode, d->nodeDescMap);
+	REGISTER_NODE(OsgModelVisNode, d->nodeDescMap);
 /*    REGISTER_NODE(OsgCompositeViewVisNode, d->nodeDescMap);
 */}
 
