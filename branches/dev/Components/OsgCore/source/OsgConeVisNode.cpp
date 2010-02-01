@@ -14,61 +14,48 @@
 **
 ****************************************************************************/
 
-#include "OsgGeodeVisNode.h"
+#include "OsgConeVisNode.h"
 #include "OsgCoreComponent.h"
-#include <osg/Geode>
-#include <osg/Drawable>
-#include "OsgDrawableVisNodeIOData.h"
 #include "OsgNodeVisNodeIOData.h"
+#include <osg/ShapeDrawable>
+#include "OsgDrawableVisNodeIOData.h"
 
-DEFINE_VIS_NODE(OsgGeodeVisNode, CGenericVisNodeBase)
+
+DEFINE_VIS_NODE(OsgConeVisNode, CGenericVisNodeBase)
 {
     pDesc->setNodeClassCategory("OsgCore");
-    pDesc->setNodeClassName("Geode");
-    pDesc->setNodeClassDescription("Geode");
+    pDesc->setNodeClassName("Cone");
+    pDesc->setNodeClassDescription("Cone");
     pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
 
     // Uncomment and use the following code template to add input/output paths
-    
     pDesc->addConnectionPath(
         new CGenericVisNodeConnectionPath(
                 "OsgDrawable",                                 // Name of the path
-                IVisSystemNodeConnectionPath::InputPath,   // Path type can be OutputPath or InputPath
-				"osg::Drawable",                                 // Data type of the path
-                0,                                          // Path index (don't change)
-                true                                       // Allow Multiple Inputs Flag
-            )
-        );
-    
-    pDesc->addConnectionPath(
-        new CGenericVisNodeConnectionPath(
-                "OsgGeode",                                 // Name of the path
                 IVisSystemNodeConnectionPath::OutputPath,   // Path type can be OutputPath or InputPath
-                "osg::ref_ptr<osg::Geode>",                                 // Data type of the path
+				"osg::Drawable",                                 // Data type of the path
                 0,                                          // Path index (don't change)
                 false                                       // Allow Multiple Inputs Flag
             )
         );
 }
 
-struct OsgGeodeVisNodeData
+struct OsgConeVisNodeData
 {
-	OsgGeodeVisNodeData() : inputDrawable(0), outputGeode(0) {}
-	osg::Drawable * inputDrawable;
-	osg::ref_ptr<osg::Geode> outputGeode;
-	OsgNodeVisNodeIOData outputGeodeData;
+	OsgConeVisNodeData() : outputDrawable(0) {}
+	osg::ShapeDrawable * outputDrawable;
+	OsgDrawableVisNodeIOData outputDrawableData;
 };
 
-OsgGeodeVisNode::OsgGeodeVisNode()
+OsgConeVisNode::OsgConeVisNode()
 {
-    OsgGeodeVisNode::InitializeNodeDesc();
-    d = new OsgGeodeVisNodeData;
-	
-	d->outputGeode = new osg::Geode;
-	d->outputGeodeData.setOsgNode(d->outputGeode);
+    OsgConeVisNode::InitializeNodeDesc();
+    d = new OsgConeVisNodeData;
+
+	d->outputDrawableData.setDrawable(d->outputDrawable = new osg::ShapeDrawable(new osg::Cone));
 }
 
-OsgGeodeVisNode::~OsgGeodeVisNode()
+OsgConeVisNode::~OsgConeVisNode()
 {
     // This would be a good time to delete the backend object. If the backend object is a vtkObject
     // subclass, then you have to delete it now.
@@ -78,7 +65,7 @@ OsgGeodeVisNode::~OsgGeodeVisNode()
     delete d;
 }
 
-bool OsgGeodeVisNode::hasInput(IVisSystemNodeConnectionPath* path)
+bool OsgConeVisNode::hasInput(IVisSystemNodeConnectionPath* path)
 {
     if(!path)
         return false;
@@ -88,13 +75,10 @@ bool OsgGeodeVisNode::hasInput(IVisSystemNodeConnectionPath* path)
     then you will have to handle inputs here
     */
 
-	if (path->pathName() == "OsgDrawable")
-		return d->outputGeode && d->outputGeode->getNumDrawables() > 0;
-
     return CGenericVisNodeBase::hasInput(path);
 }
 
-bool OsgGeodeVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData)
+bool OsgConeVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData)
 {
     if(!path || !inputData)
         return false;
@@ -103,21 +87,11 @@ bool OsgGeodeVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNod
     If you have added input paths in the description block at the header of this file,
     then you will have to handle inputs here
     */
-	if (path->pathName() == "OsgDrawable")
-	{
-		OsgDrawableVisNodeIOData * drawableData = 0;
-		bool success = inputData->queryInterface("OsgDrawableVisNodeIOData", (void**)&drawableData);
-		if (success && drawableData)
-		{
-			d->outputGeode->addDrawable(drawableData->getOsgDrawable());
-			return true;
-		}
-	}
 
     return CGenericVisNodeBase::setInput(path, inputData);
 }
 
-bool OsgGeodeVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData)
+bool OsgConeVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData)
 {
     if(!path || !inputData)
         return false;
@@ -126,21 +100,11 @@ bool OsgGeodeVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystem
     If you have added input paths in the description block at the header of this file,
     then you will have to handle inputs here
     */
-	if (path->pathName() == "OsgDrawable")
-	{
-		OsgDrawableVisNodeIOData * drawableData = 0;
-		bool success = inputData->queryInterface("OsgDrawableVisNodeIOData", (void**)&drawableData);
-		if (success && drawableData)
-		{
-			d->outputGeode->removeDrawable(drawableData->getOsgDrawable());
-			return true;
-		}
-	}
 
     return CGenericVisNodeBase::removeInput(path, inputData);
 }
 
-bool OsgGeodeVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData** outputData)
+bool OsgConeVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData** outputData)
 {
     if(!path || !outputData)
         return false;
@@ -149,18 +113,15 @@ bool OsgGeodeVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSystem
     If you have added output paths in the description block at the header of this file,
     then you will have to handle outputs here
     */
-	if (path->pathName() == "OsgGeode")
+	if (path->pathName() == "OsgDrawable")
 	{
-		d->outputGeodeData.setOsgNode(d->outputGeode);
-		*outputData = &d->outputGeodeData;
+		*outputData = &d->outputDrawableData;
 		return true;
 	}
-
-
     return CGenericVisNodeBase::fetchOutput(path, outputData);
 }
 
-bool OsgGeodeVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* outputData)
+bool OsgConeVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* outputData)
 {
     if(!path || !outputData)
         return false;
@@ -169,7 +130,7 @@ bool OsgGeodeVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVisSyst
     If you have added output paths in the description block at the header of this file,
     then you will have to handle outputs here
     */
-	if (path->pathName() == "OsgGeode")
+	if (path->pathName() == "OsgBox")
 		return true;
 
     return CGenericVisNodeBase::outputDerefed(path, outputData);
@@ -177,61 +138,61 @@ bool OsgGeodeVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVisSyst
 
 #ifdef ENABLE_ADVANCED_PROPERTIES
 
-int OsgGeodeVisNode::propertyCount()
+int OsgConeVisNode::propertyCount()
 {
     return 0;
 }
 
-QString OsgGeodeVisNode::propertyName(int index)
+QString OsgConeVisNode::propertyName(int index)
 {
     Q_UNUSED(index);
     return QString();
 }
 
-QString OsgGeodeVisNode::propertyGroup(int index)
+QString OsgConeVisNode::propertyGroup(int index)
 {
     Q_UNUSED(index);
     return QString();
 }
 
-QVariant OsgGeodeVisNode::propertyValue(int index)
+QVariant OsgConeVisNode::propertyValue(int index)
 {
     Q_UNUSED(index);
     return QVariant();
 }
 
-void OsgGeodeVisNode::setPropertyValue(int index, QVariant value)
+void OsgConeVisNode::setPropertyValue(int index, QVariant value)
 {
     Q_UNUSED(index);
     Q_UNUSED(value);
 }
 
-bool OsgGeodeVisNode::hasEditor(int index)
+bool OsgConeVisNode::hasEditor(int index)
 {
     Q_UNUSED(index);
     return false;
 }
 
-QWidget* OsgGeodeVisNode::createEditor(int index)
+QWidget* OsgConeVisNode::createEditor(int index)
 {
     Q_UNUSED(index);
     return 0;
 }
 
-void OsgGeodeVisNode::setEditorValue(int index, QWidget* widget, QVariant value)
+void OsgConeVisNode::setEditorValue(int index, QWidget* widget, QVariant value)
 {
     Q_UNUSED(index);
     Q_UNUSED(widget);
     Q_UNUSED(value);
 }
 
-QVariant OsgGeodeVisNode::editorValue(int index, QWidget* widget)
+QVariant OsgConeVisNode::editorValue(int index, QWidget* widget)
 {
     Q_UNUSED(index);
     Q_UNUSED(widget);
 }
 
-void OsgGeodeVisNode::connectEditor(int index, QWidget* widget, QObject* receiver, const char* member)
+void OsgConeVisNode::connectEditor(int index, QWidget* widget, QObject* receiver, const char* member)
 {
     Q_UNUSED(index);
     Q_UNUSED(widget);
@@ -239,13 +200,13 @@ void OsgGeodeVisNode::connectEditor(int index, QWidget* widget, QObject* receive
     Q_UNUSED(member);
 }
 
-QString OsgGeodeVisNode::propertyValueString(int index)
+QString OsgConeVisNode::propertyValueString(int index)
 {
     Q_UNUSED(index);
     return QString();
 }
 
-QVariant OsgGeodeVisNode::propertyValueFromString(int index, QString valueStr)
+QVariant OsgConeVisNode::propertyValueFromString(int index, QString valueStr)
 {
     Q_UNUSED(index);
     Q_UNUSED(valueStr);
@@ -253,7 +214,7 @@ QVariant OsgGeodeVisNode::propertyValueFromString(int index, QString valueStr)
     return QVariant();
 }
 
-bool OsgGeodeVisNode::canLoadSaveProperty(int index)
+bool OsgConeVisNode::canLoadSaveProperty(int index)
 {
     Q_UNUSED(index);
 

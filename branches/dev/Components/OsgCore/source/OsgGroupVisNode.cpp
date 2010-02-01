@@ -16,7 +16,6 @@
 
 #include "OsgGroupVisNode.h"
 #include "OsgCoreComponent.h"
-#include "OsgGeodeFromActorVisNodeIOData.h"
 #include "OsgLightVisNodeIOData.h"
 #include <osgGA/TrackballManipulator>
 #include <osg/LightSource>
@@ -103,14 +102,16 @@ bool OsgGroupVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNod
     */
 	if (path->pathName() == "OsgNodeInput")
 	{
-		OsgGeodeFromActorVisNodeIOData * geodeData = 0;
 		OsgGroupVisNodeIOData * groupData = 0;
 		bool success = false;
 
+		// UNCOMMENT FOLLOWING TO INTEGRATE VTK
+/*		OsgGeodeFromActorVisNodeIOData * geodeData = 0;
 		if (success = inputData->queryInterface("OsgGeodeFromActorVisNodeIOData", (void**)&geodeData)
 			&& geodeData)
 			d->outputGroup->addChild(geodeData->getOsgGeode().get());
-		else if (success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&groupData)
+		else  */
+		if (success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&groupData)
 			&& groupData)
 			d->outputGroup->addChild(groupData->getOsgNode());
 
@@ -132,14 +133,18 @@ bool OsgGroupVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystem
     */
 	if (path->pathName() == "OsgNodeInput")
 	{
-		OsgGeodeFromActorVisNodeIOData * geodeData = 0;
 		OsgGroupVisNodeIOData * groupData = 0;
 		bool success = false;
 
+
+		// UNCOMMENT FOLLOWING TO INTEGRATE VTK
+/*		OsgGeodeFromActorVisNodeIOData * geodeData = 0;
 		if (success = inputData->queryInterface("OsgGeodeFromActorVisNodeIOData", (void**)&geodeData)
 			&& geodeData)
 			d->outputGroup->removeChild((osg::ref_ptr<osg::Node>) geodeData->getOsgGeode().get());
-		else if (success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&groupData)
+		else */
+		
+		if (success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&groupData)
 			&& groupData)
 			d->outputGroup->removeChild((osg::Node *) groupData->getOsgNode());
 
