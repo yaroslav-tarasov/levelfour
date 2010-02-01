@@ -1,9 +1,0 @@
-<component title="TableViewComponent" name="TableViewComponent" >
-
- <object name="controller" />
-
- <widget name="tableView" parentWidget="MainWindowComponent.workspace"
-		title="Table View" />
-
-
-</component>
