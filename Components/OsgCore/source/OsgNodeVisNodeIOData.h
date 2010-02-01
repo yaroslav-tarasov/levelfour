@@ -21,6 +21,8 @@ public:
 
 	osg::Node * getOsgNode() const;
 
+	virtual void addOsgNode(osg::ref_ptr<osg::Node>) {};
+
 protected:
 	osg::Node * m_osgNode;
 };
