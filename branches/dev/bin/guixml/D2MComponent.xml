@@ -1,8 +1,0 @@
-<component title="InfoVisComponent" name="InfoVisComponent" >
-
-   <object name="controller" />
-   
-   <widget name="outputViewer" title="Data View"
-           parentWidget="MainWindowComponent.workspace" />
-   
-</component>
