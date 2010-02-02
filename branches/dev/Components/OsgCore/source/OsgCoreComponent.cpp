@@ -38,8 +38,6 @@
 #include "OsgSphereVisNode.h"
 #include "OsgConeVisNode.h"
 #include "OsgCylinderVisNode.h"
-#include "OsgMatrixTransformVisNode.h"
-#include "OsgMatrixVisNode.h"
 #include "OsgSwitchVisNode.h"
 #include "OsgPATVisNode.h"
 #include "OsgModelVisNode.h"
@@ -219,8 +217,6 @@ void OsgCoreComponent::initializeComponent()
 	REGISTER_NODE(OsgSphereVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgConeVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgCylinderVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgMatrixTransformVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgMatrixVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgSwitchVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgPATVisNode, d->nodeDescMap);
 	REGISTER_NODE(OsgModelVisNode, d->nodeDescMap);
