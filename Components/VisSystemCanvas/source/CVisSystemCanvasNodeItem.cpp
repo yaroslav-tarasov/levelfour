@@ -263,43 +263,32 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 
     if(this->isSelected())
 	{   
-		// Stroke for highlight on select 218;165;32 / 24;116;205 / 229;229;229
-		QColor penSelectColor = QColor(155,155,155);
-		p->setPen( QPen(penSelectColor, 1) );
+		// Stroke for highlight on select
+		QColor penSelectColor = QColor(0,0,0);
+		p->setPen( QPen(penSelectColor, 2) );
 	}
     else
     {
-		// QColor penColor = opt->palette.highlight().color();
-        QColor penLightColor = QColor(150,150,150);
+		QColor penLightColor = QColor(10,10,10);
 		penLightColor.setAlphaF(0.85);
-        p->setPen( QPen(penLightColor, 1) );
+        p->setPen( QPen(penLightColor, 2) );
     }
 
 	if(opt->levelOfDetail >= 0.75)
     {
         // Base node style
-		QColor darkColor = QColor(190,180,120);
-		QColor midColor = QColor(108,108,108);
-		QColor lightColor = QColor(108,108,108);
+		QColor midColor = QColor(245,245,245);
 		
-		darkColor.setAlphaF(alpha);
 		midColor.setAlphaF(alpha);
-        lightColor.setAlphaF(alpha);
         
-        QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
-        grad.setColorAt(0, midColor);
-        grad.setColorAt(0.2, lightColor);
-        grad.setColorAt(0.8, lightColor);
-        grad.setColorAt(1, midColor);
-
         QPainterPath path;
         path.addRoundRect(r2.adjusted(1,1,-1,-1), 10, 10);
-		p->fillPath(path, grad);
+		p->fillPath(path, midColor);
         p->drawPath(path);
     }
 	else
 	{
-		QColor fillColor = opt->palette.light().color();
+		QColor fillColor = QColor(245,245,245);
 		fillColor.setAlphaF(alpha);
 
         QPainterPath path;
@@ -323,7 +312,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 		textRect = r2;
 
     // Draw the node text
-    p->setPen(pen);
+    p->setPen(Qt::black);
 
 
 	if(opt->levelOfDetail >= 0.75)
