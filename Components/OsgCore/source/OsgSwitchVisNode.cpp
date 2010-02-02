@@ -23,7 +23,7 @@ DEFINE_VIS_NODE(OsgSwitchVisNode, CGenericVisNodeBase)
     pDesc->setNodeClassCategory("OsgCore");
     pDesc->setNodeClassName("Switch");
     pDesc->setNodeClassDescription("Switch");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/Switch.png") );
 
     // Uncomment and use the following code template to add input/output paths
     /*

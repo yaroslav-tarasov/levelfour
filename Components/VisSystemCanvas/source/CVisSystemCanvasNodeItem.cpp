@@ -225,20 +225,15 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 	// p->shear(0,0.5); - this works as sy = 0.5 (sine(30 deg))
 	// p->rotate(30);
 	
+	// We want the nodes to be smooth and clear
+	p->setRenderHint(QPainter::Antialiasing, true);
+	p->setRenderHint(QPainter::TextAntialiasing, true);
+	
 #ifdef USE_SYSTEM_STYLE
-    QStyleOptionButton hopt;
-    hopt.rect = r.toRect();
-    hopt.palette = opt->palette;
-    hopt.state = QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Horizontal|QStyle::State_Enabled|QStyle::State_Raised;
-    if(isSelected())
-        hopt.features = QStyleOptionButton::DefaultButton;
-    if(widget)
-        widget->style()->drawControl(QStyle::CE_PushButtonBevel, &hopt, p, 0);
-    else
-        QApplication::style()->drawControl(QStyle::CE_PushButtonBevel, &hopt, p, 0);
-
+    
     p->setPen(pen);
     p->drawText(r2, Qt::AlignCenter, d->node->nodeName());
+
 #else
     QRectF r2 = r.adjusted(0, 0, -5, -5);
 

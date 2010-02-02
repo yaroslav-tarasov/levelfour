@@ -39,8 +39,6 @@ HEADERS += source/OsgCoreComponent.h \
            source/OsgCylinderVisNode.h \
 		   source/OsgConeVisNode.h \
 		   source/OsgDrawableVisNodeIOData.h \
-		   source/OsgMatrixTransformVisNode.h \
-		   source/OsgMatrixVisNode.h \
 		   source/OsgSwitchVisNode.h \
 		   source/OsgPATVisNode.h \
 		   source/OsgPATVisNodeIOData.h \
@@ -62,8 +60,6 @@ SOURCES += source/OsgCoreComponent.cpp \
 		   source/OsgConeVisNode.cpp \
 			source/OsgNodeVisNodeIOData.cpp \
 		   source/OsgDrawableVisNodeIOData.cpp \
-		   source/OsgMatrixTransformVisNode.cpp \
-		   source/OsgMatrixVisNode.cpp \
 		   source/OsgSwitchVisNode.cpp \
 		   source/OsgPATVisNode.cpp \
 		   source/OsgPATVisNodeIOData.cpp \
@@ -93,4 +89,5 @@ SOURCES   +=  $${PROJECT_BASE}/Common/CGenericVisNodeDesc.cpp \
               $${PROJECT_BASE}/Common/CGenericVisNodeBase.cpp 
 
 
+RESOURCES = OsgCore.qrc
 
