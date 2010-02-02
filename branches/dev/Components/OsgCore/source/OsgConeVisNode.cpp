@@ -23,10 +23,10 @@
 
 DEFINE_VIS_NODE(OsgConeVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgCore");
+    pDesc->setNodeClassCategory("Primitives");
     pDesc->setNodeClassName("Cone");
     pDesc->setNodeClassDescription("Cone");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/Cone.png") );
 
     // Uncomment and use the following code template to add input/output paths
     pDesc->addConnectionPath(

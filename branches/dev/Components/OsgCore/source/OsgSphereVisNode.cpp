@@ -23,10 +23,10 @@
 
 DEFINE_VIS_NODE(OsgSphereVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgCore");
+    pDesc->setNodeClassCategory("Primitives");
     pDesc->setNodeClassName("Sphere");
     pDesc->setNodeClassDescription("Sphere");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/Sphere.png") );
 
     // Uncomment and use the following code template to add input/output paths
     pDesc->addConnectionPath(

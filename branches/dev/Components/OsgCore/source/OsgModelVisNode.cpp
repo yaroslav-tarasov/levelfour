@@ -27,7 +27,7 @@ DEFINE_VIS_NODE(OsgModelVisNode, CGenericVisNodeBase)
     pDesc->setNodeClassCategory("OsgCore");
     pDesc->setNodeClassName("Model");
     pDesc->setNodeClassDescription("Load osg model");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/Model.png") );
 
     // Uncomment and use the following code template to add input/output paths
 

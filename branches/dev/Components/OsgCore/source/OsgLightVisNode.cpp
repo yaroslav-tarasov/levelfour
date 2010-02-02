@@ -25,7 +25,7 @@ DEFINE_VIS_NODE(OsgLightVisNode, CGenericVisNodeBase)
     pDesc->setNodeClassCategory("OsgCore");
     pDesc->setNodeClassName("Light");
     pDesc->setNodeClassDescription("Create a light that can be used in a osg scene. Link this to a group.");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/Light.png") );
 
     // Uncomment and use the following code template to add input/output paths
     

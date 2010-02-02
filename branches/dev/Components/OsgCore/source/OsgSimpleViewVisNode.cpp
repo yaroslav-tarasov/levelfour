@@ -38,7 +38,7 @@ DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
     pDesc->setNodeClassCategory("OsgCore");
     pDesc->setNodeClassName("Simple scene view");
     pDesc->setNodeClassDescription("Create a Qt widget inside the OSG outpur tab, devoted to render the current scene.");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/SceneView.png") );
 
     // Uncomment and use the following code template to add input/output paths
     
