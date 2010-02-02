@@ -25,7 +25,7 @@ DEFINE_VIS_NODE(OsgPATVisNode, CGenericVisNodeBase)
     pDesc->setNodeClassCategory("OsgCore");
     pDesc->setNodeClassName("PAT");
     pDesc->setNodeClassDescription("PAT");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/PAT.png") );
 
     // Uncomment and use the following code template to add input/output paths
     pDesc->addConnectionPath(

@@ -26,7 +26,7 @@ DEFINE_VIS_NODE(OsgGeodeVisNode, CGenericVisNodeBase)
     pDesc->setNodeClassCategory("OsgCore");
     pDesc->setNodeClassName("Geode");
     pDesc->setNodeClassDescription("Geode");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/Geode.png") );
 
     // Uncomment and use the following code template to add input/output paths
     

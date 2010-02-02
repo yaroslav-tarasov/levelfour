@@ -25,7 +25,7 @@ DEFINE_VIS_NODE(OsgGroupVisNode, CGenericVisNodeBase)
     pDesc->setNodeClassCategory("OsgCore");
     pDesc->setNodeClassName("Group");
     pDesc->setNodeClassDescription("Group multiple nodes (geodes or groups) togheter.");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/Group.png") );
 
     // Uncomment and use the following code template to add input/output paths
     

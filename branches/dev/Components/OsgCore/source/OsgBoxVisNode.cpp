@@ -23,10 +23,10 @@
 
 DEFINE_VIS_NODE(OsgBoxVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgCore");
+    pDesc->setNodeClassCategory("Primitives");
     pDesc->setNodeClassName("Box");
     pDesc->setNodeClassDescription("Box");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/Cube.png") );
 
     // Uncomment and use the following code template to add input/output paths
     
