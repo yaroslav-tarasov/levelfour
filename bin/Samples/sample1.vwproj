@@ -10,11 +10,12 @@
       <Property Type="QString" Name="objectName" Value="Cone_1" />
     </Node>
     <Node X="217" Y="-102" Name="Geode_2" ClassName="Geode" ID="2" >
+      <Property Type="bool" Name="Visible" Value="true" />
       <Property Type="QString" Name="NodeName" Value="Geode_2" />
       <Property Type="QString" Name="objectName" Value="Geode_2" />
     </Node>
-    <Node X="-266" Y="-181" Name="Model_3" ClassName="Model" ID="3" >
-      <Property Type="QString" Name="Model" Value="D:\OSG-2.9.6\examples\osgviewerQtWidget\cessna.osg" />
+    <Node X="-264.053" Y="-181" Name="Model_3" ClassName="Model" ID="3" >
+      <Property Type="QString" Name="Model" Value="D:\LevelFour\dev\bin\Samples\axes.osg" />
       <Property Type="QString" Name="NodeName" Value="Model_3" />
       <Property Type="QString" Name="objectName" Value="Model_3" />
     </Node>
@@ -23,6 +24,7 @@
       <Property Type="QString" Name="objectName" Value="Sphere_4" />
     </Node>
     <Node X="185" Y="-7" Name="PAT_5" ClassName="PAT" ID="5" >
+      <Property Type="bool" Name="Visible" Value="true" />
       <Property Type="double" Name="PosX" Value="-1" />
       <Property Type="double" Name="PosY" Value="0" />
       <Property Type="double" Name="PosZ" Value="0" />
@@ -30,11 +32,13 @@
       <Property Type="QString" Name="objectName" Value="PAT_5" />
     </Node>
     <Node X="-24" Y="-70" Name="Geode_6" ClassName="Geode" ID="6" >
+      <Property Type="bool" Name="Visible" Value="true" />
       <Property Type="QString" Name="NodeName" Value="Geode_6" />
       <Property Type="QString" Name="objectName" Value="Geode_6" />
     </Node>
     <Node X="-242" Y="-46" Name="PAT_7" ClassName="PAT" ID="7" >
-      <Property Type="double" Name="PosX" Value="15" />
+      <Property Type="bool" Name="Visible" Value="true" />
+      <Property Type="double" Name="PosX" Value="0" />
       <Property Type="double" Name="PosY" Value="0" />
       <Property Type="double" Name="PosZ" Value="0" />
       <Property Type="QString" Name="NodeName" Value="PAT_7" />
@@ -45,6 +49,7 @@
       <Property Type="QString" Name="objectName" Value="Simple scene view_8" />
     </Node>
     <Node X="-87" Y="44" Name="Group_9" ClassName="Group" ID="9" >
+      <Property Type="bool" Name="Visible" Value="true" />
       <Property Type="QString" Name="NodeName" Value="Group_9" />
       <Property Type="QString" Name="objectName" Value="Group_9" />
     </Node>
@@ -58,7 +63,6 @@
     <Connection Sender="Geode_6" SPathIndex="1" Receiver="Group_9" RPathIndex="1" />
     <Connection Sender="Geode_2" SPathIndex="1" Receiver="PAT_5" RPathIndex="1" />
   </ProjectPart>
-  <ProjectPart ID="VtkSystem" />
   <ProjectPart ID="ScriptEnvironment" />
   <ProjectPart ID="Script" ><![CDATA[]]></ProjectPart>
 </VWVisProject>
