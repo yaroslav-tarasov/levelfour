@@ -46,7 +46,7 @@
     </toolbar>
     
     <property key="ProjectManagerComponent.visProject::ProjectRootTagName" value="VWVisProject" />
-    <property key="ProjectManagerComponent.visProject::ProjectFileSuffix" value="vwproj" />
-    <property key="ProjectManagerComponent.visProject::DefaultProjectPath" value="${APPDIR}/Samples" />
+    <property key="ProjectManagerComponent.visProject::ProjectFileSuffix" value="xml" />
+    <property key="ProjectManagerComponent.visProject::DefaultProjectPath" value="${APPDIR}/Projects" />
 
 </component>

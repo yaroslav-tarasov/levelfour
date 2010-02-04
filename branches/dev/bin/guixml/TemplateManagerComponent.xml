@@ -2,11 +2,11 @@
 
     <object name="controller" />
 
-    <action name="loadTemplate" title="Load Recipe" 
+    <action name="loadTemplate" title="Load Pattern" 
             triggerSlot="TemplateManagerComponent.controller::slotLoadFromTemplate()"
 		icon=":/TemplateManager/loadtemplate.png"
 		 />
-    <action name="saveAsTemplate" title="Save Recipe" 
+    <action name="saveAsTemplate" title="Save Pattern" 
             triggerSlot="TemplateManagerComponent.controller::slotSaveAsTemplate()"
 		icon=":/TemplateManager/savetemplate.png"
 		 />
@@ -23,9 +23,9 @@
         <toolbaritem actionName="TemplateManagerComponent.saveAsTemplate" />
       </toolbar>
 
-    <property key="TemplateManagerComponent.controller::TemplatesDirectory" value="${APPDIR}/Templates" />
+    <property key="TemplateManagerComponent.controller::TemplatesDirectory" value="${APPDIR}/Patterns" />
 
     <widget name="dirView" parentWidget="MainWindowComponent.leftDockArea"
-		title="Recipe Explorer" />
+		title="Pattern Explorer" />
 
 </component>
