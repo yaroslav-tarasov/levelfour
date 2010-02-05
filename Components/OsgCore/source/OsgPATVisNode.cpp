@@ -22,7 +22,7 @@
 
 DEFINE_VIS_NODE(OsgPATVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgCore");
+    pDesc->setNodeClassCategory("Actors");
     pDesc->setNodeClassName("PAT");
     pDesc->setNodeClassDescription("PAT");
     pDesc->setNodeIcon( QIcon(":/OsgCore/PAT.png") );

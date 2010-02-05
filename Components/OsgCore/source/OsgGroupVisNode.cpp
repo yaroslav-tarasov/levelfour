@@ -22,7 +22,7 @@
 
 DEFINE_VIS_NODE(OsgGroupVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgCore");
+    pDesc->setNodeClassCategory("Mappers");
     pDesc->setNodeClassName("Group");
     pDesc->setNodeClassDescription("Group multiple nodes (geodes or groups) togheter.");
     pDesc->setNodeIcon( QIcon(":/OsgCore/Group.png") );
