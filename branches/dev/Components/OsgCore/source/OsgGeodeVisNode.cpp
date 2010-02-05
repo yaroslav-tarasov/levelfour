@@ -23,7 +23,7 @@
 
 DEFINE_VIS_NODE(OsgGeodeVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgCore");
+    pDesc->setNodeClassCategory("Mappers");
     pDesc->setNodeClassName("Geode");
     pDesc->setNodeClassDescription("Geode");
     pDesc->setNodeIcon( QIcon(":/OsgCore/Geode.png") );

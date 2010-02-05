@@ -13,6 +13,11 @@
     <file alias="SceneView.png">icons/SceneView.png</file>
     <file alias="Sphere.png">icons/Sphere.png</file>
     <file alias="Switch.png">icons/Switch.png</file>
-  
+
+  <file alias="Billboard.png">icons/Billboard.png</file>
+  <file alias="Image.png">icons/Image.png</file>
+  <file alias="InfinitePlane.png">icons/InfinitePlane.png</file>
+  <file alias="Texture2D.png">icons/Texture2D.png</file>
+
 </qresource>
 </RCC>

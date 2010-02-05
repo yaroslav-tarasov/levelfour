@@ -17,9 +17,7 @@ DEPENDPATH      += . \
                    Interfaces 
 
 # Additional includes from the VTK system
-INCLUDEPATH     += $${PROJECT_BASE}/Components/VTKSystem/Interfaces \
-                   $${PROJECT_BASE}/Components/VTKSystem/IOData \
-                   $${PROJECT_BASE}/Common \
+INCLUDEPATH     += $${PROJECT_BASE}/Common \
                    Interfaces 
 
 # Input
@@ -27,22 +25,29 @@ HEADERS += source/OsgCoreComponent.h \
            source/OsgSimpleViewVisNode.h \
            source/OsgCompositeViewVisNode.h \
            source/OsgLightVisNode.h \
-			source/OsgLightVisNodeIOData.h \
+	     source/OsgLightVisNodeIOData.h \
            source/OsgGroupVisNode.h \
-			source/OsgGroupVisNodeIOData.h \
+	     source/OsgGroupVisNodeIOData.h \
            source/OsgGeodeVisNode.h \
            source/OsgBoxVisNode.h \
            source/OsgSphereVisNode.h \
-			source/QOSGWidget.h \
-			source/QOSGGraphics.h \
-			source/OsgNodeVisNodeIOData.h \
+	     source/QOSGWidget.h \
+	     source/QOSGGraphics.h \
+	     source/OsgNodeVisNodeIOData.h \
            source/OsgCylinderVisNode.h \
-		   source/OsgConeVisNode.h \
-		   source/OsgDrawableVisNodeIOData.h \
-		   source/OsgSwitchVisNode.h \
-		   source/OsgPATVisNode.h \
-		   source/OsgPATVisNodeIOData.h \
-		   source/OsgModelVisNode.h \
+	     source/OsgConeVisNode.h \
+	     source/OsgDrawableVisNodeIOData.h \
+	     source/OsgSwitchVisNode.h \
+	     source/OsgPATVisNode.h \
+	     source/OsgPATVisNodeIOData.h \
+	     source/OsgModelVisNode.h \
+	     source/OsgBillboardVisNode.h \
+           source/OsgCameraVisNode.h \
+           source/OsgImageVisNode.h \
+           source/OsgCapsuleVisNode.h \
+           source/OsgInfinitePlaneVisNode.h \
+           source/OsgTexture2DVisNode.h \
+
 				
 SOURCES += source/OsgCoreComponent.cpp \
            source/OsgSimpleViewVisNode.cpp \
@@ -64,7 +69,14 @@ SOURCES += source/OsgCoreComponent.cpp \
 		   source/OsgPATVisNode.cpp \
 		   source/OsgPATVisNodeIOData.cpp \
 		   source/OsgModelVisNode.cpp \
+           source/OsgBillboardVisNode.cpp \
+           source/OsgCameraVisNode.cpp \
+           source/OsgImageVisNode.cpp \
+           source/OsgCapsuleVisNode.cpp \
+           source/OsgInfinitePlaneVisNode.cpp \
+           source/OsgTexture2DVisNode.cpp \
 
+	     
 
 LIBS			+= -losgd \
 				-losgGAd \

@@ -20,7 +20,7 @@
 
 DEFINE_VIS_NODE(OsgSwitchVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgCore");
+    pDesc->setNodeClassCategory("Mappers");
     pDesc->setNodeClassName("Switch");
     pDesc->setNodeClassDescription("Switch");
     pDesc->setNodeIcon( QIcon(":/OsgCore/Switch.png") );
