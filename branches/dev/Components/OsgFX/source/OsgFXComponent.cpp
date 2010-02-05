@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) UNO
+** Copyright (C) L4
 **
 ** Use of this file is limited according to the terms specified by
-** UNO.
+** L4.
 **
 ** Details of those terms are listed in licence.txt included as
 ** part of the distribution package of this file. This file may not
@@ -14,7 +14,7 @@
 **
 ****************************************************************************/
 
-#include "OsgCoreComponent.h"
+#include "OsgFXComponent.h"
 #include "IVisSystemNodeFactoryRegistry.h"
 #include "IVisSystemNodeDesc.h"
 #include "IVisNetwork.h"
@@ -29,36 +29,21 @@
 #include "CGenericVisNodeDesc.h"
 #include "CGenericVisNodeBase.h"
 
-#include "OsgSimpleViewVisNode.h"
-#include "OsgCompositeViewVisNode.h"
-#include "OsgLightVisNode.h"
-#include "OsgGroupVisNode.h"
-#include "OsgGeodeVisNode.h"
-#include "OsgBoxVisNode.h"
-#include "OsgSphereVisNode.h"
-#include "OsgConeVisNode.h"
-#include "OsgCylinderVisNode.h"
-#include "OsgSwitchVisNode.h"
-#include "OsgPATVisNode.h"
-#include "OsgModelVisNode.h"
-#include "OsgImageVisNode.h"
-#include "OsgCameraVisNode.h"
-#include "OsgCapsuleVisNode.h"
-#include "OsgBillboardVisNode.h"
-#include "OsgInfinitePlaneVisNode.h"
-#include "OsgTexture2DVisNode.h"
+#include "OsgAnisotropicLightingVisNode.h"
+#include "OsgBumpMappingVisNode.h"
+#include "OsgCartoonVisNode.h"
+#include "OsgMultiTextureControlVisNode.h"
+#include "OsgScribeVisNode.h"
+#include "OsgSpecularHighlightsVisNode.h"
 
-#include "QOSGGraphics.h"
-
-struct OsgCoreComponentData
+struct OsgFXComponentData
 {
-    OsgCoreComponentData() {
+    OsgFXComponentData() {
         nodeFactoryRegistryComp = 0;
         nodeFactoryRegistry = 0;
         visNetworkCanvas = 0;
         visNetwork = 0;
         scriptEngineManager = 0;
-		osgOutputWidget = 0;
     }
 
     QMap<QString, CGenericVisNodeDesc*> nodeDescMap;
@@ -67,50 +52,42 @@ struct OsgCoreComponentData
     IVisNetworkCanvas* visNetworkCanvas;
     IVisNetwork* visNetwork;
     IScriptEngineManager* scriptEngineManager;
-
-	QTabWidget* osgOutputWidget;
 };
 
-GCF_DEFINE_COMPONENT(OsgCoreComponent)
+GCF_DEFINE_COMPONENT(OsgFXComponent)
 
-OsgCoreComponent & OsgCoreComponent::instance()
+OsgFXComponent & OsgFXComponent::instance()
 {
-    static OsgCoreComponent* theInstance = GCF_CREATE_COMPONENT(OsgCoreComponent);
+    static OsgFXComponent* theInstance = GCF_CREATE_COMPONENT(OsgFXComponent);
     return *theInstance;
 }
 
-OsgCoreComponent::OsgCoreComponent()
+OsgFXComponent::OsgFXComponent()
 {
-    d = new OsgCoreComponentData;
-	d->osgOutputWidget = new QTabWidget;
+    d = new OsgFXComponentData;
 }
 
-OsgCoreComponent::~OsgCoreComponent()
+OsgFXComponent::~OsgFXComponent()
 {
     delete d;
 }
 
-QTabWidget* OsgCoreComponent::osgOutputWidget() const
-{
-	return d->osgOutputWidget;
-}
-
-QIcon OsgCoreComponent::nodeIcon()
+QIcon OsgFXComponent::nodeIcon()
 {
     return qApp->windowIcon();
 }
 
-QObject* OsgCoreComponent::containerObject()
+QObject* OsgFXComponent::containerObject()
 {
     return this;
 }
 
-QStringList OsgCoreComponent::nodeClassNameList()
+QStringList OsgFXComponent::nodeClassNameList()
 {
     return d->nodeDescMap.keys();
 }
 
-IVisSystemNodeDesc* OsgCoreComponent::nodeDesc(QString nodeClassName)
+IVisSystemNodeDesc* OsgFXComponent::nodeDesc(QString nodeClassName)
 {
     if(d->nodeDescMap.contains(nodeClassName))
         return d->nodeDescMap[nodeClassName];
@@ -118,7 +95,7 @@ IVisSystemNodeDesc* OsgCoreComponent::nodeDesc(QString nodeClassName)
     return 0;
 }
 
-bool OsgCoreComponent::canCreate(QString nodeClassName)
+bool OsgFXComponent::canCreate(QString nodeClassName)
 {
     IVisSystemNodeDesc* desc = nodeDesc(nodeClassName);
 
@@ -130,7 +107,7 @@ bool OsgCoreComponent::canCreate(QString nodeClassName)
     return 0;
 }
 
-IVisSystemNode* OsgCoreComponent::createNode(QString nodeClassName)
+IVisSystemNode* OsgFXComponent::createNode(QString nodeClassName)
 {
     IVisSystemNodeDesc* desc = nodeDesc(nodeClassName);
 
@@ -151,98 +128,85 @@ IVisSystemNode* OsgCoreComponent::createNode(QString nodeClassName)
     return node;
 }
 
-void OsgCoreComponent::deleteNode(IVisSystemNode* node)
+void OsgFXComponent::deleteNode(IVisSystemNode* node)
 {
     node->finalizeNode();
 }
 
-QString OsgCoreComponent::productName() const
+QString OsgFXComponent::productName() const
 {
-    return "OsgCore Classes";
+    return "OsgFX Classes";
 }
 
-QString OsgCoreComponent::organization() const
+QString OsgFXComponent::organization() const
 {
-    return "UNO";
+    return "L4";
 }
 
-QImage OsgCoreComponent::programLogo() const
+QImage OsgFXComponent::programLogo() const
 {
     return QImage();
 }
 
-QString OsgCoreComponent::version() const
+QString OsgFXComponent::version() const
 {
     return "1.0";
 }
 
-QString OsgCoreComponent::shortDescription() const
+QString OsgFXComponent::shortDescription() const
 {
-    return "Provides the OsgCore component";
+    return "Provides the OsgFX component";
 }
 
-QString OsgCoreComponent::homepage() const
+QString OsgFXComponent::homepage() const
 {
-    return "OsgCore Website";
+    return "OsgFX Website";
 }
 
-QString OsgCoreComponent::bugAddress() const
+QString OsgFXComponent::bugAddress() const
 {
-    return "OsgCore Website";
+    return "OsgFX Website";
 }
 
-const QList<GCF::AboutPerson> OsgCoreComponent::authors() const
+const QList<GCF::AboutPerson> OsgFXComponent::authors() const
 {
     static QList<GCF::AboutPerson> retList;
     return retList;
 }
 
-const QList<GCF::AboutPerson> OsgCoreComponent::credits() const
+const QList<GCF::AboutPerson> OsgFXComponent::credits() const
 {
     static QList<GCF::AboutPerson> retList;
     return retList;
 }
 
-QString OsgCoreComponent::license() const
+QString OsgFXComponent::license() const
 {
-    return "OsgCore License";
+    return "OsgFX License";
 }
 
-QString OsgCoreComponent::copyrightStatement() const
+QString OsgFXComponent::copyrightStatement() const
 {
-    return "Copyright (c) UNO All rights reserved";
+    return "Copyright (c) L4 All rights reserved";
 }
 
-void OsgCoreComponent::initializeComponent()
+void OsgFXComponent::initializeComponent()
 {
-    REGISTER_NODE(OsgSimpleViewVisNode, d->nodeDescMap);
-    REGISTER_NODE(OsgGroupVisNode, d->nodeDescMap);
-    REGISTER_NODE(OsgLightVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgGeodeVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgBoxVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgSphereVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgConeVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgCylinderVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgSwitchVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgPATVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgModelVisNode, d->nodeDescMap);
+    REGISTER_NODE(OsgAnisotropicLightingVisNode, d->nodeDescMap);
+    REGISTER_NODE(OsgBumpMappingVisNode, d->nodeDescMap);
+    REGISTER_NODE(OsgCartoonVisNode, d->nodeDescMap);
+    REGISTER_NODE(OsgMultiTextureControlVisNode, d->nodeDescMap);
+    REGISTER_NODE(OsgScribeVisNode, d->nodeDescMap);
+    REGISTER_NODE(OsgSpecularHighlightsVisNode, d->nodeDescMap);
+}
 
-	REGISTER_NODE(OsgBillboardVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgCameraVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgImageVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgCapsuleVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgInfinitePlaneVisNode, d->nodeDescMap);
-	REGISTER_NODE(OsgTexture2DVisNode, d->nodeDescMap);
-/*    REGISTER_NODE(OsgCompositeViewVisNode, d->nodeDescMap);
-*/}
-
-void OsgCoreComponent::finalizeComponent()
+void OsgFXComponent::finalizeComponent()
 {
     if(d->nodeFactoryRegistry)
         d->nodeFactoryRegistry->unregisterNodeFactory(qobject_cast<IVisSystemNodeFactory*>(this));
 }
 
-void OsgCoreComponent::creationAnnounced()
+void OsgFXComponent::creationAnnounced()
 {
     QString completeName;
     GCF::AbstractComponent* compPtr = 0;
@@ -284,7 +248,7 @@ void OsgCoreComponent::creationAnnounced()
     }
 }
 
-void OsgCoreComponent::componentDestroyed(GCF::AbstractComponent* comp)
+void OsgFXComponent::componentDestroyed(GCF::AbstractComponent* comp)
 {
     if(comp == d->nodeFactoryRegistryComp)
     {
@@ -293,10 +257,10 @@ void OsgCoreComponent::componentDestroyed(GCF::AbstractComponent* comp)
     }
 }
 
-QObject* OsgCoreComponent::fetchObject(const QString& completeName) const
+QObject* OsgFXComponent::fetchObject(const QString& completeName) const
 {
     QStringList comps = completeName.split('.');
-    OsgCoreComponent* that = const_cast<OsgCoreComponent*>(this);
+    OsgFXComponent* that = const_cast<OsgFXComponent*>(this);
 
     if(comps.last() == "controller")
         return that;
@@ -304,16 +268,13 @@ QObject* OsgCoreComponent::fetchObject(const QString& completeName) const
     return 0;
 }
 
-QWidget* OsgCoreComponent::fetchWidget(const QString& completeName) const
+QWidget* OsgFXComponent::fetchWidget(const QString& completeName) const
 {
     QStringList comps = completeName.split('.');
-
-	if(comps.last() == "osgOutputWidget")
-		return d->osgOutputWidget;
 
     return 0;
 }
 
-GCF_EXPORT_COMPONENT_PLUGIN(OsgCoreComponent)
+GCF_EXPORT_COMPONENT_PLUGIN(OsgFXComponent)
 
 

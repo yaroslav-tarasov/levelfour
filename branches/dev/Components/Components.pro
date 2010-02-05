@@ -13,9 +13,10 @@ SUBDIRS     = LevelFour \
               ScriptEditor \
               MainWindow \
               HelpSystem \
-		  OsgCore \
 		  ScenegraphManager \
-		  Clipboard
+		  Clipboard \
+		  OsgCore \
+		  OsgFX \
               
            
 # Some components are under development, but the ideas and implementation
