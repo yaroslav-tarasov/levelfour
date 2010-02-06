@@ -20,10 +20,10 @@
 
 DEFINE_VIS_NODE(OsgCartoonVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgFX");
-    pDesc->setNodeClassName("OsgCartoon");
-    pDesc->setNodeClassDescription("OsgCartoon");
-    pDesc->setNodeIcon( OsgFXComponent::instance().nodeIcon() );
+    pDesc->setNodeClassCategory("Effects");
+    pDesc->setNodeClassName("Cartoon");
+    pDesc->setNodeClassDescription("This effect implements a technique called 'Cel-Shading' to produce a cartoon-style (non photorealistic) rendering.");
+    pDesc->setNodeIcon( QIcon(":/OsgFX/Cartoon.png") );
 
     // Uncomment and use the following code template to add input/output paths
     /*

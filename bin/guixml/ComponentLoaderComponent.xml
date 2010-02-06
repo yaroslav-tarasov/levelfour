@@ -27,6 +27,9 @@
     <method param1="OsgCoreComponent" 
             param2="OsgCore" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="OsgFXComponent" 
+            param2="OsgFX" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="ScriptEditorComponent" 
             param2="ScriptEditor" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
