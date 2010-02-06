@@ -20,10 +20,10 @@
 
 DEFINE_VIS_NODE(OsgMultiTextureControlVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgFX");
-    pDesc->setNodeClassName("OsgMultiTextureControl");
-    pDesc->setNodeClassDescription("OsgMultiTextureControl");
-    pDesc->setNodeIcon( OsgFXComponent::instance().nodeIcon() );
+    pDesc->setNodeClassCategory("Effects");
+    pDesc->setNodeClassName("MultiTextureControl");
+    pDesc->setNodeClassDescription("This node provides control over the which texture units are active and the blending weighting between them.");
+    pDesc->setNodeIcon( QIcon(":/OsgFX/MultiTextureControl.png") );
 
     // Uncomment and use the following code template to add input/output paths
     /*

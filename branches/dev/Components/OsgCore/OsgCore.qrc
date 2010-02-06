@@ -18,6 +18,7 @@
   <file alias="Image.png">icons/Image.png</file>
   <file alias="InfinitePlane.png">icons/InfinitePlane.png</file>
   <file alias="Texture2D.png">icons/Texture2D.png</file>
+  <file alias="Capsule.png">icons/Capsule.png</file>
 
 </qresource>
 </RCC>

@@ -20,10 +20,10 @@
 
 DEFINE_VIS_NODE(OsgBumpMappingVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgFX");
-    pDesc->setNodeClassName("OsgBumpMapping");
-    pDesc->setNodeClassDescription("OsgBumpMapping");
-    pDesc->setNodeIcon( OsgFXComponent::instance().nodeIcon() );
+    pDesc->setNodeClassCategory("Effects");
+    pDesc->setNodeClassName("Bump Mapping");
+    pDesc->setNodeClassDescription("This effect makes surfaces appear bumpy.");
+    pDesc->setNodeIcon( QIcon(":/OsgFX/BumpMapping.png") );
 
     // Uncomment and use the following code template to add input/output paths
     /*

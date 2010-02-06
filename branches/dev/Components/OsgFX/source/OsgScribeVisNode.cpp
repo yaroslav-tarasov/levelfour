@@ -20,10 +20,10 @@
 
 DEFINE_VIS_NODE(OsgScribeVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgFX");
-    pDesc->setNodeClassName("OsgScribe");
-    pDesc->setNodeClassDescription("OsgScribe");
-    pDesc->setNodeIcon( OsgFXComponent::instance().nodeIcon() );
+    pDesc->setNodeClassCategory("Effects");
+    pDesc->setNodeClassName("Scribe");
+    pDesc->setNodeClassDescription("This is a two-passes effect; the first pass renders the subgraph as usual while the second pass switches to wireframe mode, sets up lighting and material to obtain a fixed (user-defined) color and then renders the subgraph.");
+    pDesc->setNodeIcon( QIcon(":/OsgFX/Scribe.png") );
 
     // Uncomment and use the following code template to add input/output paths
     /*
