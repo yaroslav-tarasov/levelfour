@@ -20,10 +20,10 @@
 
 DEFINE_VIS_NODE(OsgAnisotropicLightingVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgFX");
-    pDesc->setNodeClassName("OsgAnisotropicLighting");
-    pDesc->setNodeClassDescription("OsgAnisotropicLighting");
-    pDesc->setNodeIcon( OsgFXComponent::instance().nodeIcon() );
+    pDesc->setNodeClassCategory("Effects");
+    pDesc->setNodeClassName("Anisotropic Lighting");
+    pDesc->setNodeClassDescription("This single-pass effect implements a sort of anisotropic lighting that replaces the standard OpenGL lighting model.");
+    pDesc->setNodeIcon( QIcon(":/OsgFX/AnisotropicLighting.png") );
 
     // Uncomment and use the following code template to add input/output paths
     /*

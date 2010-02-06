@@ -5,7 +5,6 @@
 ######################################################################
 
 include(../Components.pri)
-include(../../VTK.pri)
 
 MOC_DIR         = $${PROJECT_BASE}/tmp/OsgFX
 OBJECTS_DIR     = $${PROJECT_BASE}/tmp/OsgFX
@@ -47,7 +46,7 @@ LIBS			+= -losgd \
 # VNFComponentGen has generated an empty resource file. If you add
 # new objects to the resource file, then you can uncomment the line
 # below
-# RESOURCES += OsgFX.qrc
+RESOURCES += OsgFX.qrc
 
 # Nodes in VTK Designer 2 have to implement one or more node interfaces
 # Implementing all of them from scratch would be a tough task. So, we make

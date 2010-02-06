@@ -20,10 +20,10 @@
 
 DEFINE_VIS_NODE(OsgSpecularHighlightsVisNode, CGenericVisNodeBase)
 {
-    pDesc->setNodeClassCategory("OsgFX");
-    pDesc->setNodeClassName("OsgSpecularHighlights");
-    pDesc->setNodeClassDescription("OsgSpecularHighlights");
-    pDesc->setNodeIcon( OsgFXComponent::instance().nodeIcon() );
+    pDesc->setNodeClassCategory("Effects");
+    pDesc->setNodeClassName("Specular Highlights");
+    pDesc->setNodeClassDescription("This effect applies additive specular highlights at fragment level (instead of OpenGL's vertex-level lighting) by using a cube map and reflective texgen");
+    pDesc->setNodeIcon( QIcon(":/OsgFX/SpectacularHighlights.png") );
 
     // Uncomment and use the following code template to add input/output paths
     /*
