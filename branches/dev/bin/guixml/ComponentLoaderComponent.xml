@@ -30,6 +30,15 @@
     <method param1="OsgFXComponent" 
             param2="OsgFX" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="OsgShadowComponent" 
+            param2="OsgShadow" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="OsgParticleComponent" 
+            param2="OsgParticle" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="OsgTextComponent" 
+            param2="OsgText" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
     <method param1="ScriptEditorComponent" 
             param2="ScriptEditor" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />

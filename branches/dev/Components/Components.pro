@@ -17,6 +17,9 @@ SUBDIRS     = LevelFour \
 		  Clipboard \
 		  OsgCore \
 		  OsgFX \
+		  OsgShadow \
+		  OsgParticle \
+		  OsgText \
               
            
 # Some components are under development, but the ideas and implementation

@@ -13,9 +13,7 @@ RCC_DIR         = $${PROJECT_BASE}/tmp/OsgFX
 UI_DIR          = $${PROJECT_BASE}/tmp/OsgFX
 
 # Additional includes from the VTK system
-INCLUDEPATH     += $${PROJECT_BASE}/Components/VTKSystem/Interfaces \
-                   $${PROJECT_BASE}/Components/VTKSystem/IOData \
-                   $${PROJECT_BASE}/Common
+INCLUDEPATH     += $${PROJECT_BASE}/Common
 
 # Input
 HEADERS += source/OsgFXComponent.h \
