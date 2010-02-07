@@ -243,8 +243,9 @@ QMenu::item
 QMenu::item:selected
 {
 	/* when user selects item using mouse or keyboard */
-	background: #333333;
-	color: #eb7009;
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+	stop: 0 #c55b02, stop: 1.0 #ff7603);
+	color: #000000;
 }
 
 QMenuBar
@@ -530,8 +531,9 @@ QTreeView::item
 
 QTreeView::item:hover
 {
-	background: #333333;
-	color: #eb7009;
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+	stop: 0 #c55b02, stop: 1.0 #ff7603);
+	color: #000000;
 }
 QTreeView::item:selected
 {
@@ -660,14 +662,15 @@ QToolButton::menu-button
 QToolButton:hover
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #d0d0d0, stop: 0.3 #c55b02, stop: 1.0 #ff7603);
+	stop: 0 #c55b02, stop: 1.0 #ff7603);
 	border: 1px solid #000000;
 }
 
 QToolButton:pressed
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #4670b2, stop: 1.0 #638dcf);
+	stop: 0 #c55b02, stop: 1.0 #ff7603);
+	border: 1px solid #000000;
 }
 
 QToolTip
