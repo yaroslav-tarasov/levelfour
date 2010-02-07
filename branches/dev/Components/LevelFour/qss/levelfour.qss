@@ -244,8 +244,8 @@ QMenu::item:selected
 {
 	/* when user selects item using mouse or keyboard */
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #c55b02, stop: 1.0 #ff7603);
-	color: #000000;
+	stop: 0 #636363, stop: 1.0 #333333);
+	color: #e5e5e5;
 }
 
 QMenuBar
@@ -267,18 +267,16 @@ QMenuBar::item
 
 QMenuBar::item:selected
 {
-	color: #ff7603;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #1c1c1c, stop: 0.3 #303030, stop: 1.0 #333333);
-	border: 1px solid #000000;
+	stop: 0 #636363, stop: 1.0 #333333);
+	color: #e5e5e5;
 }
 
 QMenuBar::item:pressed
 {
-	color: #ff7603;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #1c1c1c, stop: 1.0 #333333);
-	border: 1px solid #000000;
+	stop: 0 #434343, stop: 1.0 #1e1e1e);
+	color: #e5e5e5;
 }
 
 QPushButton
@@ -294,17 +292,20 @@ QPushButton
 /* all types of push button */
 QPushButton:hover
 {
-	color: #e5e5e5;
+	border: 1px solid #000000;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #404040, stop: 1.0 #4c4c4c);
-	border: 1px solid #ff7603;
+	stop: 0 #636363, stop: 1.0 #333333);
+	border-radius: 5px;
+	color: #e5e5e5;
 }
 
 QPushButton:pressed
 {
-	color: #e5e5e5;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #404040, stop: 1.0 #4c4c4c);
+	stop: 0 #434343, stop: 1.0 #1e1e1e);
+	color: #e5e5e5;
+	border: 1px solid #000000;
+	border-radius: 5px;
 }
 
 /* Customize radio buttons. */
@@ -532,25 +533,28 @@ QTreeView::item
 QTreeView::item:hover
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #c55b02, stop: 1.0 #ff7603);
-	color: #000000;
+	stop: 0 #636363, stop: 1.0 #333333);
+	color: #e5e5e5;
 }
 QTreeView::item:selected
 {
-	background: #333333;
-	color: #eb7009;
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+	stop: 0 #434343, stop: 1.0 #1e1e1e);
+	color: #e5e5e5;
 }
 
 QTreeView::item:selected:active
 {
- 	background: #333333;
-	color: #eb7009;	
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+	stop: 0 #434343, stop: 1.0 #1e1e1e);
+	color: #e5e5e5;
 }
 
 QTreeView::item:selected:!active
 {
-     background: #333333;
-	color: #eb7009;
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+	stop: 0 #434343, stop: 1.0 #1e1e1e);
+	color: #e5e5e5;
 }
 
 QTreeView::branch:has-siblings:!adjoins-item {
@@ -637,9 +641,9 @@ QToolBar
 /* All types of tool button */
 QToolButton
 {
-	border: 1px solid #393939;
+	border: 1px solid #000000;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #d0d0d0, stop: 1.0 #7f7f7f);
+	stop: 0 #636363, stop: 1.0 #333333);
 	border-radius: 5px;
 	height: 20px;	
 }
@@ -655,21 +659,21 @@ QToolButton::menu-button
      /* 16px width + 4px for border = 20px allocated above */
 	width: 16px;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #d0d0d0, stop: 1.0 #7f7f7f);
-	border: 1px solid #393939;
+	stop: 0 #636363, stop: 1.0 #333333);
+	border: 1px solid #000000;
 }
 
 QToolButton:hover
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #c55b02, stop: 1.0 #ff7603);
+	stop: 0 #434343, stop: 1.0 #1e1e1e);
 	border: 1px solid #000000;
 }
 
 QToolButton:pressed
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #c55b02, stop: 1.0 #ff7603);
+	stop: 0 #434343, stop: 1.0 #1e1e1e);
 	border: 1px solid #000000;
 }
 
