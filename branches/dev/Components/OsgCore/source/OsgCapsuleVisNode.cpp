@@ -26,7 +26,7 @@ DEFINE_VIS_NODE(OsgCapsuleVisNode, CGenericVisNodeBase)
     pDesc->setNodeClassCategory("Primitives");
     pDesc->setNodeClassName("Capsule");
     pDesc->setNodeClassDescription("The geometry of a Capsule primitive.");
-    pDesc->setNodeIcon( OsgCoreComponent::instance().nodeIcon() );
+    pDesc->setNodeIcon( QIcon(":/OsgCore/Capsule.png") );
 
     // Uncomment and use the following code template to add input/output paths
     pDesc->addConnectionPath(
