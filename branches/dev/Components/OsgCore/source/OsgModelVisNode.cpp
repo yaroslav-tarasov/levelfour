@@ -83,7 +83,7 @@ void OsgModelVisNode::setSource(QString source)
 
 		osg::ref_ptr<osg::Node> model = osgDB::readNodeFile(_source.toStdString());
 
-		if (!model)
+		if (!model.valid())
 			return;
 		
 		d->outputNode->addChild(model);
