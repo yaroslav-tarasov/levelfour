@@ -188,8 +188,8 @@ void CVisSystemNodeClassExplorerTreeWidgetDelegate::paint(QPainter* paint, const
         return;
     }
 
-	// treeWidget->setStyleSheet("background-color: yellow");
-
+	// treeWidget->setStyleSheet("border-image: url(:/MainWindow/images/branch-more.png) 0");
+	
     // Step 2: We need custom drawing. So draw it here.
     // We make use of the QStyle API to ensure that the drawing
     // is done using the current style. This important since we
