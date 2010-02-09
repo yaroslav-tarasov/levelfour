@@ -668,10 +668,10 @@ QToolButton:pressed
 
 QToolTip
 {
-	border: 1px solid #555555;
-	background: #222222;
-	padding: 1px;
+	border: 1px solid #ffffff;
+	background: #333333;
+	padding: 3px;
 	border-radius: 5px;
-	opacity: 200;
+	opacity: 150;
 	color: #CCCCCC;
 }
