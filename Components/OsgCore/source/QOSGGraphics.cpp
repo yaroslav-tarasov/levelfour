@@ -198,7 +198,7 @@ void osg::QOSGScene::init(qreal x, qreal y, qreal w, qreal h)
 	getCamera()->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(w)/static_cast<double>(h), 1.0f, 10000.0f);
 	getCamera()->setGraphicsContext(getGraphicsWindow());
 
-	osg::Vec4 bgColor(0.25,0.25,0.25,1);
+	osg::Vec4 bgColor(0.45,0.45,0.45,1);
 	getCamera()->setClearColor(bgColor);
 
 	setThreadingModel(osgViewer::Viewer::SingleThreaded);
