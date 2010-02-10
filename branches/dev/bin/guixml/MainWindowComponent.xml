@@ -1,10 +1,10 @@
 <component title="Main Window Component" version="1.0" name="MainWindowComponent" >
-    <widget title="VTK Designer 2" scriptName="MainWindow" name="window" autoDelete="false" />
+    <widget title="Level Four" scriptName="MainWindow" name="window" autoDelete="false" />
     <widget scriptName="StatusBar" title="" name="statusBar" autoDelete="false" />
-    <widget title="Message Area" name="bottomDockArea" autoDelete="false" />
+    <widget title="" name="bottomDockArea" autoDelete="false" />
     <widget title="" name="workspace" autoDelete="false" />
-    <widget title="Tool Box" name="leftDockArea" />
-    <widget title="Configuration Panel" name="rightDockArea" />
+    <widget title="" name="leftDockArea" />
+    <widget title="" name="rightDockArea" />
     <object title="" name="application" autoDelete="false" />
     <object title="" name="controller" autoDelete="false" />
     <action title="Preferences" 

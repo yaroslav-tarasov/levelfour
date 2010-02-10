@@ -43,142 +43,6 @@
 
 #include <GCF/ConfigurationDialogComponent.h>
 
-// We want the tabs to be drawn in a custom way, if required. This class is a bunch of tricks.
-// Its a good thing that nobody outside MainWindow.cpp actually uses it!
-class TabWidgetStyle : public QStyle
-{
-public:
-    TabWidgetStyle(QTabWidget* workspaceTabWidget) : m_workspaceTabWidget(workspaceTabWidget),
-                                                     m_tabBar(0),
-                                                     m_oldStyle(workspaceTabWidget->style())
-    { 
-        m_workspaceTabWidget->setStyle(this);
-        this->setParent(m_workspaceTabWidget);
-
-        m_tabBar = m_workspaceTabWidget->findChild<QTabBar*>("qt_tabwidget_tabbar");
-        if(m_tabBar)
-        {
-            m_tabBar->installEventFilter(this);
-            m_tabBar->setStyle(this);
-        }
-    }
-
-    virtual ~TabWidgetStyle() { }
-
-    void drawControl(QStyle::ControlElement element, 
-                     const QStyleOption* option, 
-                     QPainter* painter, 
-                     const QWidget* widget) const;
-
-    // Reimplement the other QStyle interface methods to call corresponding ones in the
-    // old style
-    virtual void polish(QWidget * w) { m_oldStyle->polish(w); }
-    virtual void unpolish(QWidget *w) { m_oldStyle->unpolish(w); }
-    virtual void polish(QApplication * a) { m_oldStyle->polish(a); }
-    virtual void unpolish(QApplication *a) { m_oldStyle->unpolish(a); }
-    virtual void polish(QPalette & p) { m_oldStyle->polish(p); }
-
-    virtual QRect itemTextRect(const QFontMetrics &fm, const QRect &r,
-                           int flags, bool enabled,
-                           const QString &text) const 
-    { return m_oldStyle->itemTextRect(fm, r, flags, enabled, text); }
-
-    virtual QRect itemPixmapRect(const QRect &r, int flags, const QPixmap &pixmap) const
-    { return m_oldStyle->itemPixmapRect(r, flags, pixmap); }
-
-    virtual void drawItemText(QPainter *painter, const QRect &rect,
-                              int flags, const QPalette &pal, bool enabled,
-                              const QString &text, QPalette::ColorRole textRole = QPalette::NoRole) const
-    { m_oldStyle->drawItemText(painter, rect, flags, pal, enabled, text, textRole); }
-
-    virtual void drawItemPixmap(QPainter *painter, const QRect &rect,
-                                int alignment, const QPixmap &pixmap) const
-    { m_oldStyle->drawItemPixmap(painter, rect, alignment, pixmap); }
-
-    virtual QPalette standardPalette() const
-    { return m_oldStyle->standardPalette(); }
-
-    virtual void drawPrimitive(PrimitiveElement pe, const QStyleOption *opt, QPainter *p,
-                               const QWidget *w = 0) const
-    { m_oldStyle->drawPrimitive(pe, opt, p, w); }
-
-    virtual QRect subElementRect(SubElement subElement, const QStyleOption *option,
-                                 const QWidget *widget = 0) const
-    { return m_oldStyle->subElementRect(subElement, option, widget); }
-
-    virtual void drawComplexControl(ComplexControl cc, const QStyleOptionComplex *opt, QPainter *p,
-                                    const QWidget *widget = 0) const
-    { m_oldStyle->drawComplexControl(cc, opt, p, widget); }
-
-    virtual SubControl hitTestComplexControl(ComplexControl cc, const QStyleOptionComplex *opt,
-                                             const QPoint &pt, const QWidget *widget = 0) const
-    { return m_oldStyle->hitTestComplexControl(cc, opt, pt, widget); }
-
-    virtual QRect subControlRect(ComplexControl cc, const QStyleOptionComplex *opt,
-                                 SubControl sc, const QWidget *widget = 0) const
-    { return m_oldStyle->subControlRect(cc, opt, sc, widget); }
-
-    virtual int pixelMetric(PixelMetric metric, const QStyleOption *option = 0,
-                            const QWidget *widget = 0) const
-    { return m_oldStyle->pixelMetric(metric, option, widget); }
-
-    virtual QSize sizeFromContents(ContentsType ct, const QStyleOption *opt,
-                                   const QSize &contentsSize, const QWidget *w = 0) const
-    { return m_oldStyle->sizeFromContents(ct, opt, contentsSize, w); }
-
-    virtual int styleHint(StyleHint stylehint, const QStyleOption *opt = 0,
-                          const QWidget *widget = 0, QStyleHintReturn* returnData = 0) const
-    { return m_oldStyle->styleHint(stylehint, opt, widget, returnData); }
-
-    virtual QPixmap generatedIconPixmap(QIcon::Mode iconMode, const QPixmap &pixmap,
-                                        const QStyleOption *opt) const 
-    { return m_oldStyle->generatedIconPixmap(iconMode, pixmap, opt); }
-
-    virtual QPixmap standardPixmap(StandardPixmap standardPixmap, const QStyleOption *opt = 0,
-                                   const QWidget *widget = 0) const
-    { return m_oldStyle->standardPixmap(standardPixmap, opt, widget); }
-
-private:
-    QTabWidget* m_workspaceTabWidget;
-    QTabBar* m_tabBar;
-    QStyle* m_oldStyle;
-};
-
-void TabWidgetStyle::drawControl(QStyle::ControlElement element, const QStyleOption* option, 
-                                 QPainter* painter, const QWidget* widget) const
-{
-    if(element != QStyle::CE_TabBarTab)
-        return;
-
-    const QTabBar* tabBar = qobject_cast<const QTabBar*>(widget);
-    if(!m_tabBar || !tabBar || tabBar != m_tabBar)
-    {
-        m_oldStyle->drawControl(element, option, painter, widget);
-        return;
-    }
-
-    int tabIndex = -1;
-    for(int i=0; i<m_tabBar->count(); i++)
-    {
-        QRect rect = m_tabBar->tabRect(i);
-        if(rect.contains(option->rect))
-        {
-            tabIndex = i;
-            break;
-        }
-    }
-
-    QWidget* w = m_workspaceTabWidget->widget(tabIndex);
-    IWorkspaceTabBarPaintHelper* helper = qobject_cast<IWorkspaceTabBarPaintHelper*>(w);
-    if(!helper)
-    {
-        m_oldStyle->drawControl(element, option, painter, widget);
-        return;
-    }
-
-    helper->drawTabBar(option, painter, m_workspaceTabWidget);
-}
-
 struct GCF::Components::MainWindowData
 {
     MainWindowData() : centralWidget(0), workspace(0), shutdownFlag(false) { }
@@ -216,6 +80,9 @@ GCF::Components::MainWindow::MainWindow()
 
     d->centralWidget = new QSplitter(Qt::Vertical, this);
     setCentralWidget(d->centralWidget);
+	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+	setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+
 
     d->workspace = new QTabWidget(d->centralWidget);
     d->workspace->setTabPosition(QTabWidget::North);
@@ -263,6 +130,7 @@ dock area is created.
 QDockWidget* GCF::Components::MainWindow::dockWidget(Qt::DockWidgetArea area)
 {
     QDockWidget* ret = 0;
+
     if(d->dockWidgetMap.contains(area))
         ret = d->dockWidgetMap[area];
 
@@ -271,6 +139,11 @@ QDockWidget* GCF::Components::MainWindow::dockWidget(Qt::DockWidgetArea area)
         // create the dock widget
         ret = new QDockWidget(this);
         ret->setAllowedAreas(area);
+		ret->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		
+		// This is to remove the title bar
+		QWidget* titleWidget = new QWidget(this);
+		ret->setTitleBarWidget( titleWidget );
 
         // place a tab widget on the dock widget
         QTabWidget* tabWidget = new QTabWidget(ret);
@@ -299,10 +172,11 @@ QDockWidget* GCF::Components::MainWindow::dockWidget(Qt::DockWidgetArea area)
             break;
         }
     }
-
-    addDockWidget(area, ret);
+	addDockWidget(area, ret);
     d->dockWidgetMap[area] = ret;
     ret->hide();
+	
+
     return ret;
 }
 
