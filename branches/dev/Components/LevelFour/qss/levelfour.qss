@@ -24,7 +24,6 @@ QWidget
 	background-color: #5c5c5c;
 	selection-color: #686868;
 	selection-background-color: #2e2e2e;
-	border: 0px;
 }
 
 QMainWindow
@@ -35,7 +34,7 @@ QMainWindow
 QMainWindow::separator
 {
      	background: #3d3d3d;
-	border: 0px;
+		border: 0px;
      	width: 3px; /* when vertical */
      	height: 3px; /* when horizontal */
 }
@@ -150,6 +149,9 @@ QComboBox::down-arrow:on
 QDockWidget
 {
     border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 4px;
+    margin: 4px;
 }
 
 QDockWidget::title
@@ -352,7 +354,7 @@ QScrollBar:horizontal
 
 QScrollBar::handle:horizontal
 {
-	border: 1px solid #000000;
+	border: 1px solid #3d3d3d;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 	stop: 0 #868686, stop: 0.5 #999999, stop: 1.0 #6b6b6b);
 	border-radius: 5px;
@@ -365,16 +367,16 @@ QScrollBar::add-line:horizontal
 {
 	background: #4d4d4d;
 	width: 16px;
-     	subcontrol-position: right;
-     	subcontrol-origin: margin;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
 }
 
 QScrollBar::sub-line:horizontal
 {
 	background: #4d4d4d;	
 	width: 16px;
-     	subcontrol-position: top right;
-     	subcontrol-origin: margin;
+    subcontrol-position: top right;
+    subcontrol-origin: margin;
 	position: absolute;
 	right: 20px;
 }
@@ -386,6 +388,7 @@ QScrollBar:left-arrow:horizontal
 	min-height: 5px;
 	max-width: 5px;
 	max-height: 5px;
+	image: none;
 }
 
 QScrollBar::right-arrow:horizontal
@@ -395,6 +398,7 @@ QScrollBar::right-arrow:horizontal
 	min-height: 5px;
 	max-width: 5px;
 	max-height: 5px;
+	image: none;
 }
 
 QScrollBar:vertical 
@@ -407,7 +411,7 @@ QScrollBar:vertical
 
 QScrollBar::handle:vertical
 {
-    border: 1px solid #000000;
+    border: 1px solid #3d3d3d;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 	stop: 0 #868686, stop: 0.5 #999999, stop: 1.0 #6b6b6b);
 	min-width: 8px;
@@ -426,10 +430,10 @@ QScrollBar::add-line:vertical
 
 QScrollBar::sub-line:vertical
 {
-     	background: #4d4d4d;
-     	height: 16px;
-     	subcontrol-position: top;
-     	subcontrol-origin: margin;
+    background: #4d4d4d;
+    height: 16px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
 	position: absolute;
 	top: 20px;
 }
@@ -441,6 +445,7 @@ QScrollBar:up-arrow:vertical
 	min-height: 5px;
 	max-width: 5px;
 	max-height: 5px;
+	image: none;
 
 }
 
@@ -451,7 +456,7 @@ QScrollBar::down-arrow:vertical
 	min-height: 5px;
 	max-width: 5px;
 	max-height: 5px;
-
+	image: none;
 }
 
 
@@ -483,7 +488,7 @@ QSlider::sub-page:vertical
 QStatusBar
 {
 	background: #5c5c5c;
-	border-top: 1px solid #191919;
+	border-top: 2px solid #3d3d3d;
 }
 
 
@@ -498,6 +503,16 @@ QTableView
 }
 
 /* TreeView */
+QTreeView
+{
+	margin: 2px;
+	border: 0px solid #444444;
+	border-radius: 0px;
+	padding: 5px;
+	background: #5c5c5c;
+	color: #191919;
+}
+
 QTreeView::item 
 {
 	background: #5c5c5c;
@@ -555,7 +570,9 @@ QTreeView::branch:has-siblings:!adjoins-item {
 /* The tab widget frame */
 QTabWidget::pane
 {
-	border: 0px solid #222222;
+	border: 2px solid #444444;
+	border-radius: 5px;
+	margin: 5px;
 }
 
 /* Style the tab using the tab sub-control. */
@@ -592,13 +609,18 @@ QTabBar::tab:selected
 /* Style for main toolbar */
 QToolBar
 {
-	border: 0px;
+	border-bottom: 2px solid #3d3d3d;
 	background: #5c5c5c;
 	spacing: 3px; /* spacing between items in the tool bar */
 	padding-top: 2px;
 	padding-bottom: 2px;
+	margin-bottom: 2px;
 	min-height: 30px;
 }
+
+QToolBar::handle {
+     image: none;
+ }
 
 /* All types of tool button */
 QToolButton

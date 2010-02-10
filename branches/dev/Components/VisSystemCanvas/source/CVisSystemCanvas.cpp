@@ -161,12 +161,12 @@ CVisSystemCanvas::CVisSystemCanvas(QWidget* parent)
 	d->scene->setSceneRect(-5000, -5000, 10000, 10000);
     setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
-	d->bgColor = QColor(64,64,64);
-    d->gridColor = QColor(64,64,64);
+	d->bgColor = QColor(114,114,114);
+    d->gridColor = QColor(114,114,114);
     d->bgColor.setAlphaF(0.9);
     d->gridColor.setAlphaF(0.9);
 
-    CCanvasUndoRedoCmd::VisNetwork = d->network;
+	CCanvasUndoRedoCmd::VisNetwork = d->network;
     CCanvasUndoRedoCmd::VisNetworkCanvas = this;
     CCanvasUndoRedoCmd::Canvas = this;
 
