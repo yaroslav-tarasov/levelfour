@@ -79,6 +79,7 @@ struct OsgCoreComponentData
 	QWidget* osgOutputWidget;
 	QVBoxLayout* sceneLayout;
 	QToolBar* sceneToolBar;
+	QComboBox* sceneSelection;
 	QComboBox* sceneCameras;
 	QComboBox* sceneDisplays;
 	QComboBox* sceneViewports;
@@ -106,6 +107,7 @@ OsgCoreComponent::OsgCoreComponent()
 
 	d->sceneLayout  = new QVBoxLayout;
 	d->sceneToolBar = new QToolBar;
+	d->sceneSelection = new QComboBox;
 	d->sceneCameras = new QComboBox;
 	d->sceneDisplays = new QComboBox;
 	d->sceneViewports = new QComboBox;
@@ -114,6 +116,12 @@ OsgCoreComponent::OsgCoreComponent()
 
 	// Toolbar actions
 	
+	// Scene selection provides toggle between different scene and data view nodes
+	d->sceneSelection->addItem("Select Scene");
+	d->sceneSelection->addItem("My Graph View");
+	d->sceneSelection->addItem("My Map View");
+	d->sceneSelection->addItem("My Data View");
+
 	// Camera actions (these are provided by the combo box)
 	d->sceneCameras->addItem("Perspective");
 	d->sceneCameras->addItem("Left");
@@ -153,6 +161,7 @@ OsgCoreComponent::OsgCoreComponent()
 	d->saveviewAction->setStatusTip(tr("Provides options for saving view in raster and vector formats"));
 	
 	// Add widgets and actions to the toolbar
+	d->sceneToolBar->addWidget(d->sceneSelection);
 	d->sceneToolBar->addWidget(d->sceneCameras);
 	d->sceneToolBar->addWidget(d->sceneDisplays);
 	d->sceneToolBar->addWidget(d->sceneViewports);
