@@ -20,12 +20,7 @@ INCLUDEPATH     += $${PROJECT_BASE}/Components/OsgCore/source \
 # Input
 HEADERS += source/OsgVisComponent.h \
            source/LayerVisNode.h \
-           source/SourceVisNode.h \
-           source/FiltersGraphVisNode.h \
-           source/FilterVisNode.h \
            source/MapVisNode.h \
-           source/TerrainVisNode.h \
-           source/ResourceVisNode.h \
 		   source/OsgLayerVisNodeIOData.h \
            ../OsgCore/source/OsgNodeVisNodeIOData.h \
            ../OsgCore/source/OsgGroupVisNodeIOData.h \
@@ -33,12 +28,7 @@ HEADERS += source/OsgVisComponent.h \
 
 SOURCES += source/OsgVisComponent.cpp \
            source/LayerVisNode.cpp \
-           source/SourceVisNode.cpp \
-           source/FiltersGraphVisNode.cpp \
-           source/FilterVisNode.cpp \
            source/MapVisNode.cpp \
-           source/TerrainVisNode.cpp \
-           source/ResourceVisNode.cpp \
 		   source/OsgLayerVisNodeIOData.cpp \
            ../OsgCore/source/OsgNodeVisNodeIOData.cpp \
            ../OsgCore/source/OsgGroupVisNodeIOData.cpp \
