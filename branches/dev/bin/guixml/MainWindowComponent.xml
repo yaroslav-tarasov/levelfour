@@ -1,10 +1,10 @@
 <component title="Main Window Component" version="1.0" name="MainWindowComponent" >
     <widget title="Level Four" scriptName="MainWindow" name="window" autoDelete="false" />
     <widget scriptName="StatusBar" title="" name="statusBar" autoDelete="false" />
-    <widget title="" name="bottomDockArea" autoDelete="false" />
+    <widget title="Bottom Dock" name="bottomDockArea" autoDelete="false" />
     <widget title="" name="workspace" autoDelete="false" />
-    <widget title="" name="leftDockArea" />
-    <widget title="" name="rightDockArea" />
+    <widget title="Objects" name="leftDockArea" />
+    <widget title="Properties" name="rightDockArea" />
     <object title="" name="application" autoDelete="false" />
     <object title="" name="controller" autoDelete="false" />
     <action title="Preferences" 
@@ -59,6 +59,26 @@
 		icon=":/MainWindow/appIcon.png"
             url="http://www.vcreatelogic.com/oss/vtkdesigner" 
             />
+    <action title="Model" 
+            icon=":/MainWindow/modelMode.png" 
+            name="modelMode"
+		triggerSlot="MainWindowComponent.window::togglePanelAction()" />
+    <action title="Edit" 
+            icon=":/MainWindow/editMode.png" 
+            name="editMode"
+		triggerSlot="MainWindowComponent.window::togglePanelAction()" />
+    <action title="Animation" 
+            icon=":/MainWindow/animationMode.png" 
+            name="animationMode"
+		triggerSlot="MainWindowComponent.window::togglePanelAction()" />
+    <action title="Script" 
+            icon=":/MainWindow/scriptMode.png" 
+            name="scriptMode"
+		triggerSlot="MainWindowComponent.window::togglePanelAction()" />
+    <action title="Analysis" 
+            icon=":/MainWindow/analysisMode.png" 
+            name="analysisMode"
+		triggerSlot="MainWindowComponent.window::togglePanelAction()" />
 
     <menu title="&amp;File" name="fileMenu">
         <!-- This is a dummy place holder for file menu items -->
@@ -94,23 +114,14 @@
     <toolbar title="Recipe Tools" name="recipeTools">
 	</toolbar>
 
-    <toolbar title="Util Tools" name="utilTools">
-	  <toolbaritem actionName="MainWindowComponent.copy" />
-        <toolbaritem actionName="MainWindowComponent.cut" />
-        <toolbaritem actionName="MainWindowComponent.paste" />
-        <toolbaritem actionName="MainWindowComponent.undo" />
-        <toolbaritem actionName="MainWindowComponent.redo" />
+    <toolbar title="Workspace Modes" name="workspaceModes">
+	<toolbaritem actionName="MainWindowComponent.modelMode" />
+      <toolbaritem actionName="MainWindowComponent.editMode" />
+      <toolbaritem actionName="MainWindowComponent.animationMode" />
+      <toolbaritem actionName="MainWindowComponent.scriptMode" />
+      <toolbaritem actionName="MainWindowComponent.analysisMode" />
     </toolbar>
 
-    <toolbar title="Node Tools" name="nodeTools">
-	</toolbar>
-
-    <toolbar title="Component Tools" name="componentTools">
-	</toolbar>
-
-    <toolbar title="View Tools" name="viewTools">
-	<toolbaritem actionName="MainWindowComponent.captureSnapshot" />
-	</toolbar>
 
     <property key="MainWindowComponent.leftDockArea::minimumWidth" value="250" />
     <property key="MainWindowComponent.rightDockArea::minimumHeight" value="200" />

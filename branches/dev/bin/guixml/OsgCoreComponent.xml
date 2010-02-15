@@ -1,7 +1,7 @@
 <component title="OsgCoreComponent" name="OsgCoreComponent" >
  <object name="controller" />
   <widget title="Scene View" 
-		name="osgOutputWidget" 
+		name="sceneView" 
 		parentWidget="MainWindowComponent.workspace" 
 		parentWidgetHint="RightDockWidgetArea" />
 </component>

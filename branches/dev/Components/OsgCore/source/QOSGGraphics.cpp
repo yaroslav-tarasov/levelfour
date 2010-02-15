@@ -248,6 +248,7 @@ void  osg::QOSGScene::drawBackground ( QPainter * painter, const QRectF & rect )
 	}
 	else
 		qWarning("QOSGScene: drawBackground needs a QGLWidget to be set as viewport on the graphics view.");
+
 }
 
 void osg::QOSGCompositeScene::init()

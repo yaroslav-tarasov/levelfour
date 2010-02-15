@@ -26,6 +26,6 @@
     <property key="TemplateManagerComponent.controller::TemplatesDirectory" value="${APPDIR}/Patterns" />
 
     <widget name="dirView" parentWidget="MainWindowComponent.leftDockArea"
-		title="Pattern Explorer" />
+		title="Patterns" />
 
 </component>

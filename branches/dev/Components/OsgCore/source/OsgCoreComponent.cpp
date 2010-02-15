@@ -50,6 +50,13 @@
 
 #include "QOSGGraphics.h"
 
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QToolBar>
+#include <QComboBox>
+#include <QAction>
+
+
 struct OsgCoreComponentData
 {
     OsgCoreComponentData() {
@@ -68,7 +75,21 @@ struct OsgCoreComponentData
     IVisNetwork* visNetwork;
     IScriptEngineManager* scriptEngineManager;
 
-	QTabWidget* osgOutputWidget;
+	QTabWidget* sceneView;
+	QWidget* osgOutputWidget;
+	QVBoxLayout* sceneLayout;
+	QToolBar* sceneToolBar;
+	QComboBox* sceneCameras;
+	QComboBox* sceneDisplays;
+	QComboBox* sceneViewports;
+	
+	// Actions for toolbar
+	QAction* showgridAction;
+	QAction* showgizmoAction;
+	QAction* showaxisAction;
+	QAction* saveviewAction;
+
+	
 };
 
 GCF_DEFINE_COMPONENT(OsgCoreComponent)
@@ -82,7 +103,69 @@ OsgCoreComponent & OsgCoreComponent::instance()
 OsgCoreComponent::OsgCoreComponent()
 {
     d = new OsgCoreComponentData;
-	d->osgOutputWidget = new QTabWidget;
+
+	d->sceneLayout  = new QVBoxLayout;
+	d->sceneToolBar = new QToolBar;
+	d->sceneCameras = new QComboBox;
+	d->sceneDisplays = new QComboBox;
+	d->sceneViewports = new QComboBox;
+	d->osgOutputWidget = new QWidget;
+	d->sceneView = new QTabWidget;
+
+	// Toolbar actions
+	
+	// Camera actions (these are provided by the combo box)
+	d->sceneCameras->addItem("Perspective");
+	d->sceneCameras->addItem("Left");
+	d->sceneCameras->addItem("Right");
+	d->sceneCameras->addItem("Front");
+	d->sceneCameras->addItem("Back");
+	d->sceneCameras->addItem("Top");
+	d->sceneCameras->addItem("Bottom");
+	d->sceneCameras->addItem("Isometric");
+
+	// Display actions (these are provided by the combo box)
+	d->sceneDisplays->addItem("Wireframe");
+	d->sceneDisplays->addItem("Textures");
+	d->sceneDisplays->addItem("Backface Culling");
+	d->sceneDisplays->addItem("Shading");
+
+	// Viewport actions (these are provided by the combo box)
+	d->sceneViewports->addItem("Single");
+	d->sceneViewports->addItem("Over Under");
+	d->sceneViewports->addItem("Side by Side");
+	d->sceneViewports->addItem("2 Up 1 Down");
+	d->sceneViewports->addItem("1 Up 2 Down");
+	d->sceneViewports->addItem("2 by 2");
+
+	// HUD actions
+	d->showgridAction = new QAction(QIcon(":/OsgCore/grid.png"), tr("&Display Grid"), this);
+	d->showgridAction->setStatusTip(tr("Displays a grid"));
+
+	d->showgizmoAction = new QAction(QIcon(":/OsgCore/gizmo.png"), tr("&Display Gizmo"), this);
+	d->showgizmoAction->setStatusTip(tr("Displays a gizmo control for navigation"));
+
+	d->showaxisAction = new QAction(QIcon(":/OsgCore/axis.png"), tr("&Display Axis"), this);
+	d->showaxisAction->setStatusTip(tr("Displays an axis for orientation"));
+
+	// Save view options
+	d->saveviewAction = new QAction(QIcon(":/LevelFour/camera.png"), tr("&Save view as..."), this);
+	d->saveviewAction->setStatusTip(tr("Provides options for saving view in raster and vector formats"));
+	
+	// Add widgets and actions to the toolbar
+	d->sceneToolBar->addWidget(d->sceneCameras);
+	d->sceneToolBar->addWidget(d->sceneDisplays);
+	d->sceneToolBar->addWidget(d->sceneViewports);
+	d->sceneToolBar->addAction(d->showgridAction);
+	d->sceneToolBar->addAction(d->showgizmoAction);
+	d->sceneToolBar->addAction(d->showaxisAction);
+	d->sceneToolBar->addAction(d->saveviewAction);
+
+	// Assemble the panel
+	d->sceneLayout->addWidget(d->sceneToolBar);
+	// d->sceneLayout->addWidget(d->osgOutputWidget);
+	d->sceneView->setLayout(d->sceneLayout);
+
 }
 
 OsgCoreComponent::~OsgCoreComponent()
@@ -90,7 +173,17 @@ OsgCoreComponent::~OsgCoreComponent()
     delete d;
 }
 
-QTabWidget* OsgCoreComponent::osgOutputWidget() const
+QTabWidget* OsgCoreComponent::sceneView() const
+{
+	return d->sceneView;
+}
+
+QVBoxLayout* OsgCoreComponent::sceneLayout() const
+{
+	return d->sceneLayout;
+}
+
+QWidget* OsgCoreComponent::osgOutputWidget() const
 {
 	return d->osgOutputWidget;
 }
@@ -308,8 +401,8 @@ QWidget* OsgCoreComponent::fetchWidget(const QString& completeName) const
 {
     QStringList comps = completeName.split('.');
 
-	if(comps.last() == "osgOutputWidget")
-		return d->osgOutputWidget;
+	if(comps.last() == "sceneView")
+		return d->sceneView;
 
     return 0;
 }

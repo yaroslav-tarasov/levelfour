@@ -61,6 +61,11 @@
     <file>images/right_arrow.png</file>
     <file>images/left_arrow.png</file>
 
+    <file alias="modelMode.png">icons/modelMode.png</file>
+    <file alias="editMode.png">icons/editMode.png</file>
+    <file alias="animationMode.png">icons/animationMode.png</file>
+    <file alias="analysisMode.png">icons/analysisMode.png</file>
+    <file alias="scriptMode.png">icons/scriptMode.png</file>
     
 </qresource>
 </RCC>

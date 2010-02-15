@@ -78,7 +78,7 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 
 	m_osgOutputWidget = new osg::QGLGraphicsView;
 
-	OsgCoreComponent::instance().osgOutputWidget()->addTab(m_osgOutputWidget, this->nodeName());
+	OsgCoreComponent::instance().sceneLayout()->addWidget(m_osgOutputWidget);
 
 	d->scene = new osg::QOSGScene;
 	m_osgOutputWidget->setScene(d->scene);
@@ -265,8 +265,8 @@ bool OsgSimpleViewVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVi
 
 void OsgSimpleViewVisNode::removeSceneWidget()
 {
-	QTabWidget * osgOutputWidget = OsgCoreComponent::instance().osgOutputWidget();
-	osgOutputWidget->removeTab(osgOutputWidget->indexOf(m_osgOutputWidget));
+	QWidget * osgOutputWidget = OsgCoreComponent::instance().osgOutputWidget();
+	// osgOutputWidget->removeTab(osgOutputWidget->indexOf(m_osgOutputWidget));
 }
 
 #ifdef ENABLE_ADVANCED_PROPERTIES

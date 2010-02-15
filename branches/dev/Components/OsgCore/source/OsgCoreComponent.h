@@ -21,6 +21,8 @@
 #include <GCF/IAboutData>
 #include "IVisSystemNodeFactory.h"
 #include <QTabWidget>
+#include <QVBoxLayout>
+
 
 struct OsgCoreComponentData;
 class OsgCoreComponent : public GCF::AbstractComponent,
@@ -36,8 +38,11 @@ public:
     ~OsgCoreComponent();
 
 	static QIcon nodeIcon();
+	
+    QTabWidget* sceneView() const;
+    QWidget* osgOutputWidget() const;
+	QVBoxLayout* sceneLayout() const;
 
-    QTabWidget* osgOutputWidget() const;
 
     // IContainer implementation
     QObject* containerObject();

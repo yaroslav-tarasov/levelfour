@@ -1,5 +1,5 @@
 <component title="Visualization System Node Class Explorer" version="1.0" name="CVisSystemNodeClassExplorerComponent" >
-  <widget title="Node Catalog" name="explorerContainer" parentWidget="MainWindowComponent.leftDockArea" />
+  <widget title="Nodes" name="explorerContainer" parentWidget="MainWindowComponent.leftDockArea" />
   <widget title="" name="explorer" />
   <widget title="" name="searchForWidget" />
   <widget title="" name="explorerTree" />
