@@ -66,6 +66,7 @@
 #include <QSvgRenderer>
 #include <QFile>
 #include <QClipboard>
+#include <QVarLengthArray>
 
 struct CVisSystemCanvasData
 {
@@ -124,6 +125,7 @@ struct CVisSystemCanvasData
 
     // Data for drawing the canvas background
     QColor bgColor, gridColor;
+	// QVarLengthArray linesY, linesX;
 
     // Undo Redo Stuff
     CUndoRedoStack undoStack;
@@ -161,7 +163,7 @@ CVisSystemCanvas::CVisSystemCanvas(QWidget* parent)
 	d->scene->setSceneRect(-5000, -5000, 10000, 10000);
     setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
-	d->bgColor = QColor(114,114,114);
+	d->bgColor = QColor(96,96,96);
     d->gridColor = QColor(114,114,114);
     d->bgColor.setAlphaF(0.9);
     d->gridColor.setAlphaF(0.9);
@@ -1146,10 +1148,29 @@ void CVisSystemCanvas::drawBackground(QPainter * paint, const QRectF & rect)
     // grad.setColorAt(0.0, d->bgTopColor);
     // grad.setColorAt(1, d->bgMidColor);
     // grad.setColorAt(1.0, d->bgBottomColor);
-    paint->fillRect(rect, d->bgColor);
-    paint->fillRect(rect, QBrush(d->gridColor, Qt::Dense7Pattern));
+    
+	paint->fillRect(rect, d->bgColor);
+    // paint->fillRect(rect, QBrush(d->gridColor, Qt::CrossPattern));
 
 	// Need to draw proper isometric grid
+	int gridInterval = 50; //interval to draw grid lines at
+	paint->setWorldMatrixEnabled(true);
+
+	qreal left = int(rect.left()) - (int(rect.left()) % gridInterval );
+	qreal top = int(rect.top()) - (int(rect.top()) % gridInterval );
+
+	QVarLengthArray<QLineF, 100> linesY;
+	for (qreal y = top; y < rect.bottom(); y += gridInterval )
+		linesY.append(QLineF(rect.left(), y, rect.right(), y));
+
+	paint->shear(0,0.5);
+	paint->setPen(d->gridColor);
+	paint->drawLines(linesY.data(), linesY.size());
+
+	paint->shear(0,-0.5);
+	paint->shear(0,-0.5);
+	paint->setPen(d->gridColor);
+	paint->drawLines(linesY.data(), linesY.size());
 
 }
 

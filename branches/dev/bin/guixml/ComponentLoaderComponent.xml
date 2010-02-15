@@ -42,5 +42,5 @@
     <method param1="ScriptEditorComponent" 
             param2="ScriptEditor" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
-    
+   
 </component>

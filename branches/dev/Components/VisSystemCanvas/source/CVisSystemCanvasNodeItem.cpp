@@ -222,8 +222,13 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     QPen pen = p->pen();
 
 	// Isometric rotations
-	// p->shear(0,0.5); - this works as sy = 0.5 (sine(30 deg))
-	// p->rotate(30);
+	p->shear(0,0.5); // this works as sy = 0.5 (sine(30 deg)) for right orientation
+
+	// Right perspective
+	// p->shear(0,0.5);
+
+	// Left perspective
+	// p->shear(0,-0.5);
 	
 	// We want the nodes to be smooth and clear
 	p->setRenderHint(QPainter::Antialiasing, true);
@@ -235,9 +240,11 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     p->drawText(r2, Qt::AlignCenter, d->node->nodeName());
 
 #else
-    QRectF r2 = r.adjusted(0, 0, -5, -5);
+    
+	// This sets the size of the visible node - x, y, w, h
+	QRectF r2 = r.adjusted(0, 0, -5, -15);
 
-    // Draw the node shadow
+    // Draw the node shadow - this should be reprojected
 	if(opt->levelOfDetail >= 0.75)
     {
         QColor color1 = QColor(10,10,10);
@@ -245,13 +252,13 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 
         int shadowSize = this->isSelected() ? 5 : 3;
         QPainterPath path;
-        path.addRoundedRect(r2.adjusted(shadowSize,shadowSize,shadowSize,shadowSize), 10, 10);
+        path.addRoundedRect(r2.adjusted(shadowSize,shadowSize,shadowSize,shadowSize), 0, 0);
         p->fillPath(path, color1);
+
     }
 
     // Draw the node rectangle.
     double alpha = 0.90;
-	
     
 	if(this->isSelected())
         alpha = 1.0;
@@ -277,7 +284,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 		midColor.setAlphaF(alpha);
         
         QPainterPath path;
-        path.addRoundRect(r2.adjusted(1,1,-1,-1), 10, 10);
+        path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
 		p->fillPath(path, midColor);
         p->drawPath(path);
     }
@@ -287,7 +294,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 		fillColor.setAlphaF(alpha);
 
         QPainterPath path;
-        path.addRoundRect(r2.adjusted(1,1,-1,-1), 10, 10);
+        path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
 		p->fillPath(path, fillColor);
 		p->drawPath(path);
 	}
@@ -313,10 +320,13 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 	if(opt->levelOfDetail >= 0.75)
 	{
 		// First draw the node name
-		textRect.setBottom( r2.center().y() );
+		textRect.moveTop( r2.center().y()- textRect.height()/2 );
+		textRect.moveLeft( r2.center().y()- textRect.width()/2 );
 		p->drawText(textRect, Qt::AlignCenter, d->node->nodeName());
 	    
 		// Now draw the node class name in a smaller font
+		// We don't need this because the icon is an identifier
+		/*
 		QFont font = p->font();
 		QFont newFont = font;
 		newFont.setPointSize( font.pointSize()-1 );
@@ -324,29 +334,32 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 		textRect.moveTop( r2.center().y()+1 );
 		p->drawText(textRect, Qt::AlignCenter, d->node->nodeDesc()->nodeClassName());
 		p->setFont(font);
+		*/
 	}
 	else
 		p->drawText(textRect, Qt::AlignCenter, d->node->nodeDesc()->nodeClassName());
 
 #endif
 
+	// Draw connection boxes
 	if(opt->levelOfDetail >= 0.75)
 		d->node->paintNode(p, r, *opt);
 
     QBrush brush = opt->palette.mid();
-    QColor color = brush.color();
+    QColor color = QColor(173,175,181);
     color.setAlphaF(0.75f);
     brush.setColor(color);
-    color = opt->palette.shadow().color();
+    // color = opt->palette.shadow().color();
     color.setAlphaF(0.75f);
 
     QMap<IVisSystemNodeConnectionPath*, QRectF>::iterator it = d->pathRectMap.begin();
     QMap<IVisSystemNodeConnectionPath*, QRectF>::iterator end = d->pathRectMap.end();
     while(it != end)
     {
-        p->setPen(color);
+        p->setPen(Qt::black);
         p->setBrush(brush);
-        p->drawRect(it.value());
+        // p->drawRoundRect(it.value(), 25, 25);
+		p->drawEllipse(it.value());
         p->setPen(pen);
 
 		d->node->paintConnectionPath(it.key(), p, it.value(), *opt);

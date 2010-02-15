@@ -30,6 +30,12 @@
 #include "IScriptableObjectExplorer.h"
 #include "IProjectExt.h"
 
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QToolBar>
+#include <QAction>
+
+
 GCF_DEFINE_COMPONENT(CVisSystemCanvasComponent)
 
 struct CVisSystemCanvasComponentData
@@ -38,7 +44,25 @@ struct CVisSystemCanvasComponentData
         scriptEngineManager(0), scriptEngineComp(0), soExplorer(0),
         soExplorerComp(0) { }
 
-    CVisSystemCanvas* visSystemCanvas;
+	QWidget* visSystemCanvasPanel;
+    QVBoxLayout* visSystemCanvasLayout;
+	QToolBar* visSystemCanvasToolBar;
+	
+	// Actions for toolbar
+	QAction* copyAction;
+	QAction* cutAction;
+	QAction* pasteAction;
+	QAction* undoAction;
+	QAction* redoAction;
+	QAction* addnoteAction;
+	QAction* layoutnodesAction;
+	QAction* bringtocenterAction;
+	QAction* zoominAction;
+	QAction* zoomoutAction;
+	QAction* zoomoneAction;
+	QAction* zoomfitAction;
+	
+	CVisSystemCanvas* visSystemCanvas;
     CVisSystemCanvasThumbnailView* canvasThumbView;
 
     GCF::AbstractComponent* nodeClassRegistryComp;
@@ -59,13 +83,103 @@ CVisSystemCanvasComponent & CVisSystemCanvasComponent::instance()
 CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 {
     d = new CVisSystemCanvasComponentData;
-    d->visSystemCanvas = new CVisSystemCanvas;
+	
+	// Panel components
+	d->visSystemCanvasPanel = new QWidget;
+	d->visSystemCanvasLayout  = new QVBoxLayout;
+	d->visSystemCanvasToolBar = new QToolBar;
+	d->visSystemCanvas = new CVisSystemCanvas;
+
+	// Toolbar actions
+
+	d->copyAction = new QAction(this);
+	d->copyAction = new QAction(QIcon(":/MainWindow/copy.png"), tr("&Copy"), this);
+	d->copyAction->setStatusTip(tr("Copy a node"));
+	d->visSystemCanvasToolBar->addAction(d->copyAction);
+
+	d->cutAction = new QAction(this);
+	d->cutAction = new QAction(QIcon(":/MainWindow/cut.png"), tr("&Cut"), this);
+	d->cutAction->setStatusTip(tr("Cut a node"));
+	d->visSystemCanvasToolBar->addAction(d->cutAction);
+
+	d->pasteAction = new QAction(this);
+	d->pasteAction = new QAction(QIcon(":/MainWindow/paste.png"), tr("&Cut"), this);
+	d->pasteAction->setStatusTip(tr("Paste a node"));
+	d->visSystemCanvasToolBar->addAction(d->pasteAction);
+
+	d->undoAction = new QAction(this);
+	d->undoAction = new QAction(QIcon(":/MainWindow/undo.png"), tr("&Undo"), this);
+	d->undoAction->setStatusTip(tr("Undo an action"));
+	d->visSystemCanvasToolBar->addAction(d->undoAction);
+
+	d->redoAction = new QAction(this);
+	d->redoAction = new QAction(QIcon(":/MainWindow/redo.png"), tr("&Redo"), this);
+	d->redoAction->setStatusTip(tr("Redo an action"));
+	d->visSystemCanvasToolBar->addAction(d->redoAction);
+
+	d->addnoteAction = new QAction(this);
+	d->addnoteAction = new QAction(QIcon(":/VisSystemCanvas/note.png"), tr("&Add note"), this);
+	d->addnoteAction->setStatusTip(tr("Add a note"));
+	d->visSystemCanvasToolBar->addAction(d->addnoteAction);
+
+	d->layoutnodesAction = new QAction(this);
+	d->layoutnodesAction = new QAction(QIcon(":/VisSystemCanvas/layoutnodes.png"), tr("&Layout nodes"), this);
+	d->layoutnodesAction->setStatusTip(tr("Layout nodes"));
+	d->visSystemCanvasToolBar->addAction(d->layoutnodesAction);
+
+	d->bringtocenterAction = new QAction(this);
+	d->bringtocenterAction = new QAction(QIcon(":/VisSystemCanvas/bringtocenter.png"), tr("&Bring nodes to center"), this);
+	d->bringtocenterAction->setStatusTip(tr("Bring nodes to center"));
+	d->visSystemCanvasToolBar->addAction(d->bringtocenterAction);
+
+	d->zoominAction = new QAction(this);
+	d->zoominAction = new QAction(QIcon(":/VisSystemCanvas/zoomin.png"), tr("&ZoomIn"), this);
+	d->zoominAction->setStatusTip(tr("Zoom in to canvas space"));
+	d->visSystemCanvasToolBar->addAction(d->zoominAction);
+
+	d->zoomoutAction = new QAction(this);
+	d->zoomoutAction = new QAction(QIcon(":/VisSystemCanvas/zoomout.png"), tr("&Zoom out"), this);
+	d->zoomoutAction->setStatusTip(tr("Zoom out"));
+	d->visSystemCanvasToolBar->addAction(d->zoomoutAction);
+
+	d->zoomoneAction = new QAction(this);
+	d->zoomoneAction = new QAction(QIcon(":/VisSystemCanvas/zoomone.png"), tr("&Zoom one"), this);
+	d->zoomoneAction->setStatusTip(tr("Zoom one"));
+	d->visSystemCanvasToolBar->addAction(d->zoomoneAction);
+
+	d->zoomfitAction = new QAction(this);
+	d->zoomfitAction = new QAction(QIcon(":/VisSystemCanvas/zoomfit.png"), tr("&Zoom fit"), this);
+	d->zoomfitAction->setStatusTip(tr("Zoom fit"));
+	d->visSystemCanvasToolBar->addAction(d->zoomfitAction);
+
+	// Toolbar Triggers - this is not working...
+	connect(d->zoominAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::zoomIn()));
+	connect(d->copyAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::copy()));
+	connect(d->cutAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::cut()));
+	connect(d->pasteAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::paste()));
+	connect(d->undoAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::undo()));
+	connect(d->redoAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::redo()));
+	connect(d->addnoteAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::addNote()));
+	connect(d->layoutnodesAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::addNote()));
+	connect(d->bringtocenterAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::bringToCenter()));
+	connect(d->zoomoutAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::zoomOut()));
+	connect(d->zoomoneAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::zoomOne()));
+	connect(d->zoomfitAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::zoomFit()));
+
+	// Canvas Triggers
     connect(d->visSystemCanvas, SIGNAL(nodeAdded(IVisSystemNode*)), this, SLOT(on_nodeAdded(IVisSystemNode*)));
     connect(d->visSystemCanvas, SIGNAL(nodeRemoved(IVisSystemNode*)), this, SLOT(on_nodeRemoved(IVisSystemNode*)));
     connect(d->visSystemCanvas, SIGNAL(nodeClickedEvent(IVisSystemNode*,QPoint,Qt::MouseButton,Qt::KeyboardModifiers)),
             this, SLOT(on_nodeClickedEvent(IVisSystemNode*,QPoint,Qt::MouseButton,Qt::KeyboardModifiers)));
     connect(d->visSystemCanvas, SIGNAL(canvasClickedEvent(IVisNetworkCanvas*,QPoint,Qt::MouseButton,Qt::KeyboardModifiers)),
             this, SLOT(on_canvasClickedEvent(IVisNetworkCanvas*,QPoint,Qt::MouseButton,Qt::KeyboardModifiers)));
+
+	// Assemble component
+	d->visSystemCanvasLayout->addWidget(d->visSystemCanvasToolBar);
+	d->visSystemCanvasLayout->addWidget(d->visSystemCanvas);
+	d->visSystemCanvasPanel->setLayout(d->visSystemCanvasLayout);
+
+
 }
 
 CVisSystemCanvasComponent::~CVisSystemCanvasComponent()
@@ -100,8 +214,8 @@ QWidget* CVisSystemCanvasComponent::fetchWidget(const QString& completeName) con
 {
     QStringList comps = completeName.split('.');
 
-    if(comps.last() == "visSystemCanvas")
-        return d->visSystemCanvas;
+    if(comps.last() == "visSystemCanvasPanel")
+        return d->visSystemCanvasPanel;
 
     if(comps.last() == "canvasThumbView")
     {

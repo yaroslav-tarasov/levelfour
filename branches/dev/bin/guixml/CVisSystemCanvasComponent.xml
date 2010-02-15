@@ -1,7 +1,7 @@
 <component title="Visualization System Canvas" version="1.0" name="CVisSystemCanvasComponent" >
     <widget title="Pipeline Designer" 
             scriptName="VisNetwork" 
-            name="visSystemCanvas" 
+            name="visSystemCanvasPanel" 
             parentWidget="MainWindowComponent.workspace" />
     
     <!-- This will become an overlay
@@ -68,13 +68,6 @@
             mergeWith="MainWindowComponent.captureSnapshot" />
     
     <toolbar mergeWith="MainWindowComponent.nodeTools" >
-	  <toolbaritem actionName="CVisSystemCanvasComponent.addNote" />
-	  <toolbaritem actionName="CVisSystemCanvasComponent.layoutNodes" />
-	  <toolbaritem actionName="CVisSystemCanvasComponent.bringToCenter" />
-	  <toolbaritem actionName="CVisSystemCanvasComponent.zoomIn" />
-        <toolbaritem actionName="CVisSystemCanvasComponent.zoomOut" />
-        <toolbaritem actionName="CVisSystemCanvasComponent.zoomOne" />
-        <toolbaritem actionName="CVisSystemCanvasComponent.zoomFit" />
     </toolbar>
 
     <menu mergeWith="MainWindowComponent.editMenu" >

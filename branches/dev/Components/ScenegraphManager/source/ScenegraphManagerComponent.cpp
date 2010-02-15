@@ -18,11 +18,13 @@
 #include <GCF/ComponentFactory>
 #include <GCF/IComponentPlugin>
 
+#include <QWidget>
+
 GCF_DEFINE_COMPONENT(ScenegraphManagerComponent)
 
 struct ScenegraphManagerComponentData
 {
-
+	QWidget* sceneGraphManager;
 };
 
 ScenegraphManagerComponent & ScenegraphManagerComponent::instance()
@@ -34,6 +36,8 @@ ScenegraphManagerComponent & ScenegraphManagerComponent::instance()
 ScenegraphManagerComponent::ScenegraphManagerComponent()
 {
     d = new ScenegraphManagerComponentData;
+
+	d->sceneGraphManager = new QWidget;
 }
 
 ScenegraphManagerComponent::~ScenegraphManagerComponent()
@@ -56,8 +60,12 @@ QObject* ScenegraphManagerComponent::fetchObject(const QString& completeName) co
 QWidget* ScenegraphManagerComponent::fetchWidget(const QString& completeName) const
 {
     QStringList comps = completeName.split('.');
-
-    return 0;
+	
+	if(comps.last() == "sceneGraphManager")
+		
+		return d->sceneGraphManager;
+    
+	return 0;
 }
 
 /*
