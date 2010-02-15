@@ -1,6 +1,10 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="/OsgCore">
-  
+
+    <file alias="axis.png">icons/axis.png</file>
+    <file alias="grid.png">icons/grid.png</file>
+    <file alias="gizmo.png">icons/gizmo.png</file>  
+
     <file alias="Camera.png">icons/Camera.png</file>
     <file alias="Cone.png">icons/Cone.png</file>
     <file alias="Cube.png">icons/Cube.png</file>

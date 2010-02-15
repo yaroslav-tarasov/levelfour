@@ -4,8 +4,8 @@
     <object title="" name="scriptEngineManager" />
     <widget title="Script Editor" 
             name="scriptEditor" 
-            parentWidget="MainWindowComponent.rightDockArea" />
-    <widget title="Scriptable Objects" 
+            parentWidget="MainWindowComponent.workspace" />
+    <widget title="Scriptables" 
             hideWhenInactive="false" 
             name="scriptableObjectExplorer" 
             parentWidget="MainWindowComponent.leftDockArea" />
@@ -92,13 +92,7 @@
         <menuitem />
         <menuitem widgetName="ScriptEditorComponent.configPageSheet" hideWhenInactive="true" />
     </menu>
-    
-    <toolbar mergeWith="MainWindowComponent.componentTools" >
-        <toolbaritem actionName="ScriptEditorComponent.executeMainScript" hideWhenInactive="false" />
-        <toolbaritem actionName="ScriptEditorComponent.fileLoadForm" hideWhenInactive="false" />
-        <toolbaritem actionName="ScriptEditorComponent.fileUnloadForm" hideWhenInactive="false" />        
-    </toolbar>
-    
+  
     <property key="ScriptEditorComponent.scriptEditor::TabSpace" value="4" />
     <property key="ScriptEditorComponent.scriptEditor::FontSize" value="15" />
     <property key="ScriptEditorComponent.scriptEditor::FontName" value="Courier New" />
