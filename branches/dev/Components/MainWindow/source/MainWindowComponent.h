@@ -57,6 +57,7 @@ namespace GCF
 			void setSplashImage(const QString& pmFile);
 			QString splashImage() const;
 
+			void addTabCentralWidget(QWidget* widget, const QString& name=QString());
 		protected:
 			MainWindowComponent();
 			QAction* fetchAction(const QString& completeName) const;

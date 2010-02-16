@@ -305,6 +305,11 @@ void GCF::Components::MainWindowComponent::addChildWidget(QWidget* parent, QWidg
         d->mainWindow->addChildWidget(parent, child);
 }
 
+void GCF::Components::MainWindowComponent::addTabCentralWidget(QWidget * child, const QString& name)
+{
+	d->mainWindow->workspace()->addTab(child, name);
+}
+
 void GCF::Components::MainWindowComponent::removeChildWidget(QWidget* parent, QWidget* child, const QString& hint)
 {
     if(parent == d->mainWindow)
