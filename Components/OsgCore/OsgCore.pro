@@ -31,6 +31,7 @@ HEADERS += source/OsgCoreComponent.h \
            source/OsgBoxVisNode.h \
            source/OsgSphereVisNode.h \
 	     source/QOSGWidget.h \
+		 source/AdapterWidget.h \
 	     source/QOSGGraphics.h \
 	     source/OsgNodeVisNodeIOData.h \
            source/OsgCylinderVisNode.h \
@@ -55,6 +56,7 @@ SOURCES += source/OsgCoreComponent.cpp \
            source/OsgGroupVisNode.cpp \
 			source/QOSGWidget.cpp \
 			source/QOSGGraphics.cpp \
+		 source/AdapterWidget.cpp \
 			source/OsgGroupVisNodeIOData.cpp \
 			source/OsgLightVisNodeIOData.cpp \
            source/OsgGeodeVisNode.cpp \
@@ -85,6 +87,8 @@ LIBS			+= -losgd \
 				-lQtCored4 \
 				-lQtOpenGLd4 \
 				-lopenGL32 \
+				-lopenThreadsd \
+				-l../../lib/MainWindow \
 
 # VNFComponentGen has generated an empty resource file. If you add
 # new objects to the resource file, then you can uncomment the line
