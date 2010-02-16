@@ -30,13 +30,7 @@
 #include "CGenericVisNodeBase.h"
 
 #include "LayerVisNode.h"
-#include "SourceVisNode.h"
-#include "FiltersGraphVisNode.h"
-#include "FilterVisNode.h"
 #include "MapVisNode.h"
-#include "TerrainVisNode.h"
-#include "ResourceVisNode.h"
-#include <QtGui/QPushButton>
 
 struct OsgVisComponentData
 {
@@ -54,7 +48,6 @@ struct OsgVisComponentData
     IVisNetworkCanvas* visNetworkCanvas;
     IVisNetwork* visNetwork;
     IScriptEngineManager* scriptEngineManager;
-	QPushButton qp;
 };
 
 GCF_DEFINE_COMPONENT(OsgVisComponent)
@@ -196,12 +189,7 @@ QString OsgVisComponent::copyrightStatement() const
 void OsgVisComponent::initializeComponent()
 {
     REGISTER_NODE(LayerVisNode, d->nodeDescMap);
-    REGISTER_NODE(SourceVisNode, d->nodeDescMap);
-    REGISTER_NODE(FiltersGraphVisNode, d->nodeDescMap);
-    REGISTER_NODE(FilterVisNode, d->nodeDescMap);
     REGISTER_NODE(MapVisNode, d->nodeDescMap);
-    REGISTER_NODE(TerrainVisNode, d->nodeDescMap);
-    REGISTER_NODE(ResourceVisNode, d->nodeDescMap);
 }
 
 void OsgVisComponent::finalizeComponent()
