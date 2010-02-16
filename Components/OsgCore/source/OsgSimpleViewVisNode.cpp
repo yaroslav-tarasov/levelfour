@@ -114,7 +114,6 @@ OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
     // subclass, then you have to delete it now.
     // d->VtkObjectPointer->Delete();
 
-	removeSceneWidget();
 	delete m_osgOutputWidget;
 	delete d;
 }
@@ -144,8 +143,7 @@ void OsgSimpleViewVisNode::command_Render()
 #endif
 
 	d->scene->setSceneData(d->inputNode.get());
-	QTabWidget * centralWind = static_cast<QTabWidget*>(OsgCoreComponent::instance().osgOutputWidget()->parentWidget());
-	QSize s = centralWind->size();
+	QSize s = m_osgOutputWidget->parentWidget()->size();
 
 	if (d->scene)
 #ifdef USE_QOSG == QOSG_WIDGET
@@ -309,12 +307,6 @@ bool OsgSimpleViewVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVi
     */
 
     return CGenericVisNodeBase::outputDerefed(path, outputData);
-}
-
-void OsgSimpleViewVisNode::removeSceneWidget()
-{
-	QTabWidget * osgOutputWidget = OsgCoreComponent::instance().osgOutputWidget();
-	osgOutputWidget->removeTab(osgOutputWidget->indexOf(m_osgOutputWidget));
 }
 
 #ifdef ENABLE_ADVANCED_PROPERTIES
