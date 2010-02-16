@@ -18,8 +18,7 @@
 #include "OsgGroupVisNodeIOData.h"
 #include "OsgCoreComponent.h"
 #include "OsgLightVisNodeIOData.h"
-
-#include <osgGA/TrackballManipulator>
+#include "MainWindowComponent.h"
 
 #include <osgDB/WriteFile>
 #include <osgDB/ReadFile>
@@ -29,9 +28,9 @@
 
 #include <QTabWidget>
 #include <QSize>
-#include <QtGui/QPushButton>
-#include <QtGui/QDialog>
-#include <QtGui/QVBoxLayout>
+
+//#include <osgEarthUtil/EarthManipulator>
+#include <osgGA/TrackballManipulator>
 
 DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
 {
@@ -65,7 +64,15 @@ DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
 struct OsgSimpleViewVisNodeData
 {
 	OsgSimpleViewVisNodeData() : scene(0), inputNode(0) {}
-    osg::QOSGScene * scene;
+
+#if USE_QOSG == QOSG_WIDGET
+	ViewerQOSG * scene;
+#elif USE_QOSG == QOSG_GRAPHICS
+	osg::QOSGScene * scene;
+#else
+	ViewerQT * scene;
+#endif
+
 	osg::ref_ptr<osg::Node> inputNode;
 	OsgGroupVisNodeIOData inputData;
 	osg::ref_ptr<osg::Light> inputLight;
@@ -75,14 +82,6 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 {
     OsgSimpleViewVisNode::InitializeNodeDesc();
     d = new OsgSimpleViewVisNodeData;
-
-	m_osgOutputWidget = new osg::QGLGraphicsView;
-
-	OsgCoreComponent::instance().sceneLayout()->addWidget(m_osgOutputWidget);
-
-	d->scene = new osg::QOSGScene;
-	m_osgOutputWidget->setScene(d->scene);
-	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 
 	d->inputLight = new osg::Light;
 	d->inputLight->setLightNum(2);
@@ -94,7 +93,19 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	d->inputLight->setSpotCutoff(25.f);
 	osg::LightSource * lightSource = new osg::LightSource;
 	lightSource->setLight(d->inputLight.get());
+
+#if USE_QOSG == QOSG_WIDGET || USE_QOSG == QOSG_ADAPTER
+	m_osgOutputWidget = new QWidget;
+	GCF::Components::MainWindowComponent::instance().addTabCentralWidget(m_osgOutputWidget, this->nodeName());
+#else
+	m_osgOutputWidget = new osg::QGLGraphicsView;
+	d->scene = new osg::QOSGScene;
+	m_osgOutputWidget->setScene(d->scene);
+	OsgCoreComponent::instance().osgOutputWidget()->addTab(m_osgOutputWidget, this->nodeName());
+//	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
+	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 	d->scene->setLight(d->inputLight);
+#endif
 }
 
 OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
@@ -116,14 +127,32 @@ void OsgSimpleViewVisNode::render()
 void OsgSimpleViewVisNode::command_Render()
 {
 	delete d->scene;
-	d->scene = new osg::QOSGScene;
+#if USE_QOSG == QOSG_WIDGET
+	d->scene = new ViewerQOSG(m_osgOutputWidget);
+	d->scene->updateCamera();
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
-	d->scene->setLight(d->inputLight);
+#elif  USE_QOSG == QOSG_GRAPHICS
+	d->scene = new osg::QOSGScene;
 	d->scene->setSceneData(d->inputNode);
 	m_osgOutputWidget->setScene(d->scene);
-	QSize s(m_osgOutputWidget->size());
+	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
+	d->scene->setLight(d->inputLight);
+#else  USE_QOSG == QOSG_ADAPTER
+	d->scene = new ViewerQT(m_osgOutputWidget);
+//	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
+	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
+#endif
+
+	d->scene->setSceneData(d->inputNode.get());
+	QTabWidget * centralWind = static_cast<QTabWidget*>(OsgCoreComponent::instance().osgOutputWidget()->parentWidget());
+	QSize s = centralWind->size();
+
 	if (d->scene)
+#ifdef USE_QOSG == QOSG_WIDGET
+		d->scene->setGeometry(0, 0, s.width(), s.height());
+#elif USE_QOSG == QOSG_GRAPHICS
 		d->scene->setSceneRect(0, 0, s.width(), s.height());
+#endif
 }
 
 void OsgSimpleViewVisNode::saveOSG()
@@ -133,15 +162,33 @@ void OsgSimpleViewVisNode::saveOSG()
 
 void OsgSimpleViewVisNode::command_SaveOSG()
 {
+#if USE_QOSG == QOSG_WIDGET || USE_QOSG == QOSG_ADAPTER
+	if (!d->inputNode)
+		return;
+	osg::ref_ptr<osg::Node> root = d->inputNode;
+#elif USE_QOSG == QOSG_GRAPHICS
 	if (!d->scene)
 		return;
-
 	osg::ref_ptr<osg::Node> root = d->scene->getSceneData();
+#endif
+
 	if (!root.valid())
 		return;
 
 	osgDB::writeNodeFile(*(root.get()), "test.osg");
 	system("D:\\OSG-2.9.6\\bin\\osgviewerQTd.exe test.osg");
+}
+
+void OsgSimpleViewVisNode::EarthManipulator()
+{
+    command_EarthManipulator();
+}
+
+void OsgSimpleViewVisNode::command_EarthManipulator()
+{
+	if (d->scene)
+		d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
+//		d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
 }
 
 bool OsgSimpleViewVisNode::hasInput(IVisSystemNodeConnectionPath* path)
@@ -192,6 +239,7 @@ bool OsgSimpleViewVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSyst
 			d->inputLight = inputLightData->getOsgLight();
 			osg::LightSource * lightSource = new osg::LightSource;
 			lightSource->setLight(d->inputLight.get());
+
 			d->scene->setLight(d->inputLight);
 			return true;
 		}
@@ -265,8 +313,8 @@ bool OsgSimpleViewVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVi
 
 void OsgSimpleViewVisNode::removeSceneWidget()
 {
-	QWidget * osgOutputWidget = OsgCoreComponent::instance().osgOutputWidget();
-	// osgOutputWidget->removeTab(osgOutputWidget->indexOf(m_osgOutputWidget));
+	QTabWidget * osgOutputWidget = OsgCoreComponent::instance().osgOutputWidget();
+	osgOutputWidget->removeTab(osgOutputWidget->indexOf(m_osgOutputWidget));
 }
 
 #ifdef ENABLE_ADVANCED_PROPERTIES
