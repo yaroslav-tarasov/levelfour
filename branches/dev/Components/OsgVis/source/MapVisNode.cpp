@@ -56,9 +56,9 @@ DEFINE_VIS_NODE(MapVisNode, CGenericVisNodeBase)
 
 struct MapVisNodeData
 {
-	MapVisNodeData() : map(0) { }
+	MapVisNodeData() : map(0), mapNode(0) { }
 	OsgGroupVisNodeIOData outputMapData;
-	osg::ref_ptr<osg::Group> outputMap;
+	osg::ref_ptr<osgEarth::MapNode> mapNode;
 	osgEarth::Map * map;
 };
 
@@ -67,8 +67,6 @@ MapVisNode::MapVisNode()
     MapVisNode::InitializeNodeDesc();
     d = new MapVisNodeData;
 
-	d->outputMap = new osg::Group;
-	d->outputMapData.setOsgNode(d->outputMap);
 	isMapCreated = false;
 }
 
@@ -95,13 +93,16 @@ void MapVisNode::setType(QString type)
 		if (_type.toStdString() == "projected")
 		{
 				d->map = new osgEarth::Map(osgEarth::Map::CoordinateSystemType::CSTYPE_PROJECTED);
-				isMapCreated = true;
 		} else if (_type.toStdString() == "geocentric") {
 				d->map = new osgEarth::Map(osgEarth::Map::CoordinateSystemType::CSTYPE_GEOCENTRIC);
-				isMapCreated = true;
 		} else if (_type.toStdString() == "geocentric-cube") {
 				d->map = new osgEarth::Map(osgEarth::Map::CoordinateSystemType::CSTYPE_GEOCENTRIC_CUBE);
-				isMapCreated = true;
+		}
+		if (d->map)
+		{
+			isMapCreated = true;
+			d->mapNode = new osgEarth::MapNode(d->map);
+			d->outputMapData.setOsgNode(static_cast<osg::Node*>(d->mapNode.get()));
 		}
 	}
 }
@@ -135,14 +136,8 @@ bool MapVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIODa
 		if (success = inputData->queryInterface("OsgLayerVisNodeIOData", (void**)&layerData)
 			&& layerData)
 		{
-			// remove all from the group that contains the mapNode
-			d->outputMap->removeChildren(0, d->outputMap->getNumChildren());
-			// add the layer from the mapNode
-			osgEarth::MapLayer * mLayer = layerData->getLayer();
-			d->map->addMapLayer(mLayer);
-			osg::ref_ptr<osgEarth::MapNode> mapNode = new osgEarth::MapNode(d->map);
-			if (mapNode.valid()) // readd the mapNode to the group
-				d->outputMap->addChild(mapNode.get()); // TODO: see setInput todo
+			// add the layer to the map
+			d->map->addMapLayer(layerData->getLayer());
 			return true;
 		}
 	}
@@ -165,20 +160,10 @@ bool MapVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeI
 
 		if (success = inputData->queryInterface("OsgLayerVisNodeIOData", (void**)&layerData)
 			&& layerData)
-			d->map->removeMapLayer(layerData->getLayer());
-
-		if (success)
 		{
-			// remove all from the group that contains the mapNode
-			d->outputMap->removeChildren(0, d->outputMap->getNumChildren());
 			// remove the layer from the mapNode
 			d->map->removeMapLayer(layerData->getLayer());
-			if (! d->map->getImageMapLayers().empty())
-			{
-				osg::ref_ptr<osgEarth::MapNode> mapNode = new osgEarth::MapNode(d->map);
-				if (mapNode.valid()) // readd the mapNode to the group
-					d->outputMap->addChild(mapNode.get()); // TODO: see setInput todo
-			}
+
 			return true;
 		}
 	}
