@@ -55,6 +55,7 @@
 #include <QToolBar>
 #include <QComboBox>
 #include <QAction>
+#include <QStackedWidget>
 
 
 struct OsgCoreComponentData
@@ -78,6 +79,7 @@ struct OsgCoreComponentData
 	QTabWidget* sceneView;
 	QWidget* osgOutputWidget;
 	QVBoxLayout* sceneLayout;
+	QStackedWidget* sceneStack;
 	QToolBar* sceneToolBar;
 	QComboBox* sceneSelection;
 	QComboBox* sceneCameras;
@@ -106,6 +108,7 @@ OsgCoreComponent::OsgCoreComponent()
     d = new OsgCoreComponentData;
 
 	d->sceneLayout  = new QVBoxLayout;
+	d->sceneStack = new QStackedWidget;
 	d->sceneToolBar = new QToolBar;
 	d->sceneSelection = new QComboBox;
 	d->sceneCameras = new QComboBox;
@@ -118,9 +121,12 @@ OsgCoreComponent::OsgCoreComponent()
 	
 	// Scene selection provides toggle between different scene and data view nodes
 	d->sceneSelection->addItem("Select Scene");
-	d->sceneSelection->addItem("My Graph View");
+	d->sceneSelection->addItem("My Graph View");  // This should be a string passed as scene name given in the node
 	d->sceneSelection->addItem("My Map View");
 	d->sceneSelection->addItem("My Data View");
+	// The combo box selects scenes by index
+	connect(d->sceneSelection, SIGNAL(activated(int)),
+             d->sceneStack, SLOT(setCurrentIndex(int)));
 
 	// Camera actions (these are provided by the combo box)
 	d->sceneCameras->addItem("Perspective");
@@ -172,7 +178,8 @@ OsgCoreComponent::OsgCoreComponent()
 
 	// Assemble the panel
 	d->sceneLayout->addWidget(d->sceneToolBar);
-	// d->sceneLayout->addWidget(d->osgOutputWidget);
+	d->sceneLayout->addWidget(d->sceneStack);
+	// simple viewer will add widgets to scene stack as needed;
 	d->sceneView->setLayout(d->sceneLayout);
 
 }
@@ -195,6 +202,11 @@ QVBoxLayout* OsgCoreComponent::sceneLayout() const
 QWidget* OsgCoreComponent::osgOutputWidget() const
 {
 	return d->osgOutputWidget;
+}
+
+QStackedWidget* OsgCoreComponent::sceneStack() const
+{
+	return d->sceneStack;
 }
 
 QIcon OsgCoreComponent::nodeIcon()
