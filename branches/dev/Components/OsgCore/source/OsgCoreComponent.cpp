@@ -120,10 +120,7 @@ OsgCoreComponent::OsgCoreComponent()
 	// Toolbar actions
 	
 	// Scene selection provides toggle between different scene and data view nodes
-	d->sceneSelection->addItem("Select Scene");
-	d->sceneSelection->addItem("My Graph View");  // This should be a string passed as scene name given in the node
-	d->sceneSelection->addItem("My Map View");
-	d->sceneSelection->addItem("My Data View");
+	// d->sceneSelection->addItem("Select Scene"); This should be a string passed as scene name given in the node
 	// The combo box selects scenes by index
 	connect(d->sceneSelection, SIGNAL(activated(int)),
              d->sceneStack, SLOT(setCurrentIndex(int)));
@@ -207,6 +204,11 @@ QWidget* OsgCoreComponent::osgOutputWidget() const
 QStackedWidget* OsgCoreComponent::sceneStack() const
 {
 	return d->sceneStack;
+}
+
+QComboBox* OsgCoreComponent::sceneSelection() const
+{
+	return d->sceneSelection;
 }
 
 QIcon OsgCoreComponent::nodeIcon()
