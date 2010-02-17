@@ -142,6 +142,7 @@ void ModelVisNode::command_Process()
 		d->conf->addChild(*d->inputFeatures);
 
 	d->model = new osgEarth::ModelLayer(_name.toStdString(), _driver.toStdString(), *d->conf);
+	d->outputModelData.setModel(d->model);
 }
 
 bool ModelVisNode::hasInput(IVisSystemNodeConnectionPath* path)
@@ -166,6 +167,21 @@ bool ModelVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIO
     If you have added input paths in the description block at the header of this file,
     then you will have to handle inputs here
     */
+	if (path->pathName() == "Features")
+	{
+		FeaturesVisNodeIOData * featuresData = 0;
+		bool success = false;
+		if (success = inputData->queryInterface("FeaturesVisNodeIOData", (void**)&featuresData)
+			&& featuresData)
+		{
+			// add the layer to the map
+			d->inputFeatures = featuresData->getFeatures();
+			if (!d->conf)
+				d->conf = new osgEarth::Config;
+			d->conf->addChild(* d->inputFeatures);
+			return true;
+		}
+	}
 
     return CGenericVisNodeBase::setInput(path, inputData);
 }
@@ -186,8 +202,7 @@ bool ModelVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystemNod
 		if (success = inputData->queryInterface("FeaturesVisNodeIOData", (void**)&featuresData)
 			&& featuresData)
 		{
-			// set the input features
-			d->inputFeatures = featuresData->getFeatures();
+
 			return true;
 		}
 	}
