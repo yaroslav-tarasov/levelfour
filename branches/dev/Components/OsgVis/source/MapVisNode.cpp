@@ -16,7 +16,8 @@
 
 #include "MapVisNode.h"
 #include "OsgVisComponent.h"
-#include "OsgLayerVisNodeIOData.h"
+#include "LayerVisNodeIOData.h"
+#include "ModelVisNodeIOData.h"
 #include "OsgGroupVisNodeIOData.h"
 
 #include <osgEarth/MapNode>
@@ -38,6 +39,16 @@ DEFINE_VIS_NODE(MapVisNode, CGenericVisNodeBase)
                 "Layer",                                 // Name of the path
                 IVisSystemNodeConnectionPath::InputPath,   // Path type can be OutputPath or InputPath
                 "osg::ref_ptr<osgEarth::MapLayer>",                                 // Data type of the path
+                0,                                          // Path index (don't change)
+                true                                       // Allow Multiple Inputs Flag
+            )
+        );
+
+    pDesc->addConnectionPath(
+        new CGenericVisNodeConnectionPath(
+                "Model",                                 // Name of the path
+                IVisSystemNodeConnectionPath::InputPath,   // Path type can be OutputPath or InputPath
+                "osg::ref_ptr<osgEarth::ModelLayer>",                                 // Data type of the path
                 0,                                          // Path index (don't change)
                 true                                       // Allow Multiple Inputs Flag
             )
@@ -100,6 +111,7 @@ void MapVisNode::setType(QString type)
 		}
 		if (d->map)
 		{
+			d->map->setName(this->nodeName().toStdString());
 			isMapCreated = true;
 			d->mapNode = new osgEarth::MapNode(d->map);
 			d->outputMapData.setOsgNode(static_cast<osg::Node*>(d->mapNode.get()));
@@ -131,13 +143,25 @@ bool MapVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIODa
     */
 	if (path->pathName() == "Layer")
 	{
-		OsgLayerVisNodeIOData * layerData = 0;
+		LayerVisNodeIOData * layerData = 0;
 		bool success = false;
-		if (success = inputData->queryInterface("OsgLayerVisNodeIOData", (void**)&layerData)
+		if (success = inputData->queryInterface("LayerVisNodeIOData", (void**)&layerData)
 			&& layerData)
 		{
 			// add the layer to the map
 			d->map->addMapLayer(layerData->getLayer());
+			return true;
+		}
+	}
+	if (path->pathName() == "Model")
+	{
+		ModelVisNodeIOData * modelData = 0;
+		bool success = false;
+		if (success = inputData->queryInterface("ModelVisNodeIOData", (void**)&modelData)
+			&& modelData)
+		{
+			// add the mdoel to the map
+			d->map->addModelLayer(modelData->getModel());
 			return true;
 		}
 	}
@@ -155,10 +179,10 @@ bool MapVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeI
     */
 	if (path->pathName() == "Layer")
 	{
-		OsgLayerVisNodeIOData * layerData = 0;
+		LayerVisNodeIOData * layerData = 0;
 		bool success = false;
 
-		if (success = inputData->queryInterface("OsgLayerVisNodeIOData", (void**)&layerData)
+		if (success = inputData->queryInterface("LayerVisNodeIOData", (void**)&layerData)
 			&& layerData)
 		{
 			// remove the layer from the mapNode
@@ -168,7 +192,22 @@ bool MapVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeI
 		}
 	}
 
-    return CGenericVisNodeBase::removeInput(path, inputData);
+	if (path->pathName() == "Model")
+	{
+		ModelVisNodeIOData * modelData = 0;
+		bool success = false;
+
+		if (success = inputData->queryInterface("ModelVisNodeIOData", (void**)&modelData)
+			&& modelData)
+		{
+			// remove the layer from the mapNode (removeModelLayer NOT READY YET)
+//			d->map->removeModelLayer(modelData->getModel());
+
+			return true;
+		}
+	}
+
+	return CGenericVisNodeBase::removeInput(path, inputData);
 }
 
 bool MapVisNode::fetchOutput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData** outputData)

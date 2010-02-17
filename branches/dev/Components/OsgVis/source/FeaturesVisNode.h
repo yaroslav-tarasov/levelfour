@@ -14,8 +14,8 @@
 **
 ****************************************************************************/
 
-#ifndef LAYERVISNODE_VIS_NODE_H
-#define LAYERVISNODE_VIS_NODE_H
+#ifndef FEATURESVISNODE_VIS_NODE_H
+#define FEATURESVISNODE_VIS_NODE_H
 
 #include "UserDefinedDataTypes.h"
 #include "CGenericVisNodeBase.h"
@@ -24,8 +24,8 @@
 #include "IEditableProperties.h"
 #endif
 
-struct LayerVisNodeData;
-class LayerVisNode : public CGenericVisNodeBase
+struct FeaturesVisNodeData;
+class FeaturesVisNode : public CGenericVisNodeBase
 #ifdef ENABLE_ADVANCED_PROPERTIES
                        , virtual public IEditableProperties
                        , virtual public IEditablePropertiesExt
@@ -37,27 +37,13 @@ class LayerVisNode : public CGenericVisNodeBase
 #endif
     DECLARE_VIS_NODE
 
-	Q_PROPERTY(bool Visible READ getVisibility WRITE setVisibility)
     Q_PROPERTY(QString URL READ source WRITE setSource)
     Q_PROPERTY(QString Driver READ driver WRITE setDriver)
-    Q_PROPERTY(QString Type READ type WRITE setType)
-    Q_PROPERTY(QString Profile READ profile WRITE setProfile)
-    Q_PROPERTY(QString Layers READ layers WRITE setLayers)
-    Q_PROPERTY(QString Format READ format WRITE setFormat)
-    Q_PROPERTY(QString Tile_Width READ tileWidth WRITE setTileWidth)
-    Q_PROPERTY(QString Tile_Height READ tileHeight WRITE setTileHeight)
-    Q_PROPERTY(QString Tile_Size READ tileSize WRITE setTileSize)
-    Q_PROPERTY(QString TMS_type READ tmsType WRITE setTmsType)
-    Q_PROPERTY(QString SRS READ SRS WRITE setSRS)
-    Q_PROPERTY(QString DataSet READ dataSet WRITE setDataSet)
-    Q_PROPERTY(QString Style READ style WRITE setStyle)
-    Q_PROPERTY(QString ElevationUnit READ elevationUnit WRITE setElevationUnit)
+    Q_PROPERTY(QString OGRDriver READ getOgrDriver WRITE setOgrDriver)
 
 public:
-    LayerVisNode();
-    ~LayerVisNode();
-	void setVisibility(bool visible);
-	bool getVisibility() const;
+    FeaturesVisNode();
+    ~FeaturesVisNode();
 
 	QString source() const;
 	void setSource(QString source);
@@ -65,41 +51,8 @@ public:
 	QString driver() const;
 	void setDriver(QString driver);
 
-	QString type() const;
-	void setType(QString type);
-
-	QString profile() const;
-	void setProfile(QString profile);
-
-	QString layers() const;
-	void setLayers(QString layers);
-
-	QString format() const;
-	void setFormat(QString format);
-
-	QString tileWidth() const;
-	void setTileWidth(QString tileWidth);
-
-	QString tileHeight() const;
-	void setTileHeight(QString tileHeight);
-
-	QString tileSize() const;
-	void setTileSize(QString tileSize);
-
-	QString tmsType() const;
-	void setTmsType(QString tmsType);
-
-	QString SRS() const;
-	void setSRS(QString srs);
-
-	QString dataSet() const;
-	void setDataSet(QString dataSet);
-
-	QString style() const;
-	void setStyle(QString style);
-
-	QString elevationUnit() const;
-	void setElevationUnit(QString elevationUnit);
+	QString getOgrDriver() const;
+	void setOgrDriver(QString driver);
 
 protected:
     bool hasInput(IVisSystemNodeConnectionPath* path);
@@ -132,33 +85,15 @@ public:
     bool canLoadSaveProperty(int index);
 #endif
 
-    Q_INVOKABLE void process();
-
 protected:
-
-protected slots:
-	void command_Process();
-
+    
 
 private:
-    LayerVisNodeData* d;
-	bool _visible;
+    FeaturesVisNodeData* d;
 	QString _name;
 	QString _source;
 	QString _driver;
-	QString _type;
-	QString _profile;
-	QString _layers;
-	QString _format;
-	QString _tileWidth;
-	QString _tileHeight;
-	QString _tileSize;
-	QString _tmsType;
-	QString _srs;
-	QString _dataSet;
-	QString _elevationUnit;
-	QString _style;
-	bool isCompiled;
+	QString _ogrDriver;
 };
 
 #endif

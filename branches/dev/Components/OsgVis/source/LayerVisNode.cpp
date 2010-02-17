@@ -16,21 +16,17 @@
 
 #include "LayerVisNode.h"
 #include "OsgVisComponent.h"
-#include "OsgLayerVisNodeIOData.h"
-#include <osg/Node>
+#include "LayerVisNodeIOData.h"
+
 #include <osg/ref_ptr>
 #include <osgEarth/MapLayer>
-#include <osgEarth/MapNode>
-#include <osgEarth/Map>
 #include <osgEarth/Config>
-
-bool isCompiled = false;
 
 DEFINE_VIS_NODE(LayerVisNode, CGenericVisNodeBase)
 {
     pDesc->setNodeClassCategory("OsgVis");
-    pDesc->setNodeClassName("Layer");
-    pDesc->setNodeClassDescription("Layer");
+    pDesc->setNodeClassName("Image Layer");
+    pDesc->setNodeClassDescription("Image Layer");
     pDesc->setNodeIcon( OsgVisComponent::instance().nodeIcon() );
 
     // Uncomment and use the following code template to add input/output paths
@@ -50,7 +46,7 @@ DEFINE_VIS_NODE(LayerVisNode, CGenericVisNodeBase)
 struct LayerVisNodeData
 {
 	LayerVisNodeData() : layer(0) { }
-	OsgLayerVisNodeIOData outputLayerData;
+	LayerVisNodeIOData outputLayerData;
 	osg::ref_ptr<osgEarth::MapLayer> layer;
 	osgEarth::Config* conf;
 };
@@ -62,8 +58,10 @@ LayerVisNode::LayerVisNode()
 
 	_driver = "gdal";
 	_type = "image";
+	_name = this->nodeName();
 
 	_visible = true;
+	isCompiled = false;
 }
 
 LayerVisNode::~LayerVisNode()
@@ -289,12 +287,12 @@ void LayerVisNode::setElevationUnit(QString elevationUnit)
 	}
 }
 
-void LayerVisNode::compile()
+void LayerVisNode::process()
 {
-    command_Compile();
+	command_Process();
 }
 
-void LayerVisNode::command_Compile()
+void LayerVisNode::command_Process()
 {
 	d->conf = new osgEarth::Config;
 	d->conf->add("url", _source.toStdString());
@@ -327,7 +325,7 @@ void LayerVisNode::command_Compile()
 	else
 		t = osgEarth::MapLayer::Type::TYPE_HEIGHTFIELD;
 
-	d->layer = new osgEarth::MapLayer("OSM", t, _driver.toStdString(), *d->conf);
+	d->layer = new osgEarth::MapLayer(_name.toStdString(), t, _driver.toStdString(), *d->conf);
 	d->outputLayerData.setLayer(d->layer);
 	isCompiled = true;
 }
