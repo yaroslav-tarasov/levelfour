@@ -104,7 +104,7 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 	d->scene->setLight(d->inputLight);
 #endif
-	OsgCoreComponent::instance().sceneLayout()->addWidget(m_osgOutputWidget);
+	OsgCoreComponent::instance().sceneStack()->addWidget(m_osgOutputWidget);
 }
 
 OsgSimpleViewVisNode::~OsgSimpleViewVisNode()

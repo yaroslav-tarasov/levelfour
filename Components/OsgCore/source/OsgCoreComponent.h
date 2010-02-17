@@ -22,7 +22,7 @@
 #include "IVisSystemNodeFactory.h"
 #include <QTabWidget>
 #include <QVBoxLayout>
-
+#include <QStackedWidget>
 
 struct OsgCoreComponentData;
 class OsgCoreComponent : public GCF::AbstractComponent,
@@ -42,6 +42,7 @@ public:
     QTabWidget* sceneView() const;
     QWidget* osgOutputWidget() const;
 	QVBoxLayout* sceneLayout() const;
+	QStackedWidget* sceneStack() const;
 
 
     // IContainer implementation
