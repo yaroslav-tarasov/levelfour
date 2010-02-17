@@ -31,6 +31,8 @@
 
 #include "LayerVisNode.h"
 #include "MapVisNode.h"
+#include "ModelVisNode.h"
+#include "FeaturesVisNode.h"
 
 struct OsgVisComponentData
 {
@@ -190,6 +192,8 @@ void OsgVisComponent::initializeComponent()
 {
     REGISTER_NODE(LayerVisNode, d->nodeDescMap);
     REGISTER_NODE(MapVisNode, d->nodeDescMap);
+    REGISTER_NODE(ModelVisNode, d->nodeDescMap);
+    REGISTER_NODE(FeaturesVisNode, d->nodeDescMap);
 }
 
 void OsgVisComponent::finalizeComponent()
