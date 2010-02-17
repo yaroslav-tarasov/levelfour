@@ -96,16 +96,15 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 
 #if USE_QOSG == QOSG_WIDGET || USE_QOSG == QOSG_ADAPTER
 	m_osgOutputWidget = new QWidget;
-	GCF::Components::MainWindowComponent::instance().addTabCentralWidget(m_osgOutputWidget, this->nodeName());
 #else
 	m_osgOutputWidget = new osg::QGLGraphicsView;
 	d->scene = new osg::QOSGScene;
 	m_osgOutputWidget->setScene(d->scene);
-	OsgCoreComponent::instance().osgOutputWidget()->addTab(m_osgOutputWidget, this->nodeName());
 //	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 	d->scene->setLight(d->inputLight);
 #endif
+	OsgCoreComponent::instance().sceneLayout()->addWidget(m_osgOutputWidget);
 }
 
 OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
