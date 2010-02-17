@@ -1,14 +1,14 @@
-#ifndef OSG_LAYER_VISNODE_IODATA_H
-#define OSG_LAYER_VISNODE_IODATA_H
+#ifndef LAYER_VISNODE_IODATA_H
+#define LAYER_VISNODE_IODATA_H
 
 #include "IVisSystemNodeIOData.h"
 #include <osgEarth/MapLayer>
 
-class OsgLayerVisNodeIOData : virtual public IVisSystemNodeIOData
+class LayerVisNodeIOData : virtual public IVisSystemNodeIOData
 {
 public:
-	OsgLayerVisNodeIOData();
-	~OsgLayerVisNodeIOData();
+	LayerVisNodeIOData();
+	~LayerVisNodeIOData();
 
 	void setLayer(osgEarth::MapLayer * layer);
 
