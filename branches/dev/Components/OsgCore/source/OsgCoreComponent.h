@@ -23,6 +23,7 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QStackedWidget>
+#include <QComboBox>
 
 struct OsgCoreComponentData;
 class OsgCoreComponent : public GCF::AbstractComponent,
@@ -43,6 +44,7 @@ public:
     QWidget* osgOutputWidget() const;
 	QVBoxLayout* sceneLayout() const;
 	QStackedWidget* sceneStack() const;
+	QComboBox* sceneSelection() const;
 
 
     // IContainer implementation

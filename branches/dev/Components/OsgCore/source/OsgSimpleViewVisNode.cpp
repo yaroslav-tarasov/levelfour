@@ -104,7 +104,10 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 	d->scene->setLight(d->inputLight);
 #endif
+	// Send widget to viewport stack
 	OsgCoreComponent::instance().sceneStack()->addWidget(m_osgOutputWidget);
+	// Send scene name to stack select combo box for identification
+	OsgCoreComponent::instance().sceneSelection()->addItem("Scene Name");
 }
 
 OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
