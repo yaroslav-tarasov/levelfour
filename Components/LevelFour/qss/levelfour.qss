@@ -221,7 +221,7 @@ QMenu::item:selected
 {
 	/* when user selects item using mouse or keyboard */
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	color: #000000;
 }
 
@@ -248,7 +248,7 @@ QMenuBar::item:selected
 {
 	border: 1px solid #000000;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	color: #000000;
 	border-radius: 5px;
 }
@@ -257,7 +257,7 @@ QMenuBar::item:pressed
 {
 	border: 1px solid #000000;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	color: #000000;
 	border-radius: 5px;
 }
@@ -286,7 +286,7 @@ QPushButton:pressed
 	color: #000000;
 	border: 1px solid #000000;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	border-radius: 5px;
 }
 
@@ -509,7 +509,7 @@ QTreeView
 	border-radius: 0px;
 	padding: 5px;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #383838, stop: 0.2 #484848, stop: 0.8 #484848, stop: 1.0 #535353);
+		stop: 0 #535353, stop: 0.2 #484848, stop: 0.8 #484848, stop: 1.0 #383838);
 	color: #cccccc;
 	paint-alternating-row-colors-for-empty-area: 0;
 }
@@ -527,27 +527,27 @@ QTreeView::item
 QTreeView::item:hover
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	color: #000000;
 }
 QTreeView::item:selected
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	color: #000000;
 }
 
 QTreeView::item:selected:active
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	color: #000000;
 }
 
 QTreeView::item:selected:!active
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	color: #000000;
 }
 
@@ -627,7 +627,7 @@ QTabBar::tab:selected
 	color: #000000;
 	border: 1px solid #303030;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-	stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 }
 
 /* Style for main toolbar */
@@ -683,7 +683,7 @@ QToolButton:hover
 QToolButton:pressed
 {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	border: 1px solid #393939;
 }
 

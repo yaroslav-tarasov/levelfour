@@ -346,7 +346,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 		d->node->paintNode(p, r, *opt);
 
     QBrush brush = opt->palette.mid();
-    QColor color = QColor(173,175,181);
+    QColor color = QColor(242,112,0);
     color.setAlphaF(0.75f);
     brush.setColor(color);
     // color = opt->palette.shadow().color();
