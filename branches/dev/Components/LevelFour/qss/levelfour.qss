@@ -86,7 +86,7 @@ QComboBox QAbstractItemView {
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
 		stop: 0 #383838, stop: 0.2 #484848, stop: 0.8 #484848, stop: 1.0 #535353);
 	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #686f75, stop: 0.3 #848b91, stop: 1.0 #adafb5);
+		stop: 0 #f49c1c, stop: 0.3 #f27000, stop: 0.8 #e56a00, stop: 1.0 #9a4700);
 	selection-color: #000000;
 }
 
