@@ -29,7 +29,7 @@
 #include <QTabWidget>
 #include <QSize>
 
-//#include <osgEarthUtil/EarthManipulator>
+#include <osgEarthUtil/EarthManipulator>
 #include <osgGA/TrackballManipulator>
 
 DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
@@ -43,11 +43,11 @@ DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
     
     pDesc->addConnectionPath(
         new CGenericVisNodeConnectionPath(
-                "OsgGroupInput",                                 // Name of the path
+                "OsgNodeInput",                                 // Name of the path
                 IVisSystemNodeConnectionPath::InputPath,   // Path type can be OutputPath or InputPath
-                "osg::ref_ptr<osg::Group>",                                 // Data type of the path
+                "osg::ref_ptr<osg::Node>",                                 // Data type of the path
                 0,                                          // Path index (don't change)
-                false                                       // Allow Multiple Inputs Flag
+                true                                       // Allow Multiple Inputs Flag
             )
         );
     pDesc->addConnectionPath(
@@ -63,7 +63,7 @@ DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
 
 struct OsgSimpleViewVisNodeData
 {
-	OsgSimpleViewVisNodeData() : scene(0), inputNode(0) {}
+	OsgSimpleViewVisNodeData() : scene(0), root(0) {}
 
 #if USE_QOSG == QOSG_WIDGET
 	ViewerQOSG * scene;
@@ -73,15 +73,17 @@ struct OsgSimpleViewVisNodeData
 	ViewerQT * scene;
 #endif
 
-	osg::ref_ptr<osg::Node> inputNode;
 	OsgGroupVisNodeIOData inputData;
 	osg::ref_ptr<osg::Light> inputLight;
+	osg::ref_ptr<osg::Group> root;
 };
 
 OsgSimpleViewVisNode::OsgSimpleViewVisNode() 
 {
     OsgSimpleViewVisNode::InitializeNodeDesc();
     d = new OsgSimpleViewVisNodeData;
+
+	d->root = new osg::Group;
 
 	d->inputLight = new osg::Light;
 	d->inputLight->setLightNum(2);
@@ -96,18 +98,27 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 
 #if USE_QOSG == QOSG_WIDGET || USE_QOSG == QOSG_ADAPTER
 	m_osgOutputWidget = new QWidget;
+	GCF::Components::MainWindowComponent::instance().addTabCentralWidget(m_osgOutputWidget, this->nodeName());
+	d->scene = new ViewerQOSG(m_osgOutputWidget);
+	d->scene->updateCamera();
+	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
+	d->scene->setSceneData(d->root.get());
 #else
 	m_osgOutputWidget = new osg::QGLGraphicsView;
 	d->scene = new osg::QOSGScene;
 	m_osgOutputWidget->setScene(d->scene);
-//	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
-	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
+	OsgCoreComponent::instance().osgOutputWidget()->addTab(m_osgOutputWidget, this->nodeName());
+	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
 	d->scene->setLight(d->inputLight);
 #endif
-	// Send widget to viewport stack
-	OsgCoreComponent::instance().sceneStack()->addWidget(m_osgOutputWidget);
-	// Send scene name to stack select combo box for identification
-	OsgCoreComponent::instance().sceneSelection()->addItem("Scene Name");
+	QSize s = m_osgOutputWidget->parentWidget()->size();
+
+	if (d->scene)
+#ifdef USE_QOSG == QOSG_WIDGET
+		d->scene->setGeometry(0, 0, s.width(), s.height());
+#elif USE_QOSG == QOSG_GRAPHICS
+		d->scene->setSceneRect(0, 0, s.width(), s.height());
+#endif
 }
 
 OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
@@ -134,17 +145,15 @@ void OsgSimpleViewVisNode::command_Render()
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 #elif  USE_QOSG == QOSG_GRAPHICS
 	d->scene = new osg::QOSGScene;
-	d->scene->setSceneData(d->inputNode);
 	m_osgOutputWidget->setScene(d->scene);
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 	d->scene->setLight(d->inputLight);
 #else  USE_QOSG == QOSG_ADAPTER
 	d->scene = new ViewerQT(m_osgOutputWidget);
-//	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
-	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
+	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
 #endif
 
-	d->scene->setSceneData(d->inputNode.get());
+	d->scene->setSceneData(d->root.get());
 	QSize s = m_osgOutputWidget->parentWidget()->size();
 
 	if (d->scene)
@@ -163,9 +172,9 @@ void OsgSimpleViewVisNode::saveOSG()
 void OsgSimpleViewVisNode::command_SaveOSG()
 {
 #if USE_QOSG == QOSG_WIDGET || USE_QOSG == QOSG_ADAPTER
-	if (!d->inputNode)
+	if (!d->root)
 		return;
-	osg::ref_ptr<osg::Node> root = d->inputNode;
+	osg::ref_ptr<osg::Node> root = d->root;
 #elif USE_QOSG == QOSG_GRAPHICS
 	if (!d->scene)
 		return;
@@ -187,8 +196,31 @@ void OsgSimpleViewVisNode::EarthManipulator()
 void OsgSimpleViewVisNode::command_EarthManipulator()
 {
 	if (d->scene)
-		d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
-//		d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
+		d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
+}
+
+void OsgSimpleViewVisNode::addNode(osg::Node * node)
+{
+	if (! d->root)
+		d->root = new osg::Group;
+
+	if (d->root->containsNode(node))
+		return;
+
+	d->root->addChild(node);
+}
+
+void OsgSimpleViewVisNode::removeNode(osg::Node * node)
+{
+	if (! d->root || !d->root->containsNode(node))
+		return;
+
+	d->root->removeChild(node);
+}
+
+bool OsgSimpleViewVisNode::containsNode(osg::Node * node)
+{
+	return d->root->containsNode(node);
 }
 
 bool OsgSimpleViewVisNode::hasInput(IVisSystemNodeConnectionPath* path)
@@ -201,8 +233,8 @@ bool OsgSimpleViewVisNode::hasInput(IVisSystemNodeConnectionPath* path)
     then you will have to handle inputs here
     */
 
-	if (path->pathName() == "OsgGroupInput")
-		return d->inputNode != 0;
+	if (path->pathName() == "OsgNodeInput")
+		return d->root != 0;
     return CGenericVisNodeBase::hasInput(path);
 }
 
@@ -216,14 +248,14 @@ bool OsgSimpleViewVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSyst
     then you will have to handle inputs here
     */
 
-	if (path->pathName() == "OsgGroupInput")
+	if (path->pathName() == "OsgNodeInput")
 	{
 		OsgGroupVisNodeIOData * data = 0;
 		bool success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&data);
 		if (success && data)
 		{
-			d->inputData.setOsgNode(d->inputNode = data->getOsgNode());
-			command_Render();
+			d->root->addChild(data->getOsgNode());
+			d->inputData.setOsgNode(d->root);
 
 			return true;
 		}
@@ -258,13 +290,14 @@ bool OsgSimpleViewVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisS
     then you will have to handle inputs here
     */
 
-	if (path->pathName() == "OsgGroupInput")
+	if (path->pathName() == "OsgNodeInput")
 	{
 		OsgGroupVisNodeIOData * data = 0;
 		bool success = inputData->queryInterface("OsgNodeVisNodeIOData", (void**)&data);
-		if (success && data && data->getOsgNode() == d->inputNode)
+		if (success && data && d->root->containsNode(data->getOsgNode()))
 		{
-			d->inputData.setOsgNode(d->inputNode = 0);
+			d->root->removeChild(data->getOsgNode());
+			d->inputData.setOsgNode(d->root);
 
 			return  true;
 		}
