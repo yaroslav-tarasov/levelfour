@@ -211,6 +211,9 @@ void CompositeViewerQOSG::AddView( osg::Node * scene )
   osgViewer::View* view = new osgViewer::View;
   addView(view);
 
+  // scene->addParent(mpXYGridTransform);
+  // viewport interfaces
+ 
   view->setSceneData( scene );
   view->setCameraManipulator(new osgGA::TrackballManipulator);
 
@@ -218,6 +221,7 @@ void CompositeViewerQOSG::AddView( osg::Node * scene )
   osg::ref_ptr<osgGA::StateSetManipulator> statesetManipulator = new osgGA::StateSetManipulator;
   statesetManipulator->setStateSet(view->getCamera()->getOrCreateStateSet());
 
+  //prepare scene
   view->getCamera()->setGraphicsContext( getGraphicsWindow() );
   view->getCamera()->setClearColor( osg::Vec4( 0.08, 0.08, 0.5, 1.0 ) );
   Tile();
@@ -230,6 +234,91 @@ void CompositeViewerQOSG::RemoveView()
     removeView( getView( getNumViews() - 1 ) );
   }
   Tile();
+}
+
+// Set up viewport interfaces
+////////////////////////////////////////////////////////////////////////////////
+void ViewerQOSG::ToggleXYGrid(bool enabled)
+{
+   if(enabled)
+   {
+      mpXYGridTransform->setNodeMask(0xFFFFFFFF);
+   }
+   else
+   {
+      mpXYGridTransform->setNodeMask(0x0);
+   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void ViewerQOSG::ToggleXZGrid(bool enabled)
+{
+   if(enabled)
+   {
+      mpXZGridTransform->setNodeMask(0xFFFFFFFF);
+   }
+   else
+   {
+      mpXZGridTransform->setNodeMask(0x0);
+   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void ViewerQOSG::ToggleYZGrid(bool enabled)
+{
+   if(enabled)
+   {
+      mpYZGridTransform->setNodeMask(0xFFFFFFFF);
+   }
+   else
+   {
+      mpYZGridTransform->setNodeMask(0x0);
+   }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+void ViewerQOSG::MakeGrids()
+{
+   const int numVertices = 2 * 2 * GRID_LINE_COUNT;
+   osg::Vec3 vertices[numVertices];
+   float length = (GRID_LINE_COUNT - 1) * GRID_LINE_SPACING;
+   int ptr = 0;
+
+   for(int i = 0; i < GRID_LINE_COUNT; ++i)
+   {
+      vertices[ptr++].set(-length / 2 + i * GRID_LINE_SPACING, length / 2, 0.0f);
+      vertices[ptr++].set(-length / 2 + i * GRID_LINE_SPACING, -length / 2, 0.0f);
+   }
+
+   for (int i = 0; i < GRID_LINE_COUNT; ++i)
+   {
+      vertices[ptr++].set(length / 2, -length / 2 + i * GRID_LINE_SPACING, 0.0f);
+      vertices[ptr++].set(-length / 2, -length / 2 + i * GRID_LINE_SPACING, 0.0f);
+   }
+
+   osg::Geometry* geometry = new osg::Geometry;
+   geometry->setVertexArray(new osg::Vec3Array(numVertices, vertices));
+   geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, numVertices));
+
+   osg::Geode* geode = new osg::Geode;
+   geode->addDrawable(geometry);
+   geode->getOrCreateStateSet()->setMode(GL_LIGHTING, 0);
+
+   mpXYGridTransform = new osg::MatrixTransform;
+   mpXYGridTransform->addChild(geode);
+
+   mpXZGridTransform = new osg::MatrixTransform;
+   mpXZGridTransform->setMatrix(osg::Matrix::rotate(osg::PI_2, 1, 0, 0));
+
+   mpXZGridTransform->addChild(geode);
+   mpXZGridTransform->setNodeMask(0x0);
+
+   mpYZGridTransform = new osg::MatrixTransform;
+   mpYZGridTransform->setMatrix(osg::Matrix::rotate(osg::PI_2, 0, 1, 0));
+
+   mpYZGridTransform->addChild(geode);
+   mpYZGridTransform->setNodeMask(0x0);
 }
 
 void setupManipulatorAndHandler(osgViewer::View & viewer, osg::ArgumentParser & arguments)
@@ -337,7 +426,7 @@ int mainQOSGWidget(QApplication& a, osg::ArgumentParser& arguments)
             view2->getCamera()->setClearColor( osg::Vec4( 0.08, 0.08, 0.5, 1.0 ) );
 
             setupManipulatorAndHandler(*view2, arguments);
-
+		
             viewerWindow->addView(view2);
         }
 
