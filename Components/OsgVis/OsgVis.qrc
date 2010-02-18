@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/OsgVis">
+	
+	<!--  
+    <file alias="Text3D.png">icons/Text3D.png</file>
+  	-->
+</qresource>
+</RCC>
