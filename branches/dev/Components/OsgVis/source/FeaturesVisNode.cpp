@@ -88,7 +88,7 @@ void FeaturesVisNode::setDriver(QString driver)
 	if (_driver.compare(driver) != 0)
 	{
 		_driver = driver;
-		d->outputFeatures->add("driver", _driver.toStdString());
+		d->outputFeatures->attr("driver") = _driver.toStdString();
 	}
 }
 
