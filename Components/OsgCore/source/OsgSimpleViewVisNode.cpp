@@ -98,7 +98,6 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 
 #if USE_QOSG == QOSG_WIDGET || USE_QOSG == QOSG_ADAPTER
 	m_osgOutputWidget = new QWidget;
-	GCF::Components::MainWindowComponent::instance().addTabCentralWidget(m_osgOutputWidget, this->nodeName());
 	d->scene = new ViewerQOSG(m_osgOutputWidget);
 	d->scene->updateCamera();
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
@@ -107,12 +106,12 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	m_osgOutputWidget = new osg::QGLGraphicsView;
 	d->scene = new osg::QOSGScene;
 	m_osgOutputWidget->setScene(d->scene);
-	OsgCoreComponent::instance().osgOutputWidget()->addTab(m_osgOutputWidget, this->nodeName());
 	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
 	d->scene->setLight(d->inputLight);
 #endif
-	QSize s = m_osgOutputWidget->parentWidget()->size();
+	OsgCoreComponent::instance().sceneLayout()->addWidget(m_osgOutputWidget);
 
+	QSize s = m_osgOutputWidget->parentWidget()->size();
 	if (d->scene)
 #ifdef USE_QOSG == QOSG_WIDGET
 		d->scene->setGeometry(0, 0, s.width(), s.height());
