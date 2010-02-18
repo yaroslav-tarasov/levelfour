@@ -26,6 +26,20 @@
     #pragma warning( disable : 4512 )
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * The number of lines in each direction.
+ */
+const int GRID_LINE_COUNT = 49;
+
+/**
+ * The amount of space between each line.
+ */
+const float GRID_LINE_SPACING = 1.0f;
+
+////////////////////////////////////////////////////////////////////////////////
+
+
 #if USE_QT4
 
     #include <QtCore/QString>
@@ -81,6 +95,8 @@ typedef osgViewer::GraphicsWindowX11::WindowData WindowData;
 #include <osgGA/TerrainManipulator>
 #include <osg/ShapeDrawable>
 #include <osg/Geode>
+#include <osg/MatrixTransform>
+
 
 #include <osgDB/ReadFile>
 
@@ -145,10 +161,22 @@ class ViewerQOSG : public osgViewer::Viewer, public QOSGWidget
         }
 
         virtual void paintEvent( QPaintEvent * event ) { frame(); }
+	
+	public slots:
+		void ToggleXYGrid(bool enabled);
+		void ToggleXZGrid(bool enabled);
+		void ToggleYZGrid(bool enabled);
+
+	private:
+		void MakeGrids();
+		osg::MatrixTransform* mpXYGridTransform;
+		osg::MatrixTransform* mpXZGridTransform;
+		osg::MatrixTransform* mpYZGridTransform;
 
     protected:
 
         QTimer _timer;
+
 };
 
 
