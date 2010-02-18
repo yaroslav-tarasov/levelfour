@@ -89,7 +89,6 @@ LIBS			+= -losgd \
 				-lopenGL32 \
 				-losgEarthUtild \
 				-lopenThreadsd \
-				-l$${PROJECT_BASE}/lib/MainWindow \
 
 # VNFComponentGen has generated an empty resource file. If you add
 # new objects to the resource file, then you can uncomment the line
