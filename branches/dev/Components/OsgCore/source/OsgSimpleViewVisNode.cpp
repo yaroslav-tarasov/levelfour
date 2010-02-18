@@ -102,6 +102,7 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	d->scene->updateCamera();
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 	d->scene->setSceneData(d->root.get());
+
 #else
 	m_osgOutputWidget = new osg::QGLGraphicsView;
 	d->scene = new osg::QOSGScene;
@@ -110,6 +111,8 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	d->scene->setLight(d->inputLight);
 #endif
 	OsgCoreComponent::instance().sceneStack()->addWidget(m_osgOutputWidget);
+	// Send scene name to stack select combo box for identification
+	OsgCoreComponent::instance().sceneSelection()->addItem("Scene Name");
 
 	QSize s = m_osgOutputWidget->parentWidget()->size();
 	if (d->scene)
