@@ -26,7 +26,7 @@
 DEFINE_VIS_NODE(ModelVisNode, CGenericVisNodeBase)
 {
     pDesc->setNodeClassCategory("OsgVis");
-    pDesc->setNodeClassName("Model");
+    pDesc->setNodeClassName("Model Layer");
     pDesc->setNodeClassDescription("Model");
     pDesc->setNodeIcon( OsgVisComponent::instance().nodeIcon() );
 
@@ -122,6 +122,20 @@ void ModelVisNode::setExtrusionDistance(QString extr)
 	{
 		isCompiled = false;
 		_extrusionDistance = extr;
+	}
+}
+
+QString ModelVisNode::getHeightOffset() const
+{
+	return _extrusionDistance;
+}
+
+void ModelVisNode::setHeightOffset(QString heightOffset)
+{
+	if (_heightOffset.compare(heightOffset) != 0)
+	{
+		isCompiled = false;
+		_heightOffset = heightOffset;
 	}
 }
 
