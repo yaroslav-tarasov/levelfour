@@ -39,6 +39,7 @@ class ModelVisNode : public CGenericVisNodeBase
 	Q_PROPERTY(QString Driver READ getDriver WRITE setDriver)
 	Q_PROPERTY(QString Geometry READ getGeometry WRITE setGeometry)
 	Q_PROPERTY(QString ExtrusionDistance READ getExtrusionDistance WRITE setExtrusionDistance)
+	Q_PROPERTY(QString HeightOffset READ getHeightOffset WRITE setHeightOffset)
 
 public:
     ModelVisNode();
@@ -53,6 +54,8 @@ public:
 	QString getExtrusionDistance() const;
 	void setExtrusionDistance(QString extr);
 
+	QString getHeightOffset() const;
+	void setHeightOffset(QString heightOffset);
 protected:
     bool hasInput(IVisSystemNodeConnectionPath* path);
     bool setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData);
@@ -97,6 +100,7 @@ private:
 	QString _driver;
 	QString _geometryType;
 	QString _extrusionDistance;
+	QString _heightOffset;
 	bool isCompiled;
 };
 
