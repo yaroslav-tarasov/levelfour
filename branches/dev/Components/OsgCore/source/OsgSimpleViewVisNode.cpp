@@ -137,9 +137,7 @@ void OsgSimpleViewVisNode::render()
 
 void OsgSimpleViewVisNode::command_Render()
 {
-	delete d->scene;
 #if USE_QOSG == QOSG_WIDGET
-	d->scene = new ViewerQOSG(m_osgOutputWidget);
 	d->scene->updateCamera();
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 #elif  USE_QOSG == QOSG_GRAPHICS
@@ -255,6 +253,7 @@ bool OsgSimpleViewVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSyst
 		{
 			d->root->addChild(data->getOsgNode());
 			d->inputData.setOsgNode(d->root);
+			command_Render();
 
 			return true;
 		}
