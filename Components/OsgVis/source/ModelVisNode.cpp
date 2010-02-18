@@ -127,7 +127,7 @@ void ModelVisNode::setExtrusionDistance(QString extr)
 
 QString ModelVisNode::getHeightOffset() const
 {
-	return _extrusionDistance;
+	return _heightOffset;
 }
 
 void ModelVisNode::setHeightOffset(QString heightOffset)
