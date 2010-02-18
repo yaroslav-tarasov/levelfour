@@ -223,7 +223,7 @@ void CompositeViewerQOSG::AddView( osg::Node * scene )
 
   //prepare scene
   view->getCamera()->setGraphicsContext( getGraphicsWindow() );
-  view->getCamera()->setClearColor( osg::Vec4( 0.08, 0.08, 0.5, 1.0 ) );
+  view->getCamera()->setClearColor( osg::Vec4( 0.24, 0.25, 0.26, 1.0 ) );
   Tile();
 }
 
@@ -410,7 +410,7 @@ int mainQOSGWidget(QApplication& a, osg::ArgumentParser& arguments)
             view1->getCamera()->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(width)/static_cast<double>(height/2), 1.0, 1000.0);
             view1->getCamera()->setViewport(new osg::Viewport(0,0,width,height/2));
             view1->setSceneData(loadedModel.get());
-            view1->getCamera()->setClearColor( osg::Vec4( 0.08, 0.08, 0.5, 1.0 ) );
+            view1->getCamera()->setClearColor( osg::Vec4( 0.24, 0.25, 0.26, 1.0 ) );
 
             setupManipulatorAndHandler(*view1, arguments);
 
@@ -423,7 +423,7 @@ int mainQOSGWidget(QApplication& a, osg::ArgumentParser& arguments)
             view2->getCamera()->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(width)/static_cast<double>(height/2), 1.0, 1000.0);
             view2->getCamera()->setViewport(new osg::Viewport(0,height/2,width,height/2));
             view2->setSceneData(loadedModel.get());
-            view2->getCamera()->setClearColor( osg::Vec4( 0.08, 0.08, 0.5, 1.0 ) );
+            view2->getCamera()->setClearColor( osg::Vec4( 0.24, 0.25, 0.26, 1.0 ) );
 
             setupManipulatorAndHandler(*view2, arguments);
 		
@@ -478,6 +478,7 @@ int mainQOSGWidget(QApplication& a, osg::ArgumentParser& arguments)
                 view->getCamera()->setProjectionMatrixAsPerspective
                     (30.0f, static_cast<double>(width*2)/static_cast<double>(height), 1.0, 1000.0);
                 view->getCamera()->setViewport(new osg::Viewport(0,0,size,size));
+				view->getCamera()->setClearColor( osg::Vec4( 0.24, 0.25, 0.26, 1.0 ) );
                 view->addEventHandler(new osgViewer::StatsHandler);
                 view->setCameraManipulator(new osgGA::TrackballManipulator);
                 view->setSceneData(loadedModel.get ());
