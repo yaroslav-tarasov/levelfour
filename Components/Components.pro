@@ -16,6 +16,7 @@ SUBDIRS     = LevelFour \
 		  ScenegraphManager \
 		  Clipboard \
 		  OsgCore \
+		  OsgVis \
 		  OsgFX \
 		  OsgShadow \
 		  OsgParticle \
