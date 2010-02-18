@@ -57,6 +57,10 @@ public:
     OsgSimpleViewVisNode();
     ~OsgSimpleViewVisNode();
 
+	void addNode(osg::Node * node);
+	void removeNode(osg::Node * node);
+	bool containsNode(osg::Node * node);
+
 protected:
     bool hasInput(IVisSystemNodeConnectionPath* path);
     bool setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIOData* inputData);
