@@ -151,6 +151,8 @@ void ModelVisNode::command_Process()
 		d->conf->add("geometry_type", _geometryType.toStdString());
 	if (_extrusionDistance.size() > 0)
 		d->conf->add("extrusion_distance", _extrusionDistance.toStdString());
+	if (_heightOffset.size() > 0)
+		d->conf->add("height_offset", _heightOffset.toStdString());
 
 	if (d->inputFeatures)
 		d->conf->addChild(*d->inputFeatures);

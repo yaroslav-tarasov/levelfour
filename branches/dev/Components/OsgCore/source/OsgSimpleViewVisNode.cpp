@@ -109,7 +109,7 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
 	d->scene->setLight(d->inputLight);
 #endif
-	OsgCoreComponent::instance().sceneLayout()->addWidget(m_osgOutputWidget);
+	OsgCoreComponent::instance().sceneStack()->addWidget(m_osgOutputWidget);
 
 	QSize s = m_osgOutputWidget->parentWidget()->size();
 	if (d->scene)
