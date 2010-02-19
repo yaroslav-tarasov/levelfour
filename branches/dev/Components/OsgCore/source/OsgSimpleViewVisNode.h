@@ -95,6 +95,9 @@ protected slots:
 private:
     OsgSimpleViewVisNodeData* d;
 
+	QOSGContainer* w;
+	QString name;
+
 	QTimer timer;
 };
 

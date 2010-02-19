@@ -186,6 +186,13 @@ OsgCoreComponent::OsgCoreComponent() : _scene(0)
 
 void OsgCoreComponent::toggleXYGrid()
 {
+	if (!_scene)
+	{
+		QOSGContainer * sceneContainer = static_cast<QOSGContainer*>(d->sceneStack->currentWidget());
+		if (sceneContainer)
+			_scene = sceneContainer->getScene();
+	}
+
 	if (_scene)
 	{
 		xyGridToggled = !xyGridToggled;
