@@ -16,7 +16,6 @@
 *  THE SOFTWARE.
 */
 
-
 #define USE_QT4 1
 
 #include <osg/Config>
@@ -142,128 +141,77 @@ class QOSGWidget : public QWidget
 
 class ViewerQOSG : public osgViewer::Viewer, public QOSGWidget
 {
-    public:
+public:
 
-        ViewerQOSG(QWidget * parent = 0, const char * name = 0, WindowFlags f = 0):
-            QOSGWidget( parent, name, f )
-        {
-            setThreadingModel(osgViewer::Viewer::SingleThreaded);
+	ViewerQOSG(QWidget * parent = 0, const char * name = 0, WindowFlags f = 0, bool grids = true):
+        QOSGWidget( parent, name, f )
+	{
+		mpXYGridTransform = mpXZGridTransform = mpYZGridTransform = 0;
+		init();
+		_grids = grids;
+		if (_grids) initGrids();
+	}
 
-            connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
-            _timer.start(10);
-        }
-        
-        void updateCamera()
-        {
-            getCamera()->setViewport(new osg::Viewport(0,0,width(),height()));
-            getCamera()->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(width())/static_cast<double>(height()), 1.0f, 10000.0f);
-            getCamera()->setGraphicsContext(getGraphicsWindow());
-        }
+	void updateCamera()
+    {
+        getCamera()->setViewport(new osg::Viewport(0,0,width(),height()));
+        getCamera()->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(width())/static_cast<double>(height()), 1.0f, 10000.0f);
+        getCamera()->setGraphicsContext(getGraphicsWindow());
+    }
 
-        virtual void paintEvent( QPaintEvent * event ) { frame(); }
+	bool grids() const {return _grids;}
+
+    virtual void paintEvent( QPaintEvent * event ) { frame(); }
 	
-	public slots:
-		void ToggleXYGrid(bool enabled);
-		void ToggleXZGrid(bool enabled);
-		void ToggleYZGrid(bool enabled);
+	void toggleXYGrid(bool enabled);
+	void toggleXZGrid(bool enabled);
+	void toggleYZGrid(bool enabled);
 
-	private:
-		void MakeGrids();
-		osg::MatrixTransform* mpXYGridTransform;
-		osg::MatrixTransform* mpXZGridTransform;
-		osg::MatrixTransform* mpYZGridTransform;
+	osg::MatrixTransform* getXYGrid() const {return mpXYGridTransform;}
+	osg::MatrixTransform* getXZGrid() const {return mpXZGridTransform;}
+	osg::MatrixTransform* getYZGrid() const {return mpYZGridTransform;}
 
-    protected:
+	void setupManipulatorAndHandler();
 
-        QTimer _timer;
+private:
+	void init()
+	{
+        setThreadingModel(osgViewer::Viewer::SingleThreaded);
 
-};
-
-
-class CompositeViewerQOSG : public osgViewer::CompositeViewer, public QOSGWidget
-{
-    public:
-        CompositeViewerQOSG(QWidget * parent = 0, const char * name = 0, WindowFlags f = 0)
-        : QOSGWidget( parent, name, f )
-        {
-          setThreadingModel(osgViewer::CompositeViewer::SingleThreaded);
-
-          connect(&_timer, SIGNAL(timeout()), this, SLOT(repaint()));
-
-          // The composite viewer needs at least one view to work
-          // Create a dummy view with a zero sized viewport and no
-          // scene to keep the viewer alive.
-          osgViewer::View * pView = new osgViewer::View;
-          pView->getCamera()->setGraphicsContext( getGraphicsWindow() );
-          pView->getCamera()->setViewport( 0, 0, 0, 0 );
-          addView( pView );
-
-          // Clear the viewer of removed views
-          getGraphicsWindow()->setClearMask( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-          getGraphicsWindow()->setClearColor( osg::Vec4( 0.08, 0.08, 0.5, 1.0 ) );
-
-          // The app would hang on exit when using start(1).  Behaves better with 10
-          // like the non-composite viewer.  Was this just a typo?
-          _timer.start(10);
-        }
-          
-        virtual void paintEvent( QPaintEvent * event ) { frame(); }
-
-        void keyPressEvent( QKeyEvent* event )
-        {
-          if ( event->text() == "a" )
-          {
-            AddView( _scene.get() );
-          }
-          
-          if ( event->text() == "r" )
-          {
-            RemoveView();
-          }
-
-          QOSGWidget::keyPressEvent( event );
-        }
-
-
-        void AddView( osg::Node * scene );
-        void RemoveView();
-        void Tile();
-
-        osg::ref_ptr< osg::Node > _scene;
-
-    protected:
-        QTimer _timer;
-};
-
-
-
-#if USE_QT4
-// we use this wrapper for CompositeViewer ONLY because of the timer
-// NOTE: this is a workaround because we're not using QT's moc precompiler here.
-//
-class QViewerTimer : public QWidget
-{
-
-    public:
-
-        QViewerTimer (QWidget * parent = 0, WindowFlags f = 0):
-            QWidget (parent, f)
-    {
-        _viewer = new osgViewer::CompositeViewer ();
-        _viewer->setThreadingModel(osgViewer::CompositeViewer::DrawThreadPerContext);
-        connect(&_timer, SIGNAL(timeout()), this, SLOT(repaint()));
+        connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
         _timer.start(10);
-    }
+	}
 
-    ~QViewerTimer ()
-    {
-        _timer.stop ();
-    }
+	void initGrids();
+	bool _grids;
 
-        virtual void paintEvent (QPaintEvent * event) { _viewer->frame(); }
+	osg::MatrixTransform* mpXYGridTransform;
+	osg::MatrixTransform* mpXZGridTransform;
+	osg::MatrixTransform* mpYZGridTransform;
 
-        osg::ref_ptr <osgViewer::CompositeViewer> _viewer;
-        QTimer _timer;
+protected:
+
+    QTimer _timer;
 
 };
-#endif
+
+class QOSGContainer : public QWidget
+{
+public:
+	QOSGContainer(QWidget * parent = 0, ViewerQOSG * scene = 0) : QWidget(parent) 
+	{
+		if (scene && scene != _scene)
+		{
+			_scene = scene;
+			_scene->setParent(this);
+		}
+	}
+
+	virtual ~QOSGContainer() {}
+
+	ViewerQOSG * getScene() const { return _scene; }
+	void setScene(ViewerQOSG * scene) { _scene = scene; }
+
+private:
+	ViewerQOSG * _scene;
+};

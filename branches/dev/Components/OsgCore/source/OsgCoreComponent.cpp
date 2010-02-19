@@ -103,7 +103,7 @@ OsgCoreComponent & OsgCoreComponent::instance()
     return *theInstance;
 }
 
-OsgCoreComponent::OsgCoreComponent()
+OsgCoreComponent::OsgCoreComponent() : _scene(0)
 {
     d = new OsgCoreComponentData;
 
@@ -123,7 +123,7 @@ OsgCoreComponent::OsgCoreComponent()
 	// d->sceneSelection->addItem("Select Scene"); This should be a string passed as scene name given in the node
 	// The combo box selects scenes by index
 	connect(d->sceneSelection, SIGNAL(activated(int)),
-             d->sceneStack, SLOT(setCurrentIndex(int)));
+			this, SLOT(setSelectedScene(int)));     
 
 	// Camera actions (these are provided by the combo box)
 	d->sceneCameras->addItem("Perspective");
@@ -179,6 +179,26 @@ OsgCoreComponent::OsgCoreComponent()
 	// simple viewer will add widgets to scene stack as needed;
 	d->sceneView->setLayout(d->sceneLayout);
 
+	connect(d->showgridAction, SIGNAL(triggered()), this, SLOT(toggleXYGrid()));
+//	connect(d->showaxisAction, SIGNAL(triggered()), this, SLOT(toggleAxis()));
+//	connect(d->showgizmoAction, SIGNAL(triggered()), this, SLOT(toggleGizmo()));
+}
+
+void OsgCoreComponent::toggleXYGrid()
+{
+	if (_scene)
+	{
+		xyGridToggled = !xyGridToggled;
+		_scene->toggleXYGrid(xyGridToggled);
+	}
+}
+
+void OsgCoreComponent::setSelectedScene(int index)
+{
+	d->sceneStack->setCurrentIndex(index);
+	QOSGContainer * sceneContainer = static_cast<QOSGContainer*>(d->sceneStack->currentWidget());
+	if (sceneContainer)
+		_scene = sceneContainer->getScene();
 }
 
 OsgCoreComponent::~OsgCoreComponent()

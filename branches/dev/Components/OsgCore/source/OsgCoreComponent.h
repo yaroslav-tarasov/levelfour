@@ -24,6 +24,7 @@
 #include <QVBoxLayout>
 #include <QStackedWidget>
 #include <QComboBox>
+#include "OsgSimpleViewVisNode.h"
 
 struct OsgCoreComponentData;
 class OsgCoreComponent : public GCF::AbstractComponent,
@@ -70,6 +71,10 @@ public:
     QString license() const;
     QString copyrightStatement() const;
 
+public slots:
+	void toggleXYGrid();
+	void setSelectedScene(int index);
+
 protected:
     OsgCoreComponent();
     void initializeComponent();
@@ -81,6 +86,8 @@ protected:
 
 private:
     OsgCoreComponentData* d;
+	ViewerQOSG * _scene;
+	bool xyGridToggled;
 };
 
 #endif

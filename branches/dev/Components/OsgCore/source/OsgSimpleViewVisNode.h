@@ -22,19 +22,7 @@
 #include <QTabWidget>
 #include <QTimer>
 
-#define QOSG_GRAPHICS 1
-#define QOSG_WIDGET 2
-#define QOSG_ADAPTER 3
-
-#define USE_QOSG QOSG_WIDGET
-
-#if USE_QOSG == QOSG_WIDGET
-	#include "QOSGWidget.h"
-#elif USE_QOSG == QOSG_GRAPHICS
-	#include "QOSGGraphics.h"
-#else 
-	#include "AdapterWidget.h"
-#endif
+#include "QOSGWidget.h"
 
 #ifdef ENABLE_ADVANCED_PROPERTIES
 #include "IEditableProperties.h"
@@ -57,6 +45,7 @@ public:
     OsgSimpleViewVisNode();
     ~OsgSimpleViewVisNode();
 
+	void toggleXYGrid(bool enable);
 	void addNode(osg::Node * node);
 	void removeNode(osg::Node * node);
 	bool containsNode(osg::Node * node);
@@ -106,16 +95,7 @@ protected slots:
 private:
     OsgSimpleViewVisNodeData* d;
 
-#ifdef USE_QOSG == QOSG_WIDGET
-	QWidget * m_osgOutputWidget;
-#elif USE_QOSG == QOSG_GRAPHICS
-	osg::QGLGraphicsView * m_osgOutputWidget;
-#else if USE_QOSG == QOSG_ADAPTER
-	QWidget * m_osgOutputWidget;
-#endif
-
 	QTimer timer;
-	void removeSceneWidget();
 };
 
 #endif
