@@ -141,7 +141,7 @@ bool MapVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSystemNodeIODa
     If you have added input paths in the description block at the header of this file,
     then you will have to handle inputs here
     */
-	if (path->pathName() == "Layer")
+	if (path->pathName() == "Layer" && isMapCreated)
 	{
 		LayerVisNodeIOData * layerData = 0;
 		bool success = false;
