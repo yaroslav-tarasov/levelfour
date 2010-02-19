@@ -65,13 +65,7 @@ struct OsgSimpleViewVisNodeData
 {
 	OsgSimpleViewVisNodeData() : scene(0), root(0) {}
 
-#if USE_QOSG == QOSG_WIDGET
 	ViewerQOSG * scene;
-#elif USE_QOSG == QOSG_GRAPHICS
-	osg::QOSGScene * scene;
-#else
-	ViewerQT * scene;
-#endif
 
 	OsgGroupVisNodeIOData inputData;
 	osg::ref_ptr<osg::Light> inputLight;
@@ -96,31 +90,26 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	osg::LightSource * lightSource = new osg::LightSource;
 	lightSource->setLight(d->inputLight.get());
 
-#if USE_QOSG == QOSG_WIDGET || USE_QOSG == QOSG_ADAPTER
-	m_osgOutputWidget = new QWidget;
-	d->scene = new ViewerQOSG(m_osgOutputWidget);
+	QOSGContainer* w = new QOSGContainer();
+	d->scene = new ViewerQOSG(w);
+	w->setScene(d->scene);
+	
+	// set object name in order to retrieve the scene from the parent widget
+	d->scene->setObjectName(this->nodeName());
+
 	d->scene->updateCamera();
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 	d->scene->setSceneData(d->root.get());
+	if (d->scene->grids())
+		d->root->addChild(d->scene->getXYGrid());
 
-#else
-	m_osgOutputWidget = new osg::QGLGraphicsView;
-	d->scene = new osg::QOSGScene;
-	m_osgOutputWidget->setScene(d->scene);
-	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
-	d->scene->setLight(d->inputLight);
-#endif
-	OsgCoreComponent::instance().sceneStack()->addWidget(m_osgOutputWidget);
+	OsgCoreComponent::instance().sceneStack()->addWidget(w);
 	// Send scene name to stack select combo box for identification
-	OsgCoreComponent::instance().sceneSelection()->addItem("Scene Name");
+	OsgCoreComponent::instance().sceneSelection()->addItem(this->nodeName());
 
-	QSize s = m_osgOutputWidget->parentWidget()->size();
+	QSize s = d->scene->parentWidget()->size();
 	if (d->scene)
-#ifdef USE_QOSG == QOSG_WIDGET
 		d->scene->setGeometry(0, 0, s.width(), s.height());
-#elif USE_QOSG == QOSG_GRAPHICS
-		d->scene->setSceneRect(0, 0, s.width(), s.height());
-#endif
 }
 
 OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
@@ -129,7 +118,6 @@ OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
     // subclass, then you have to delete it now.
     // d->VtkObjectPointer->Delete();
 
-	delete m_osgOutputWidget;
 	delete d;
 }
 
@@ -140,28 +128,20 @@ void OsgSimpleViewVisNode::render()
 
 void OsgSimpleViewVisNode::command_Render()
 {
-#if USE_QOSG == QOSG_WIDGET
 	d->scene->updateCamera();
 	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
-#elif  USE_QOSG == QOSG_GRAPHICS
-	d->scene = new osg::QOSGScene;
-	m_osgOutputWidget->setScene(d->scene);
-	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
-	d->scene->setLight(d->inputLight);
-#else  USE_QOSG == QOSG_ADAPTER
-	d->scene = new ViewerQT(m_osgOutputWidget);
-	d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
-#endif
 
 	d->scene->setSceneData(d->root.get());
-	QSize s = m_osgOutputWidget->parentWidget()->size();
+	QSize s = d->scene->parentWidget()->size();
 
 	if (d->scene)
-#ifdef USE_QOSG == QOSG_WIDGET
 		d->scene->setGeometry(0, 0, s.width(), s.height());
-#elif USE_QOSG == QOSG_GRAPHICS
-		d->scene->setSceneRect(0, 0, s.width(), s.height());
-#endif
+}
+
+void OsgSimpleViewVisNode::toggleXYGrid(bool enabled)
+{
+	if (d->scene)
+		d->scene->toggleXYGrid(enabled);
 }
 
 void OsgSimpleViewVisNode::saveOSG()
@@ -171,15 +151,9 @@ void OsgSimpleViewVisNode::saveOSG()
 
 void OsgSimpleViewVisNode::command_SaveOSG()
 {
-#if USE_QOSG == QOSG_WIDGET || USE_QOSG == QOSG_ADAPTER
 	if (!d->root)
 		return;
 	osg::ref_ptr<osg::Node> root = d->root;
-#elif USE_QOSG == QOSG_GRAPHICS
-	if (!d->scene)
-		return;
-	osg::ref_ptr<osg::Node> root = d->scene->getSceneData();
-#endif
 
 	if (!root.valid())
 		return;
@@ -345,7 +319,7 @@ bool OsgSimpleViewVisNode::outputDerefed(IVisSystemNodeConnectionPath* path, IVi
     return CGenericVisNodeBase::outputDerefed(path, outputData);
 }
 
-#ifdef ENABLE_ADVANCED_PROPERTIES
+#if ENABLE_ADVANCED_PROPERTIES
 
 int OsgSimpleViewVisNode::propertyCount()
 {

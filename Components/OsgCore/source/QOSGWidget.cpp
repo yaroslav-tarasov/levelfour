@@ -193,52 +193,9 @@ void QOSGWidget::mouseMoveEvent( QMouseEvent* event )
 }
 #endif
 
-void CompositeViewerQOSG::Tile()
-{
-  int n = getNumViews() - 1; // -1 to account for dummy view
-
-  for ( int i = 0; i < n; ++i )
-  {
-    osgViewer::View * view = getView(i+1);  // +1 to account for dummy view
-    view->getCamera()->setViewport( new osg::Viewport( 0, i*height()/n , width(), height()/n ) );
-    view->getCamera()->setProjectionMatrixAsPerspective( 30.0f, double( width() ) / double( height()/n ), 1.0f, 10000.0f );
-  }
-}
-
-
-void CompositeViewerQOSG::AddView( osg::Node * scene )
-{
-  osgViewer::View* view = new osgViewer::View;
-  addView(view);
-
-  // scene->addParent(mpXYGridTransform);
-  // viewport interfaces
- 
-  view->setSceneData( scene );
-  view->setCameraManipulator(new osgGA::TrackballManipulator);
-
-  // add the state manipulator
-  osg::ref_ptr<osgGA::StateSetManipulator> statesetManipulator = new osgGA::StateSetManipulator;
-  statesetManipulator->setStateSet(view->getCamera()->getOrCreateStateSet());
-
-  //prepare scene
-  view->getCamera()->setGraphicsContext( getGraphicsWindow() );
-  view->getCamera()->setClearColor( osg::Vec4( 0.24, 0.25, 0.26, 1.0 ) );
-  Tile();
-}
-
-void CompositeViewerQOSG::RemoveView()
-{
-  if ( getNumViews() > 1 )
-  {
-    removeView( getView( getNumViews() - 1 ) );
-  }
-  Tile();
-}
-
 // Set up viewport interfaces
 ////////////////////////////////////////////////////////////////////////////////
-void ViewerQOSG::ToggleXYGrid(bool enabled)
+void ViewerQOSG::toggleXYGrid(bool enabled)
 {
    if(enabled)
    {
@@ -251,7 +208,7 @@ void ViewerQOSG::ToggleXYGrid(bool enabled)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void ViewerQOSG::ToggleXZGrid(bool enabled)
+void ViewerQOSG::toggleXZGrid(bool enabled)
 {
    if(enabled)
    {
@@ -264,7 +221,7 @@ void ViewerQOSG::ToggleXZGrid(bool enabled)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void ViewerQOSG::ToggleYZGrid(bool enabled)
+void ViewerQOSG::toggleYZGrid(bool enabled)
 {
    if(enabled)
    {
@@ -278,7 +235,7 @@ void ViewerQOSG::ToggleYZGrid(bool enabled)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-void ViewerQOSG::MakeGrids()
+void ViewerQOSG::initGrids()
 {
    const int numVertices = 2 * 2 * GRID_LINE_COUNT;
    osg::Vec3 vertices[numVertices];
@@ -321,7 +278,7 @@ void ViewerQOSG::MakeGrids()
    mpYZGridTransform->setNodeMask(0x0);
 }
 
-void setupManipulatorAndHandler(osgViewer::View & viewer, osg::ArgumentParser & arguments)
+void ViewerQOSG::setupManipulatorAndHandler()
 {
     // set up the camera manipulators.
     {
@@ -332,197 +289,19 @@ void setupManipulatorAndHandler(osgViewer::View & viewer, osg::ArgumentParser & 
         keyswitchManipulator->addMatrixManipulator( '3', "Drive", new osgGA::DriveManipulator() );
         keyswitchManipulator->addMatrixManipulator( '4', "Terrain", new osgGA::TerrainManipulator() );
 
-        viewer.setCameraManipulator( keyswitchManipulator.get() );
+        this->setCameraManipulator( keyswitchManipulator.get() );
     }
 
     // add the state manipulator
-    viewer.addEventHandler( new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()) );
+    this->addEventHandler( new osgGA::StateSetManipulator(this->getCamera()->getOrCreateStateSet()) );
 
     // add the thread model handler
-    viewer.addEventHandler(new osgViewer::ThreadingHandler);
+    this->addEventHandler(new osgViewer::ThreadingHandler);
 
     // add the window size toggle handler
-    viewer.addEventHandler(new osgViewer::WindowSizeHandler);
+    this->addEventHandler(new osgViewer::WindowSizeHandler);
 
     // add the stats handler
-    viewer.addEventHandler(new osgViewer::StatsHandler);
+    this->addEventHandler(new osgViewer::StatsHandler);
 
-    // add the help handler
-    viewer.addEventHandler(new osgViewer::HelpHandler(arguments.getApplicationUsage()));
-}
-int mainQOSGWidgetTest(QApplication& a, osg::ArgumentParser& arguments)
-{
-    // load the scene.
-     osg::ref_ptr<ViewerQOSG> viewerWindow(new ViewerQOSG);
-
-	 osg::ref_ptr<osg::Geode> loadedModel = new osg::Geode();
-	osg::ref_ptr<osg::ShapeDrawable> sphere = new osg::ShapeDrawable(new osg::Box());
-	loadedModel->addDrawable(sphere.get());
-
-    // Open the ViewerQOSG window at 30/30 instead of 0/0.  In some instances,
-    // the window may otherwise lack any window decoration.
-    // viewerWindow->setGeometry(0,0,640,480);
-    viewerWindow->setGeometry(30,30,640,480);
-
-    // Setup the camera only after ViewerQOSG's Qt base class has been
-    // initialized. Without this change the view doesn't cover the whole
-    // window.
-    viewerWindow->updateCamera();
-    viewerWindow->setCameraManipulator(new osgGA::TrackballManipulator);
-    viewerWindow->setSceneData(loadedModel.get());
-
-    viewerWindow->show();
-
-    setupManipulatorAndHandler(*viewerWindow.get(), arguments);
-
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
-
-    return a.exec();
-}
-
-int mainQOSGWidget(QApplication& a, osg::ArgumentParser& arguments)
-{
-	osg::ref_ptr<osg::Node> loadedModel = osgDB::readNodeFiles(arguments);
-
-    if (!loadedModel)
-    {
-        std::cout << arguments[0] <<": No data loaded." << std::endl;
-        return 1;
-    }
-
-    std::cout<<"Using QOSGWidget - QWidget + osgViewer creating the graphics context."<<std::endl;
-
-    if (arguments.read("--CompositeViewer"))
-    {
-        osg::ref_ptr<CompositeViewerQOSG> viewerWindow(new CompositeViewerQOSG);
-
-        viewerWindow->setGeometry(50,50,640,480);
-        // Open the ViewerQOSG window at 30/30 instead of 0/0.  In some instances,
-        // the window may otherwise lack any window decoration.
-        // viewerWindow->setGeometry(30,30,640,480);
-
-        unsigned int width = viewerWindow->width();
-        unsigned int height = viewerWindow->height();
-
-        {
-            osgViewer::View* view1 = new osgViewer::View;
-            view1->getCamera()->setGraphicsContext(viewerWindow->getGraphicsWindow());
-            view1->getCamera()->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(width)/static_cast<double>(height/2), 1.0, 1000.0);
-            view1->getCamera()->setViewport(new osg::Viewport(0,0,width,height/2));
-            view1->setSceneData(loadedModel.get());
-            view1->getCamera()->setClearColor( osg::Vec4( 0.24, 0.25, 0.26, 1.0 ) );
-
-            setupManipulatorAndHandler(*view1, arguments);
-
-            viewerWindow->addView(view1);
-        }
-
-        {
-            osgViewer::View* view2 = new osgViewer::View;
-            view2->getCamera()->setGraphicsContext(viewerWindow->getGraphicsWindow());
-            view2->getCamera()->setProjectionMatrixAsPerspective(30.0f, static_cast<double>(width)/static_cast<double>(height/2), 1.0, 1000.0);
-            view2->getCamera()->setViewport(new osg::Viewport(0,height/2,width,height/2));
-            view2->setSceneData(loadedModel.get());
-            view2->getCamera()->setClearColor( osg::Vec4( 0.24, 0.25, 0.26, 1.0 ) );
-
-            setupManipulatorAndHandler(*view2, arguments);
-		
-            viewerWindow->addView(view2);
-        }
-
-        viewerWindow->_scene = loadedModel.get();
-        viewerWindow->Tile();
-        viewerWindow->show();
-
-        a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
-
-        return a.exec();
-    }
-#if USE_QT4
-    else if (arguments.read("--MTCompositeViewer"))
-    {
-
-        std::cout <<" + using standard CompositeViewer with seperate contexts (Multithreaded mode / EXPERIMENTAL !)" <<std::endl;
-
-        int nbCowsX = 3;
-        int nbCowsY = 2;
-        int size = 300;
-        unsigned int width = nbCowsX * size;
-        unsigned int height = nbCowsY * size;
-
-        QGridLayout *uiLayout = new QGridLayout ();
-        QWidget *wy = new QWidget ();
-
-        // the timer holds an instance of osgViewer::CompositeViewer
-        // NOTE: this is a workaround since we're not using QT's moc precompiler here..
-        QViewerTimer *ctimer = new QViewerTimer ();
-
-        for (int x=0;x<nbCowsX; x++)
-            for (int y=0;y<nbCowsY; y++)
-            {
-
-                // embed the QOSGWidget into QGroupBox to demonstrate that we
-                // really use QT's Widgets
-                //
-                std::stringstream widgetname; widgetname << "View (" << x << "," << y << ")";
-                QGroupBox *w= new QGroupBox (QString (widgetname.str ().c_str ()), wy);
-                QGridLayout *tmpl = new QGridLayout ();
-                QOSGWidget *gw = new QOSGWidget (w, 0, 0, true);
-                tmpl->addWidget (gw);
-                w->setLayout(tmpl);
-                uiLayout->addWidget (w, y, x);
-
-                // setup views as usual
-                osgViewer::View* view = new osgViewer::View;
-                view->getCamera()->setGraphicsContext(gw->getGraphicsWindow ());
-                view->getCamera()->setProjectionMatrixAsPerspective
-                    (30.0f, static_cast<double>(width*2)/static_cast<double>(height), 1.0, 1000.0);
-                view->getCamera()->setViewport(new osg::Viewport(0,0,size,size));
-				view->getCamera()->setClearColor( osg::Vec4( 0.24, 0.25, 0.26, 1.0 ) );
-                view->addEventHandler(new osgViewer::StatsHandler);
-                view->setCameraManipulator(new osgGA::TrackballManipulator);
-                view->setSceneData(loadedModel.get ());
-                ctimer->_viewer->addView(view);
-
-            }
-
-        //uiLayout->addWidget (ctimer);
-        wy->setLayout (uiLayout);
-        wy->resize (width, height);
-        wy->show ();
-
-        // we need the timer to be visible for repaints
-        // NOTE: this is a workaround since we're not using QT's moc precompiler here..
-        ctimer->resize (1,1);
-        ctimer->show ();
-
-        a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
-
-        return a.exec();
-    }
-#endif
-    else
-    {
-        osg::ref_ptr<ViewerQOSG> viewerWindow(new ViewerQOSG);
-
-        // Open the ViewerQOSG window at 30/30 instead of 0/0.  In some instances,
-        // the window may otherwise lack any window decoration.
-        // viewerWindow->setGeometry(0,0,640,480);
-        viewerWindow->setGeometry(30,30,640,480);
-
-        // Setup the camera only after ViewerQOSG's Qt base class has been
-        // initialized. Without this change the view doesn't cover the whole
-        // window.
-        viewerWindow->updateCamera();
-        viewerWindow->setCameraManipulator(new osgGA::TrackballManipulator);
-        viewerWindow->setSceneData(loadedModel.get());
-
-        viewerWindow->show();
-
-        setupManipulatorAndHandler(*viewerWindow.get(), arguments);
-
-        a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
-
-        return a.exec();
-    }
 }
