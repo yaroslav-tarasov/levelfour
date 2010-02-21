@@ -18,6 +18,13 @@
     <file alias="view.png">icons/view.png</file>
     <file alias="help.png">icons/help.png</file>
 
+    <file alias="single.png">icons/single.png</file>
+    <file alias="overunder.png">icons/overunder.png</file>
+    <file alias="sideside.png">icons/sideside.png</file>
+    <file alias="2u1d.png">icons/2u1d.png</file>
+    <file alias="1u2d.png">icons/1u2d.png</file>
+    <file alias="quad.png">icons/quad.png</file>
+
     <file>images/pagefold.png</file>
     <file>images/frame.png</file>
     <file>images/radiobutton_unchecked.png</file>

@@ -45,5 +45,9 @@
     <method param1="ScriptEditorComponent" 
             param2="ScriptEditor" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="AnimationManagerComponent" 
+            param2="AnimationManager" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+
    
 </component>
