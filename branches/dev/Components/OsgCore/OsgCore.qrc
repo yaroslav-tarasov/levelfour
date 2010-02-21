@@ -24,5 +24,10 @@
   <file alias="Texture2D.png">icons/Texture2D.png</file>
   <file alias="Capsule.png">icons/Capsule.png</file>
 
+  <file alias="wireframeDisplay.png">icons/wireframeDisplay.png</file>
+  <file alias="textureDisplay.png">icons/textureDisplay.png</file>
+  <file alias="backfacecullingDisplay.png">icons/backfacecullingDisplay.png</file>
+  <file alias="shadingDisplay.png">icons/shadingDisplay.png</file>
+
 </qresource>
 </RCC>

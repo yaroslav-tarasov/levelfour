@@ -34,6 +34,8 @@
 #include <QVBoxLayout>
 #include <QToolBar>
 #include <QAction>
+#include <QStackedWidget>
+#include <QComboBox>
 
 
 GCF_DEFINE_COMPONENT(CVisSystemCanvasComponent)
@@ -47,6 +49,11 @@ struct CVisSystemCanvasComponentData
 	QWidget* visSystemCanvasPanel;
     QVBoxLayout* visSystemCanvasLayout;
 	QToolBar* visSystemCanvasToolBar;
+	QStackedWidget* pipelineStack;
+
+	// Controls
+	QComboBox* pipelineSelection;
+	QComboBox* pipelineViewports;
 	
 	// Actions for toolbar
 	QAction* copyAction;
@@ -86,11 +93,29 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	
 	// Panel components
 	d->visSystemCanvasPanel = new QWidget;
+
+	d->pipelineStack = new QStackedWidget;
+	d->visSystemCanvas = new CVisSystemCanvas;
+	// d->pipelineStack->addWidget(d->visSystemCanvas);
+
 	d->visSystemCanvasLayout  = new QVBoxLayout;
 	d->visSystemCanvasToolBar = new QToolBar;
 	d->visSystemCanvas = new CVisSystemCanvas;
 
+	d->pipelineSelection = new QComboBox;
+	d->pipelineViewports = new QComboBox;
+	
+
+	// Viewport actions (these are provided by the combo box)
+	d->pipelineViewports->addItem(QIcon(":/MainWindow/single.png"), tr("Single"));
+	d->pipelineViewports->addItem(QIcon(":/MainWindow/overunder.png"), tr("Over Under"));
+	d->pipelineViewports->addItem(QIcon(":/MainWindow/sideside.png"), tr("Side by Side"));
+	d->pipelineViewports->addItem(QIcon(":/MainWindow/2u1d.png"), tr("2 Up 1 Down"));
+	d->pipelineViewports->addItem(QIcon(":/MainWindow/1u2d.png"), tr("1 Up 2 Down"));
+	d->pipelineViewports->addItem(QIcon(":/MainWindow/quad.png"), tr("Quad"));
+
 	// Toolbar actions
+	d->visSystemCanvasToolBar->addWidget(d->pipelineSelection);
 
 	d->copyAction = new QAction(this);
 	d->copyAction = new QAction(QIcon(":/MainWindow/copy.png"), tr("&Copy"), this);
@@ -152,6 +177,9 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	d->zoomfitAction->setStatusTip(tr("Zoom fit"));
 	d->visSystemCanvasToolBar->addAction(d->zoomfitAction);
 
+	// combo box for setting viewport
+	d->visSystemCanvasToolBar->addWidget(d->pipelineViewports);
+
 	// Toolbar Triggers - this is not working...
 	connect(d->zoominAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::zoomIn()));
 	connect(d->copyAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::copy()));
@@ -176,6 +204,7 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 
 	// Assemble component
 	d->visSystemCanvasLayout->addWidget(d->visSystemCanvasToolBar);
+	// This should be the stack
 	d->visSystemCanvasLayout->addWidget(d->visSystemCanvas);
 	d->visSystemCanvasPanel->setLayout(d->visSystemCanvasLayout);
 

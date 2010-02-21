@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QScrollBar>
 #include <QMutex>
+#include <QTabWidget>
 
 GCF_DEFINE_STD_COMPONENT(MessageLogComponent)
 
@@ -44,6 +45,7 @@ struct GCF::Components::MessageLogComponentData
     QTextEdit* warning;
     QTextEdit* critical;
     QTextEdit* fatal;
+	QTabWidget* messageWindow;
 
     void scrollToEnd(QTextEdit* textEdit);
 };
@@ -246,6 +248,37 @@ QWidget* GCF::Components::MessageLogComponent::fetchWidget(const QString& comple
         d->fatal = new QTextEdit;
         d->fatal->setReadOnly(true);
         return d->fatal;
+    }
+
+	if(comps.last() == "messageWindow")
+    {
+        if(d->messageWindow)
+
+			// set up debug
+			d->debug = new QTextEdit;
+			d->debug->setReadOnly(true);
+	
+			// set up warning
+		    d->warning = new QTextEdit;
+			d->warning->setReadOnly(true);
+
+			// set up critical
+			d->critical = new QTextEdit;
+			d->critical->setReadOnly(true);
+		
+			// set up fatal
+			d->fatal = new QTextEdit;
+			d->fatal->setReadOnly(true);
+
+			d->messageWindow = new QTabWidget;
+			d->messageWindow->addTab(d->debug, tr("Debug"));
+			d->messageWindow->addTab(d->warning, tr("Warning"));
+			d->messageWindow->addTab(d->critical, tr("Critical"));
+			d->messageWindow->addTab(d->fatal, tr("Fatal"));
+
+			return d->messageWindow;
+        
+		return d->messageWindow;
     }
 
     return 0;
