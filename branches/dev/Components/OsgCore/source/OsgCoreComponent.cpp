@@ -136,18 +136,18 @@ OsgCoreComponent::OsgCoreComponent() : _scene(0)
 	d->sceneCameras->addItem("Isometric");
 
 	// Display actions (these are provided by the combo box)
-	d->sceneDisplays->addItem("Wireframe");
-	d->sceneDisplays->addItem("Textures");
-	d->sceneDisplays->addItem("Backface Culling");
-	d->sceneDisplays->addItem("Shading");
+	d->sceneDisplays->addItem(QIcon(":/OsgCore/wireframeDisplay.png"), tr("Wireframe"));
+	d->sceneDisplays->addItem(QIcon(":/OsgCore/textureDisplay.png"), tr("Textures"));
+	d->sceneDisplays->addItem(QIcon(":/OsgCore/backfacecullingDisplay.png"), tr("Backface Culling"));
+	d->sceneDisplays->addItem(QIcon(":/OsgCore/shadingDisplay.png"), tr("Shading"));
 
 	// Viewport actions (these are provided by the combo box)
-	d->sceneViewports->addItem("Single");
-	d->sceneViewports->addItem("Over Under");
-	d->sceneViewports->addItem("Side by Side");
-	d->sceneViewports->addItem("2 Up 1 Down");
-	d->sceneViewports->addItem("1 Up 2 Down");
-	d->sceneViewports->addItem("2 by 2");
+	d->sceneViewports->addItem(QIcon(":/MainWindow/single.png"), tr("Single"));
+	d->sceneViewports->addItem(QIcon(":/MainWindow/overunder.png"), tr("Over Under"));
+	d->sceneViewports->addItem(QIcon(":/MainWindow/sideside.png"), tr("Side by Side"));
+	d->sceneViewports->addItem(QIcon(":/MainWindow/2u1d.png"), tr("2 Up 1 Down"));
+	d->sceneViewports->addItem(QIcon(":/MainWindow/1u2d.png"), tr("1 Up 2 Down"));
+	d->sceneViewports->addItem(QIcon(":/MainWindow/quad.png"), tr("Quad"));
 
 	// HUD actions
 	d->showgridAction = new QAction(QIcon(":/OsgCore/grid.png"), tr("&Display Grid"), this);
