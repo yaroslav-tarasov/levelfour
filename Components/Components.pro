@@ -21,6 +21,7 @@ SUBDIRS     = LevelFour \
 		  OsgShadow \
 		  OsgParticle \
 		  OsgText \
+		  AnimationManager \
               
            
 # Some components are under development, but the ideas and implementation

@@ -478,6 +478,15 @@ QSlider::sub-page:vertical
      background: #686868;
 }
 
+QSpinBox {
+     padding-right: 15px; /* make room for the arrows */
+     border: 1px solid #383838;
+     	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 #383838, stop: 0.2 #484848, stop: 0.8 #484848, stop: 1.0 #535353);
+
+ }
+
+
 QStatusBar
 {
 	border-bottom: 1px solid #282828;
@@ -653,7 +662,7 @@ QToolButton
 {
 	border: 1px solid #393939;
 	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #383838, stop: 0.2 #484848, stop: 0.8 #484848, stop: 1.0 #535353);
+		stop: 0 #535353, stop: 0.2 #484848, stop: 0.8 #484848, stop: 1.0 #383838);
 	border-radius: 5px;
 	height: 20px;	
 }
@@ -675,9 +684,10 @@ QToolButton::menu-button
 
 QToolButton:hover
 {
-	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #535353, stop: 0.2 #484848, stop: 0.8 #484848, stop: 1.0 #383838);
 	border: 1px solid #393939;
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 #383838, stop: 0.2 #484848, stop: 0.8 #484848, stop: 1.0 #535353);
+
 }
 
 QToolButton:pressed

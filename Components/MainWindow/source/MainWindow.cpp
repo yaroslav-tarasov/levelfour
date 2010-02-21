@@ -82,7 +82,8 @@ GCF::Components::MainWindow::MainWindow()
     setCentralWidget(d->centralWidget);
 	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
 	setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
-
+	setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+	setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
     d->workspace = new QTabWidget(d->centralWidget);
     d->workspace->setTabPosition(QTabWidget::North);
