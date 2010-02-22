@@ -20,9 +20,7 @@ CompassAxis::CompassAxis(ViewerQOSG * viewer)
 	osg::StateSet* stateset = geode->getOrCreateStateSet();
 	stateset->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
 
-
 	geode->addDrawable(createAxes());
-
 
 	m_rotation = new osg::MatrixTransform();
 	m_rotation->setMatrix(osg::Matrix::identity());
@@ -53,9 +51,9 @@ osg::Geometry * CompassAxis::createAxes()
 
 	osg::Vec3Array* vertices = new osg::Vec3Array;
 	vertices->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
-	vertices->push_back(osg::Vec3(15.5f, 0.0f, 0.0f));
+	vertices->push_back(osg::Vec3(10.5f, 0.0f, 0.0f));
 	vertices->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
-	vertices->push_back(osg::Vec3(0.0f, 15.5f, 0.0f));
+	vertices->push_back(osg::Vec3(0.0f, 10.5f, 0.0f));
 	vertices->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
 	vertices->push_back(osg::Vec3(0.0f, 0.0f, 15.5f));
 	geom->setVertexArray(vertices);
