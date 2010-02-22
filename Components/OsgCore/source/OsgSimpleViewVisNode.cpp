@@ -95,10 +95,14 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	w->setScene(d->scene);
 	
 	d->scene->updateCamera();
-	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
+	osgGA::TrackballManipulator * manipulator = new osgGA::TrackballManipulator;
+	d->scene->setCameraManipulator(manipulator);
 	d->scene->setSceneData(d->root.get());
-	if (d->scene->grids())
+	if (d->scene->showGrids())
 		d->root->addChild(d->scene->getXYGrid());
+
+	if (d->scene->showAxes())
+		d->root->addChild(d->scene->getAxes());
 
 	OsgCoreComponent::instance().sceneStack()->addWidget(w);
 	// Send scene name to stack select combo box for identification
@@ -132,7 +136,6 @@ void OsgSimpleViewVisNode::render()
 void OsgSimpleViewVisNode::command_Render()
 {
 	d->scene->updateCamera();
-	d->scene->setCameraManipulator(new osgGA::TrackballManipulator);
 
 	d->scene->setSceneData(d->root.get());
 	QSize s = d->scene->parentWidget()->size();
@@ -145,6 +148,12 @@ void OsgSimpleViewVisNode::toggleXYGrid(bool enabled)
 {
 	if (d->scene)
 		d->scene->toggleXYGrid(enabled);
+}
+
+void OsgSimpleViewVisNode::toggleAxes(bool enabled)
+{
+	if (d->scene)
+		d->scene->toggleAxes(enabled);
 }
 
 void OsgSimpleViewVisNode::saveOSG()

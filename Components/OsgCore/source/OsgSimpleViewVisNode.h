@@ -46,6 +46,8 @@ public:
     ~OsgSimpleViewVisNode();
 
 	void toggleXYGrid(bool enable);
+	void toggleAxes(bool enable);
+
 	void addNode(osg::Node * node);
 	void removeNode(osg::Node * node);
 	bool containsNode(osg::Node * node);

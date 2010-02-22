@@ -73,6 +73,7 @@ public:
 
 public slots:
 	void toggleXYGrid();
+	void toggleAxes();
 	void setSelectedScene(int index);
 
 protected:
@@ -88,6 +89,7 @@ private:
     OsgCoreComponentData* d;
 	ViewerQOSG * _scene;
 	bool xyGridToggled;
+	bool axesToggled;
 };
 
 #endif

@@ -15,6 +15,8 @@
 *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 *  THE SOFTWARE.
 */
+#ifndef QOSGWIDGET_H
+#define QOSGWIDGET_H
 
 #define USE_QT4 1
 
@@ -48,7 +50,8 @@ const float GRID_LINE_SPACING = 1.0f;
     #include <QtGui/QtGui>
     #include <QtGui/QWidget>
 	#include <QtGui/QPaintEngine>
-    using Qt::WindowFlags;
+
+	using Qt::WindowFlags;
 
 #else
 
@@ -66,6 +69,7 @@ const float GRID_LINE_SPACING = 1.0f;
 #include <osgViewer/CompositeViewer>
 #include <osgViewer/ViewerEventHandlers>
 #include <osgViewer/GraphicsWindow>
+#include "CompassAxis.h"
 
 #include <osgViewer/ViewerEventHandlers>
 
@@ -143,13 +147,16 @@ class ViewerQOSG : public osgViewer::Viewer, public QOSGWidget
 {
 public:
 
-	ViewerQOSG(QWidget * parent = 0, const char * name = 0, WindowFlags f = 0, bool grids = true):
+	ViewerQOSG(QWidget * parent = 0, const char * name = 0, WindowFlags f = 0, bool showGrids = true, bool showAxes = true):
         QOSGWidget( parent, name, f )
 	{
 		mpXYGridTransform = mpXZGridTransform = mpYZGridTransform = 0;
+		compassAxes = 0;
 		init();
-		_grids = grids;
-		if (_grids) initGrids();
+		_showGrids = showGrids;
+		_showAxes = showAxes;
+		if (_showGrids) initGrids();
+		if (_showAxes) initAxes();
 	}
 
 	void updateCamera()
@@ -159,17 +166,21 @@ public:
         getCamera()->setGraphicsContext(getGraphicsWindow());
     }
 
-	bool grids() const {return _grids;}
+	bool showGrids() const {return _showGrids;}
+	bool showAxes() const {return _showAxes;}
 
     virtual void paintEvent( QPaintEvent * event ) { frame(); }
 	
 	void toggleXYGrid(bool enabled);
 	void toggleXZGrid(bool enabled);
 	void toggleYZGrid(bool enabled);
+	void toggleAxes(bool enabled);
 
 	osg::MatrixTransform* getXYGrid() const {return mpXYGridTransform;}
 	osg::MatrixTransform* getXZGrid() const {return mpXZGridTransform;}
 	osg::MatrixTransform* getYZGrid() const {return mpYZGridTransform;}
+
+	CompassAxis * getAxes() const {return compassAxes;}
 
 	void setupManipulatorAndHandler();
 
@@ -183,11 +194,15 @@ private:
 	}
 
 	void initGrids();
-	bool _grids;
+	bool _showGrids;
+	void initAxes();
+	bool _showAxes;
 
 	osg::MatrixTransform* mpXYGridTransform;
 	osg::MatrixTransform* mpXZGridTransform;
 	osg::MatrixTransform* mpYZGridTransform;
+
+	CompassAxis * compassAxes;
 
 protected:
 
@@ -215,3 +230,4 @@ public:
 private:
 	ViewerQOSG * _scene;
 };
+#endif

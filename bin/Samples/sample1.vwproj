@@ -15,7 +15,7 @@
       <Property Type="QString" Name="objectName" Value="Geode_2" />
     </Node>
     <Node X="-264.053" Y="-181" Name="Model_3" ClassName="Model" ID="3" >
-      <Property Type="QString" Name="Model" Value="D:\LevelFour\dev\bin\Samples\axes.osg" />
+      <Property Type="QString" Name="Model" Value="D:\LevelFour\dev\bin\Samples\axes.osgD:\osgGIS\build\src\osggis_mapper\out\roads" />
       <Property Type="QString" Name="NodeName" Value="Model_3" />
       <Property Type="QString" Name="objectName" Value="Model_3" />
     </Node>
