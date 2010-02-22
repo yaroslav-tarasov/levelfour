@@ -233,8 +233,29 @@ void ViewerQOSG::toggleYZGrid(bool enabled)
    }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+void ViewerQOSG::toggleAxes(bool enabled)
+{
+   if(enabled)
+   {
+      compassAxes->setNodeMask(0xFFFFFFFF);
+   }
+   else
+   {
+      compassAxes->setNodeMask(0x0);
+   }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
+
+void ViewerQOSG::initAxes()
+{
+	compassAxes = new CompassAxis(this);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 void ViewerQOSG::initGrids()
 {
    const int numVertices = 2 * 2 * GRID_LINE_COUNT;

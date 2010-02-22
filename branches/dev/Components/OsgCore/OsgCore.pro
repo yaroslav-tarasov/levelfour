@@ -47,6 +47,7 @@ HEADERS += source/OsgCoreComponent.h \
            source/OsgCapsuleVisNode.h \
            source/OsgInfinitePlaneVisNode.h \
            source/OsgTexture2DVisNode.h \
+           source/CompassAxis.h \
 
 				
 SOURCES += source/OsgCoreComponent.cpp \
@@ -76,6 +77,7 @@ SOURCES += source/OsgCoreComponent.cpp \
            source/OsgCapsuleVisNode.cpp \
            source/OsgInfinitePlaneVisNode.cpp \
            source/OsgTexture2DVisNode.cpp \
+           source/CompassAxis.cpp \
 
 	     
 

@@ -1,8 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/OsgVis">
-	
-	<!--  
-    <file alias="Text3D.png">icons/Text3D.png</file>
-  	-->
+<qresource prefix="/{{COMPONENT_NAME}}">
+  <!--
+    <file alias="filename.ext">icons/filename.png</file>
+  -->
 </qresource>
 </RCC>
