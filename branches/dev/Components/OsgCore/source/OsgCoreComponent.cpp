@@ -180,6 +180,7 @@ OsgCoreComponent::OsgCoreComponent() : _scene(0)
 	d->sceneView->setLayout(d->sceneLayout);
 
 	connect(d->showgridAction, SIGNAL(triggered()), this, SLOT(toggleXYGrid()));
+	connect(d->showaxisAction, SIGNAL(triggered()), this, SLOT(toggleAxes()));
 //	connect(d->showaxisAction, SIGNAL(triggered()), this, SLOT(toggleAxis()));
 //	connect(d->showgizmoAction, SIGNAL(triggered()), this, SLOT(toggleGizmo()));
 }
@@ -197,6 +198,22 @@ void OsgCoreComponent::toggleXYGrid()
 	{
 		xyGridToggled = !xyGridToggled;
 		_scene->toggleXYGrid(xyGridToggled);
+	}
+}
+
+void OsgCoreComponent::toggleAxes()
+{
+	if (!_scene)
+	{
+		QOSGContainer * sceneContainer = static_cast<QOSGContainer*>(d->sceneStack->currentWidget());
+		if (sceneContainer)
+			_scene = sceneContainer->getScene();
+	}
+
+	if (_scene)
+	{
+		axesToggled = !axesToggled;
+		_scene->toggleAxes(axesToggled);
 	}
 }
 
