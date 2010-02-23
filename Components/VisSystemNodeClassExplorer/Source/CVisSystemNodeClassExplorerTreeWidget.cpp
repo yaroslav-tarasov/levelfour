@@ -197,14 +197,55 @@ void CVisSystemNodeClassExplorerTreeWidgetDelegate::paint(QPainter* paint, const
     // operating systems like Linux or Mac OSX for example.
     QStyleOptionButton hopt;
     hopt.rect = opt.rect;
-    hopt.palette = opt.palette;
+    QColor color = QColor(62, 62, 62);
+	QColor topColor = QColor(57, 57, 57);
+	QColor bottomColor = QColor(149, 149, 149);
+	hopt.palette.setBrush(QPalette::Button, color);
     hopt.state = QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Horizontal|QStyle::State_Enabled|QStyle::State_Raised;
 
     // Draw custom header.
-    treeWidget->style()->drawControl(QStyle::CE_PushButtonBevel, &hopt, paint, 0);
+	// hopt.icon(QIcon(":/OsgCore/Camera.png"));
+	QColor darkColor = QColor(85,85,85);
+	QColor lightColor = QColor(113,113,113);
+	
+	QLinearGradient grad(opt.rect.topLeft(), opt.rect.bottomLeft());
+	grad.setColorAt(0, lightColor);
+	// grad.setColorAt(0.8, midColor);
+	grad.setColorAt(1, darkColor);
+
+	paint->setBrush(lightColor);
+	
+	paint->setPen(Qt::NoPen);
+	paint->drawRect(opt.rect);
+	
+	if (treeWidget->isExpanded(index))
+	{
+	QPixmap pixmap(":/MainWindow/images/branch-open.png");
+	QRectF iconRect( hopt.rect.left()+10, hopt.rect.top()+7, pixmap.width(), pixmap.height() );
+	iconRect.moveTop( hopt.rect.center().y() - pixmap.height()/2 );
+	paint->drawPixmap( iconRect, pixmap, QRectF(0,0,pixmap.width(),pixmap.height()) );
+	}
+	else
+	{
+	QPixmap pixmap(":/MainWindow/images/branch-closed.png");
+	QRectF iconRect( hopt.rect.left()+10, hopt.rect.top()+7, pixmap.width(), pixmap.height() );
+	iconRect.moveTop( hopt.rect.center().y() - pixmap.height()/2 );
+	paint->drawPixmap( iconRect, pixmap, QRectF(0,0,pixmap.width(),pixmap.height()) );
+	}
+
+	paint->setPen(bottomColor);
+	paint->drawLine(opt.rect.topLeft(), opt.rect.topRight());
+	paint->setPen(topColor);
+	paint->drawLine(opt.rect.bottomLeft(), opt.rect.bottomRight());
+	
+	QFont titleFont( "Tahoma" );
+    titleFont.setPointSize( 8 );
+	titleFont.setWeight( QFont::Normal );
+	paint->setFont(titleFont);
+	paint->setPen(Qt::black);
     QString text = index.model()->data(index).toString();
     QRect tempRect = opt.rect;
-    tempRect.setLeft(opt.rect.left()+20);
+    tempRect.setLeft(opt.rect.left()+35);
     paint->drawText(tempRect, Qt::AlignLeft|Qt::AlignVCenter, text);
 
     // Draw custom branch indicators.

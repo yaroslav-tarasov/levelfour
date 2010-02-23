@@ -278,15 +278,280 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 
 	if(opt->levelOfDetail >= 0.75)
     {
-        // Base node style
-		QColor midColor = QColor(245,245,245);
-		
-		midColor.setAlphaF(alpha);
-        
-        QPainterPath path;
-        path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
-		p->fillPath(path, midColor);
-        p->drawPath(path);
+        // Base node style and color
+		// Actors: Green
+		// Mappers: Purple
+		// Filters: Yellow
+		// Renderers: Blue
+		// Scene: Orange
+		// Effects: Red
+		// Particle: Red
+		// Shadow: Grey
+		// Text: Grey
+		// Source: Pink
+		// Primitives: Silver
+		// Strategies: Turquise
+		// Default: White
+		if(d->node->nodeDesc()->nodeClassCategory()== "Primitives")
+		{
+			// silver
+			QColor midColor = QColor(208,209,211);
+			QColor topColor = QColor(166,168,170);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+		}
+		else if(d->node->nodeDesc()->nodeClassCategory()== "Actors")
+		{
+			// green
+			QColor midColor = QColor(189,195,125);
+			QColor topColor = QColor(125,139,58);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+		}
+		else if(d->node->nodeDesc()->nodeClassCategory()== "Sources")
+		{
+			// purple
+			QColor midColor = QColor(198,202,217);
+			QColor topColor = QColor(136,143,171);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+
+		}
+		else if(d->node->nodeDesc()->nodeClassCategory()== "Mappers")
+		{
+			// purple
+			QColor topColor = QColor(136,143,171);
+			QColor midColor = QColor(198,202,217);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+
+		}
+		else if(d->node->nodeDesc()->nodeClassCategory()== "Renderers")
+		{
+			// blue
+			QColor midColor = QColor(155,185,215);
+			QColor topColor = QColor(108,134,169);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+		}
+		else if(d->node->nodeDesc()->nodeClassCategory()== "Scene")
+		{
+			// orange
+			QColor midColor = QColor(238,192,99);
+			QColor topColor = QColor(195,131,53);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+
+		}
+		else if(d->node->nodeDesc()->nodeClassCategory()== "Effects")
+		{
+			// purple
+			QColor midColor = QColor(198,202,217);
+			QColor topColor = QColor(136,143,171);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+
+		}
+		else if(d->node->nodeDesc()->nodeClassCategory()== "Particle")
+		{
+			// purple
+			QColor midColor = QColor(198,202,217);
+			QColor topColor = QColor(136,143,171);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+
+		}
+		else if(d->node->nodeDesc()->nodeClassCategory()== "Text")
+		{
+			// purple
+			QColor midColor = QColor(198,202,217);
+			QColor topColor = QColor(136,143,171);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+			
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+
+		}
+		else if(d->node->nodeDesc()->nodeClassCategory()== "Shadow")
+		{
+			// purple
+			QColor midColor = QColor(198,202,217);
+			QColor topColor = QColor(136,143,171);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+			
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+
+		}
+		else  if(d->node->nodeDesc()->nodeClassCategory()== "Filters")
+		{
+			// yellow	
+			QColor midColor = QColor(249,231,165);
+			QColor topColor = QColor(230,171,48);
+			QColor bottomColor = topColor;
+
+			topColor.setAlphaF(alpha);
+			midColor.setAlphaF(alpha);
+			bottomColor.setAlphaF(alpha);
+
+			QLinearGradient grad(r2.topLeft(), r2.bottomLeft());
+			grad.setColorAt(0, topColor);
+			grad.setColorAt(0.5, midColor);
+			// grad.setColorAt(0.8, midColor);
+			grad.setColorAt(1, bottomColor);
+			
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, grad);
+			p->drawPath(path);
+		}
+		else
+		{
+			QColor fillColor = QColor(245,245,245);
+			fillColor.setAlphaF(alpha);
+
+			QPainterPath path;
+			path.addRoundRect(r2.adjusted(1,1,-1,-1), 0, 0);
+			p->fillPath(path, fillColor);
+			p->drawPath(path);
+		}
+
     }
 	else
 	{
@@ -298,6 +563,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 		p->fillPath(path, fillColor);
 		p->drawPath(path);
 	}
+	// End node color logic
 
     // Draw the node icon
 	QRectF textRect;
@@ -346,7 +612,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 		d->node->paintNode(p, r, *opt);
 
     QBrush brush = opt->palette.mid();
-    QColor color = QColor(242,112,0);
+    QColor color = QColor(76, 118, 184);
     color.setAlphaF(0.75f);
     brush.setColor(color);
     // color = opt->palette.shadow().color();

@@ -163,11 +163,11 @@ CVisSystemCanvas::CVisSystemCanvas(QWidget* parent)
 	d->scene->setSceneRect(-5000, -5000, 10000, 10000);
     setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
-	d->bgColor = QColor(96,96,96); // QColor(61,63,66);
+	d->bgColor = QColor(57,57,57); // QColor(61,63,66);
 	d->darkColor = QColor(42,43,46);
 	d->midColor = QColor(61,63,66);
 	d->lightColor = QColor(112,113,116);
-    d->gridColor = QColor(114,114,114);
+    d->gridColor = QColor(74,74,74);
     d->bgColor.setAlphaF(0.9);
     d->gridColor.setAlphaF(0.9);
 
