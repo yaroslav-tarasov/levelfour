@@ -25,6 +25,7 @@
 #include <QStackedWidget>
 #include <QComboBox>
 #include "OsgSimpleViewVisNode.h"
+#include "ViewportPanel.h"
 
 struct OsgCoreComponentData;
 class OsgCoreComponent : public GCF::AbstractComponent,
@@ -41,12 +42,7 @@ public:
 
 	static QIcon nodeIcon();
 	
-    QTabWidget* sceneView() const;
-    QWidget* osgOutputWidget() const;
-	QVBoxLayout* sceneLayout() const;
-	QStackedWidget* sceneStack() const;
-	QComboBox* sceneSelection() const;
-
+	ViewportPanel * sceneView() const;
 
     // IContainer implementation
     QObject* containerObject();
@@ -71,11 +67,6 @@ public:
     QString license() const;
     QString copyrightStatement() const;
 
-public slots:
-	void toggleXYGrid();
-	void toggleAxes();
-	void setSelectedScene(int index);
-
 protected:
     OsgCoreComponent();
     void initializeComponent();
@@ -87,9 +78,6 @@ protected:
 
 private:
     OsgCoreComponentData* d;
-	ViewerQOSG * _scene;
-	bool xyGridToggled;
-	bool axesToggled;
 };
 
 #endif
