@@ -39,7 +39,6 @@ public:
     ~CVisSystemCanvasComponent();
 
     CVisSystemCanvas* canvasObject();
-	IVisNetworkCanvas* canvas();
 
 protected:
     CVisSystemCanvasComponent();
