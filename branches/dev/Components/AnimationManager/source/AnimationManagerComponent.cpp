@@ -147,7 +147,7 @@ AnimationManagerComponent::AnimationManagerComponent()
     d->scaleScroller->setMinimum(3);
     d->scaleScroller->setMaximum(47);
     d->scaleScroller->setSingleStep(2);
-    d->scaleScroller->setValue(TimelineWidget::DefaultFrameSize.width()+6);
+    d->scaleScroller->setValue(TimelineWidget::DefaultFrameSize.width()+3);
     d->scaleScroller->setMinimumWidth(400);
 
 
