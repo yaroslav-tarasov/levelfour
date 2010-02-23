@@ -46,7 +46,6 @@ struct CVisSystemCanvasComponentData
         scriptEngineManager(0), scriptEngineComp(0), soExplorer(0),
         soExplorerComp(0) { }
 
-	QWidget* visSystemCanvasPanel;
     QVBoxLayout* visSystemCanvasLayout;
 	QToolBar* visSystemCanvasToolBar;
 	QStackedWidget* pipelineStack;
@@ -91,16 +90,12 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 {
     d = new CVisSystemCanvasComponentData;
 	
-	// Panel components
-	d->visSystemCanvasPanel = new QWidget;
-
 	d->pipelineStack = new QStackedWidget;
 	d->visSystemCanvas = new CVisSystemCanvas;
 	// d->pipelineStack->addWidget(d->visSystemCanvas);
 
 	d->visSystemCanvasLayout  = new QVBoxLayout;
 	d->visSystemCanvasToolBar = new QToolBar;
-	d->visSystemCanvas = new CVisSystemCanvas;
 
 	d->pipelineSelection = new QComboBox;
 	d->pipelineViewports = new QComboBox;
@@ -181,18 +176,18 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	d->visSystemCanvasToolBar->addWidget(d->pipelineViewports);
 
 	// Toolbar Triggers - this is not working...
-	connect(d->zoominAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::zoomIn()));
-	connect(d->copyAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::copy()));
-	connect(d->cutAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::cut()));
-	connect(d->pasteAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::paste()));
-	connect(d->undoAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::undo()));
-	connect(d->redoAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::redo()));
-	connect(d->addnoteAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::addNote()));
-	connect(d->layoutnodesAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::addNote()));
-	connect(d->bringtocenterAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::bringToCenter()));
-	connect(d->zoomoutAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::zoomOut()));
-	connect(d->zoomoneAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::zoomOne()));
-	connect(d->zoomfitAction, SIGNAL(triggered()), this, SLOT(d->visSystemCanvas::zoomFit()));
+	connect(d->zoominAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(zoomIn()));
+	connect(d->copyAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(copy()));
+	connect(d->cutAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(cut()));
+	connect(d->pasteAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(paste()));
+	connect(d->undoAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(undo()));
+	connect(d->redoAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(redo()));
+	connect(d->addnoteAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(addNote()));
+	connect(d->layoutnodesAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(addNote()));
+	connect(d->bringtocenterAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(bringToCenter()));
+	connect(d->zoomoutAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(zoomOut()));
+	connect(d->zoomoneAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(zoomOne()));
+	connect(d->zoomfitAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(zoomFit()));
 
 	// Canvas Triggers
     connect(d->visSystemCanvas, SIGNAL(nodeAdded(IVisSystemNode*)), this, SLOT(on_nodeAdded(IVisSystemNode*)));
@@ -202,13 +197,12 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
     connect(d->visSystemCanvas, SIGNAL(canvasClickedEvent(IVisNetworkCanvas*,QPoint,Qt::MouseButton,Qt::KeyboardModifiers)),
             this, SLOT(on_canvasClickedEvent(IVisNetworkCanvas*,QPoint,Qt::MouseButton,Qt::KeyboardModifiers)));
 
+	// This should be the stack
+	d->visSystemCanvas->setLayout(d->visSystemCanvasLayout);
 	// Assemble component
 	d->visSystemCanvasLayout->addWidget(d->visSystemCanvasToolBar);
-	// This should be the stack
-	d->visSystemCanvasLayout->addWidget(d->visSystemCanvas);
-	d->visSystemCanvasPanel->setLayout(d->visSystemCanvasLayout);
-
-
+	d->visSystemCanvasLayout->setContentsMargins(0,0,0,0);
+	d->visSystemCanvasLayout->addStretch(1);
 }
 
 CVisSystemCanvasComponent::~CVisSystemCanvasComponent()
@@ -218,11 +212,6 @@ CVisSystemCanvasComponent::~CVisSystemCanvasComponent()
 }
 
 CVisSystemCanvas* CVisSystemCanvasComponent::canvasObject()
-{
-    return d->visSystemCanvas;
-}
-
-IVisNetworkCanvas* CVisSystemCanvasComponent::canvas()
 {
     return d->visSystemCanvas;
 }
@@ -243,8 +232,8 @@ QWidget* CVisSystemCanvasComponent::fetchWidget(const QString& completeName) con
 {
     QStringList comps = completeName.split('.');
 
-    if(comps.last() == "visSystemCanvasPanel")
-        return d->visSystemCanvasPanel;
+    if(comps.last() == "visSystemCanvas")
+        return d->visSystemCanvas;
 
     if(comps.last() == "canvasThumbView")
     {
