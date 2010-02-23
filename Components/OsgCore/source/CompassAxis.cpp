@@ -32,7 +32,7 @@ CompassAxis::CompassAxis(ViewerQOSG * viewer)
 
 	osg::MatrixTransform *translate = new osg::MatrixTransform();
 	
-	translate->setMatrix(osg::Matrix::translate(osg::Vec3(_viewer->width()+150, _viewer->height()+150, 0.0f)));
+	translate->setMatrix(osg::Matrix::translate(osg::Vec3(_viewer->width()+150, _viewer->height()+350, 0.0f)));
 	translate->addChild(scale);
 
 	camera->addChild(translate);
