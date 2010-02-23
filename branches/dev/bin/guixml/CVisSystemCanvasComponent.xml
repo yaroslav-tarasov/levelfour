@@ -1,7 +1,7 @@
 <component title="Visualization System Canvas" version="1.0" name="CVisSystemCanvasComponent" >
     <widget title="Pipeline Designer" 
             scriptName="VisNetwork" 
-            name="visSystemCanvasPanel" 
+            name="visSystemCanvas" 
             parentWidget="MainWindowComponent.workspace" />
     
     <!-- This will become an overlay
