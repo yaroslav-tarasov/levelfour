@@ -18,6 +18,9 @@
     <file alias="view.png">icons/view.png</file>
     <file alias="help.png">icons/help.png</file>
 
+    <file alias="openArrow.png">icons/openArrow.png</file>
+    <file alias="closedArrow.png">icons/closedArrow.png</file>
+
     <file alias="single.png">icons/single.png</file>
     <file alias="overunder.png">icons/overunder.png</file>
     <file alias="sideside.png">icons/sideside.png</file>
