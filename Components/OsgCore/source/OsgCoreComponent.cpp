@@ -48,16 +48,6 @@
 #include "OsgInfinitePlaneVisNode.h"
 #include "OsgTexture2DVisNode.h"
 
-#include "QOSGGraphics.h"
-
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QToolBar>
-#include <QComboBox>
-#include <QAction>
-#include <QStackedWidget>
-
-
 struct OsgCoreComponentData
 {
     OsgCoreComponentData() {
@@ -66,7 +56,7 @@ struct OsgCoreComponentData
         visNetworkCanvas = 0;
         visNetwork = 0;
         scriptEngineManager = 0;
-		osgOutputWidget = 0;
+		sceneView = 0;
     }
 
     QMap<QString, CGenericVisNodeDesc*> nodeDescMap;
@@ -76,22 +66,7 @@ struct OsgCoreComponentData
     IVisNetwork* visNetwork;
     IScriptEngineManager* scriptEngineManager;
 
-	QTabWidget* sceneView;
-	QWidget* osgOutputWidget;
-	QVBoxLayout* sceneLayout;
-	QStackedWidget* sceneStack;
-	QToolBar* sceneToolBar;
-	QComboBox* sceneSelection;
-	QComboBox* sceneCameras;
-	QComboBox* sceneDisplays;
-	QComboBox* sceneViewports;
-	
-	// Actions for toolbar
-	QAction* showgridAction;
-	QAction* showgizmoAction;
-	QAction* showaxisAction;
-	QAction* saveviewAction;
-
+	ViewportPanel * sceneView;
 	
 };
 
@@ -103,126 +78,10 @@ OsgCoreComponent & OsgCoreComponent::instance()
     return *theInstance;
 }
 
-OsgCoreComponent::OsgCoreComponent() : _scene(0)
+OsgCoreComponent::OsgCoreComponent()
 {
     d = new OsgCoreComponentData;
-
-	d->sceneLayout  = new QVBoxLayout;
-	d->sceneStack = new QStackedWidget;
-	d->sceneToolBar = new QToolBar;
-	d->sceneSelection = new QComboBox;
-	d->sceneCameras = new QComboBox;
-	d->sceneDisplays = new QComboBox;
-	d->sceneViewports = new QComboBox;
-	d->osgOutputWidget = new QWidget;
-	d->sceneView = new QTabWidget;
-
-	// Toolbar actions
-	
-	// Scene selection provides toggle between different scene and data view nodes
-	// d->sceneSelection->addItem("Select Scene"); This should be a string passed as scene name given in the node
-	// The combo box selects scenes by index
-	connect(d->sceneSelection, SIGNAL(activated(int)),
-			this, SLOT(setSelectedScene(int)));     
-
-	// Camera actions (these are provided by the combo box)
-	d->sceneCameras->addItem("Perspective");
-	d->sceneCameras->addItem("Left");
-	d->sceneCameras->addItem("Right");
-	d->sceneCameras->addItem("Front");
-	d->sceneCameras->addItem("Back");
-	d->sceneCameras->addItem("Top");
-	d->sceneCameras->addItem("Bottom");
-	d->sceneCameras->addItem("Isometric");
-
-	// Display actions (these are provided by the combo box)
-	d->sceneDisplays->addItem(QIcon(":/OsgCore/wireframeDisplay.png"), tr("Wireframe"));
-	d->sceneDisplays->addItem(QIcon(":/OsgCore/textureDisplay.png"), tr("Textures"));
-	d->sceneDisplays->addItem(QIcon(":/OsgCore/backfacecullingDisplay.png"), tr("Backface Culling"));
-	d->sceneDisplays->addItem(QIcon(":/OsgCore/shadingDisplay.png"), tr("Shading"));
-
-	// Viewport actions (these are provided by the combo box)
-	d->sceneViewports->addItem(QIcon(":/MainWindow/single.png"), tr("Single"));
-	d->sceneViewports->addItem(QIcon(":/MainWindow/overunder.png"), tr("Over Under"));
-	d->sceneViewports->addItem(QIcon(":/MainWindow/sideside.png"), tr("Side by Side"));
-	d->sceneViewports->addItem(QIcon(":/MainWindow/2u1d.png"), tr("2 Up 1 Down"));
-	d->sceneViewports->addItem(QIcon(":/MainWindow/1u2d.png"), tr("1 Up 2 Down"));
-	d->sceneViewports->addItem(QIcon(":/MainWindow/quad.png"), tr("Quad"));
-
-	// HUD actions
-	d->showgridAction = new QAction(QIcon(":/OsgCore/grid.png"), tr("&Display Grid"), this);
-	d->showgridAction->setStatusTip(tr("Displays a grid"));
-
-	d->showgizmoAction = new QAction(QIcon(":/OsgCore/gizmo.png"), tr("&Display Gizmo"), this);
-	d->showgizmoAction->setStatusTip(tr("Displays a gizmo control for navigation"));
-
-	d->showaxisAction = new QAction(QIcon(":/OsgCore/axis.png"), tr("&Display Axis"), this);
-	d->showaxisAction->setStatusTip(tr("Displays an axis for orientation"));
-
-	// Save view options
-	d->saveviewAction = new QAction(QIcon(":/LevelFour/camera.png"), tr("&Save view as..."), this);
-	d->saveviewAction->setStatusTip(tr("Provides options for saving view in raster and vector formats"));
-	
-	// Add widgets and actions to the toolbar
-	d->sceneToolBar->addWidget(d->sceneSelection);
-	d->sceneToolBar->addWidget(d->sceneCameras);
-	d->sceneToolBar->addWidget(d->sceneDisplays);
-	d->sceneToolBar->addWidget(d->sceneViewports);
-	d->sceneToolBar->addAction(d->showgridAction);
-	d->sceneToolBar->addAction(d->showgizmoAction);
-	d->sceneToolBar->addAction(d->showaxisAction);
-	d->sceneToolBar->addAction(d->saveviewAction);
-
-	// Assemble the panel
-	d->sceneLayout->addWidget(d->sceneToolBar);
-	d->sceneLayout->addWidget(d->sceneStack);
-	// simple viewer will add widgets to scene stack as needed;
-	d->sceneView->setLayout(d->sceneLayout);
-
-	connect(d->showgridAction, SIGNAL(triggered()), this, SLOT(toggleXYGrid()));
-	connect(d->showaxisAction, SIGNAL(triggered()), this, SLOT(toggleAxes()));
-//	connect(d->showaxisAction, SIGNAL(triggered()), this, SLOT(toggleAxis()));
-//	connect(d->showgizmoAction, SIGNAL(triggered()), this, SLOT(toggleGizmo()));
-}
-
-void OsgCoreComponent::toggleXYGrid()
-{
-	if (!_scene)
-	{
-		QOSGContainer * sceneContainer = static_cast<QOSGContainer*>(d->sceneStack->currentWidget());
-		if (sceneContainer)
-			_scene = sceneContainer->getScene();
-	}
-
-	if (_scene)
-	{
-		xyGridToggled = !xyGridToggled;
-		_scene->toggleXYGrid(xyGridToggled);
-	}
-}
-
-void OsgCoreComponent::toggleAxes()
-{
-	if (!_scene)
-	{
-		QOSGContainer * sceneContainer = static_cast<QOSGContainer*>(d->sceneStack->currentWidget());
-		if (sceneContainer)
-			_scene = sceneContainer->getScene();
-	}
-
-	if (_scene)
-	{
-		axesToggled = !axesToggled;
-		_scene->toggleAxes(axesToggled);
-	}
-}
-
-void OsgCoreComponent::setSelectedScene(int index)
-{
-	d->sceneStack->setCurrentIndex(index);
-	QOSGContainer * sceneContainer = static_cast<QOSGContainer*>(d->sceneStack->currentWidget());
-	if (sceneContainer)
-		_scene = sceneContainer->getScene();
+	d->sceneView = new ViewportPanel;
 }
 
 OsgCoreComponent::~OsgCoreComponent()
@@ -230,29 +89,9 @@ OsgCoreComponent::~OsgCoreComponent()
     delete d;
 }
 
-QTabWidget* OsgCoreComponent::sceneView() const
+ViewportPanel * OsgCoreComponent::sceneView() const
 {
 	return d->sceneView;
-}
-
-QVBoxLayout* OsgCoreComponent::sceneLayout() const
-{
-	return d->sceneLayout;
-}
-
-QWidget* OsgCoreComponent::osgOutputWidget() const
-{
-	return d->osgOutputWidget;
-}
-
-QStackedWidget* OsgCoreComponent::sceneStack() const
-{
-	return d->sceneStack;
-}
-
-QComboBox* OsgCoreComponent::sceneSelection() const
-{
-	return d->sceneSelection;
 }
 
 QIcon OsgCoreComponent::nodeIcon()
