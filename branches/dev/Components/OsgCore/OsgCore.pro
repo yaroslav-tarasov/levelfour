@@ -49,6 +49,7 @@ HEADERS += source/OsgCoreComponent.h \
            source/OsgTexture2DVisNode.h \
            source/CompassAxis.h \
            source/ViewportPanel.h \
+		   source/ViewportsSplitter.h \
 
 				
 SOURCES += source/OsgCoreComponent.cpp \
@@ -80,6 +81,7 @@ SOURCES += source/OsgCoreComponent.cpp \
            source/OsgTexture2DVisNode.cpp \
            source/CompassAxis.cpp \
            source/ViewportPanel.cpp \
+		   source/ViewportsSplitter.cpp \
 
 	     
 
