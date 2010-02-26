@@ -26,6 +26,7 @@
 #include <QComboBox>
 #include "OsgSimpleViewVisNode.h"
 #include "ViewportPanel.h"
+#include "ViewportsSplitter.h"
 
 struct OsgCoreComponentData;
 class OsgCoreComponent : public GCF::AbstractComponent,
@@ -42,7 +43,7 @@ public:
 
 	static QIcon nodeIcon();
 	
-	ViewportPanel * sceneView() const;
+	ViewportsSplitter * sceneView() const;
 
     // IContainer implementation
     QObject* containerObject();

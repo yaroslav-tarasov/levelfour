@@ -11,41 +11,48 @@
 #include <QAction>
 #include <QStackedWidget>
 
-class ViewportPanel : public QTabWidget
+class ViewportsSplitter;
+
+class ViewportPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	ViewportPanel(QWidget * parent = 0);
+	ViewportPanel(ViewportsSplitter * splitter = 0);
 	~ViewportPanel();
+
 	void addSceneStack(QWidget * widget);
 	void addSceneItem(QString name);
 	void removeSceneStack(QWidget * widget);
 	void removeSceneItem(QString name);
+	
+	void setSplitter(ViewportsSplitter * splitterContainer);
 
 public slots:
 	void toggleXYGrid();
 	void toggleAxes();
 	void setSelectedScene(int idex);
+	void setViewport(int index);
 
 private:
-	QWidget* osgOutputWidget;
-	QVBoxLayout* sceneLayout;
-	QStackedWidget* sceneStack;
-	QToolBar* sceneToolBar;
-	QComboBox* sceneSelection;
-	QComboBox* sceneCameras;
-	QComboBox* sceneDisplays;
-	QComboBox* sceneViewports;
+	QVBoxLayout sceneLayout;
+	QStackedWidget sceneStack;
+	QToolBar sceneToolBar;
+	QComboBox sceneSelection;
+	QComboBox sceneCameras;
+	QComboBox sceneDisplays;
+	QComboBox sceneViewports;
 
+	ViewportsSplitter * splitter;
 	ViewerQOSG * _scene;
+
 	bool xyGridToggled;
 	bool axesToggled;
 
 	// Actions for toolbar
-	QAction* showgridAction;
-	QAction* showgizmoAction;
-	QAction* showaxisAction;
-	QAction* saveviewAction;
+	QAction * showgridAction;
+	QAction * showgizmoAction;
+	QAction * showaxisAction;
+	QAction * saveviewAction;
 };
 
 #endif
