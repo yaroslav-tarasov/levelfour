@@ -104,10 +104,8 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 	if (d->scene->showAxes())
 		d->root->addChild(d->scene->getAxes());
 
-	OsgCoreComponent::instance().sceneView()->addSceneStack(w);
-	// Send scene name to stack select combo box for identification
-	name = this->nodeName();
-	OsgCoreComponent::instance().sceneView()->addSceneItem(name);
+	// add scene and its name to the vieworts list
+	OsgCoreComponent::instance().sceneView()->addScene(w, name = this->nodeName());
 
 	QSize s = d->scene->parentWidget()->size();
 	if (d->scene)
@@ -120,9 +118,8 @@ OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
     // subclass, then you have to delete it now.
     // d->VtkObjectPointer->Delete();
 
-	OsgCoreComponent::instance().sceneView()->removeSceneStack(w);
-	// Remove scene from combo box 
-	OsgCoreComponent::instance().sceneView()->removeSceneItem(name);
+	// Remove scene 
+	OsgCoreComponent::instance().sceneView()->removeScene(w, name);
 
 	delete d;
 }

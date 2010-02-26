@@ -66,7 +66,7 @@ struct OsgCoreComponentData
     IVisNetwork* visNetwork;
     IScriptEngineManager* scriptEngineManager;
 
-	ViewportPanel * sceneView;
+	ViewportsSplitter * sceneView;
 	
 };
 
@@ -81,7 +81,7 @@ OsgCoreComponent & OsgCoreComponent::instance()
 OsgCoreComponent::OsgCoreComponent()
 {
     d = new OsgCoreComponentData;
-	d->sceneView = new ViewportPanel;
+	d->sceneView = new ViewportsSplitter;
 }
 
 OsgCoreComponent::~OsgCoreComponent()
@@ -89,7 +89,7 @@ OsgCoreComponent::~OsgCoreComponent()
     delete d;
 }
 
-ViewportPanel * OsgCoreComponent::sceneView() const
+ViewportsSplitter * OsgCoreComponent::sceneView() const
 {
 	return d->sceneView;
 }
