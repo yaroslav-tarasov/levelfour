@@ -221,15 +221,18 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     QRectF r = this->rect();
     QPen pen = p->pen();
 
-	// Isometric rotations
-	p->shear(0,0.5); // this works as sy = 0.5 (sine(30 deg)) for right orientation
+	// Isometric rotations - this is just a test. The logic should be tied to events on selection of projection toolbutton
+	if(d->node->nodeDesc()->nodeClassCategory()== "Primitives")
+		{
+			// Right perspective
+			p->shear(0,-0.5); // this works as sy = 0.5 (sine(30 deg)) for right orientation
+		}
+	else
+		{
+			// Left perspective
+			p->shear(0,0.5);
+		}
 
-	// Right perspective
-	// p->shear(0,0.5);
-
-	// Left perspective
-	// p->shear(0,-0.5);
-	
 	// We want the nodes to be smooth and clear
 	p->setRenderHint(QPainter::Antialiasing, true);
 	p->setRenderHint(QPainter::TextAntialiasing, true);
@@ -555,7 +558,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
     }
 	else
 	{
-		QColor fillColor = QColor(245,245,245);
+		QColor fillColor = QColor(230,230,230);
 		fillColor.setAlphaF(alpha);
 
         QPainterPath path;
@@ -573,6 +576,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 		QRectF iconRect( r2.left()+10, r2.top()+7, nodePm.width(), nodePm.height() );
 		iconRect.moveTop( r2.center().y() - nodePm.height()/2 );
 		p->drawPixmap( iconRect, nodePm, QRectF(0,0,nodePm.width(),nodePm.height()) );
+	
 		textRect = QRectF ( iconRect.right()+2, r2.top()+10, r2.width(), r2.height()-20 );
 		textRect.setRight( r2.right() );
 	}
@@ -581,8 +585,6 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 
     // Draw the node text
     p->setPen(Qt::black);
-
-
 	if(opt->levelOfDetail >= 0.75)
 	{
 		// First draw the node name
@@ -608,6 +610,7 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 #endif
 
 	// Draw connection boxes
+	// Need to set conditions of color and add tooltip to provide hint for connections
 	if(opt->levelOfDetail >= 0.75)
 		d->node->paintNode(p, r, *opt);
 
