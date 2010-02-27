@@ -3,5 +3,5 @@
   <object scriptName="MessageLog" title="" name="controller" />
   <widget title="" name="messageWindow" parentWidget="MainWindowComponent.window" 
             parentWidgetHint="RightDockWidgetArea" autoDelete="false" />
-  
+
 </component>

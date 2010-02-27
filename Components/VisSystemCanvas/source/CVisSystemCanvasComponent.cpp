@@ -67,6 +67,8 @@ struct CVisSystemCanvasComponentData
 	QAction* zoomoutAction;
 	QAction* zoomoneAction;
 	QAction* zoomfitAction;
+	QAction* leftProjectionAction;
+	QAction* rightProjectionAction;
 	
 	CVisSystemCanvas* visSystemCanvas;
     CVisSystemCanvasThumbnailView* canvasThumbView;
@@ -172,10 +174,20 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	d->zoomfitAction->setStatusTip(tr("Zoom fit"));
 	d->visSystemCanvasToolBar->addAction(d->zoomfitAction);
 
+	d->leftProjectionAction = new QAction(this);
+	d->leftProjectionAction = new QAction(QIcon(":/MainWindow/images/left_arrow.png"), tr("&Left Projection"), this);
+	d->leftProjectionAction->setStatusTip(tr("Set left isometric projection"));
+	d->visSystemCanvasToolBar->addAction(d->leftProjectionAction);
+
+	d->rightProjectionAction = new QAction(this);
+	d->rightProjectionAction = new QAction(QIcon(":/MainWindow/images/right_arrow.png"), tr("&Right Projection"), this);
+	d->rightProjectionAction->setStatusTip(tr("Set right isometric projection"));
+	d->visSystemCanvasToolBar->addAction(d->rightProjectionAction);
+
 	// combo box for setting viewport
 	d->visSystemCanvasToolBar->addWidget(d->pipelineViewports);
 
-	// Toolbar Triggers - this is not working...
+	// Toolbar Triggers
 	connect(d->zoominAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(zoomIn()));
 	connect(d->copyAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(copy()));
 	connect(d->cutAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(cut()));
@@ -188,6 +200,9 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	connect(d->zoomoutAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(zoomOut()));
 	connect(d->zoomoneAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(zoomOne()));
 	connect(d->zoomfitAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(zoomFit()));
+	
+	connect(d->leftProjectionAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(leftProjection()));
+	connect(d->rightProjectionAction, SIGNAL(triggered()), d->visSystemCanvas, SLOT(rightProjection()));
 
 	// Canvas Triggers
     connect(d->visSystemCanvas, SIGNAL(nodeAdded(IVisSystemNode*)), this, SLOT(on_nodeAdded(IVisSystemNode*)));

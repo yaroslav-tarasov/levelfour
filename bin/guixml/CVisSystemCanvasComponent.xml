@@ -63,6 +63,12 @@
 		icon=":/VisSystemCanvas/note.png"
             name="addNote" 
             shortcut="F3"/>
+    <action title="Left Project"
+            triggerSlot="CVisSystemCanvasComponent.visSystemCanvas::leftProjection()"
+		icon=":/VisSystemCanvas/note.png"
+            name="leftProjection" 
+            />
+
     <action triggerSlot="CVisSystemCanvasComponent.visSystemCanvas::captureSnapshotToClipboard()"
             name="captureSnapshot"
             mergeWith="MainWindowComponent.captureSnapshot" />
@@ -77,6 +83,8 @@
         <menuitem actionName="CVisSystemCanvasComponent.bringToCenter" 
                   before="MainWindowComponent.configure"/>
         <menuitem actionName="CVisSystemCanvasComponent.layoutNodes" 
+                  before="MainWindowComponent.configure"/>
+	  <menuitem actionName="CVisSystemCanvasComponent.leftProjection" 
                   before="MainWindowComponent.configure"/>
         <menuitem before="MainWindowComponent.configure"/>
     </menu>
