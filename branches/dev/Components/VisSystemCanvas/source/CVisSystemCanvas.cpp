@@ -406,6 +406,27 @@ void CVisSystemCanvas::centerOn(IVisSystemNode* node)
         return;
 
     QGraphicsView::centerOn(nodeItem);
+
+}
+
+void CVisSystemCanvas::leftProjection(IVisSystemNode* node)
+{
+    CVisSystemCanvasNodeItem* nodeItem = this->nodeItem(node);
+    if(!nodeItem)
+        return;
+
+    nodeItem->shear(0,0.5);
+
+}
+
+void CVisSystemCanvas::rightProjection(IVisSystemNode* node)
+{
+    CVisSystemCanvasNodeItem* nodeItem = this->nodeItem(node);
+    if(!nodeItem)
+        return;
+
+    nodeItem->shear(0,-0.5);
+
 }
 
 void CVisSystemCanvas::clear()
@@ -606,7 +627,7 @@ void CVisSystemCanvas::bringToCenter()
 {
     QRectF bRect = d->scene->itemsBoundingRect();
     QPointF bCenter = bRect.center();
-QList<QGraphicsItem*> items = d->scene->items();
+	QList<QGraphicsItem*> items = d->scene->items();
     for(int i=0; i<items.count(); i++)
     {
         QGraphicsItem* item = items[i];

@@ -197,16 +197,16 @@ void CVisSystemNodeClassExplorerTreeWidgetDelegate::paint(QPainter* paint, const
     // operating systems like Linux or Mac OSX for example.
     QStyleOptionButton hopt;
     hopt.rect = opt.rect;
-    QColor color = QColor(62, 62, 62);
-	QColor topColor = QColor(57, 57, 57);
-	QColor bottomColor = QColor(149, 149, 149);
+    QColor color = QColor(200, 200, 200);
+	QColor topColor = QColor(129, 129, 129);
+	QColor bottomColor = QColor(43, 43, 43);
 	hopt.palette.setBrush(QPalette::Button, color);
     hopt.state = QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Horizontal|QStyle::State_Enabled|QStyle::State_Raised;
 
     // Draw custom header.
 	// hopt.icon(QIcon(":/OsgCore/Camera.png"));
 	QColor darkColor = QColor(85,85,85);
-	QColor lightColor = QColor(113,113,113);
+	QColor lightColor = QColor(86,86,86);
 	
 	QLinearGradient grad(opt.rect.topLeft(), opt.rect.bottomLeft());
 	grad.setColorAt(0, lightColor);
@@ -233,16 +233,16 @@ void CVisSystemNodeClassExplorerTreeWidgetDelegate::paint(QPainter* paint, const
 	paint->drawPixmap( iconRect, pixmap, QRectF(0,0,pixmap.width(),pixmap.height()) );
 	}
 
-	paint->setPen(bottomColor);
-	paint->drawLine(opt.rect.topLeft(), opt.rect.topRight());
 	paint->setPen(topColor);
+	paint->drawLine(opt.rect.topLeft(), opt.rect.topRight());
+	paint->setPen(bottomColor);
 	paint->drawLine(opt.rect.bottomLeft(), opt.rect.bottomRight());
 	
 	QFont titleFont( "Tahoma" );
     titleFont.setPointSize( 8 );
 	titleFont.setWeight( QFont::Normal );
 	paint->setFont(titleFont);
-	paint->setPen(Qt::black);
+	paint->setPen(color);
     QString text = index.model()->data(index).toString();
     QRect tempRect = opt.rect;
     tempRect.setLeft(opt.rect.left()+35);

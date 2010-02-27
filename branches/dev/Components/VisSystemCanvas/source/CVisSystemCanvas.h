@@ -106,7 +106,9 @@ public:
     void queryZoomLevelRange(int& min, int& max);
 
 public slots:
-    void clear();
+    void leftProjection(IVisSystemNode* node);
+	void rightProjection(IVisSystemNode* node);
+	void clear();
     void cut();
     void copy();
     void paste();
