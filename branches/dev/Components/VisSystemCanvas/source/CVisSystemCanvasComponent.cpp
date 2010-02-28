@@ -114,6 +114,8 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	// Toolbar actions
 	d->visSystemCanvasToolBar->addWidget(d->pipelineSelection);
 
+	d->visSystemCanvasToolBar->addSeparator();
+
 	d->copyAction = new QAction(this);
 	d->copyAction = new QAction(QIcon(":/MainWindow/copy.png"), tr("&Copy"), this);
 	d->copyAction->setStatusTip(tr("Copy a node"));
@@ -125,7 +127,7 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	d->visSystemCanvasToolBar->addAction(d->cutAction);
 
 	d->pasteAction = new QAction(this);
-	d->pasteAction = new QAction(QIcon(":/MainWindow/paste.png"), tr("&Cut"), this);
+	d->pasteAction = new QAction(QIcon(":/MainWindow/paste.png"), tr("&Paste"), this);
 	d->pasteAction->setStatusTip(tr("Paste a node"));
 	d->visSystemCanvasToolBar->addAction(d->pasteAction);
 
@@ -139,10 +141,14 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	d->redoAction->setStatusTip(tr("Redo an action"));
 	d->visSystemCanvasToolBar->addAction(d->redoAction);
 
+	d->visSystemCanvasToolBar->addSeparator();
+
 	d->addnoteAction = new QAction(this);
 	d->addnoteAction = new QAction(QIcon(":/VisSystemCanvas/note.png"), tr("&Add note"), this);
 	d->addnoteAction->setStatusTip(tr("Add a note"));
 	d->visSystemCanvasToolBar->addAction(d->addnoteAction);
+
+	d->visSystemCanvasToolBar->addSeparator();
 
 	d->layoutnodesAction = new QAction(this);
 	d->layoutnodesAction = new QAction(QIcon(":/VisSystemCanvas/layoutnodes.png"), tr("&Layout nodes"), this);
@@ -174,6 +180,8 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	d->zoomfitAction->setStatusTip(tr("Zoom fit"));
 	d->visSystemCanvasToolBar->addAction(d->zoomfitAction);
 
+	d->visSystemCanvasToolBar->addSeparator();
+
 	d->leftProjectionAction = new QAction(this);
 	d->leftProjectionAction = new QAction(QIcon(":/MainWindow/images/left_arrow.png"), tr("&Left Projection"), this);
 	d->leftProjectionAction->setStatusTip(tr("Set left isometric projection"));
@@ -183,6 +191,8 @@ CVisSystemCanvasComponent::CVisSystemCanvasComponent()
 	d->rightProjectionAction = new QAction(QIcon(":/MainWindow/images/right_arrow.png"), tr("&Right Projection"), this);
 	d->rightProjectionAction->setStatusTip(tr("Set right isometric projection"));
 	d->visSystemCanvasToolBar->addAction(d->rightProjectionAction);
+
+	d->visSystemCanvasToolBar->addSeparator();
 
 	// combo box for setting viewport
 	d->visSystemCanvasToolBar->addWidget(d->pipelineViewports);

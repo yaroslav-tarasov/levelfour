@@ -280,6 +280,9 @@ AnimationManagerComponent::AnimationManagerComponent()
 	d->scaleScrollBar->addAction(d->autoScrollAction);
 	d->scaleScrollBar->addWidget(d->scaleLabel);
 	d->scaleScrollBar->addWidget(d->scaleScroller);
+	
+	d->scaleScrollBar->addSeparator();
+
 	d->scaleScrollBar->addAction(d->scaleToFitAction);
 	d->scaleScrollBar->addAction(d->keyOnAction);
 	d->scaleScrollBar->addAction(d->keyOffAction);
@@ -290,6 +293,9 @@ AnimationManagerComponent::AnimationManagerComponent()
 	d->controlToolBar->addWidget(d->startFrameSpinBox);
 	d->controlToolBar->addWidget(d->inFrameLabel);
 	d->controlToolBar->addWidget(d->inFrameSpinBox);
+	
+	d->controlToolBar->addSeparator();
+
 	d->controlToolBar->addAction(d->inFrameAction);
 	d->controlToolBar->addAction(d->previousKeyAction);
 	d->controlToolBar->addAction(d->previousFrameAction);
@@ -297,8 +303,13 @@ AnimationManagerComponent::AnimationManagerComponent()
 	d->controlToolBar->addAction(d->nextFrameAction);
 	d->controlToolBar->addAction(d->nextKeyAction);
 	d->controlToolBar->addAction(d->outFrameAction);
-	d->controlToolBar->addAction(d->separatorAction);
+	
+	d->controlToolBar->addSeparator();
+	
 	d->controlToolBar->addAction(d->playOptionsAction);
+
+	d->controlToolBar->addSeparator();
+
 	d->controlToolBar->addAction(d->realtimeAction);
 	d->controlToolBar->addWidget(d->outFrameLabel);
 	d->controlToolBar->addWidget(d->outFrameSpinBox);
