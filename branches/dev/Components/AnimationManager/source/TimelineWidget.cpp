@@ -68,7 +68,7 @@ TimelineWidget::TimelineWidget ( QWidget *parent /* = 0 */, Qt::WindowFlags flag
     m_outGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_AfterFrame, palette().color(QPalette::Mid), this)),
     
 	// Color of selected keyframe
-	m_currentGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_OnFrame, QColor(210, 180, 80), this)),
+	m_currentGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_OnFrame, QColor(185, 134, 32), this)),
     m_movedGrabber(0),
     m_currentFrameEdit(new QLineEdit(this)),
     m_currentFrameValidator(new QIntValidator(this)),

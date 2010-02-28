@@ -198,22 +198,21 @@ void CVisSystemNodeClassExplorerTreeWidgetDelegate::paint(QPainter* paint, const
     QStyleOptionButton hopt;
     hopt.rect = opt.rect;
     QColor color = QColor(200, 200, 200);
-	QColor topColor = QColor(129, 129, 129);
-	QColor bottomColor = QColor(43, 43, 43);
+	QColor topColor = QColor(86, 86, 86);
+	QColor bottomColor = QColor(10, 10, 10);
 	hopt.palette.setBrush(QPalette::Button, color);
     hopt.state = QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Horizontal|QStyle::State_Enabled|QStyle::State_Raised;
 
     // Draw custom header.
-	// hopt.icon(QIcon(":/OsgCore/Camera.png"));
-	QColor darkColor = QColor(85,85,85);
-	QColor lightColor = QColor(86,86,86);
+	QColor darkColor = QColor(58,58,58);
+	QColor lightColor = QColor(73,73,73);
 	
 	QLinearGradient grad(opt.rect.topLeft(), opt.rect.bottomLeft());
 	grad.setColorAt(0, lightColor);
 	// grad.setColorAt(0.8, midColor);
 	grad.setColorAt(1, darkColor);
 
-	paint->setBrush(lightColor);
+	paint->setBrush(grad);
 	
 	paint->setPen(Qt::NoPen);
 	paint->drawRect(opt.rect);

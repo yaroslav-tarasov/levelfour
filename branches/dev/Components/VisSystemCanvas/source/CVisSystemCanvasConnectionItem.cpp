@@ -153,7 +153,7 @@ void CVisSystemCanvasConnectionItem::paint(QPainter *paint, const QStyleOptionGr
     Q_UNUSED(opt);
     Q_UNUSED(widget);
 
-    QPen pen(d->connectionItemColor(d->connection), 2);
+    QPen pen(d->connectionItemColor(d->connection), 1);
     QPen oldPen = paint->pen();
     if(isSelected())
         pen.setWidthF(pen.widthF()*2.0f);
@@ -304,7 +304,7 @@ QColor CVisSystemCanvasConnectionItemData::connectionItemColor(IVisNetworkConnec
     static QMap<QString, QColor> pathTypeColorMap;
 
     if(!connection)
-        return Qt::black;
+        return QColor(185, 134, 32);
 
     int pathIndex = connection->senderPathIndex();
     IVisSystemNodeConnectionPath* path = connection->senderNode()->nodeDesc()->connectionPath(pathIndex);
@@ -313,14 +313,14 @@ QColor CVisSystemCanvasConnectionItemData::connectionItemColor(IVisNetworkConnec
         pathDataType = path->pathDataType();
 
     if(pathDataType.isEmpty())
-        return Qt::black;
+        return QColor(185, 134, 32);
 
     if(pathTypeColorMap.contains(pathDataType))
         return pathTypeColorMap[pathDataType];
 
 	// This is where link color is set...
     // QColor c; 24;116;205
-	QColor linkColor = QColor(240,240,240);
+	QColor linkColor = QColor(220,220,220);
     // double r = randomNumber(0.0f, 1.0f);
     // double g = randomNumber(0.0f, 1.0f);
     // double b = randomNumber(0.0f, 1.0f);
