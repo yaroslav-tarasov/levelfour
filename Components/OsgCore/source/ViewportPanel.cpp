@@ -44,9 +44,13 @@ ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer)
 	
 	// Add widgets and actions to the toolbar
 	sceneToolBar.addWidget(&sceneSelection);
+	sceneToolBar.addSeparator();
 	sceneToolBar.addWidget(&sceneCameras);
+	sceneToolBar.addSeparator();
 	sceneToolBar.addWidget(&sceneDisplays);
+	sceneToolBar.addSeparator();
 	sceneToolBar.addWidget(&sceneViewports);
+	sceneToolBar.addSeparator();
 
 	sceneToolBar.addAction(showgridAction);
 	sceneToolBar.addAction(showgizmoAction);
