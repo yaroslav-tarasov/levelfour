@@ -12,15 +12,15 @@
 #include <osg/Referenced>
 #include <osg/NodeCallback>
 #include <osgGA/TrackballManipulator>
-#include <osgViewer/Viewer>
+#include "ViewportPanel.h"
 
-class ViewerQOSG;
+struct ViewWidget;
 
 class CompassAxis : public osg::Group
 {
 public:
 	// Public Constructor
-	explicit CompassAxis(ViewerQOSG * viewer);
+	explicit CompassAxis(ViewWidget * viewer);
 	// Public Destructor
 	virtual ~CompassAxis();
 
@@ -34,7 +34,7 @@ private:
 	CompassAxis &operator=(const CompassAxis &);
 
 	osg::ref_ptr<osg::MatrixTransform> m_rotation; 
-	ViewerQOSG * _viewer;
+	ViewWidget * _viewWidget;
 };
 
 

@@ -63,12 +63,10 @@ DEFINE_VIS_NODE(OsgSimpleViewVisNode, CGenericVisNodeBase)
 
 struct OsgSimpleViewVisNodeData
 {
-	OsgSimpleViewVisNodeData() : scene(0), root(0) {}
-
-	ViewerQOSG * scene;
+	OsgSimpleViewVisNodeData() : root(0) {}
 
 	OsgGroupVisNodeIOData inputData;
-	osg::ref_ptr<osg::Light> inputLight;
+
 	osg::ref_ptr<osg::Group> root;
 };
 
@@ -79,37 +77,8 @@ OsgSimpleViewVisNode::OsgSimpleViewVisNode()
 
 	d->root = new osg::Group;
 
-	d->inputLight = new osg::Light;
-	d->inputLight->setLightNum(2);
-	d->inputLight->setAmbient(osg::Vec4(.1f, .1f, .1f, .1f));
-	d->inputLight->setDiffuse(osg::Vec4(.8f, .8f, .8f, .1f));
-	d->inputLight->setSpecular(osg::Vec4(.8f, .8f, .8f, .1f));
-	d->inputLight->setPosition(osg::Vec4(.0f, .0f, .0f, .0f));
-	d->inputLight->setDirection(osg::Vec3(.1f, .0f, .0f));
-	d->inputLight->setSpotCutoff(25.f);
-	osg::LightSource * lightSource = new osg::LightSource;
-	lightSource->setLight(d->inputLight.get());
-
-	w = new QOSGContainer;
-	d->scene = new ViewerQOSG(w);
-	w->setScene(d->scene);
-	
-	d->scene->updateCamera();
-	osgGA::TrackballManipulator * manipulator = new osgGA::TrackballManipulator;
-	d->scene->setCameraManipulator(manipulator);
-	d->scene->setSceneData(d->root.get());
-	if (d->scene->showGrids())
-		d->root->addChild(d->scene->getXYGrid());
-
-	if (d->scene->showAxes())
-		d->root->addChild(d->scene->getAxes());
-
 	// add scene and its name to the vieworts list
-	OsgCoreComponent::instance().sceneView()->addScene(w, name = this->nodeName());
-
-	QSize s = d->scene->parentWidget()->size();
-	if (d->scene)
-		d->scene->setGeometry(0, 0, s.width(), s.height());
+	OsgCoreComponent::instance().sceneView()->addScene(d->root, name = this->nodeName());
 }
 
 OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
@@ -119,7 +88,7 @@ OsgSimpleViewVisNode::~OsgSimpleViewVisNode()
     // d->VtkObjectPointer->Delete();
 
 	// Remove scene 
-	OsgCoreComponent::instance().sceneView()->removeScene(w, name);
+	OsgCoreComponent::instance().sceneView()->removeScene(d->root, name);
 
 	delete d;
 }
@@ -131,25 +100,17 @@ void OsgSimpleViewVisNode::render()
 
 void OsgSimpleViewVisNode::command_Render()
 {
-	d->scene->updateCamera();
 
-	d->scene->setSceneData(d->root.get());
-	QSize s = d->scene->parentWidget()->size();
-
-	if (d->scene)
-		d->scene->setGeometry(0, 0, s.width(), s.height());
 }
 
 void OsgSimpleViewVisNode::toggleXYGrid(bool enabled)
 {
-	if (d->scene)
-		d->scene->toggleXYGrid(enabled);
+
 }
 
 void OsgSimpleViewVisNode::toggleAxes(bool enabled)
 {
-	if (d->scene)
-		d->scene->toggleAxes(enabled);
+
 }
 
 void OsgSimpleViewVisNode::saveOSG()
@@ -177,8 +138,7 @@ void OsgSimpleViewVisNode::EarthManipulator()
 
 void OsgSimpleViewVisNode::command_EarthManipulator()
 {
-	if (d->scene)
-		d->scene->setCameraManipulator(new osgEarthUtil::EarthManipulator);
+
 }
 
 void OsgSimpleViewVisNode::addNode(osg::Node * node)
@@ -251,11 +211,7 @@ bool OsgSimpleViewVisNode::setInput(IVisSystemNodeConnectionPath* path, IVisSyst
 
 		if (success && inputLightData)
 		{
-			d->inputLight = inputLightData->getOsgLight();
-			osg::LightSource * lightSource = new osg::LightSource;
-			lightSource->setLight(d->inputLight.get());
 
-			d->scene->setLight(d->inputLight);
 			return true;
 		}
 	}
@@ -293,7 +249,6 @@ bool OsgSimpleViewVisNode::removeInput(IVisSystemNodeConnectionPath* path, IVisS
 
 		if (success && inputLightData)
 		{
-			d->scene->setLight(d->inputLight = 0);
 			return true;
 		}
 	}

@@ -1,8 +1,9 @@
 #include "ViewportPanel.h"
 #include "ViewportsSplitter.h"
+#include "GraphicsWindowQt.h"
 
 ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer) 
-	: QWidget(), _scene(0), splitter(splitterContainer)
+	: QWidget(), splitter(splitterContainer), dummyViewWidget(0)
 {
 	// Camera actions (these are provided by the combo box)
 	sceneCameras.addItem("Perspective");
@@ -63,7 +64,6 @@ ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer)
 	// simple viewer will add widgets to scene stack as needed;
 	setLayout(&sceneLayout);
 
-
 	// Toolbar actions
 	// Scene selection provides toggle between different scene and data view nodes
 	// sceneSelection.addItem("Select Scene"); This should be a string passed as scene name given in the node
@@ -78,68 +78,82 @@ ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer)
 
 ViewportPanel::~ViewportPanel()
 {
+	delete showgridAction;
+	delete showgizmoAction;
+	delete showaxisAction;
+	delete saveviewAction;
 }
 
-void ViewportPanel::addSceneStack(QWidget * widget)
+void ViewportPanel::addScene(osg::Group * sceneRoot, QString name)
 {
-	sceneStack.addWidget(widget);
+	bool showGrid = true;
+	bool showAxes = true;
+	if (name.toStdString() == "dummy")
+		showGrid = showAxes = false;
+
+	ViewWidget * viewWidget = splitter->
+		addViewWidget(splitter->createCamera(0,0,100,100), sceneRoot, showGrid, showAxes);
+
+	if (viewWidget)
+	{
+		if (name.toStdString() != "dummy")
+			sceneSelection.addItem(name);
+		
+		sceneStack.addWidget(viewWidget->getWidget());
+		if (viewMap.count() == 1)
+			sceneStack.setCurrentWidget(viewWidget->getWidget());
+
+		viewMap.insert(name, viewWidget);
+	}
 }
 
-void ViewportPanel::addSceneItem(QString name)
+void ViewportPanel::removeScene(QString name, bool last)
 {
-	sceneSelection.addItem(name);
-}
-
-void ViewportPanel::removeSceneStack(QWidget * widget)
-{
-	sceneStack.removeWidget(widget);
-}
-
-void ViewportPanel::removeSceneItem(QString name)
-{
+	// remove the name from the selection combobox
 	int index = sceneSelection.findText(name);
 	if (index >= 0)
 		sceneSelection.removeItem(index);
+
+	if (viewMap.contains(name))
+	{
+		// remove the related view from the composite viewer
+		splitter->removeView(viewMap.value(name)->getView());
+
+		// remove the widget from the stack
+		sceneStack.removeWidget(viewMap.value(name)->getWidget());
+
+		// remove the <key, viewWidget> item from the viewMap
+		if (viewMap.value(name)->showAxes())
+		{
+			CompassAxis * axes = viewMap.value(name)->getAxes();
+			viewMap.value(name)->getRoot()->removeChild(axes);
+		}
+
+		viewMap.remove(name);
+	}
+}
+
+void ViewportPanel::activate(bool active)
+{
 }
 
 void ViewportPanel::toggleXYGrid()
 {
-	if (!_scene)
-	{
-		QOSGContainer * sceneContainer = static_cast<QOSGContainer*>(sceneStack.currentWidget());
-		if (sceneContainer)
-			_scene = sceneContainer->getScene();
-	}
-	if (_scene)
-	{
-		xyGridToggled = !xyGridToggled;
-		_scene->toggleXYGrid(xyGridToggled);
-	}
+	if (viewMap.contains(sceneSelection.currentText()))
+		viewMap.value(sceneSelection.currentText())->toggleXYGrid();
 }
 
 void ViewportPanel::toggleAxes()
 {
-	if (!_scene)
-	{
-		QOSGContainer * sceneContainer = static_cast<QOSGContainer*>(sceneStack.currentWidget());
-		if (sceneContainer)
-			_scene = sceneContainer->getScene();
-	}
-
-	if (_scene)
-	{
-		axesToggled = !axesToggled;
-		_scene->toggleAxes(axesToggled);
-	}
-
+	if (viewMap.contains(sceneSelection.currentText()))
+		viewMap.value(sceneSelection.currentText())->toggleAxes();
 }
 
 void ViewportPanel::setSelectedScene(int index)
 {
-	sceneStack.setCurrentIndex(index);
-	QOSGContainer * sceneContainer = static_cast<QOSGContainer*>(sceneStack.currentWidget());
-	if (sceneContainer)
-		_scene = sceneContainer->getScene();
+	ViewWidget * viewWidget = viewMap.value(sceneSelection.itemText(index));
+	sceneStack.setCurrentWidget(viewWidget->getWidget());
+	viewWidget->getView()->requestRedraw();
 }
 
 void ViewportPanel::setViewport(int index)
@@ -152,3 +166,149 @@ void ViewportPanel::setSplitter(ViewportsSplitter * splitterContainer)
 {
 	this->splitter = splitterContainer;
 }
+
+
+//// VIEW WIDGET
+
+ViewWidget::ViewWidget(QWidget * widget, osgViewer::View * view, osg::Group * sceneRoot, bool showGrids, bool showAxes)
+		:	_widget(widget), 
+			_view(view),
+			compassAxes(0),
+			mpXYGridTransform(0),
+			mpXZGridTransform(0),
+			mpYZGridTransform(0)
+{
+	if (!view)
+		return;
+
+	_sceneRoot = static_cast<osg::Group*>(_view->getSceneData());
+	_showGrids = showGrids;
+	_showAxes = showAxes;
+	if (_showGrids) 
+	{
+		initGrids();
+		if (mpXYGridTransform && sceneRoot)
+			_sceneRoot->addChild(getXYGrid());
+	}
+	if (_showAxes)
+	{
+		initAxes();
+		if (compassAxes && sceneRoot)
+			_sceneRoot->addChild(getAxes());
+	}
+
+	xyGridToggled = showGrids;
+	axesToggled = showAxes;
+}
+
+ViewWidget::~ViewWidget()
+{
+	if (showAxes() && _sceneRoot)
+		_sceneRoot->removeChild(getAxes());
+	if (showGrids() && _sceneRoot)
+		_sceneRoot->removeChild(getXYGrid());
+	delete _widget;
+	delete compassAxes;
+}
+
+
+void ViewWidget::initAxes()
+{
+	compassAxes = new CompassAxis(this);
+}
+
+void ViewWidget::initGrids()
+{
+   const int numVertices = 2 * 2 * GRID_LINE_COUNT;
+   osg::Vec3 vertices[numVertices];
+   float length = (GRID_LINE_COUNT - 1) * GRID_LINE_SPACING;
+   int ptr = 0;
+
+   for(int i = 0; i < GRID_LINE_COUNT; ++i)
+   {
+      vertices[ptr++].set(-length / 2 + i * GRID_LINE_SPACING, length / 2, 0.0f);
+      vertices[ptr++].set(-length / 2 + i * GRID_LINE_SPACING, -length / 2, 0.0f);
+   }
+
+   for (int i = 0; i < GRID_LINE_COUNT; ++i)
+   {
+      vertices[ptr++].set(length / 2, -length / 2 + i * GRID_LINE_SPACING, 0.0f);
+      vertices[ptr++].set(-length / 2, -length / 2 + i * GRID_LINE_SPACING, 0.0f);
+   }
+
+   osg::Geometry* geometry = new osg::Geometry;
+   geometry->setVertexArray(new osg::Vec3Array(numVertices, vertices));
+   geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, numVertices));
+
+   osg::Geode* geode = new osg::Geode;
+   geode->addDrawable(geometry);
+   geode->getOrCreateStateSet()->setMode(GL_LIGHTING, 0);
+
+   mpXYGridTransform = new osg::MatrixTransform;
+   mpXYGridTransform->addChild(geode);
+
+   mpXZGridTransform = new osg::MatrixTransform;
+   mpXZGridTransform->setMatrix(osg::Matrix::rotate(osg::PI_2, 1, 0, 0));
+
+   mpXZGridTransform->addChild(geode);
+   mpXZGridTransform->setNodeMask(0x0);
+
+   mpYZGridTransform = new osg::MatrixTransform;
+   mpYZGridTransform->setMatrix(osg::Matrix::rotate(osg::PI_2, 0, 1, 0));
+
+   mpYZGridTransform->addChild(geode);
+   mpYZGridTransform->setNodeMask(0x0);
+}
+
+void ViewWidget::toggleXYGrid()
+{
+	xyGridToggled = !xyGridToggled;
+	if(xyGridToggled)
+	{
+	  mpXYGridTransform->setNodeMask(0xFFFFFFFF);
+	}
+	else
+	{
+	  mpXYGridTransform->setNodeMask(0x0);
+	}
+}
+
+void ViewWidget::toggleXZGrid()
+{
+	xzGridToggled = !xzGridToggled;
+   if(xzGridToggled)
+   {
+      mpXZGridTransform->setNodeMask(0xFFFFFFFF);
+   }
+   else
+   {
+      mpXZGridTransform->setNodeMask(0x0);
+   }
+}
+
+void ViewWidget::toggleYZGrid()
+{
+	yzGridToggled = !yzGridToggled;
+   if(yzGridToggled)
+   {
+      mpYZGridTransform->setNodeMask(0xFFFFFFFF);
+   }
+   else
+   {
+      mpYZGridTransform->setNodeMask(0x0);
+   }
+}
+
+void ViewWidget::toggleAxes()
+{
+	axesToggled = !axesToggled;
+	if(axesToggled)
+   {
+      compassAxes->setNodeMask(0xFFFFFFFF);
+   }
+   else
+   {
+      compassAxes->setNodeMask(0x0);
+   }
+}
+
