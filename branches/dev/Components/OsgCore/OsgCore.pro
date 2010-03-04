@@ -30,9 +30,6 @@ HEADERS += source/OsgCoreComponent.h \
            source/OsgGeodeVisNode.h \
            source/OsgBoxVisNode.h \
            source/OsgSphereVisNode.h \
-	     source/QOSGWidget.h \
-		 source/AdapterWidget.h \
-	     source/QOSGGraphics.h \
 	     source/OsgNodeVisNodeIOData.h \
            source/OsgCylinderVisNode.h \
 	     source/OsgConeVisNode.h \
@@ -50,6 +47,7 @@ HEADERS += source/OsgCoreComponent.h \
            source/CompassAxis.h \
            source/ViewportPanel.h \
 		   source/ViewportsSplitter.h \
+		   source/GraphicsWindowQt.h \
 
 				
 SOURCES += source/OsgCoreComponent.cpp \
@@ -57,9 +55,6 @@ SOURCES += source/OsgCoreComponent.cpp \
            source/OsgCompositeViewVisNode.cpp \
            source/OsgLightVisNode.cpp \
            source/OsgGroupVisNode.cpp \
-			source/QOSGWidget.cpp \
-			source/QOSGGraphics.cpp \
-		 source/AdapterWidget.cpp \
 			source/OsgGroupVisNodeIOData.cpp \
 			source/OsgLightVisNodeIOData.cpp \
            source/OsgGeodeVisNode.cpp \
@@ -82,6 +77,8 @@ SOURCES += source/OsgCoreComponent.cpp \
            source/CompassAxis.cpp \
            source/ViewportPanel.cpp \
 		   source/ViewportsSplitter.cpp \
+		   source/GraphicsWindowQt.cpp \
+
 
 	     
 

@@ -1,8 +1,7 @@
 #include "CompassAxis.h"
-#include "QOSGWidget.h"
 
-CompassAxis::CompassAxis(ViewerQOSG * viewer)
-: _viewer(viewer)
+CompassAxis::CompassAxis(ViewWidget * viewWidget)
+: _viewWidget(viewWidget)
 {
 	osg::Camera *camera = new osg::Camera;
 	camera->setProjectionMatrix(osg::Matrix::ortho(0.f, 1280, 0.f, 1024, -200.0, -200.0));
@@ -27,12 +26,12 @@ CompassAxis::CompassAxis(ViewerQOSG * viewer)
 	m_rotation->addChild(geode);
 
 	osg::MatrixTransform *scale = new osg::MatrixTransform();
-	scale->setMatrix(osg::Matrix::scale(osg::Vec3(10.0f, 10.0f, 10.0f)));
+	scale->setMatrix(osg::Matrix::scale(osg::Vec3(5.0f, 5.0f, 5.0f)));
 	scale->addChild(m_rotation.get());
 
 	osg::MatrixTransform *translate = new osg::MatrixTransform();
 	
-	translate->setMatrix(osg::Matrix::translate(osg::Vec3(_viewer->width()+150, _viewer->height()+350, 0.0f)));
+	translate->setMatrix(osg::Matrix::translate(osg::Vec3(100, 50, 0.0f)));
 	translate->addChild(scale);
 
 	camera->addChild(translate);
@@ -83,6 +82,6 @@ osg::Geometry * CompassAxis::createAxes()
 
 void CompassAxis::updateCurrentRotation()
 {
-	osg::Matrix mat(_viewer->getCameraManipulator()->getInverseMatrix());
+	osg::Matrix mat(_viewWidget->getView()->getCameraManipulator()->getInverseMatrix());
 	m_rotation->setMatrix(mat);
 } 
