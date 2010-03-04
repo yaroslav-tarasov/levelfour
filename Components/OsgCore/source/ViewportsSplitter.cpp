@@ -10,6 +10,7 @@ ViewportsSplitter::ViewportsSplitter(QWidget * parent)
 	second.setSplitter(this);
 	third.setSplitter(this);
 	fourth.setSplitter(this);
+	dummy.setSplitter(this);
 	splitQuad();
 	addScene(new osg::Group, "dummy");
     this->installEventFilter(this);
@@ -89,17 +90,16 @@ void ViewportsSplitter::addScene(osg::Group* sceneRoot, QString sceneName)
 	second.addScene(sceneRoot,sceneName);
 	third.addScene(sceneRoot,sceneName);
 	fourth.addScene(sceneRoot,sceneName);
+	dummy.addScene(sceneRoot,sceneName);
 }
 
 void ViewportsSplitter::removeScene(osg::Group* sceneRoot, QString sceneName)
 {
-	// TODO iterate the list and look for the object scene that contains
-	// the corresponding scene to remove it form the list
-	// update the scene stack accordingly
 	first.removeScene(sceneName);
 	second.removeScene(sceneName);
 	third.removeScene(sceneName);
 	fourth.removeScene(sceneName);
+	dummy.addScene(sceneRoot,sceneName);
 }
 
 void ViewportsSplitter::setViewportsLayout(ViewportPanel * vp, int index)
