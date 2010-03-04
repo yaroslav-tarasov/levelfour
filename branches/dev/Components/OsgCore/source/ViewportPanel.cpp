@@ -122,13 +122,6 @@ void ViewportPanel::removeScene(QString name, bool last)
 		// remove the widget from the stack
 		sceneStack.removeWidget(viewMap.value(name)->getWidget());
 
-		// remove the <key, viewWidget> item from the viewMap
-		if (viewMap.value(name)->showAxes())
-		{
-			CompassAxis * axes = viewMap.value(name)->getAxes();
-			viewMap.value(name)->getRoot()->removeChild(axes);
-		}
-
 		viewMap.remove(name);
 	}
 }
