@@ -82,7 +82,7 @@ public:
 	void removeScene(QString name, bool last = false);
 	
 	void setSplitter(ViewportsSplitter * splitterContainer);
-	void activate(bool active);
+	void updateIndexLayout();
 
 public slots:
 	void toggleXYGrid();
@@ -92,12 +92,7 @@ public slots:
 
 private:
 	QMap<QString, ViewWidget*> viewMap;
-	ViewWidget * currentViewWidget;
-	ViewWidget * lastViewWidget;
-	bool activated;
-	ViewWidget * dummyViewWidget;
 
-	QWidget sceneContainer;
 	QVBoxLayout sceneLayout;
 	QStackedWidget sceneStack;
 	QToolBar sceneToolBar;

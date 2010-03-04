@@ -3,7 +3,7 @@
 #include "GraphicsWindowQt.h"
 
 ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer) 
-	: QWidget(), splitter(splitterContainer), dummyViewWidget(0)
+	: QWidget(), splitter(splitterContainer)
 {
 	// Camera actions (these are provided by the combo box)
 	sceneCameras.addItem("Perspective");
@@ -126,10 +126,6 @@ void ViewportPanel::removeScene(QString name, bool last)
 	}
 }
 
-void ViewportPanel::activate(bool active)
-{
-}
-
 void ViewportPanel::toggleXYGrid()
 {
 	if (viewMap.contains(sceneSelection.currentText()))
@@ -147,6 +143,8 @@ void ViewportPanel::setSelectedScene(int index)
 	ViewWidget * viewWidget = viewMap.value(sceneSelection.itemText(index));
 	sceneStack.setCurrentWidget(viewWidget->getWidget());
 	viewWidget->getView()->requestRedraw();
+
+	sceneSelection.setCurrentIndex(splitter->getLayoutIndex());
 }
 
 void ViewportPanel::setViewport(int index)
@@ -160,6 +158,10 @@ void ViewportPanel::setSplitter(ViewportsSplitter * splitterContainer)
 	this->splitter = splitterContainer;
 }
 
+void ViewportPanel::updateIndexLayout()
+{
+	sceneSelection.setCurrentIndex(splitter->getLayoutIndex());
+}
 
 //// VIEW WIDGET
 
