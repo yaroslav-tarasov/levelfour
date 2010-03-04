@@ -21,9 +21,13 @@
 #include "CGenericVisNodeBase.h"
 #include <QTabWidget>
 #include <QTimer>
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/Geode>
+#include <osg/MatrixTransform>
 
-#include "QOSGWidget.h"
 
+#include <osgDB/ReadFile>
 #ifdef ENABLE_ADVANCED_PROPERTIES
 #include "IEditableProperties.h"
 #endif
@@ -97,7 +101,6 @@ protected slots:
 private:
     OsgSimpleViewVisNodeData* d;
 
-	QOSGContainer* w;
 	QString name;
 
 	QTimer timer;

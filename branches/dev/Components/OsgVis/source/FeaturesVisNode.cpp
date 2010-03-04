@@ -17,6 +17,7 @@
 #include "FeaturesVisNode.h"
 #include "OsgVisComponent.h"
 #include "FeaturesVisNodeIOData.h"
+#include <osgEarthFeatures/FeatureModelSource>
 
 DEFINE_VIS_NODE(FeaturesVisNode, CGenericVisNodeBase)
 {
