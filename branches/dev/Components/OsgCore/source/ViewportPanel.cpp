@@ -2,6 +2,9 @@
 #include "ViewportsSplitter.h"
 #include "GraphicsWindowQt.h"
 #include <osg/PolygonMode>
+#include <osg/CullFace>
+#include <osg/ShadeModel>
+#include <math.h>
 
 #define PERSPECTIVE 0
 #define LEFT 1
@@ -13,7 +16,7 @@
 #define ISOMETRIC 7
 
 #define WIREFRAME 0
-#define TEXTURE 1
+#define POLYMODE_FILL 1
 #define BACK_CULL 2
 #define SHADING 3
 
@@ -32,7 +35,7 @@ ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer)
 
 	// Display actions (these are provided by the combo box)
 	sceneDisplays.addItem(QIcon(":/OsgCore/wireframeDisplay.png"), tr("Wireframe"));
-	sceneDisplays.addItem(QIcon(":/OsgCore/textureDisplay.png"), tr("Textures"));
+	sceneDisplays.addItem(QIcon(":/OsgCore/textureDisplay.png"), tr("Fill"));
 	sceneDisplays.addItem(QIcon(":/OsgCore/backfacecullingDisplay.png"), tr("Backface Culling"));
 	sceneDisplays.addItem(QIcon(":/OsgCore/shadingDisplay.png"), tr("Shading"));
 
@@ -168,7 +171,8 @@ void ViewportPanel::setSelectedCamera(int index)
 		return;
 
 	ViewWidget * viewWidget = viewMap.value(sceneSelection.currentText());
-
+	osg::Vec3d cameraVector = viewWidget->getView()->getCameraManipulator()->getMatrix().getTrans();
+	double distance = pow((pow(cameraVector.x(),2) + pow(cameraVector.y(),2) + pow(cameraVector.z(),2)), 0.5);
 	osg::Vec3d eye, center(0,0,0), up(0,0,1);
 
 	switch (index)
@@ -176,22 +180,22 @@ void ViewportPanel::setSelectedCamera(int index)
 	case PERSPECTIVE:
 		break;
 	case LEFT:
-		eye = osg::Vec3d(-100,0,0);
+		eye = osg::Vec3d(-distance,0,0);
 		break;
 	case RIGHT:
-		eye = osg::Vec3d(100,0,0);
+		eye = osg::Vec3d(distance,0,0);
 		break;
 	case FRONT:
-		eye = osg::Vec3d(0,100,0);
+		eye = osg::Vec3d(0,distance,0);
 		break;
 	case BACK:
-		eye = osg::Vec3d(0,-100,0);
+		eye = osg::Vec3d(0,-distance,0);
 		break;
 	case TOP:
-		eye = osg::Vec3d(0,0,100);
+		eye = osg::Vec3d(0,0,distance);
 		break;
 	case BOTTOM:
-		eye = osg::Vec3d(0,0,-100);
+		eye = osg::Vec3d(0,0,-distance);
 		break;
 	case ISOMETRIC:
 		break;
@@ -208,11 +212,13 @@ void ViewportPanel::setSelectedDisplay(int index)
 
 	ViewWidget * viewWidget = viewMap.value(sceneSelection.currentText());
 	osg::StateSet * state = viewWidget->getRoot()->getOrCreateStateSet();
+	osg::CullFace* cf;
+	osg::PolygonMode *polyModeObj;
+	osg::ShadeModel* sm;
 
 	switch (index)
 	{
 	case WIREFRAME:
-		osg::PolygonMode *polyModeObj;
 		polyModeObj = dynamic_cast<osg::PolygonMode*>(state->getAttribute(osg::StateAttribute::POLYGONMODE));
 		if (!polyModeObj) 
 		{
@@ -222,14 +228,21 @@ void ViewportPanel::setSelectedDisplay(int index)
 		}
 		polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
 		break;
-	case TEXTURE:
+	case POLYMODE_FILL:
 		polyModeObj = dynamic_cast<osg::PolygonMode*>(state->getAttribute(osg::StateAttribute::POLYGONMODE));
 		if (polyModeObj) 
 			polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::FILL);
 		break;
 	case BACK_CULL:
+		cf = dynamic_cast<osg::CullFace*>(state->getAttribute(osg::StateAttribute::CULLFACE));
+		if (!cf)
+			cf = new osg::CullFace; 
+		state->setAttributeAndModes(cf, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 		break;
 	case SHADING:
+		sm = new osg::ShadeModel;
+		sm->setMode(osg::ShadeModel::FLAT);
+		state->setAttributeAndModes(sm, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 		break;
 	}
 }
