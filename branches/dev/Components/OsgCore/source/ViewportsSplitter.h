@@ -26,6 +26,9 @@ public:
 	int getLayoutIndex() const {return currentLayoutIndex;}
 	ViewWidget * getDummy() const {return dummyViewWidget;}
 
+signals:
+	void indexLayoutChanged(const int&);
+
 private:
 	bool eventFilter(QObject *object, QEvent *event);
 	void splitSingle(ViewportPanel * vp);

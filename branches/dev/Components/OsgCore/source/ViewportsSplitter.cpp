@@ -11,6 +11,12 @@ ViewportsSplitter::ViewportsSplitter(QWidget * parent)
 	third.setSplitter(this);
 	fourth.setSplitter(this);
 	dummy.setSplitter(this);
+
+	connect(this, SIGNAL(indexLayoutChanged(const int&)), &first, SLOT(updateIndexLayout(const int&)));
+	connect(this, SIGNAL(indexLayoutChanged(const int&)), &second, SLOT(updateIndexLayout(const int&)));
+	connect(this, SIGNAL(indexLayoutChanged(const int&)), &third, SLOT(updateIndexLayout(const int&)));
+	connect(this, SIGNAL(indexLayoutChanged(const int&)), &fourth, SLOT(updateIndexLayout(const int&)));
+
 	splitQuad();
 
 	// add a dummy scene to the scene stack in order to 
@@ -97,7 +103,7 @@ void ViewportsSplitter::addScene(osg::Group* sceneRoot, QString sceneName)
 
 	// need to add the scene to a last dummy viewport to avoid flickering on the 
 	// last viewport
-	dummy.addScene(sceneRoot,sceneName);
+	dummy.addScene(new osg::Group,sceneName);
 }
 
 void ViewportsSplitter::removeScene(osg::Group* sceneRoot, QString sceneName)
@@ -106,7 +112,7 @@ void ViewportsSplitter::removeScene(osg::Group* sceneRoot, QString sceneName)
 	second.removeScene(sceneName);
 	third.removeScene(sceneName);
 	fourth.removeScene(sceneName);
-	dummy.addScene(sceneRoot,sceneName);
+	dummy.removeScene(sceneName);
 }
 
 void ViewportsSplitter::setViewportsLayout(ViewportPanel * vp, int index)
@@ -132,9 +138,10 @@ void ViewportsSplitter::setViewportsLayout(ViewportPanel * vp, int index)
 		splitQuad();
 		break;
 	}
-	if (index<=5 && index>=0)
+	if (index<=5 && index>=0 && index != currentLayoutIndex)
 	{
 		currentLayoutIndex = index;
+		emit indexLayoutChanged(index);
 	}
 }
 
