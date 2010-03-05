@@ -1,6 +1,21 @@
 #include "ViewportPanel.h"
 #include "ViewportsSplitter.h"
 #include "GraphicsWindowQt.h"
+#include <osg/PolygonMode>
+
+#define PERSPECTIVE 0
+#define LEFT 1
+#define RIGHT 2
+#define FRONT 3
+#define BACK 4
+#define TOP 5
+#define BOTTOM 6
+#define ISOMETRIC 7
+
+#define WIREFRAME 0
+#define TEXTURE 1
+#define BACK_CULL 2
+#define SHADING 3
 
 ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer) 
 	: QWidget(), splitter(splitterContainer)
@@ -69,6 +84,8 @@ ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer)
 	// sceneSelection.addItem("Select Scene"); This should be a string passed as scene name given in the node
 	// The combo box selects scenes by index
 	connect(&sceneSelection, SIGNAL(activated(int)), this, SLOT(setSelectedScene(int)));     
+	connect(&sceneCameras, SIGNAL(activated(int)), this, SLOT(setSelectedCamera(int)));     
+	connect(&sceneDisplays, SIGNAL(activated(int)), this, SLOT(setSelectedDisplay(int)));     
 	connect(&sceneViewports, SIGNAL(activated(int)), this, SLOT(setViewport(int)));     
 
 	connect(showgridAction, SIGNAL(triggered()), this, SLOT(toggleXYGrid()));
@@ -143,8 +160,78 @@ void ViewportPanel::setSelectedScene(int index)
 	ViewWidget * viewWidget = viewMap.value(sceneSelection.itemText(index));
 	sceneStack.setCurrentWidget(viewWidget->getWidget());
 	viewWidget->getView()->requestRedraw();
+}
 
-	sceneSelection.setCurrentIndex(splitter->getLayoutIndex());
+void ViewportPanel::setSelectedCamera(int index)
+{
+	if (!viewMap.contains(sceneSelection.currentText()) || (index > ISOMETRIC && index < PERSPECTIVE))
+		return;
+
+	ViewWidget * viewWidget = viewMap.value(sceneSelection.currentText());
+
+	osg::Vec3d eye, center(0,0,0), up(0,0,1);
+
+	switch (index)
+	{
+	case PERSPECTIVE:
+		break;
+	case LEFT:
+		eye = osg::Vec3d(-100,0,0);
+		break;
+	case RIGHT:
+		eye = osg::Vec3d(100,0,0);
+		break;
+	case FRONT:
+		eye = osg::Vec3d(0,100,0);
+		break;
+	case BACK:
+		eye = osg::Vec3d(0,-100,0);
+		break;
+	case TOP:
+		eye = osg::Vec3d(0,0,100);
+		break;
+	case BOTTOM:
+		eye = osg::Vec3d(0,0,-100);
+		break;
+	case ISOMETRIC:
+		break;
+	}
+
+	viewWidget->getView()->getCameraManipulator()->setHomePosition(eye,center,up);
+	viewWidget->getView()->home();
+}
+
+void ViewportPanel::setSelectedDisplay(int index)
+{
+	if (!viewMap.contains(sceneSelection.currentText()) || (index > ISOMETRIC && index < PERSPECTIVE))
+		return;
+
+	ViewWidget * viewWidget = viewMap.value(sceneSelection.currentText());
+	osg::StateSet * state = viewWidget->getRoot()->getOrCreateStateSet();
+
+	switch (index)
+	{
+	case WIREFRAME:
+		osg::PolygonMode *polyModeObj;
+		polyModeObj = dynamic_cast<osg::PolygonMode*>(state->getAttribute(osg::StateAttribute::POLYGONMODE));
+		if (!polyModeObj) 
+		{
+			polyModeObj = new osg::PolygonMode;
+			state->setAttributeAndModes(polyModeObj,
+									osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+		}
+		polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
+		break;
+	case TEXTURE:
+		polyModeObj = dynamic_cast<osg::PolygonMode*>(state->getAttribute(osg::StateAttribute::POLYGONMODE));
+		if (polyModeObj) 
+			polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::FILL);
+		break;
+	case BACK_CULL:
+		break;
+	case SHADING:
+		break;
+	}
 }
 
 void ViewportPanel::setViewport(int index)
@@ -158,9 +245,9 @@ void ViewportPanel::setSplitter(ViewportsSplitter * splitterContainer)
 	this->splitter = splitterContainer;
 }
 
-void ViewportPanel::updateIndexLayout()
+void ViewportPanel::updateIndexLayout(const int& newIndex)
 {
-	sceneSelection.setCurrentIndex(splitter->getLayoutIndex());
+	sceneViewports.setCurrentIndex(newIndex);
 }
 
 //// VIEW WIDGET
