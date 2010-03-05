@@ -32,12 +32,14 @@ ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer)
 	sceneCameras.addItem("Top");
 	sceneCameras.addItem("Bottom");
 	sceneCameras.addItem("Isometric");
+	sceneCameras.setCurrentIndex(TOP);
 
 	// Display actions (these are provided by the combo box)
 	sceneDisplays.addItem(QIcon(":/OsgCore/wireframeDisplay.png"), tr("Wireframe"));
 	sceneDisplays.addItem(QIcon(":/OsgCore/textureDisplay.png"), tr("Fill"));
 	sceneDisplays.addItem(QIcon(":/OsgCore/backfacecullingDisplay.png"), tr("Backface Culling"));
 	sceneDisplays.addItem(QIcon(":/OsgCore/shadingDisplay.png"), tr("Shading"));
+	sceneDisplays.setCurrentIndex(POLYMODE_FILL);
 
 	// Viewport actions (these are provided by the combo box)
 	sceneViewports.addItem(QIcon(":/MainWindow/single.png"), tr("Single"));
@@ -173,36 +175,42 @@ void ViewportPanel::setSelectedCamera(int index)
 	ViewWidget * viewWidget = viewMap.value(sceneSelection.currentText());
 	osg::Vec3d cameraVector = viewWidget->getView()->getCameraManipulator()->getMatrix().getTrans();
 	double distance = pow((pow(cameraVector.x(),2) + pow(cameraVector.y(),2) + pow(cameraVector.z(),2)), 0.5);
-	osg::Vec3d eye, center(0,0,0), up(0,0,1);
+	osg::Vec3d *eye = 0, center(0,0,0), up(0,0,1);
 
 	switch (index)
 	{
 	case PERSPECTIVE:
+		eye = new osg::Vec3d(0,distance/2,distance/2);
 		break;
 	case LEFT:
-		eye = osg::Vec3d(-distance,0,0);
+		eye = new osg::Vec3d(-distance,0,0);
 		break;
 	case RIGHT:
-		eye = osg::Vec3d(distance,0,0);
+		eye = new osg::Vec3d(distance,0,0);
 		break;
 	case FRONT:
-		eye = osg::Vec3d(0,distance,0);
+		eye = new osg::Vec3d(0,distance,0);
 		break;
 	case BACK:
-		eye = osg::Vec3d(0,-distance,0);
+		eye = new osg::Vec3d(0,-distance,0);
 		break;
 	case TOP:
-		eye = osg::Vec3d(0,0,distance);
+		eye = new osg::Vec3d(0,0,distance);
 		break;
 	case BOTTOM:
-		eye = osg::Vec3d(0,0,-distance);
+		eye = new osg::Vec3d(0,0,-distance);
 		break;
 	case ISOMETRIC:
 		break;
 	}
 
-	viewWidget->getView()->getCameraManipulator()->setHomePosition(eye,center,up);
-	viewWidget->getView()->home();
+	// if the change concerned the eye position, apply it
+	if (eye)
+	{
+		viewWidget->getView()->getCameraManipulator()->setHomePosition(*eye,center,up);
+		viewWidget->getView()->home();
+		delete eye;
+	}
 }
 
 void ViewportPanel::setSelectedDisplay(int index)
