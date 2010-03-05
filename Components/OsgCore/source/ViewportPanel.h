@@ -85,10 +85,14 @@ public:
 	void updateIndexLayout();
 
 public slots:
+	void setSelectedScene(int index);
+	void setSelectedCamera(int index);
+	void setSelectedDisplay(int index);
+
 	void toggleXYGrid();
 	void toggleAxes();
-	void setSelectedScene(int idex);
 	void setViewport(int index);
+	void updateIndexLayout(const int& index);
 
 private:
 	QMap<QString, ViewWidget*> viewMap;
