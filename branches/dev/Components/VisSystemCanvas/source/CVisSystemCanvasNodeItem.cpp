@@ -224,12 +224,17 @@ void CVisSystemCanvasNodeItem::paint(QPainter *p, const QStyleOptionGraphicsItem
 	// Isometric rotations - this is just a test. The logic should be tied to events on selection of projection toolbutton
 	if(d->node->nodeDesc()->nodeClassCategory()== "Primitives")
 		{
-			// Right perspective
-			p->shear(0,-0.5); // this works as sy = 0.5 (sine(30 deg)) for right orientation
+			// Left perspective
+			// shear ( qreal sh, qreal sv )
+			// p->shear(-0.5,0); // this works as shear horizontal 30
+			// p->rotate(30); // this works as -30
+			// p->rotate(-30); // this works as 30
+			p->shear(0, -0.5);
+			// p->rotate(30);
 		}
 	else
 		{
-			// Left perspective
+			// Right perspective
 			p->shear(0,0.5);
 		}
 

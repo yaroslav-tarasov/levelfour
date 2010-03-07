@@ -22,6 +22,7 @@ SUBDIRS     = LevelFour \
 		  OsgParticle \
 		  OsgText \
 		  AnimationManager \
+              ViewportComponent \
               
            
 # Some components are under development, but the ideas and implementation
