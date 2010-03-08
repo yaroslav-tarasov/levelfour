@@ -3,11 +3,11 @@
 
 #include <QSplitter>
 #include "ViewportPanel.h"
+#include "QViewWidget.h"
 #include "GraphicsWindowQt.h"
 
 class ViewportPanel;
-
-
+struct ViewWidget;
 
 class ViewportsSplitter : public QSplitter, public osgViewer::CompositeViewer
 {
@@ -39,7 +39,7 @@ private:
 	void splitQuad();
 	void deactivateAll();
 
-	ViewportPanel first, second, third, fourth, dummy;
+	ViewportPanel *first, *second, *third, *fourth, *dummy;
 	QSplitter top;
 	QSplitter bottom;
 

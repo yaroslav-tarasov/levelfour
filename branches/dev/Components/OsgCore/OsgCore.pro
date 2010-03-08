@@ -48,6 +48,7 @@ HEADERS += source/OsgCoreComponent.h \
            source/ViewportPanel.h \
 		   source/ViewportsSplitter.h \
 		   source/GraphicsWindowQt.h \
+           source/QViewWidget.h \
 
 				
 SOURCES += source/OsgCoreComponent.cpp \
@@ -78,6 +79,7 @@ SOURCES += source/OsgCoreComponent.cpp \
            source/ViewportPanel.cpp \
 		   source/ViewportsSplitter.cpp \
 		   source/GraphicsWindowQt.cpp \
+           source/QViewWidget.cpp \
 
 
 	     
