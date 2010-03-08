@@ -6,16 +6,16 @@ ViewportsSplitter::ViewportsSplitter(QWidget * parent)
     connect( &_timer, SIGNAL(timeout()), this, SLOT(update()) );
     _timer.start( 10 );
     
-	first.setSplitter(this);
-	second.setSplitter(this);
-	third.setSplitter(this);
-	fourth.setSplitter(this);
-	dummy.setSplitter(this);
+	first = new ViewportPanel(this);
+	second = new ViewportPanel(this);
+	third = new ViewportPanel(this);
+	fourth = new ViewportPanel(this);
+	dummy = new ViewportPanel(this);
 
-	connect(this, SIGNAL(indexLayoutChanged(const int&)), &first, SLOT(updateIndexLayout(const int&)));
-	connect(this, SIGNAL(indexLayoutChanged(const int&)), &second, SLOT(updateIndexLayout(const int&)));
-	connect(this, SIGNAL(indexLayoutChanged(const int&)), &third, SLOT(updateIndexLayout(const int&)));
-	connect(this, SIGNAL(indexLayoutChanged(const int&)), &fourth, SLOT(updateIndexLayout(const int&)));
+	connect(this, SIGNAL(indexLayoutChanged(const int&)), first, SLOT(updateIndexLayout(const int&)));
+	connect(this, SIGNAL(indexLayoutChanged(const int&)), second, SLOT(updateIndexLayout(const int&)));
+	connect(this, SIGNAL(indexLayoutChanged(const int&)), third, SLOT(updateIndexLayout(const int&)));
+	connect(this, SIGNAL(indexLayoutChanged(const int&)), fourth, SLOT(updateIndexLayout(const int&)));
 
 	splitQuad();
 
@@ -28,6 +28,10 @@ ViewportsSplitter::ViewportsSplitter(QWidget * parent)
 
 ViewportsSplitter::~ViewportsSplitter() 
 {
+	delete first;
+	delete second;
+	delete third;
+	delete fourth;
 }
 
 ViewWidget * ViewportsSplitter::addViewWidget( osg::Camera* camera, osg::Group* scene, bool showGrid, bool showAxes)
@@ -84,7 +88,7 @@ bool ViewportsSplitter::eventFilter(QObject *object, QEvent *event)
     {
 		if (object == this)
         {
-			setViewportsLayout(&first,0);
+			setViewportsLayout(first,0);
 		    this->removeEventFilter(this);
         }
     }
@@ -96,23 +100,23 @@ void ViewportsSplitter::addScene(osg::Group* sceneRoot, QString sceneName)
 	if (!sceneRoot || sceneName.size() <= 0)
 		return;
 	
-	first.addScene(sceneRoot,sceneName);
-	second.addScene(sceneRoot,sceneName);
-	third.addScene(sceneRoot,sceneName);
-	fourth.addScene(sceneRoot,sceneName);
+	first->addScene(sceneRoot,sceneName);
+	second->addScene(sceneRoot,sceneName);
+	third->addScene(sceneRoot,sceneName);
+	fourth->addScene(sceneRoot,sceneName);
 
 	// need to add the scene to a last dummy viewport to avoid flickering on the 
 	// last viewport
-	dummy.addScene(new osg::Group,sceneName);
+	dummy->addScene(new osg::Group,sceneName);
 }
 
 void ViewportsSplitter::removeScene(osg::Group* sceneRoot, QString sceneName)
 {
-	first.removeScene(sceneName);
-	second.removeScene(sceneName);
-	third.removeScene(sceneName);
-	fourth.removeScene(sceneName);
-	dummy.removeScene(sceneName);
+	first->removeScene(sceneName);
+	second->removeScene(sceneName);
+	third->removeScene(sceneName);
+	fourth->removeScene(sceneName);
+	dummy->removeScene(sceneName);
 }
 
 void ViewportsSplitter::setViewportsLayout(ViewportPanel * vp, int index)
@@ -147,25 +151,25 @@ void ViewportsSplitter::setViewportsLayout(ViewportPanel * vp, int index)
 
 void ViewportsSplitter::splitSingle(ViewportPanel * vp)
 {
-	if (vp == &first)
-		first.setParent(this);
+	if (vp == first)
+		first->setParent(this);
 	else
-		first.setParent(0);
+		first->setParent(0);
 
-	if (vp == &second)
-		second.setParent(this);
+	if (vp == second)
+		second->setParent(this);
 	else
-		second.setParent(0);
+		second->setParent(0);
 
-	if (vp == &third)
-		third.setParent(this);
+	if (vp == third)
+		third->setParent(this);
 	else
-		third.setParent(0);
+		third->setParent(0);
 
-	if (vp == &fourth)
-		fourth.setParent(this);
+	if (vp == fourth)
+		fourth->setParent(this);
 	else
-		fourth.setParent(0);
+		fourth->setParent(0);
 
 	top.setParent(0);
 	bottom.setParent(0);
@@ -174,22 +178,22 @@ void ViewportsSplitter::splitSingle(ViewportPanel * vp)
 void ViewportsSplitter::splitVertical(ViewportPanel * vp)
 {
 	setOrientation(Qt::Vertical);
-	if (vp == &second)
+	if (vp == second)
 	{
-		first.setParent(0);
-		second.setParent(this);
+		first->setParent(0);
+		second->setParent(this);
 	} else {
-		first.setParent(this);
-		second.setParent(0);
+		first->setParent(this);
+		second->setParent(0);
 	}
 
-	if (vp == &fourth)
+	if (vp == fourth)
 	{
-		third.setParent(0);
-		fourth.setParent(this);
+		third->setParent(0);
+		fourth->setParent(this);
 	} else {
-		third.setParent(this);
-		fourth.setParent(0);
+		third->setParent(this);
+		fourth->setParent(0);
 	}
 
 	top.setParent(0);
@@ -199,22 +203,22 @@ void ViewportsSplitter::splitVertical(ViewportPanel * vp)
 void ViewportsSplitter::splitHorizontal(ViewportPanel * vp)
 {
 	setOrientation(Qt::Horizontal);
-	if (vp == &second)
+	if (vp == second)
 	{
-		first.setParent(0);
-		second.setParent(this);
+		first->setParent(0);
+		second->setParent(this);
 	} else {
-		first.setParent(this);
-		second.setParent(0);
+		first->setParent(this);
+		second->setParent(0);
 	}
 
-	if (vp == &fourth)
+	if (vp == fourth)
 	{
-		third.setParent(0);
-		fourth.setParent(this);
+		third->setParent(0);
+		fourth->setParent(this);
 	} else {
-		third.setParent(this);
-		fourth.setParent(0);
+		third->setParent(this);
+		fourth->setParent(0);
 	}
 
 	top.setParent(0);
@@ -226,17 +230,17 @@ void ViewportsSplitter::split2Up1Down(ViewportPanel * vp)
 	setOrientation(Qt::Vertical);
 
 	top.setParent(this);
-	first.setParent(&top);
-	second.setParent(&top);
+	first->setParent(&top);
+	second->setParent(&top);
 
 	bottom.setParent(this);
-	if (vp == &fourth)
+	if (vp == fourth)
 	{
-		third.setParent(0);
-		fourth.setParent(&bottom);
+		third->setParent(0);
+		fourth->setParent(&bottom);
 	} else {
-		third.setParent(&bottom);
-		fourth.setParent(0);
+		third->setParent(&bottom);
+		fourth->setParent(0);
 	}
 }
 
@@ -245,18 +249,18 @@ void ViewportsSplitter::split1Up2Down(ViewportPanel * vp)
 	setOrientation(Qt::Vertical);
 
 	top.setParent(this);
-	if (vp == &second)
+	if (vp == second)
 	{
-		first.setParent(0);
-		second.setParent(&top);
+		first->setParent(0);
+		second->setParent(&top);
 	} else {
-		first.setParent(&top);
-		second.setParent(0);
+		first->setParent(&top);
+		second->setParent(0);
 	}
 
 	bottom.setParent(this);
-	third.setParent(&bottom);
-	fourth.setParent(&bottom);
+	third->setParent(&bottom);
+	fourth->setParent(&bottom);
 }
 
 void ViewportsSplitter::splitQuad()
@@ -264,12 +268,12 @@ void ViewportsSplitter::splitQuad()
 	setOrientation(Qt::Vertical);
 
 	top.setParent(this);
-	first.setParent(&top);
-	second.setParent(&top);
+	first->setParent(&top);
+	second->setParent(&top);
 
 	bottom.setParent(this);
-	third.setParent(&bottom);
-	fourth.setParent(&bottom);
+	third->setParent(&bottom);
+	fourth->setParent(&bottom);
 }
 
 void ViewportsSplitter::deactivateAll()
