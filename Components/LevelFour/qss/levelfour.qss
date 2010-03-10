@@ -714,8 +714,10 @@ QStatusBar
 /* Table View */
 QTableView
 {
-	selection-background-color: #a6a6a6;
-	selection-color: #d2b450;
+	background: #a6a6a6;
+	selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                  stop: 0 #b98620, stop: 1.0 #936a19);;
+	selection-color: #000000;
 	padding-left: 5px;
 	padding-right: 5px;
 	color: #000000;
@@ -817,7 +819,24 @@ QTreeView::branch:has-siblings:!adjoins-item {
  QTreeView::branch:open:has-children:has-siblings  {
          border-image: none;
          image: url(:/MainWindow/images/branch-open.png);
- }
+}
+
+/* For testing to customize specific interfaces */
+QTreeView#patternExplorer
+{
+	margin: 3px;
+    border-bottom: 1px solid #666666;
+	border-right: 1px solid #666666;
+	border-top: 1px solid #020202;
+	border-left: 1px solid #020202;
+	border-radius: 0px;
+	padding: 0px;
+	background: #FF0000;
+	color: #c8c8c8;
+	paint-alternating-row-colors-for-empty-area: 0;
+	show-decoration-selected: 1;
+	alternate-background-color: #787878;
+}
 
 /* The tab widget frame */
 QTabWidget::pane

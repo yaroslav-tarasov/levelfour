@@ -60,6 +60,10 @@ TemplateManagerComponent::TemplateManagerComponent()
 	// New Dir Browser
 	d->dirView = new QTreeView;
 	d->dirModel = new QFileSystemModel;
+	
+	// Why doesn't this work?
+	d->dirView->setObjectName("patternExplorer");
+	// d->dirView->setStyleSheet("QTreeView#PatternExplorer");
 }
 
 TemplateManagerComponent::~TemplateManagerComponent()
