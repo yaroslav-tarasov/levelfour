@@ -42,6 +42,8 @@ ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer)
 	// Assemble the panel
 	sceneLayout.addWidget(&mainToolBar);
 	sceneLayout.addWidget(&centralStack);
+	sceneLayout.setMargin(0);
+	sceneLayout.setSpacing(0);
 
 	// set viewport layout
 	setLayout(&sceneLayout);
