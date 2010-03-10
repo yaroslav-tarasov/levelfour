@@ -327,6 +327,9 @@ AnimationManagerComponent::AnimationManagerComponent()
 	d->verticalLayout->addWidget(d->scrollArea);
 	d->verticalLayout->insertWidget(0, d->scaleScrollBar);
 	d->verticalLayout->insertWidget(2, d->controlToolBar);
+	d->verticalLayout->setMargin(0);
+	d->verticalLayout->setSpacing(0);
+
 
 	d->timelinePanel->setLayout(d->verticalLayout);
 
