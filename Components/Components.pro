@@ -21,6 +21,7 @@ SUBDIRS     = LevelFour \
 		  OsgShadow \
 		  OsgParticle \
 		  OsgText \
+		  DataRenderers \
 		  AnimationManager \
               ViewportComponent \
               

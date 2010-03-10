@@ -51,5 +51,9 @@
     <method param1="ViewportComponent" 
             param2="ViewportComponent" 
             methodName="ComponentLoaderComponent.controller::loadComponent2" />
+    <method param1="InfoVisComponent" 
+            param2="DataRenderers" 
+            methodName="ComponentLoaderComponent.controller::loadComponent2" />
+
    
 </component>
