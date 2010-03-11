@@ -35,8 +35,7 @@ QViewWidget::QViewWidget(ViewportsSplitter * splitterContainer)
 	saveviewAction->setStatusTip(tr("Provides options for saving view in raster and vector formats"));
 	
 	sceneToolBar = new QToolBar;
-	sceneToolBar->setStyleSheet("padding:0px 0px 0px 0px; border:0;");
-
+	
 	// Add widgets and actions to the toolbar
 	sceneToolBar->addWidget(&sceneSelection);
 	sceneToolBar->addSeparator();
@@ -49,9 +48,7 @@ QViewWidget::QViewWidget(ViewportsSplitter * splitterContainer)
 	sceneToolBar->addAction(showgizmoAction);
 	sceneToolBar->addAction(showaxisAction);
 	sceneToolBar->addAction(saveviewAction);
-
-	sceneToolBar->setContentsMargins(0,0,0,0);
-
+	
 	// Scene view actions
 	connect(&sceneSelection, SIGNAL(activated(int)), this, SLOT(setSelectedScene(int)));     
 	connect(&sceneCameras, SIGNAL(activated(int)), this, SLOT(setSelectedCamera(int)));     
