@@ -28,13 +28,11 @@ ViewportPanel::ViewportPanel(ViewportsSplitter * splitterContainer)
 	// init tool stack
 	toolStack.addWidget(sceneWidgets->getCurrentToolBar());
 	toolStack.setCurrentWidget(sceneWidgets->getCurrentToolBar());
-	toolStack.setMaximumHeight(30);
-
+	
 	mainToolBar.addWidget(&typeOfView);
 	mainToolBar.addWidget(&sceneViewports);
 	mainToolBar.addWidget(&toolStack);
-	mainToolBar.setStyleSheet("border:0;");
-
+	
 	// init central stack
 	centralStack.addWidget(sceneWidgets->getCurrentWidget());
 	centralStack.setCurrentWidget(sceneWidgets->getCurrentWidget());
