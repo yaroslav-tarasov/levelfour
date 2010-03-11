@@ -303,9 +303,14 @@ void ViewWidget::initGrids()
       vertices[ptr++].set(-length / 2, -length / 2 + i * GRID_LINE_SPACING, 0.0f);
    }
 
+   osg::ref_ptr<osg::Vec4Array> colors (new osg::Vec4Array());
+   colors->push_back (osg::Vec4 (0.3, 0.3, 0.3, 1.0));
+
    osg::Geometry* geometry = new osg::Geometry;
    geometry->setVertexArray(new osg::Vec3Array(numVertices, vertices));
    geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, numVertices));
+   geometry->setColorArray (colors.get());
+   geometry->setColorBinding (osg::Geometry::BIND_PER_PRIMITIVE_SET);
 
    osg::Geode* geode = new osg::Geode;
    geode->addDrawable(geometry);

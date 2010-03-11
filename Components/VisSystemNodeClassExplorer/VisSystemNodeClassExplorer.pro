@@ -21,3 +21,8 @@ HEADERS += Source/CVisSystemNodeClassExplorer.h \
 SOURCES += Source/CVisSystemNodeClassExplorer.cpp \
            Source/CVisSystemNodeClassExplorerComponent.cpp \
            Source/CVisSystemNodeClassExplorerTreeWidget.cpp
+
+# VNFComponentGen has generated an empty resource file. If you add
+# new objects to the resource file, then you can uncomment the line
+# below
+RESOURCES += VisSystemNodeClassExplorer.qrc
