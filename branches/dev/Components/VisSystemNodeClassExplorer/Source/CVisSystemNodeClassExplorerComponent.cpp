@@ -100,13 +100,15 @@ void CVisSystemNodeClassExplorerComponent::setSearchForWidget(QWidget* widget)
         }
 
         QWidget* searchFor = new QWidget(d->explorerContainer);
-        QVBoxLayout* layout = new QVBoxLayout(searchFor);
+        QHBoxLayout* layout = new QHBoxLayout(searchFor);
+		QPixmap pixmap(":/VisSystemNodeClassExplorer/nodeFilter.png");
 		QLabel* label = new QLabel("&Search:", searchFor);
+		label->setPixmap(pixmap);
         QLineEdit* lineEdit = new QLineEdit(searchFor);
         layout->addWidget(label);
         layout->addWidget(lineEdit);
         label->setBuddy(lineEdit);
-        layout->setMargin(2);
+        layout->setMargin(1);
         QCompleter* completer = new QCompleter(lineEdit);
         lineEdit->setCompleter(completer);
         completer->setModel(ncExp->treeWidget()->model());

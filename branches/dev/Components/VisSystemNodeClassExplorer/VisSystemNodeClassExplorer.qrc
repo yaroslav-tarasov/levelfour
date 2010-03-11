@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/VisSystemNodeClassExplorer">
+
+    <file alias="nodeFilter.png">icons/nodeFilter.png</file>
+
+</qresource>
+</RCC>

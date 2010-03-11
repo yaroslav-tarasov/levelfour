@@ -236,6 +236,12 @@ QMenu
 	color: #c8c8c8;
 }
 
+QMenu::separator 
+{
+     image: none;
+     border-top: 1px solid #949494;
+}
+
 QMenu::item
 {
 	/* sets background of menu item. set this to something non-transparent
