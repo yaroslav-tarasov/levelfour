@@ -198,19 +198,22 @@ void CVisSystemNodeClassExplorerTreeWidgetDelegate::paint(QPainter* paint, const
     QStyleOptionButton hopt;
     hopt.rect = opt.rect;
     QColor color = QColor(200, 200, 200);
-	QColor topColor = QColor(86, 86, 86);
-	QColor bottomColor = QColor(10, 10, 10);
+	QColor fill = QColor(78, 78, 78);
+	QColor topColor = QColor(103, 103, 103);
+	QColor bottomColor = QColor(51, 51, 51);
 	hopt.palette.setBrush(QPalette::Button, color);
     hopt.state = QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Horizontal|QStyle::State_Enabled|QStyle::State_Raised;
 
     // Draw custom header.
-	QColor darkColor = QColor(58,58,58);
-	QColor lightColor = QColor(73,73,73);
+	QColor darkColor = QColor(51,51,51);
+	QColor lightColor = QColor(78,78,78);
 	
 	QLinearGradient grad(opt.rect.topLeft(), opt.rect.bottomLeft());
-	grad.setColorAt(0, lightColor);
+	grad.setColorAt(0, topColor);
 	// grad.setColorAt(0.8, midColor);
-	grad.setColorAt(1, darkColor);
+	grad.setColorAt(0.2, lightColor);
+	grad.setColorAt(0.8, lightColor);
+	grad.setColorAt(1, fill);
 
 	paint->setBrush(grad);
 	
