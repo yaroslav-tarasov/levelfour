@@ -198,9 +198,9 @@ void CVisSystemNodeClassExplorerTreeWidgetDelegate::paint(QPainter* paint, const
     QStyleOptionButton hopt;
     hopt.rect = opt.rect;
     QColor color = QColor(200, 200, 200);
-	QColor fill = QColor(78, 78, 78);
-	QColor topColor = QColor(103, 103, 103);
-	QColor bottomColor = QColor(51, 51, 51);
+	QColor fill = QColor(89, 89, 89);
+	QColor topColor = QColor(115, 115, 115);
+	QColor bottomColor = QColor(76, 76, 76);
 	hopt.palette.setBrush(QPalette::Button, color);
     hopt.state = QStyle::State_Active|QStyle::State_Enabled|QStyle::State_Horizontal|QStyle::State_Enabled|QStyle::State_Raised;
 
@@ -215,7 +215,7 @@ void CVisSystemNodeClassExplorerTreeWidgetDelegate::paint(QPainter* paint, const
 	grad.setColorAt(0.8, lightColor);
 	grad.setColorAt(1, fill);
 
-	paint->setBrush(grad);
+	paint->setBrush(fill);
 	
 	paint->setPen(Qt::NoPen);
 	paint->drawRect(opt.rect);
