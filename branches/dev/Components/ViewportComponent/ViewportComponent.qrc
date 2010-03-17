@@ -1,9 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/ViewportComponent">
-  
-    <file alias="tableView.png">icons/tableView.png</file>
-    <file alias="treeView.png">icons/treeView.png</file>
-    <file alias="listView.png">icons/listView.png</file>
- 
-</qresource>
-</RCC>
