@@ -1,0 +1,33 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/OsgCore">
+
+    <file alias="axis.png">icons/axis.png</file>
+    <file alias="grid.png">icons/grid.png</file>
+    <file alias="gizmo.png">icons/gizmo.png</file>  
+
+    <file alias="Camera.png">icons/Camera.png</file>
+    <file alias="Cone.png">icons/Cone.png</file>
+    <file alias="Cube.png">icons/Cube.png</file>
+    <file alias="Cylinder.png">icons/Cylinder.png</file>
+    <file alias="Geode.png">icons/Geode.png</file>
+    <file alias="Group.png">icons/Group.png</file>
+    <file alias="Light.png">icons/Light.png</file>
+    <file alias="Model.png">icons/Model.png</file>
+    <file alias="PAT.png">icons/PAT.png</file>
+    <file alias="SceneView.png">icons/SceneView.png</file>
+    <file alias="Sphere.png">icons/Sphere.png</file>
+    <file alias="Switch.png">icons/Switch.png</file>
+
+  <file alias="Billboard.png">icons/Billboard.png</file>
+  <file alias="Image.png">icons/Image.png</file>
+  <file alias="InfinitePlane.png">icons/InfinitePlane.png</file>
+  <file alias="Texture2D.png">icons/Texture2D.png</file>
+  <file alias="Capsule.png">icons/Capsule.png</file>
+
+  <file alias="wireframeDisplay.png">icons/wireframeDisplay.png</file>
+  <file alias="textureDisplay.png">icons/textureDisplay.png</file>
+  <file alias="backfacecullingDisplay.png">icons/backfacecullingDisplay.png</file>
+  <file alias="shadingDisplay.png">icons/shadingDisplay.png</file>
+
+</qresource>
+</RCC>
