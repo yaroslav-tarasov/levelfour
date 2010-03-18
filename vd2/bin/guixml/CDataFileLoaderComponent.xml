@@ -1,0 +1,26 @@
+<component title="Data File Loader" version="1.0" name="CDataFileLoaderComponent" >
+
+    <object title="" name="controller" />
+
+    <action title="Load Data File"
+            triggerSlot="CDataFileLoaderComponent.controller::loadDataFile()"
+            icon=":/DataFileLoader/opendataset.png"
+            name="loadDataFile" 
+            shortcut="Ctrl+Shift+O"/>
+
+    <menu mergeWith="MainWindowComponent.fileMenu">
+        <menuitem before="MainWindowComponent.fileQuit"/>
+        <menuitem actionName="CDataFileLoaderComponent.loadDataFile" 
+                  before="MainWindowComponent.fileQuit"/>
+        <menuitem before="MainWindowComponent.fileQuit"/>
+    </menu>
+
+    <toolbar mergeWith="MainWindowComponent.fileTools">
+        <toolbaritem />
+        <toolbaritem actionName="CDataFileLoaderComponent.loadDataFile" />
+        <toolbaritem />
+    </toolbar>
+
+    <property key="CDataFileLoaderComponent.controller::DefaultDataFilePath" value="${APPDIR}/Data" />
+
+</component>

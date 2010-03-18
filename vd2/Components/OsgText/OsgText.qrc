@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/OsgText">
+  
+    <file alias="FadeText.png">icons/FadeText.png</file>
+    <file alias="String.png">icons/String.png</file>
+    <file alias="Text.png">icons/Text.png</file>
+    <file alias="Text3D.png">icons/Text3D.png</file>
+  
+</qresource>
+</RCC>

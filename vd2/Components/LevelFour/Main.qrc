@@ -1,0 +1,8 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/LevelFour">
+    <file alias="levelfour.qss">qss/levelfour.qss</file>
+    <file alias="vtkdesigner.png">icons/vtkdesigner.png</file>
+    <file alias="camera.png">icons/camera.png</file>
+    <file alias="splash.png">icons/splash.png</file>
+</qresource>
+</RCC>

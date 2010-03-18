@@ -1,0 +1,4 @@
+<component title="AnimationManagerComponent" name="AnimationManagerComponent" >
+	<widget title="AnimationManager" name="animationManager" parentWidget="MainWindowComponent.bottomDockArea" />
+	 <object name="controller" />
+</component>
