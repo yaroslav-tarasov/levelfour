@@ -21,9 +21,9 @@ SUBDIRS     = LevelFour \
 		  OsgShadow \
 		  OsgParticle \
 		  OsgText \
-		  DataRenderers \
 		  AnimationManager \
               ViewportComponent \
+              D2M
               
            
 # Some components are under development, but the ideas and implementation
