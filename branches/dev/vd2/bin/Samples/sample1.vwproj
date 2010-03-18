@@ -1,0 +1,68 @@
+<!DOCTYPE VWVisProject>
+<VWVisProject>
+  <ProjectPart ID="VisNetwork" >
+    <Node X="106" Y="-188" Name="Box_0" ClassName="Box" ID="0" >
+      <Property Type="QString" Name="NodeName" Value="Box_0" />
+      <Property Type="QString" Name="objectName" Value="Box_0" />
+    </Node>
+    <Node X="311" Y="-191" Name="Cone_1" ClassName="Cone" ID="1" >
+      <Property Type="QString" Name="NodeName" Value="Cone_1" />
+      <Property Type="QString" Name="objectName" Value="Cone_1" />
+    </Node>
+    <Node X="217" Y="-102" Name="Geode_2" ClassName="Geode" ID="2" >
+      <Property Type="bool" Name="Visible" Value="true" />
+      <Property Type="QString" Name="NodeName" Value="Geode_2" />
+      <Property Type="QString" Name="objectName" Value="Geode_2" />
+    </Node>
+    <Node X="-264.053" Y="-181" Name="Model_3" ClassName="Model" ID="3" >
+      <Property Type="QString" Name="Model" Value="D:\LevelFour\dev\bin\Samples\axes.osgD:\osgGIS\build\src\osggis_mapper\out\roads" />
+      <Property Type="QString" Name="NodeName" Value="Model_3" />
+      <Property Type="QString" Name="objectName" Value="Model_3" />
+    </Node>
+    <Node X="-76" Y="-180" Name="Sphere_4" ClassName="Sphere" ID="4" >
+      <Property Type="QString" Name="NodeName" Value="Sphere_4" />
+      <Property Type="QString" Name="objectName" Value="Sphere_4" />
+    </Node>
+    <Node X="185" Y="-7" Name="PAT_5" ClassName="PAT" ID="5" >
+      <Property Type="bool" Name="Visible" Value="true" />
+      <Property Type="double" Name="PosX" Value="-1" />
+      <Property Type="double" Name="PosY" Value="0" />
+      <Property Type="double" Name="PosZ" Value="0" />
+      <Property Type="QString" Name="NodeName" Value="PAT_5" />
+      <Property Type="QString" Name="objectName" Value="PAT_5" />
+    </Node>
+    <Node X="-24" Y="-70" Name="Geode_6" ClassName="Geode" ID="6" >
+      <Property Type="bool" Name="Visible" Value="true" />
+      <Property Type="QString" Name="NodeName" Value="Geode_6" />
+      <Property Type="QString" Name="objectName" Value="Geode_6" />
+    </Node>
+    <Node X="-242" Y="-46" Name="PAT_7" ClassName="PAT" ID="7" >
+      <Property Type="bool" Name="Visible" Value="true" />
+      <Property Type="double" Name="PosX" Value="0" />
+      <Property Type="double" Name="PosY" Value="0" />
+      <Property Type="double" Name="PosZ" Value="0" />
+      <Property Type="QString" Name="NodeName" Value="PAT_7" />
+      <Property Type="QString" Name="objectName" Value="PAT_7" />
+    </Node>
+    <Node X="10" Y="120" Name="Simple scene view_8" ClassName="Simple scene view" ID="8" >
+      <Property Type="QString" Name="NodeName" Value="Simple scene view_8" />
+      <Property Type="QString" Name="objectName" Value="Simple scene view_8" />
+    </Node>
+    <Node X="-87" Y="44" Name="Group_9" ClassName="Group" ID="9" >
+      <Property Type="bool" Name="Visible" Value="true" />
+      <Property Type="QString" Name="NodeName" Value="Group_9" />
+      <Property Type="QString" Name="objectName" Value="Group_9" />
+    </Node>
+    <Connection Sender="Cone_1" SPathIndex="0" Receiver="Geode_2" RPathIndex="0" />
+    <Connection Sender="Box_0" SPathIndex="0" Receiver="Geode_2" RPathIndex="0" />
+    <Connection Sender="Sphere_4" SPathIndex="0" Receiver="Geode_6" RPathIndex="0" />
+    <Connection Sender="Model_3" SPathIndex="0" Receiver="PAT_7" RPathIndex="1" />
+    <Connection Sender="PAT_5" SPathIndex="0" Receiver="Group_9" RPathIndex="1" />
+    <Connection Sender="Group_9" SPathIndex="0" Receiver="Simple scene view_8" RPathIndex="0" />
+    <Connection Sender="PAT_7" SPathIndex="0" Receiver="Group_9" RPathIndex="1" />
+    <Connection Sender="Geode_6" SPathIndex="1" Receiver="Group_9" RPathIndex="1" />
+    <Connection Sender="Geode_2" SPathIndex="1" Receiver="PAT_5" RPathIndex="1" />
+  </ProjectPart>
+  <ProjectPart ID="ScriptEnvironment" />
+  <ProjectPart ID="Script" ><![CDATA[]]></ProjectPart>
+</VWVisProject>

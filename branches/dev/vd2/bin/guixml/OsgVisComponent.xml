@@ -1,0 +1,3 @@
+<component title="OsgVisComponent" name="OsgVisComponent" >
+ <object name="controller" />
+</component>

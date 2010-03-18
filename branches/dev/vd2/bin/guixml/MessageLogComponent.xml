@@ -1,0 +1,7 @@
+<component title="Message Log" version="1.0" name="MessageLogComponent" >
+
+  <object scriptName="MessageLog" title="" name="controller" />
+  <widget title="" name="messageWindow" parentWidget="MainWindowComponent.window" 
+            parentWidgetHint="RightDockWidgetArea" autoDelete="false" />
+
+</component>

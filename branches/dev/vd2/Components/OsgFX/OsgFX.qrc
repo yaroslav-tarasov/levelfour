@@ -1,0 +1,12 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/OsgFX">
+  
+    <file alias="AnisotropicLighting.png">icons/AnisotropicLighting.png</file>
+    <file alias="BumpMapping.png">icons/BumpMapping.png</file>
+    <file alias="Cartoon.png">icons/Cartoon.png</file>
+    <file alias="MultiTextureControl.png">icons/MultiTextureControl.png</file>
+    <file alias="Scribe.png">icons/Scribe.png</file>
+    <file alias="SpectacularHighlights.png">icons/SpectacularHighlights.png</file>
+  
+</qresource>
+</RCC>
