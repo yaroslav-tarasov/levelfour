@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         wiitracker.xml
+  Description:  Contains the XML description of WiiTracker nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>, Nils Zweiling <nils.zweiling@filmakademie.de>
+  Copyright:    (c) 2008 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="Wiimote" category="Controller" color="250,100,50" plugin="wiitracker.dll">
+  <parameters>
+    <parameter name="Name" type="String" defaultValue=""/>
+    <parameter name="run" type="Bool" defaultValue="false"/>
+    <parameter name="sleep" type="Int" defaultValue="333"/>
+    <parameter name="buttonA" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonB" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonUp" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonDown" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonLeft" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonRight" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonMinus" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonPlus" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonOne" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonTwo" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="buttonHome" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="rollLeft" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="rollRight" type="Float" defaultValue="0.0" pin="out"/>  
+    <parameter name="pitchFront" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="pitchBack" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="yawLeft" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="yawRight" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="nunJoyLeft" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="nunJoyRight" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="nunButtonC" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="nunButtonZ" type="Bool" defaultValue="false" pin="out"/>
+    <parameter name="irDotDist" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="irXPos" type="Float" defaultValue="0.0" pin="out"/>
+    <parameter name="irYPos" type="Float" defaultValue="0.0" pin="out"/>
+  </parameters>
+</nodetype>
