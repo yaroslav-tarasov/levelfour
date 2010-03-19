@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema" version="1.5.0">
+	<asset>
+		<contributor>
+			<authoring_tool>Filmakademie Application Framework</authoring_tool>
+		</contributor>
+		<created>2009-12-17T12:40:09Z</created>
+		<modified>2009-12-17T12:40:09Z</modified>
+		<unit meter="0.01"/>
+		<up_axis>Y_UP</up_axis>
+	</asset>
+	<library_visual_scenes>
+		<visual_scene id="RootNode" name="RootNode">
+			<node id="faceTracker">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="FaceTracker" position="40 300">
+							<frapper_parameters>
+								<frapper_parameter name="minSize" value="0.05"/>
+								<frapper_parameter name="maxSize" value="0.6"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="hank">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimatableMesh" position="440 300" stageIndex="1" isViewed="0">
+							<frapper_parameters>
+								<frapper_parameter name="Geometry File" value="scenes/Hank/Hank.mesh"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="headLogic">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="HeadLogic" position="140 300">
+							<frapper_parameters/>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="randomBlink">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="RandomBlink" position="240 430">
+							<frapper_parameters/>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="sleepingClipNode">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="AnimationClip" position="240 300">
+							<frapper_parameters>
+								<frapper_parameter name="Animation Clip File" value="scenes/Hank/Animations/Sleeping.anim"/>
+								<frapper_parameter name="length" value="8"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<extra>
+				<technique profile="frapper">
+					<frapper_connection sourceNode="faceTracker" sourceParameter="faceX" targetNode="headLogic" targetParameter="trackX"/>
+					<frapper_connection sourceNode="faceTracker" sourceParameter="faceY" targetNode="headLogic" targetParameter="trackY"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="playSleeping" targetNode="sleepingClipNode" targetParameter="loop"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="sleepingWeight" targetNode="sleepingClipNode" targetParameter="weight"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="weightOtherClips" targetNode="randomBlink" targetParameter="weight"/>
+					<frapper_connection sourceNode="randomBlink" sourceParameter="progress" targetNode="hank" targetParameter="AU_L_Blink_AU45"/>
+					<frapper_connection sourceNode="randomBlink" sourceParameter="progress" targetNode="hank" targetParameter="AU_R_Blink_AU45"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_FlatterNormal_CAU34" targetNode="hank" targetParameter="AU_FlatterNormal_CAU34"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_HeadDown_AU54" targetNode="hank" targetParameter="AU_HeadDown_AU54"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_L_Blink_AU45" targetNode="hank" targetParameter="AU_L_Blink_AU45"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_R_Blink_AU45" targetNode="hank" targetParameter="AU_R_Blink_AU45"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_Collar" targetNode="hank" targetParameter="AU_Collar"/>
+					<frapper_connection sourceNode="faceTracker" sourceParameter="noFaceDetected" targetNode="headLogic" targetParameter="noFaceDetected"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_LShoulder" targetNode="hank" targetParameter="AU_LShoulder"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_LShoulderEnd" targetNode="hank" targetParameter="AU_LShoulderEnd"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_RShoulder" targetNode="hank" targetParameter="AU_RShoulder"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_Spine_1" targetNode="hank" targetParameter="AU_Spine_1"/>
+					<frapper_connection sourceNode="sleepingClipNode" sourceParameter="AU_Spine_2" targetNode="hank" targetParameter="AU_Spine_2"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="left" targetNode="hank" targetParameter="AU_HeadTurnLeft_AU51"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="right" targetNode="hank" targetParameter="AU_HeadTurnRight_AU52"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="up" targetNode="hank" targetParameter="AU_HeadUp_AU53"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="down" targetNode="hank" targetParameter="AU_HeadDown_AU54"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="openMouth" targetNode="hank" targetParameter="AU_JawO_CAU2627"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="smile" targetNode="hank" targetParameter="AU_Smile_CAU12"/>
+					<frapper_connection sourceNode="headLogic" sourceParameter="playSleeping" targetNode="sleepingClipNode" targetParameter="play"/>
+				</technique>
+			</extra>
+		</visual_scene>
+	</library_visual_scenes>
+	<scene>
+		<instance_visual_scene url="#RootNode"/>
+	</scene>
+</COLLADA>
