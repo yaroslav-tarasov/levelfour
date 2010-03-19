@@ -1,0 +1,32 @@
+void ps_main(   //in 
+				float2 iTexCoord	: TEXCOORD3,				
+				float3 iNormal		: TEXCOORD0,
+				float3 iReflect		: TEXCOORD7,			    
+				//out
+				out float4 result	: COLOR,
+				//parameter				
+				uniform float	eye_exposure,						
+				uniform float	eyeGlassSpecularLens,		
+				uniform float	eyeGlassSpecularOut,			
+				uniform float	eyeVisibilityScale,								
+				uniform sampler2D	bumpMapSampler		: register(s0),
+				uniform samplerCUBE HighLightEyeCube	: register(s1),
+				uniform samplerCUBE EyesVisibilityCube	: register(s2))
+{	
+	float SpecularMask = tex2D(bumpMapSampler, iTexCoord).a;	
+    float Specular = lerp(eyeGlassSpecularOut, eyeGlassSpecularLens, SpecularMask);
+	float4 FinalColor;   
+   
+	float3 ScaleFactor;
+	ScaleFactor.x = eyeVisibilityScale;
+	ScaleFactor.y = eyeVisibilityScale;
+	ScaleFactor.z = 1.0;
+   
+	// VisibilityMask must be in model space!
+	iReflect.xy *= -1;
+    float3 VisibilityMask = normalize(iReflect * ScaleFactor);
+	FinalColor = texCUBE(HighLightEyeCube, iReflect) * eye_exposure * Specular * texCUBE(EyesVisibilityCube, VisibilityMask);
+	FinalColor.a = 0;
+	result = FinalColor;
+
+}

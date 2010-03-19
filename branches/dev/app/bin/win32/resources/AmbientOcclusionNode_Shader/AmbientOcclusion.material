@@ -1,0 +1,72 @@
+vertex_program AmbientOcclusionNode_Shader/QuadVertexProgram cg
+{
+	source AmbientOcclusion.cg
+	profiles vs_1_1 arbvp1
+    entry_point ssao_Quad_vs
+	default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+		param_named farCorner float3 115.264 64.8361 -100
+		param_named_auto textureSize texture_size 0
+		param_named_auto randomMapSize texture_size 2
+    }
+}
+
+
+fragment_program AmbientOcclusionNode_Shader/AOFragmentProgram cg
+{
+    source AmbientOcclusion.cg
+    entry_point ssao_ps
+    // will run on anything with pixel shader 2.b and up
+    profiles ps_2_x arbfp1
+	default_params
+	{
+		param_named farPlane float 100
+		param_named inputMap0 int 0
+		param_named inputMap1 int 1
+		param_named randMap int 2
+	}
+}
+
+
+material AmbientOcclusionNode_Shader/AmbientOcclusionMaterial
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref AmbientOcclusionNode_Shader/AOFragmentProgram
+			{
+			}
+			
+			vertex_program_ref AmbientOcclusionNode_Shader/QuadVertexProgram
+			{
+			}	
+			
+			texture_unit	//(normalMap 0)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit	//(depthMap 1)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+				//filtering linear linear linear
+			}
+			
+			texture_unit 	//(randMap 2)
+            {
+				tex_coord_set 2
+                texture random.png
+				tex_address_mode wrap
+                filtering none
+            }
+		}
+	}
+}
