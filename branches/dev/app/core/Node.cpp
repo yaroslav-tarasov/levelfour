@@ -107,12 +107,6 @@ void Node::finalize()
     }
 }
 
-// Just a hack for SolverNode.
-void Node::prepareDelete()
-{
-// noop
-}
-
 
 ///
 /// Public Functions
@@ -659,12 +653,7 @@ bool Node::isDirty ()
 void Node::removeParameter ( const QString &name, bool diveInGroups /*= true*/ )
 {
 	Parameter* parameter = m_parameterRoot->getParameter(name);
-	if (parameter) {
-		QList<Connection *> &connectionList = parameter->getConnectionMap().values();
-		foreach (Connection *connection, connectionList)
-			emit deleteObject(QString::number(connection->getId()));
-	}
-    m_parameterRoot->removeParameter(name);
+    m_parameterRoot->removeParameter(name, diveInGroups);
 }
 
 
@@ -676,9 +665,6 @@ void Node::removeParameter ( const QString &name, bool diveInGroups /*= true*/ )
 void Node::removeParameter ( Parameter *parameter, bool diveInGroups /*= true*/ )
 {
 	QList<Connection *> &connectionList = parameter->getConnectionMap().values();
-	if (!connectionList.isEmpty())
-		foreach (Connection *connection, connectionList)
-			emit deleteObject(QString::number(connection->getId()));
     m_parameterRoot->removeParameter(parameter, diveInGroups);
 }
 
@@ -1393,6 +1379,17 @@ void Node::setUpTimeDependencies ( Parameter *timeParameter )
 void Node::evaluateConnection ( Connection *connection )
 {
     // noop
+}
+
+
+//!
+//! Signal that is emitted in order to delete a connection (through SceneModel)
+//!
+//! \param name The name of the object.
+//!
+void Node::deleteConnection ( Connection *connection)
+{
+	emit sendDeleteConnection(connection);
 }
 
 ///

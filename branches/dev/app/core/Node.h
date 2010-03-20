@@ -727,6 +727,13 @@ public: // misc functions
     //!
     virtual void evaluateConnection ( Connection *connection );
 
+	//!
+    //! Signal that is emitted in order to delete a connection (through SceneModel)
+    //!
+    //! \param name The name of the object.
+    //!
+    void deleteConnection ( Connection *connection);
+
 public slots: //
 
     //!
@@ -762,11 +769,11 @@ signals: //
     void selectedChanged ( bool selected );
 
 	//!
-    //! Signal that is emitted in order to delete a certain object (through SceneModel)
+    //! Signal that is emitted in order to delete a connection (through SceneModel)
     //!
-    //! \param name The name of the object.
+    //! \param connection A pointer to the connecion.
     //!
-    void deleteObject ( const QString &name );
+    void sendDeleteConnection ( Connection *connection);
 
 	//! Seim
 	void selectDeselectObject ( const QString &name );
@@ -780,10 +787,6 @@ protected: // methods
 	Ogre::String createUniqueName ( const QString &objectName );
 
 	virtual void finalize(); // only virtual for solver release !!!
-
-public:
-    // Hack for solver node.
-    virtual void prepareDelete();
 
 protected: // data
 

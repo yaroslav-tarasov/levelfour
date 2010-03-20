@@ -1,6 +1,6 @@
 [0]
 type=Splitter
-states=@ByteArray(\0\0\0\xff\0\0\0\0\0\0\0\x2\0\0\x3\xee\0\0\0l\x1\0\0\0\x6\x1\0\0\0\x2)
+states=@ByteArray(\0\0\0\xff\0\0\0\0\0\0\0\x2\0\0\x3\xee\0\0\0\x91\x1\0\0\0\x6\x1\0\0\0\x2)
 left=2
 right=1
 

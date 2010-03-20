@@ -722,6 +722,8 @@ private: // functions
     //!
     void updateActions ();
 
+	void deleteConnection (const QString &name, bool deleteGraphicItem = false ); 
+
     //!
     //! Decodes the given position for node graphics items from a COLLADA scene
     //! file.
