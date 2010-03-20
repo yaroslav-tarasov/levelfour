@@ -23,8 +23,8 @@ http://www.gnu.org/copyleft/lesser.txt.
 */
 
 //!
-//! \file "TestPanel.h"
-//! \brief Header file for TestPanel class.
+//! \file "TableViewPanel.h"
+//! \brief Header file for TableViewPanel class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
@@ -33,8 +33,8 @@ http://www.gnu.org/copyleft/lesser.txt.
 //! \date       24.06.2009 (last updated)
 //!
 
-#ifndef TestPanel_H
-#define TestPanel_H
+#ifndef TableViewPanel_H
+#define TableViewPanel_H
 
 #include <FrapperPrerequisites.h>
 #include <ViewPanel.h>
@@ -52,7 +52,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 //!
 //! Class representing a view for displaying and editing parameters of nodes.
 //!
-class TestPanel : public ViewPanel
+class TableViewPanel : public ViewPanel
 {
 
     Q_OBJECT
@@ -60,21 +60,21 @@ class TestPanel : public ViewPanel
 public: // constructors and destructors
 
     //!
-    //! Constructor of the TestPanel class.
+    //! Constructor of the TableViewPanel class.
     //!
     //! \param parent The parent widget the created instance will be a child of.
     //! \param flags Extra widget options.
     //!
-    TestPanel ( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
+    TableViewPanel ( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
 
     //!
-    //! Destructor of the TestPanel class.
+    //! Destructor of the TableViewPanel class.
     //!
     //! Defined virtual to guarantee that the destructor of a derived class
     //! will be called if the instance of the derived class is saved in a
     //! variable of its parent class type.
     //!
-    virtual ~TestPanel ();
+    virtual ~TableViewPanel ();
 
 public slots: //
 
@@ -101,7 +101,7 @@ public: // functions
 	QListWidgetItem* addItem(Parameter *parameter, bool groupElement);
 
 	//!
-	//! Fills the given tool bars with actions for the TestPanel view.
+	//! Fills the given tool bars with actions for the TableViewPanel view.
 	//!
 	//! \param mainToolBar The main tool bar to fill with actions.
 	//! \param panelToolBar The panel tool bar to fill with actions.
