@@ -1,46 +1,46 @@
-[0]
+[9]
 type=Splitter
-states=@ByteArray(\0\0\0\xff\0\0\0\0\0\0\0\x2\0\0\x3\xee\0\0\0l\x1\0\0\0\x6\x1\0\0\0\x2)
-left=2
-right=1
+states=@ByteArray(\0\0\0\xff\0\0\0\0\0\0\0\x2\0\0\x3\xee\0\0\0\x91\x1\0\0\0\x6\x1\0\0\0\x2)
+left=11
+right=10
 
-[1]
+[10]
 type=Panel
 ptype=5
 
-[2]
+[11]
 type=Splitter
 states=@ByteArray(\0\0\0\xff\0\0\0\0\0\0\0\x2\0\0\0\xe7\0\0\x6\x96\x1\0\0\0\x3\x1\0\0\0\x1)
-left=8
-right=3
+left=17
+right=12
 
-[3]
+[12]
 type=Splitter
 states=@ByteArray(\0\0\0\xff\0\0\0\0\0\0\0\x2\0\0\x3\xab\0\0\x1}\x1\0\0\0\x3\x1\0\0\0\x1)
-left=5
-right=4
+left=14
+right=13
 
-[4]
+[13]
 type=Panel
 ptype=3
 
-[5]
+[14]
 type=Splitter
 states=@ByteArray(\0\0\0\xff\0\0\0\0\0\0\0\x2\0\0\x1\\\0\0\x1\\\x1\0\0\0\x3\x1\0\0\0\x2)
-left=7
-right=6
+left=16
+right=15
 
-[6]
+[15]
 type=Panel
 ptype=1
 
-[7]
+[16]
 type=Panel
 ptype=0
 parameters\cameraName=
 parameters\overlayOnly=0
 parameters\stageIndex=1
 
-[8]
+[17]
 type=Panel
 ptype=2

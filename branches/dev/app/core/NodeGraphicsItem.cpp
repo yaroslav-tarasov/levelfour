@@ -82,10 +82,12 @@ NodeGraphicsItem::NodeGraphicsItem ( Node *node, QPointF position, const QColor 
 	dropShadow->setColor(QColor (25,25,25));
 	setGraphicsEffect(dropShadow);
 
+	/*
 	QGraphicsOpacityEffect *transparency = new QGraphicsOpacityEffect();
 	transparency->setOpacity(0.7);
 	setGraphicsEffect(transparency);
-    
+    */
+
 #if QT_VERSION >= 0x040600
     // Since Qt 4.6 geometry changes are disabled by default. Introduction of new flag.
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
@@ -173,37 +175,41 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
 
     // define background color
     QColor backgroundColor;
-	QColor lightBackground = QColor(200,200,200);
+	QColor lightBackground = QColor(108,108,108);
 	QColor darkBackground = QColor(100,100,100);
+
     if (widget)
-        backgroundColor = QColor(100,100,100);
+        backgroundColor = darkBackground;
     else
-        backgroundColor = QColor(108,108,108);
+        backgroundColor = lightBackground;
     if (m_hovered) // isUnderMouse() didn't always work here
-        backgroundColor = QColor(115,115,115);
+        backgroundColor = QColor(90,90,90);
 
     // draw selection border
     if (isSelected()) {
-        painter->setPen(QPen(m_color, 8));
+        painter->setPen(QPen(m_color, 5));
         painter->setRenderHint(QPainter::Antialiasing);
         painter->drawRoundedRect(rect(), CornerRadius, CornerRadius);
     }
 
     // set up the node's background gradient
+	
     QLinearGradient linearGradient (rect().left(), 0, rect().right(), 0);
     linearGradient.setColorAt(0.7, backgroundColor);
+	
     if (m_node && m_node->isEvaluated())
-        linearGradient.setColorAt(1, m_color);
+        linearGradient.setColorAt(1, backgroundColor);
     else
         linearGradient.setColorAt(1, backgroundColor.darker(125));
 
     // draw the node's shape
     QBrush gradientBrush (linearGradient);
     if (isEnabled() && m_node && m_node->isEvaluated())
-        painter->setPen(QPen(QColor (153,153,153), 1));
+        painter->setPen(QPen(QColor (200,200,200), 1));
     else
-        painter->setPen(QPen(QColor (45,45,45), 1));
-    painter->setBrush(gradientBrush);
+        painter->setPen(QPen(QColor (145,145,145), 1));
+    
+	painter->setBrush(gradientBrush);
     painter->setRenderHint(QPainter::Antialiasing);
     painter->drawRoundedRect(rect(), CornerRadius, CornerRadius);
 
@@ -218,7 +224,7 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
     if (isEnabled())
         painter->setPen(QPen(Qt::black, 1));
     else
-        painter->setPen(QPen(Qt::gray, 1));
+        painter->setPen(QPen(QColor (200,200,200), 1));
     painter->setClipping(true);
     painter->setClipRect(rect().adjusted(2, 2, -2, -2));
     painter->setRenderHint(QPainter::TextAntialiasing);
@@ -312,6 +318,7 @@ void NodeGraphicsItem::removeConnectionItem ( ConnectionGraphicsItem *item )
 void NodeGraphicsItem::removeConnectionItems ()
 {
     foreach (ConnectionGraphicsItem *item, m_connectionItems)
+			if (!m_connectionItems.empty())
         delete item;
 }
 
