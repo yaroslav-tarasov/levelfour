@@ -33,7 +33,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef TESTNODEPLUGIN_H
 #define TESTNODEPLUGIN_H
 
-#include "NodeTypeInterface.h"
+#include <NodeTypeInterface.h>
 
 
 //!

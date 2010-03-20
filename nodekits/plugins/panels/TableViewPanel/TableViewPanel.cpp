@@ -23,8 +23,8 @@ http://www.gnu.org/copyleft/lesser.txt.
 */
 
 //!
-//! \file "TestPanel.cpp"
-//! \brief Implementation file for TestPanel class.
+//! \file "TableViewPanel.cpp"
+//! \brief Implementation file for TableViewPanel class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
@@ -33,7 +33,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 //! \date       07.12.2009 (last updated)
 //!
 
-#include "TestPanel.h"
+#include "TableViewPanel.h"
 #include <ParameterTabPage.h>
 #include <DoubleSlider.h>
 #include <NodeFactory.h>
@@ -63,12 +63,12 @@ Q_DECLARE_METATYPE(Ogre::Vector3)
 ///
 
 //!
-//! Constructor of the TestPanel class.
+//! Constructor of the TableViewPanel class.
 //!
 //! \param parent The parent widget the created instance will be a child of.
 //! \param flags Extra widget options.
 //!
-TestPanel::TestPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags /* = 0 */ ) :
+TableViewPanel::TableViewPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags /* = 0 */ ) :
     ViewPanel(ViewPanel::T_PluginPanel, parent, flags)
 {
 
@@ -110,7 +110,7 @@ TestPanel::TestPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags /* = 0 *
 //! will be called if the instance of the derived class is saved in a
 //! variable of its parent class type.
 //!
-TestPanel::~TestPanel ()
+TableViewPanel::~TableViewPanel ()
 {
 	delete m_ListNodes;
 	delete m_InputParameters;
@@ -129,7 +129,7 @@ TestPanel::~TestPanel ()
 //! \param *nodeModel NodeModel of the scene
 //! \param *sceneModel SceneModel of the scene
 //!
-void TestPanel::registerControl(NodeModel *nodeModel, SceneModel *sceneModel)
+void TableViewPanel::registerControl(NodeModel *nodeModel, SceneModel *sceneModel)
 {
 	m_nodeModel = nodeModel;
 	m_sceneModel = sceneModel;
@@ -144,12 +144,12 @@ void TestPanel::registerControl(NodeModel *nodeModel, SceneModel *sceneModel)
 
 
 //!
-//! Fills the given tool bars with actions for the TestPanel view.
+//! Fills the given tool bars with actions for the TableViewPanel view.
 //!
 //! \param mainToolBar The main tool bar to fill with actions.
 //! \param panelToolBar The panel tool bar to fill with actions.
 //!
-void TestPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar )
+void TableViewPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar )
 {
 	QAction *ui_descriptionAction;
 	ui_descriptionAction = new QAction(this);
@@ -174,7 +174,7 @@ void TestPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar )
 //!
 //! \param selecedNode the selected wich was selected
 //!
-void TestPanel::updateSelectedNode(Node * selectedNode)
+void TableViewPanel::updateSelectedNode(Node * selectedNode)
 {
 	m_node = selectedNode;
 
@@ -246,7 +246,7 @@ void TestPanel::updateSelectedNode(Node * selectedNode)
 //! \param groupElement true if element of a parameter group
 //! \return the created QListWidgetItem
 //!
-QListWidgetItem* TestPanel::addItem(Parameter *parameter, bool groupElement)
+QListWidgetItem* TableViewPanel::addItem(Parameter *parameter, bool groupElement)
 {
 	QString parameterName = parameter->getName();
 	Parameter::PinType pin = parameter->getPinType();
@@ -344,7 +344,7 @@ QListWidgetItem* TestPanel::addItem(Parameter *parameter, bool groupElement)
 //!
 //! Updates the panel if the node model changes
 //!
-void TestPanel::update()
+void TableViewPanel::update()
 {
 	m_ListNodes->clear();
 
@@ -373,7 +373,7 @@ void TestPanel::update()
 //!
 //! Updates the scene and the panel if a node is selected in the panel
 //!
-void TestPanel::nodeSelected(QListWidgetItem * listItem)
+void TableViewPanel::nodeSelected(QListWidgetItem * listItem)
 {
 	QString nodeName = listItem->text();
 	Node *selectedNode = m_nodeModel->getNode(nodeName);
@@ -386,7 +386,7 @@ void TestPanel::nodeSelected(QListWidgetItem * listItem)
 //!
 //! \param description boolean value of the action´s state
 //!
-void TestPanel::showDiscription(bool description)
+void TableViewPanel::showDiscription(bool description)
 {
 	m_description = description;
 	updateSelectedNode(m_node);

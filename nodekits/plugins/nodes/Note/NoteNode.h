@@ -22,16 +22,16 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 */
 
 //!
-//! \file "TestNode.h"
-//! \brief Header file for TestNode class.
+//! \file "NoteNode.h"
+//! \brief Header file for NoteNode class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \version    1.0
 //! \date       18.05.2009 (last updated)
 //!
 
-#ifndef TESTNODE_H
-#define TESTNODE_H
+#ifndef NoteNode_H
+#define NoteNode_H
 
 #include <Node.h>
 
@@ -45,7 +45,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class for a node that is used for debugging purposes.
 //!
-class TestNode : public Node
+class NoteNode : public Node
 {
 
     Q_OBJECT
@@ -54,21 +54,21 @@ class TestNode : public Node
 public: // constructors and destructors
 
     //!
-    //! Constructor of the TestNode class.
+    //! Constructor of the NoteNode class.
     //!
     //! \param name The name for the new node.
     //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
     //!
-    TestNode ( const QString &name, ParameterGroup *parameterRoot );
+    NoteNode ( const QString &name, ParameterGroup *parameterRoot );
 
     //!
-    //! Destructor of the TestNode class.
+    //! Destructor of the NoteNode class.
     //!
     //! Defined virtual to guarantee that the destructor of a derived class
     //! will be called if the instance of the derived class is saved in a
     //! variable of its parent class type.
     //!
-    virtual ~TestNode ();
+    virtual ~NoteNode ();
 
 };
 

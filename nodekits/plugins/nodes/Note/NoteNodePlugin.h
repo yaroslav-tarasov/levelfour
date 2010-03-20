@@ -22,53 +22,39 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 */
 
 //!
-//! \file "TestNode.h"
-//! \brief Header file for TestNode class.
+//! \file "NoteNodePlugin.h"
+//! \brief Header file for NoteNodePlugin class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
+//! \version    0.1
+//! \date       11.02.2009 (last updated)
 //!
 
-#ifndef TESTNODE_H
-#define TESTNODE_H
+#ifndef NoteNodePLUGIN_H
+#define NoteNodePLUGIN_H
 
-#include <Node.h>
-
-// OGRE
-#include <Ogre.h>
-#if (OGRE_PLATFORM  == OGRE_PLATFORM_WIN32)
-#include <windows.h>
-#endif
+#include <NodeTypeInterface.h>
 
 
 //!
-//! Class for a node that is used for debugging purposes.
+//! Plugin class for creating ReferenceDataNode objects.
 //!
-class TestNode : public Node
+class NoteNodePlugin : public QObject, public NodeTypeInterface
 {
 
     Q_OBJECT
-    ADD_INSTANCE_COUNTER
+    Q_INTERFACES(NodeTypeInterface)
 
-public: // constructors and destructors
+public: // functions
 
     //!
-    //! Constructor of the TestNode class.
+    //! Creates a node of this node type.
     //!
     //! \param name The name for the new node.
     //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
+    //! \return A pointer to the new node.
     //!
-    TestNode ( const QString &name, ParameterGroup *parameterRoot );
-
-    //!
-    //! Destructor of the TestNode class.
-    //!
-    //! Defined virtual to guarantee that the destructor of a derived class
-    //! will be called if the instance of the derived class is saved in a
-    //! variable of its parent class type.
-    //!
-    virtual ~TestNode ();
+    virtual Node * createNode ( const QString &name, ParameterGroup *parameterRoot );
 
 };
 
