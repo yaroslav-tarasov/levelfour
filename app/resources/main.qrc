@@ -30,7 +30,7 @@
         <file alias="documentationIcon" >icons/interface/book_open.png</file>
         <file alias="curveEditorIcon" >icons/interface/chart_curve.png</file>
         <file alias="hierarchyEditorIcon" >icons/interface/chart_organisation.png</file>
-        <file alias="parameterEditorIcon" >icons/interface/layout_edit.png</file>
+        <file alias="parameterEditorIcon" >icons/interface/application_edit.png</file>
         <file alias="newIcon" >icons/interface/page.png</file>
         <file alias="historyIcon" >icons/interface/report.png</file>
         <file alias="clearHistoryIcon" >icons/interface/report_delete.png</file>
@@ -110,7 +110,7 @@
         <file alias="aquatreeLogo" >images/aquatree.png</file>
         <file alias="brainpetsLogo" >images/brainpets.png</file>
         <file alias="filmakademieLogo" >images/filmakademie_210x26.png</file>
-        <file alias="splash" >images/frapper_splash.png</file>
+        <file alias="splash" >images/splash.png</file>
         <file alias="konstanzLogo" >images/filmakademie_210x26.png</file>
         <file alias="konstanzLogo" >images/filmakademie_210x26.png</file>
         <file alias="refreshIcon" >icons/interface/arrow_refresh.png</file>

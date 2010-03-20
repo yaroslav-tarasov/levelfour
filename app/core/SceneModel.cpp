@@ -474,6 +474,8 @@ void SceneModel::createScene ( daeElement *rootElement )
                                         daeElement *parameterElement = parameterElements.get(i);
                                         if (QString(parameterElement->getElementName()) == "frapper_parameter") {
 											const QString &parameterName = QString::fromStdString(parameterElement->getAttribute("name"));
+											if (parameterName == "AU_AngerC")
+												int debug = 1;
                                             const QString &parameterValue = QString::fromStdString(parameterElement->getAttribute("value"));
 											const QString &parameterState = QString::fromStdString(parameterElement->getAttribute("state"));
 											daeElement *keysElement = parameterElement->getChild("keys");
@@ -484,16 +486,17 @@ void SceneModel::createScene ( daeElement *rootElement )
 													numberParameter = dynamic_cast<NumberParameter *>(rootGroup->getParameter(parameterName));
 												else {
 													numberParameter = new NumberParameter(parameterName, Parameter::T_Float, parameterValue);
-													numberParameter->setPinType(Parameter::PT_Output);
+													//numberParameter->setPinType(Parameter::PT_Output);
+													rootGroup->addParameter(numberParameter);
 												}
-												rootGroup->addParameter(numberParameter);
 												daeTArray<daeSmartRef<daeElement>> &keyElements = keysElement->getChildren();
-												for (size_t j = 0; j < keyElements.getCount(); ++j) {
-													daeElement *keyElement = keyElements.get(j);
-													const QString &keyIndex = QString::fromStdString(keyElement->getAttribute("index"));
-													const QString &keyValue = QString::fromStdString(keyElement->getAttribute("value"));
-													numberParameter->addKeyPresorted(new Key(keyIndex.toDouble(), keyValue.toDouble()));
-												}
+												if (numberParameter->isEmpty()) 
+													for (size_t j = 0; j < keyElements.getCount(); ++j) {
+														daeElement *keyElement = keyElements.get(j);
+														const QString &keyIndex = QString::fromStdString(keyElement->getAttribute("index"));
+														const QString &keyValue = QString::fromStdString(keyElement->getAttribute("value"));
+														numberParameter->addKeyPresorted(new Key(keyIndex.toDouble(), keyValue.toDouble()));
+													}
 											}
 											node->setValue(parameterName, parameterValue);
 											if (parameterState == "false")
@@ -597,8 +600,7 @@ QString SceneModel::createObject ( const QString &typeName, const QString &name 
     connect(this, SIGNAL(currentFrameSet(int)), node, SIGNAL(frameChanged(int)));
     
 	// create the delete object connection
-	connect(node, SIGNAL(deleteObject(const QString &)), SLOT(deleteObject(const QString &)));
-
+	connect(node, SIGNAL(sendDeleteConnection(Connection *)), SLOT(connectionDestroyed(Connection *)));
 	connect(node, SIGNAL(selectDeselectObject(const QString &)), SLOT(selectDeselectObject(const QString &)));
 
     // check if the created node is a camera node
@@ -1140,13 +1142,11 @@ void SceneModel::deleteSelected ()
         m_nodeModel->beginUpdate();
         for (int i = 0; i < nodeObjectsToDelete.size(); ++i) {
             QString name = nodeObjectsToDelete.at(i);
-            
-            //NILZ: TODO: Remove. Just a HACK for SolverNode.
             Node* node = m_nodeModel->getNode(name);
-            if (node)
-                node->prepareDelete();
-            
+              
             // obtain the node graphics item from the node graphics item map
+			if (name == "resultDataToParameter")
+				int debug = 1;
             NodeGraphicsItem *nodeGraphicsItem = dynamic_cast<NodeGraphicsItem *>(m_graphicsItemMap[name]);
             if (nodeGraphicsItem)
                 // reset the node graphics item
@@ -1198,33 +1198,8 @@ void SceneModel::deleteSelected ()
         m_nodeModel->beginUpdate();
         for (int i = 0; i < connectionObjectsToDelete.size(); ++i) {
             QString name = connectionObjectsToDelete.at(i);
-
-            // obtain the connection graphics item from the connection graphics item map
-            ConnectionGraphicsItem *connectionGraphicsItem = dynamic_cast<ConnectionGraphicsItem *>(m_connectionGraphicsItemMap[name]);
-            
-            // delete the node graphics item
-            if (connectionGraphicsItem) {
-                // remove the node graphics item from the graphics scene
-                if (m_graphicsScene)
-                    m_graphicsScene->removeItem(connectionGraphicsItem);
-                
-                // remove the connection graphics item from the connected node graphics items
-                NodeGraphicsItem *startNodeItem = connectionGraphicsItem->getStartNodeItem();
-                if (startNodeItem)
-                    startNodeItem->removeConnectionItem(connectionGraphicsItem);
-                
-                NodeGraphicsItem *endNodeItem = connectionGraphicsItem->getEndNodeItem();
-                if (endNodeItem)
-                    endNodeItem->removeConnectionItem(connectionGraphicsItem);
-
-                // delete the graphics item and remove it from the item map
-                delete connectionGraphicsItem;
-                m_connectionGraphicsItemMap.remove(name);
-            }
-
-            // delete the connection from the node model
-            m_nodeModel->deleteConnection(name);
-
+			// delete connection
+			deleteConnection(name);
             ++progress;
             connectionProgressDialog.setValue(progress);
         }
@@ -1852,16 +1827,17 @@ void SceneModel::selectionModelSelectionChanged ( const QItemSelection &selected
 //!
 void SceneModel::connectionDestroyed ( Connection *connection )
 {
-    if (connection) {
+	bool deleteGraphicsItem = false;
+	ConnectionGraphicsItem *graphicsItem = dynamic_cast<ConnectionGraphicsItem *>(sender());
+    if (graphicsItem)
+		deleteGraphicsItem = true;
+
+	if (connection) {
+		m_nodeModel->beginUpdate();
         unsigned int connectionId = connection->getId();
-        m_nodeModel->deleteConnection(QString::number(connectionId));
+		deleteConnection(QString::number(connectionId), deleteGraphicsItem);
+		m_nodeModel->endUpdate();
     }
-        //if (connection) {
-    //    unsigned int connectionId = connection->getId();
-    //    selectObject("");
-    //    selectObject(QString::number(connectionId));
-    //    deleteSelected();
-    //}
 }
 
 
@@ -2168,6 +2144,36 @@ void SceneModel::updateActions ()
 }
 
 
+void SceneModel::deleteConnection (const QString &name, bool deleteGraphicItem /*= false*/ )
+{
+    // obtain the connection graphics item from the connection graphics item map
+    ConnectionGraphicsItem *connectionGraphicsItem = dynamic_cast<ConnectionGraphicsItem *>(m_connectionGraphicsItemMap[name]);
+    
+    // delete the node graphics item
+    if (connectionGraphicsItem && !deleteGraphicItem) {
+        // remove the node graphics item from the graphics scene
+        if (m_graphicsScene)
+            m_graphicsScene->removeItem(connectionGraphicsItem);
+        
+        // remove the connection graphics item from the connected node graphics items
+        NodeGraphicsItem *startNodeItem = connectionGraphicsItem->getStartNodeItem();
+        if (startNodeItem)
+            startNodeItem->removeConnectionItem(connectionGraphicsItem);
+        
+        NodeGraphicsItem *endNodeItem = connectionGraphicsItem->getEndNodeItem();
+        if (endNodeItem)
+            endNodeItem->removeConnectionItem(connectionGraphicsItem);
+
+        // delete the graphics item and remove it from the item map
+        delete connectionGraphicsItem;
+        m_connectionGraphicsItemMap.remove(name);
+    }
+
+    // delete the connection from the node model
+    m_nodeModel->deleteConnection(name);
+}
+
+
 //!
 //! Decodes the given position for node graphics items from a COLLADA scene
 //! file.
@@ -2252,7 +2258,6 @@ void SceneModel::createDaeElements ( ParameterGroup *parameterGroup, daeElement 
                 frapperParameterElement->setAttribute("name", parameterName.toStdString().c_str());
                 frapperParameterElement->setAttribute("value", parameterValue.toStdString().c_str());
                 frapperParameterElement->setAttribute("state", parameterState.toStdString().c_str());
-
 				if (numberParameter && numberParameter->isAnimated() && numberParameter->getNode()->isSaveable()) {
 					daeElement *keysElement = frapperParameterElement->add("keys");
 					QList<Key *> *keyList = numberParameter->getKeys();

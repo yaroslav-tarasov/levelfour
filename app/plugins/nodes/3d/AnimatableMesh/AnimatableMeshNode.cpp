@@ -190,8 +190,6 @@ void AnimatableMeshNode::updateAll ()
         // If AUs are not manually controlled nothing to do here
         double progress = 0.0;
         progress = parameter->getValue(true).toDouble();
-		if (parameter->getName() == "AU_BrowU_RAU1_2")
-			int debug = 1;
         const QVariantList &parameterValueList = parameter->getValueList();
         for (unsigned int i = 1; i < parameterValueList.size(); ++i) {
             const QVariant &value = parameterValueList[i]; 

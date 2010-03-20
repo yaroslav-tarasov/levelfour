@@ -490,16 +490,15 @@ void NodeModel::deleteConnection ( const QString &name )
     // delete the connection
     delete connection;
     connection = 0;
-    if (targetParameter)
+
+	mutexLocker.unlock();
+    DEBUG_LOG_UNLOCK("NodeModel::deleteConnnection");
+
+	if (targetParameter)
         targetParameter->reset();
 
-
-
-    // remove the object from the maps
+	// remove the object from the maps
     m_connectionMap.remove(name);
-
-    mutexLocker.unlock();
-    DEBUG_LOG_UNLOCK("NodeModel::deleteConnnection");
 
     // notify connected objects that the node has been deleted
     //emit nodeDeleted(name);

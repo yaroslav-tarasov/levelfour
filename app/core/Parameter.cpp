@@ -844,14 +844,11 @@ Parameter::~Parameter ()
     QList<Connection *> connections = m_connectionMap.values();
     for (int i = 0; i < connections.size(); ++i) {
         Connection *connection = connections.at(i);
-        if (connection->getTargetParameter() == this) {
+        if (connection->getTargetParameter() == this)
             connection->setTargetParameter(0);
-            delete connection;
-        }
-        else {
+        else
             connection->setSourceParameter(0);
-            delete connection;
-        }
+		getNode()->deleteConnection(connection);
     }
 
     foreach(AbstractParameter *abstractParameter, m_affectedParameters) {
