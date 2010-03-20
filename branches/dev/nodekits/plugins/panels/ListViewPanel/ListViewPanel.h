@@ -23,8 +23,8 @@ http://www.gnu.org/copyleft/lesser.txt.
 */
 
 //!
-//! \file "TestPanel.h"
-//! \brief Header file for TestPanel class.
+//! \file "ListViewPanel.h"
+//! \brief Header file for ListViewPanel class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
@@ -33,17 +33,17 @@ http://www.gnu.org/copyleft/lesser.txt.
 //! \date       24.06.2009 (last updated)
 //!
 
-#ifndef TestPanel_H
-#define TestPanel_H
+#ifndef ListViewPanel_H
+#define ListViewPanel_H
 
-#include <FrapperPrerequisites.h>
-#include <ViewPanel.h>
-#include <Node.h>
-#include <Parameter.h>
-#include <NumberParameter.h>
-#include <FilenameParameter.h>
-#include <EnumerationParameter.h>
-#include <ParameterPlugin.h>
+#include <FrapperPrerequisites>
+#include <ViewPanel>
+#include <Node>
+#include <Parameter>
+#include <NumberParameter>
+#include <FilenameParameter>
+#include <EnumerationParameter>
+#include <ParameterPlugin>
 #include <QtGui/QListWidget>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
@@ -52,7 +52,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 //!
 //! Class representing a view for displaying and editing parameters of nodes.
 //!
-class TestPanel : public ViewPanel
+class ListViewPanel : public ViewPanel
 {
 
     Q_OBJECT
@@ -60,21 +60,21 @@ class TestPanel : public ViewPanel
 public: // constructors and destructors
 
     //!
-    //! Constructor of the TestPanel class.
+    //! Constructor of the ListViewPanel class.
     //!
     //! \param parent The parent widget the created instance will be a child of.
     //! \param flags Extra widget options.
     //!
-    TestPanel ( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
+    ListViewPanel ( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
 
     //!
-    //! Destructor of the TestPanel class.
+    //! Destructor of the ListViewPanel class.
     //!
     //! Defined virtual to guarantee that the destructor of a derived class
     //! will be called if the instance of the derived class is saved in a
     //! variable of its parent class type.
     //!
-    virtual ~TestPanel ();
+    virtual ~ListViewPanel ();
 
 public slots: //
 
@@ -101,7 +101,7 @@ public: // functions
 	QListWidgetItem* addItem(Parameter *parameter, bool groupElement);
 
 	//!
-	//! Fills the given tool bars with actions for the TestPanel view.
+	//! Fills the given tool bars with actions for the ListViewPanel view.
 	//!
 	//! \param mainToolBar The main tool bar to fill with actions.
 	//! \param panelToolBar The panel tool bar to fill with actions.

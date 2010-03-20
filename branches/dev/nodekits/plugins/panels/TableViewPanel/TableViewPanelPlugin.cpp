@@ -23,41 +23,34 @@ http://www.gnu.org/copyleft/lesser.txt.
 */
 
 //!
-//! \file "TestPanelPlugin.h"
-//! \brief Header file for TestPanelPlugin class.
+//! \file "TableViewPanelPlugin.cpp"
+//! \brief Implementation file for TableViewPanelPlugin class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \version    0.1
 //! \date       11.02.2009 (last updated)
 //!
 
-#ifndef TestPanelPLUGIN_H
-#define TestPanelPLUGIN_H
+#include "TableViewPanelPlugin.h"
+#include "TableViewPanel.h"
+#include <QtCore/QtPlugin>
 
-#include <PanelTypeInterface.h>
+
+///
+/// Public Functions
+///
 
 
 //!
-//! Plugin class for creating ReferenceDataNode objects.
+//! Creates a panel of this panel type.
 //!
-class TestPanelPlugin : public QObject, public PanelTypeInterface
+//! \param parent The parent widget of the panel.
+//! \return A pointer to the new panel.
+//!
+Panel * TableViewPanelPlugin::createPanel( QWidget *parent)
 {
-
-    Q_OBJECT
-    Q_INTERFACES(PanelTypeInterface)
-
-public: // functions
-
-    //!
-    //! Creates a node of this node type.
-    //!
-    //! \param name The name for the new node.
-    //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
-    //! \return A pointer to the new node.
-    //!
-    virtual Panel * createPanel ( QWidget *parent );
-
-};
+    return new TableViewPanel(parent);
+}
 
 
-#endif
+Q_EXPORT_PLUGIN2(TableViewPanelplugin, TableViewPanelPlugin)

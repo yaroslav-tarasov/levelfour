@@ -1,4 +1,3 @@
 project(widgets)
 
-add_subdirectory(universalGraph)
-
+add_subdirectory(Test)
