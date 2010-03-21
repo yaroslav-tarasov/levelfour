@@ -45,7 +45,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! The default size of frame rectangles (should be odd numbers).
 //!
-const QSize TimelineWidget::DefaultFrameSize = QSize(9, 17); 
+const QSize TimelineWidget::DefaultFrameSize = QSize(9, 37); 
 
 
 ///
@@ -78,8 +78,8 @@ TimelineWidget::TimelineWidget ( QWidget *parent /* = 0 */, Qt::WindowFlags flag
     setMinimumHeight(m_frameHeight + 20);
     setMouseTracking(true);
     setFocusPolicy(Qt::StrongFocus);
-
-    // define colors to use for the current frame line edit
+	
+	// define colors to use for the current frame line edit
     QString buttonColorName (palette().color(QPalette::Button).name());
     QString midColorName (palette().color(QPalette::Button).name());
 
@@ -115,6 +115,11 @@ TimelineWidget::~TimelineWidget ()
 {
 }
 
+void TimelineWidget::drawBackground(QPainter *paint, const QRectF &rect)
+{
+	QColor bgColor = QColor(57,57,57);
+	paint->fillRect(rect, bgColor);
+}
 
 ///
 /// Public Functions
@@ -540,9 +545,9 @@ void TimelineWidget::paintImage ( const QRect &rectangle )
 
     // define colors
     QColor buttonColor (palette().color(QPalette::Button));
-    QColor midColor (palette().color(QPalette::Mid));
-    QColor baseColor (palette().color(QPalette::Base));
-    QColor windowColor (palette().color(QPalette::Window));
+    QColor midColor (58,58,58);
+    QColor baseColor (114,114,114);
+    QColor windowColor (114,114,114);
     QColor buttonTextColor (palette().color(QPalette::ButtonText));
     QColor buttonAlphaColor (buttonColor);
     buttonAlphaColor.setAlpha(200);
@@ -553,7 +558,7 @@ void TimelineWidget::paintImage ( const QRect &rectangle )
 
     // start painting on the image
     QPainter painter (&m_image);
-
+	
     // draw horizontal frame borders
     int rangeWidth = grabberWidth + (endFrame - startFrame + 1) * frameWidth + grabberWidth;
     if (rangeWidth > w)

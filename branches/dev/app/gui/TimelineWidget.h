@@ -181,6 +181,10 @@ signals: //
     //!
     void outFrameSet ( int index );
 
+protected: // functions
+
+	void drawBackground (QPainter * paint, const QRectF & rect);
+
 protected: // event handlers
 
     //!

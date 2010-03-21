@@ -175,15 +175,15 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
 
     // define background color
     QColor backgroundColor;
-	QColor lightBackground = QColor(108,108,108);
-	QColor darkBackground = QColor(100,100,100);
+	QColor lightBackground = QColor(190,190,190);
+	QColor darkBackground = QColor(90,90,90);
 
     if (widget)
         backgroundColor = darkBackground;
     else
         backgroundColor = lightBackground;
     if (m_hovered) // isUnderMouse() didn't always work here
-        backgroundColor = QColor(90,90,90);
+        backgroundColor = m_color;
 
     // draw selection border
     if (isSelected()) {
@@ -195,7 +195,11 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
     // set up the node's background gradient
 	
     QLinearGradient linearGradient (rect().left(), 0, rect().right(), 0);
-    linearGradient.setColorAt(0.7, backgroundColor);
+    
+	linearGradient.setColorAt(0, darkBackground);
+	linearGradient.setColorAt(0.2, lightBackground);
+	linearGradient.setColorAt(0.5, QColor(200,200,200));
+	linearGradient.setColorAt(0.8, lightBackground);
 	
     if (m_node && m_node->isEvaluated())
         linearGradient.setColorAt(1, backgroundColor);
@@ -205,7 +209,7 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
     // draw the node's shape
     QBrush gradientBrush (linearGradient);
     if (isEnabled() && m_node && m_node->isEvaluated())
-        painter->setPen(QPen(QColor (200,200,200), 1));
+        painter->setPen(QPen(QColor (15,15,15), 1));
     else
         painter->setPen(QPen(QColor (145,145,145), 1));
     
