@@ -49,10 +49,10 @@
 			osg::notify(osg::FATAL) << "Failed in osgDB::writeNodeFile().\n";
 	}
 
-	osg::Cylinder *createCylinder(osg::Vec3 startPoint, osg::Vec3 endPoint)
+	osg::Cylinder *createCylinder(osg::Vec3 startPoint, osg::Vec3 endPoint, float weight)
 	{
 		const osg::Vec3 rotAxis = osg::Vec3(0.0f, 1.0f, 0.0f); //Axis around which the cylinder will be rotated
-		float radius = 0.2f;
+		float radius = weight/15;
 		osg::Vec3 center = (startPoint + endPoint)/2;
 		osg::Vec3 diff = endPoint - startPoint;
 		float height = diff.length();
@@ -63,11 +63,12 @@
 		return cylinder;
 	}
 
-	void constructScene(Graph &g, PositionMap &positionMap)
+	void constructScene(Graph &g, PositionMap &positionMap, WeightPropertyMap &weightMap)
 	{
 		//Create a cube for each vertex and a cylinder for each edge
 		//Add all cubes and cylinders to a Geode
 		float cubeSize = 1.f;
+		float weight;
 		osg::Vec3 position1;
 		osg::Vec3 position2;
 		osg::ref_ptr<osg::ShapeDrawable> cube;
@@ -83,7 +84,8 @@
 			for (boost::tie(ei,edge_end) = out_edges(*i, g); ei != edge_end; ++ei)
 			{
 				position2 = osg::Vec3( positionMap[target(*ei, g)][0], 0.f, positionMap[target(*ei, g)][1] );
-				line = new osg::ShapeDrawable( createCylinder(position1, position2) );
+				weight = weightMap[*ei];
+				line = new osg::ShapeDrawable( createCylinder(position1, position2, weight) );
 				geode->addDrawable(line);
 			}
 		}
@@ -132,6 +134,6 @@
 		}
 
 		// create an OSG scene and save it as an osg file
-		constructScene(g, positionMap);
+		constructScene(g, positionMap, weightPropertyMap);
 		return 0;
 	}
