@@ -48,6 +48,8 @@ http://www.gnu.org/copyleft/lesser.txt.
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QItemSelection>
+#include <QTreeView>
+
 
 //!
 //! Class representing a view for displaying and editing parameters of nodes.

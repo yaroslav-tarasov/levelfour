@@ -14,16 +14,16 @@ include(${QT_USE_FILE})
 
 # global include directories
 include_directories(  
-			${frapper_SOURCE_DIR} 
-			${frapper_BINARY_DIR}
-			${frapper_INCLUDE_DIR}
-			${frapper_LIB_DIR}
+			$ENV{FRAPPER_HOME}/src
+			$ENV{FRAPPER_HOME}/bin
+			$ENV{FRAPPER_HOME}/inc
+			$ENV{FRAPPER_HOME}/lib
 			$ENV{OGRE_HOME}/include
 		    )
 
 # global link directories
 link_directories(
-			${frapper_BINARY_DIR}
+			$ENV{FRAPPER_HOME}/lib
 			${QT_LIBRARY_DIR}
 			$ENV{OGRE_HOME}/lib
 			)
