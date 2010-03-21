@@ -9,6 +9,7 @@
                 definition from the paneltype.dtd file.
 -->
 
-  <!DOCTYPE nodetype SYSTEM "paneltype.dtd">
-  <paneltype name="Test Panel" plugin="testpanel.dll" >
+<!DOCTYPE nodetype SYSTEM "paneltype.dtd">
+<paneltype name="Tree View" plugin="treeviewpanel.dll" icon=":/pluginIcon" >
+
 </paneltype>
