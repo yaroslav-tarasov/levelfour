@@ -29,7 +29,6 @@
 		double weight;
 	};
 
-
 	typedef boost::adjacency_list<boost::listS,
             boost::listS, boost::undirectedS,
             VertexProperties, EdgeProperty> Graph;
@@ -40,16 +39,18 @@
 	typedef boost::graph_traits<Graph>::vertex_descriptor VertexDescriptor;
 
 
-	void saveOsgFile(osg::ref_ptr<osg::Node> sceneGraph) {
+	void saveOsgFile(osg::ref_ptr<osg::Node> sceneGraph)
+	{
 		if (!sceneGraph.valid())
 			osg::notify(osg::FATAL) << "Failed in saveOsgFile\n";
 
-		bool result = osgDB::writeNodeFile( *(sceneGraph.get()), "SASN2.osg" );
+		bool result = osgDB::writeNodeFile( *(sceneGraph.get()), "SASN.osg" );
 		if( !result )
 			osg::notify(osg::FATAL) << "Failed in osgDB::writeNodeFile().\n";
 	}
 
-	void constructScene(Graph &g, PositionMap &positionMap) {
+	void constructScene(Graph &g, PositionMap &positionMap)
+	{
 		
 		//Create a cube for each vertex and add all cubes to a Geode
 		float cubeSize = 1.f;
@@ -80,10 +81,6 @@
 			vertexIdPropertyMap[vd] = i;
 		}
 
-		// Create property maps for vertex position and for edge weight
-		PositionMap positionMap = boost::get(&VertexProperties::point, g);
-		WeightPropertyMap weightPropertyMap = boost::get(&EdgeProperty::weight, g);
-
 		// add edges to the graph object
 		add_edge(vertex(0,g), vertex(1,g), EdgeProperty(1), g);
 		add_edge(vertex(1,g), vertex(2,g), EdgeProperty(1), g);
@@ -94,6 +91,11 @@
 		add_edge(vertex(6,g), vertex(7,g), EdgeProperty(1), g);
 		add_edge(vertex(7,g), vertex(0,g), EdgeProperty(1), g);
 			
+
+		// Create property maps for vertex position and for edge weight
+		PositionMap positionMap = boost::get(&VertexProperties::point, g);
+		WeightPropertyMap weightPropertyMap = boost::get(&EdgeProperty::weight, g);
+
 		// apply Boost's circle layout
 		boost::circle_graph_layout(g, positionMap, 100);
 
@@ -103,7 +105,7 @@
 							boost::layout_tolerance<>(), 1, vertexIdPropertyMap);
 		if (!retval)
 		{
-			 std::cout << "kamada_kaway_spring_layout returned false";
+			 std::cout << "kamada_kawai_spring_layout returned false";
 		}
 
 		// create an OSG scene and save it as an osg file
