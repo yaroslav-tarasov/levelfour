@@ -10,7 +10,7 @@ CBoostPositionMapData::~CBoostPositionMapData()
 
 }
 
-void CBoostPositionMapData::setPositionMap(sandra::PositionMap* positionMap)
+void CBoostPositionMapData::setPositionMap(graphdefs::PositionMap* positionMap)
 {
 	m_positionMap = positionMap;
 }
@@ -29,7 +29,7 @@ GCF_BEGIN_QUERY_TABLE(CBoostPositionMapData)
 	GCF_IMPLEMENTS(IBoostPositionMapIOData)
 GCF_END_QUERY_TABLE(CBoostPositionMapData)
 
-sandra::PositionMap* CBoostPositionMapData::getBoostPositionMap()
+graphdefs::PositionMap* CBoostPositionMapData::getBoostPositionMap()
 {
 	return m_positionMap;
 }

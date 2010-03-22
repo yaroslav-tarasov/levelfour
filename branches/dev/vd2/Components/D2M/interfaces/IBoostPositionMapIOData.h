@@ -8,7 +8,7 @@
 class IBoostPositionMapIOData : virtual public IVisSystemNodeIOData
 {
 public:
-	virtual sandra::PositionMap* getBoostPositionMap() = 0;
+	virtual graphdefs::PositionMap* getBoostPositionMap() = 0;
 };
 
 #endif

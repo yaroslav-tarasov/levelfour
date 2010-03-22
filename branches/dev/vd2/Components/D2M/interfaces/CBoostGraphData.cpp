@@ -10,7 +10,7 @@ CBoostGraphData::~CBoostGraphData()
 
 }
 
-void CBoostGraphData::setGraph(sandra::Graph* graph)
+void CBoostGraphData::setGraph(graphdefs::Graph* graph)
 {
 	m_graph = graph;
 }
@@ -29,7 +29,7 @@ GCF_BEGIN_QUERY_TABLE(CBoostGraphData)
 	GCF_IMPLEMENTS(IBoostGraphIOData)
 GCF_END_QUERY_TABLE(CBoostGraphData)
 
-sandra::Graph* CBoostGraphData::getBoostGraph()
+graphdefs::Graph* CBoostGraphData::getBoostGraph()
 {
 	return m_graph;
 }
