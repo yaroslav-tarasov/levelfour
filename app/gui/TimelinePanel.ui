@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>577</width>
-    <height>96</height>
+    <height>185</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,6 +30,9 @@
     <layout class="QVBoxLayout" name="ui_verticalLayout">
      <item>
       <widget class="QScrollArea" name="ui_scrollArea">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(114, 114, 114);</string>
+       </property>
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>
        </property>
@@ -204,25 +207,24 @@
     <string>Scale to Fit [F]</string>
    </property>
   </action>
-	 <action name="ui_realtimeAction">
-		 <property name="checkable">
-			 <bool>true</bool>
-		 </property>
-		 <property name="checked">
-			 <bool>true</bool>
-		 </property>
-		 <property name="icon">
-			 <iconset>
-				 <normaloff>:/realtimeIcon</normaloff>:/realtimeIcon
-			 </iconset>
-		 </property>
-		 <property name="text">
-			 <string>Realtime Mode</string>
-		 </property>
-		 <property name="toolTip">
-			 <string>Realtime Mode [R]</string>
-		 </property>
-	 </action>
+  <action name="ui_realtimeAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/realtimeIcon</normaloff>:/realtimeIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Realtime Mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Realtime Mode [R]</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
