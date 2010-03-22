@@ -23,8 +23,8 @@ http://www.gnu.org/copyleft/lesser.txt.
 */
 
 //!
-//! \file "TableViewPanel.cpp"
-//! \brief Implementation file for TableViewPanel class.
+//! \file "NodeTreePanel.cpp"
+//! \brief Implementation file for NodeTreePanel class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
@@ -33,57 +33,51 @@ http://www.gnu.org/copyleft/lesser.txt.
 //! \date       07.12.2009 (last updated)
 //!
 
-#include "TableViewPanel.h"
+#include "NodeTreePanel.h"
 #include "ParameterTabPage.h"
 #include "DoubleSlider.h"
 #include "NodeFactory.h"
 #include "Log.h"
-#include <QTableWidget>
-/*
-#include <QtGui/QTabWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QCheckBox>
-#include <QtGui/QDoubleSpinBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QFileDialog>
-#include <QtGui/QColorDialog>
-#include <QtGui/QMenu>
-#include <QtGui/QClipboard>
-*/
 
-
+#include <QTreeView>
+#include <QFileSystemModel>
 
 Q_DECLARE_METATYPE(Ogre::Vector3)
-
 
 ///
 /// Constructors and Destructors
 ///
 
 //!
-//! Constructor of the TableViewPanel class.
+//! Constructor of the NodeTreePanel class.
 //!
 //! \param parent The parent widget the created instance will be a child of.
 //! \param flags Extra widget options.
 //!
-TableViewPanel::TableViewPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags /* = 0 */ ) :
+NodeTreePanel::NodeTreePanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags /* = 0 */ ) :
     ViewPanel(ViewPanel::T_PluginPanel, parent, flags)
 {
+	QString templatesDirectory;
+	QTreeView* dirView;
+	QFileSystemModel* dirModel;
+	// New Dir Browser
+	dirView = new QTreeView(this);
+	dirModel = new QFileSystemModel;
 
-	QTableWidget* tableView;
-	tableView = new QTableWidget(this);
+	templatesDirectory = "patterns";
 
-	// Why doesn't this work?
-	tableView->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	dirModel->setRootPath(templatesDirectory);
+	dirView->setModel(dirModel);
+	dirView->setRootIndex(dirModel->setRootPath(templatesDirectory));
 
-	// temporary for viewing purposes
-	tableView->setRowCount(20);
-	tableView->setColumnCount(5);
+	// Show only the file name
+	for(int i=1; i<dirModel->columnCount(); i++)
+		   dirView->setColumnHidden(i, true);
 
-	m_description = false;
+	// Not working...
+	dirView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	dirView->setAlternatingRowColors(true);
+
 }
 
 
@@ -94,7 +88,7 @@ TableViewPanel::TableViewPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flag
 //! will be called if the instance of the derived class is saved in a
 //! variable of its parent class type.
 //!
-TableViewPanel::~TableViewPanel ()
+NodeTreePanel::~NodeTreePanel ()
 {
 
 }
@@ -110,22 +104,21 @@ TableViewPanel::~TableViewPanel ()
 //! \param *nodeModel NodeModel of the scene
 //! \param *sceneModel SceneModel of the scene
 //!
-void TableViewPanel::registerControl(NodeModel *nodeModel, SceneModel *sceneModel)
+void NodeTreePanel::registerControl(NodeModel *nodeModel, SceneModel *sceneModel)
 {
 	m_nodeModel = nodeModel;
 	m_sceneModel = sceneModel;
-	
 	update();	
 }
 
 
 //!
-//! Fills the given tool bars with actions for the TableViewPanel view.
+//! Fills the given tool bars with actions for the NodeTreePanel view.
 //!
 //! \param mainToolBar The main tool bar to fill with actions.
 //! \param panelToolBar The panel tool bar to fill with actions.
 //!
-void TableViewPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar )
+void NodeTreePanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar )
 {
 	QAction *ui_descriptionAction;
 	ui_descriptionAction = new QAction(this);
@@ -146,30 +139,11 @@ void TableViewPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBa
 ///
 
 //!
-//! Is called a node is selected
-//!
-//! \param selecedNode the selected wich was selected
-//!
-
-//!
-//! Updates the panel if the node model changes
-//!
-void TableViewPanel::update()
-{
-
-}
-
-//!
-//! Updates the scene and the panel if a node is selected in the panel
-//!
-
-
-//!
 //! Sets the description mode
 //!
 //! \param description boolean value of the action´s state
 //!
-void TableViewPanel::showDiscription(bool description)
+void NodeTreePanel::showDescription(bool description)
 {
 	m_description = description;
 }
