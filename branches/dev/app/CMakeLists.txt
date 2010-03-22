@@ -33,16 +33,7 @@ link_directories(
 			)
 
 # build options
-option( FRAPPER_BUILD_NODES_3D "Build 3d nodes." TRUE )
-option( FRAPPER_BUILD_NODES_AGENT "Build Agent nodes." TRUE )
-option( FRAPPER_BUILD_NODES_COMPOSITING "Build Compositing nodes." TRUE )
-option( FRAPPER_BUILD_NODES_INPUT "Build Input nodes." TRUE )
-option( FRAPPER_BUILD_NODES_MISC "Build Misc nodes." TRUE )
-option( FRAPPER_BUILD_NODES_NPR "Build NPR nodes." TRUE )
-option( FRAPPER_BUILD_NODES_SHADING "Build Shading nodes." TRUE )
-option( FRAPPER_BUILD_NODES_ADDITIONAL "Build Additional nodes." TRUE )
-option( FRAPPER_BUILD_PANELS "Build Panel plugins." TRUE )
-option( FRAPPER_BUILD_WIDGETS "Build Widget plugins." TRUE )
+
 
 # set install dirs
 IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
