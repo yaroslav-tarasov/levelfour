@@ -23,8 +23,8 @@ http://www.gnu.org/copyleft/lesser.txt.
 */
 
 //!
-//! \file "TableViewPanel.h"
-//! \brief Header file for TableViewPanel class.
+//! \file "NodeTreePanel.h"
+//! \brief Header file for NodeTreePanel class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
@@ -33,8 +33,8 @@ http://www.gnu.org/copyleft/lesser.txt.
 //! \date       24.06.2009 (last updated)
 //!
 
-#ifndef TableViewPanel_H
-#define TableViewPanel_H
+#ifndef NodeTreePanel_H
+#define NodeTreePanel_H
 
 #include "FrapperPrerequisites.h"
 #include "ViewPanel.h"
@@ -44,15 +44,13 @@ http://www.gnu.org/copyleft/lesser.txt.
 #include "FilenameParameter.h"
 #include "EnumerationParameter.h"
 #include "ParameterPlugin.h"
-#include <QtGui/QListWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QItemSelection>
+#include <QTreeView>
+
 
 //!
-//! Class representing a view for displaying and editing parameters of nodes.
+//! Class representing a view for displaying available patterns (composites of nodes for visual encoding).
 //!
-class TableViewPanel : public ViewPanel
+class NodeTreePanel : public ViewPanel
 {
 
     Q_OBJECT
@@ -60,21 +58,21 @@ class TableViewPanel : public ViewPanel
 public: // constructors and destructors
 
     //!
-    //! Constructor of the TableViewPanel class.
+    //! Constructor of the NodeTreePanel class.
     //!
     //! \param parent The parent widget the created instance will be a child of.
     //! \param flags Extra widget options.
     //!
-    TableViewPanel ( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
+    NodeTreePanel ( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
 
     //!
-    //! Destructor of the TableViewPanel class.
+    //! Destructor of the NodeTreePanel class.
     //!
     //! Defined virtual to guarantee that the destructor of a derived class
     //! will be called if the instance of the derived class is saved in a
     //! variable of its parent class type.
     //!
-    virtual ~TableViewPanel ();
+    virtual ~NodeTreePanel ();
 
 public slots: //
 
@@ -92,7 +90,7 @@ public: // functions
 	virtual void registerControl(NodeModel *nodeModel, SceneModel *sceneModel);
 
 	//!
-	//! Fills the given tool bars with actions for the TableViewPanel view.
+	//! Fills the given tool bars with actions for the NodeTreePanel view.
 	//!
 	//! \param mainToolBar The main tool bar to fill with actions.
 	//! \param panelToolBar The panel tool bar to fill with actions.
@@ -102,14 +100,9 @@ public: // functions
 private slots: //
 
 	//!
-	//! Updates the panel if the node model changes
-	//!
-	void update();
-
-	//!
 	//! Sets the description mode
 	//!
-	void showDiscription(bool description);
+	void showDescription(bool description);
 
 private: // data
 
