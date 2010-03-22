@@ -9,7 +9,7 @@ public:
 	CBoostGraphData();
 	~CBoostGraphData();
 
-	void setGraph(sandra::Graph* graph);
+	void setGraph(graphdefs::Graph* graph);
 
 	//IVisSystemNodeIOData implementation
 	void* dataPointer();
@@ -20,10 +20,10 @@ public:
 	bool destroySelf();
 
 	//IBoostGraphIOData implementation
-	sandra::Graph* getBoostGraph();
+	graphdefs::Graph* getBoostGraph();
 
 private:
-	sandra::Graph* m_graph;
+	graphdefs::Graph* m_graph;
 };
 
 #endif

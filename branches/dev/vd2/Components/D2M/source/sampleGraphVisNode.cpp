@@ -35,7 +35,7 @@ DEFINE_VIS_NODE(sampleGraphVisNode, CGenericVisNodeBase)
         new CGenericVisNodeConnectionPath(
                 "GraphOutput",                              // Name of the path
                 IVisSystemNodeConnectionPath::OutputPath,   // Path type can be OutputPath or InputPath
-				"sandra::Graph",                            // Data type of the path
+				"graphdefs::Graph",                            // Data type of the path
                 0,                                          // Path index (don't change)
                 false                                       // Allow Multiple Inputs Flag
             )
@@ -44,7 +44,7 @@ DEFINE_VIS_NODE(sampleGraphVisNode, CGenericVisNodeBase)
         new CGenericVisNodeConnectionPath(
                 "PositionMap",                              // Name of the path
                 IVisSystemNodeConnectionPath::OutputPath,   // Path type can be OutputPath or InputPath
-				"sandra::PositionMap",						// Data type of the path
+				"graphdefs::PositionMap",						// Data type of the path
                 0,                                          // Path index (don't change)
                 false                                       // Allow Multiple Inputs Flag
             )
@@ -54,9 +54,9 @@ DEFINE_VIS_NODE(sampleGraphVisNode, CGenericVisNodeBase)
 struct sampleGraphVisNodeData
 {
 	sampleGraphVisNodeData() : graphAddress(0), vertexIdMapAddress(0), positionMapAddress(0) {}
-	sandra::Graph* graphAddress;
-	sandra::VertexIndexPropertyMap* vertexIdMapAddress;
-	sandra::PositionMap* positionMapAddress;
+	graphdefs::Graph* graphAddress;
+	graphdefs::VertexIndexPropertyMap* vertexIdMapAddress;
+	graphdefs::PositionMap* positionMapAddress;
 	CBoostGraphData graphData;
 	CBoostPositionMapData positionMapData;
 };
@@ -65,19 +65,19 @@ sampleGraphVisNode::sampleGraphVisNode()
 {
     sampleGraphVisNode::InitializeNodeDesc();
     d = new sampleGraphVisNodeData;
-	sandra::Graph *g = new sandra::Graph();
+	graphdefs::Graph *g = new graphdefs::Graph();
 	d->graphAddress = g;
 
-	sandra::VertexIndexPropertyMap vertexIdPropertyMap = boost::get(&sandra::VertexProperties::index, *g);
+	graphdefs::VertexIndexPropertyMap vertexIdPropertyMap = boost::get(&graphdefs::VertexProperties::index, *g);
 
 	// add vertices to the graph object
 	for (int i = 0; i < 8; ++i) {
-		sandra::VertexDescriptor vd = boost::add_vertex(*g);
+		graphdefs::VertexDescriptor vd = boost::add_vertex(*g);
 		vertexIdPropertyMap[vd] = i;
 	}
 
 	// Create property maps for vertex position //and for edge weight
-	d->positionMapAddress = &(boost::get(&sandra::VertexProperties::point, *g));
+	d->positionMapAddress = &(boost::get(&graphdefs::VertexProperties::point, *g));
 	//WeightPropertyMap weightPropertyMap = boost::get(&EdgeProperty::weight, g);
 
 
