@@ -5,7 +5,7 @@
 #include <boost/graph/topology.hpp>
 #include "IVisSystemNodeIOData.h"
 
-namespace sandra
+namespace graphdefs
 {
 
 	typedef boost::square_topology<>::point_type Point;
@@ -36,7 +36,7 @@ namespace sandra
 class IBoostGraphIOData : virtual public IVisSystemNodeIOData
 {
 public:
-	virtual sandra::Graph* getBoostGraph() = 0;
+	virtual graphdefs::Graph* getBoostGraph() = 0;
 };
 
 #endif

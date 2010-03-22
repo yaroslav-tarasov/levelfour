@@ -41,7 +41,7 @@ DEFINE_VIS_NODE(circleGraphLayoutVisNode, CGenericVisNodeBase)
         new CGenericVisNodeConnectionPath(
                 "GraphInput",                               // Name of the path
                 IVisSystemNodeConnectionPath::InputPath,    // Path type can be OutputPath or InputPath
-				"sandra::Graph",                            // Data type of the path
+				"graphdefs::Graph",                            // Data type of the path
                 0,                                          // Path index (don't change)
                 false                                       // Allow Multiple Inputs Flag
             )
@@ -51,7 +51,7 @@ DEFINE_VIS_NODE(circleGraphLayoutVisNode, CGenericVisNodeBase)
         new CGenericVisNodeConnectionPath(
                 "PositionMapInput",                         // Name of the path
                 IVisSystemNodeConnectionPath::InputPath,    // Path type can be OutputPath or InputPath
-				"sandra::PositionMap",                      // Data type of the path
+				"graphdefs::PositionMap",                      // Data type of the path
                 0,                                          // Path index (don't change)
                 false                                       // Allow Multiple Inputs Flag
             )
@@ -61,7 +61,7 @@ DEFINE_VIS_NODE(circleGraphLayoutVisNode, CGenericVisNodeBase)
         new CGenericVisNodeConnectionPath(
                 "GraphOutput",                              // Name of the path
                 IVisSystemNodeConnectionPath::OutputPath,   // Path type can be OutputPath or InputPath
-				"sandra::Graph",                            // Data type of the path
+				"graphdefs::Graph",                            // Data type of the path
                 0,                                          // Path index (don't change)
                 false                                       // Allow Multiple Inputs Flag
             )
@@ -71,7 +71,7 @@ DEFINE_VIS_NODE(circleGraphLayoutVisNode, CGenericVisNodeBase)
         new CGenericVisNodeConnectionPath(
                 "PositionMapOutput",                       // Name of the path
                 IVisSystemNodeConnectionPath::OutputPath,   // Path type can be OutputPath or InputPath
-				"sandra::PositionMap",                      // Data type of the path
+				"graphdefs::PositionMap",                      // Data type of the path
                 0,                                          // Path index (don't change)
                 false                                       // Allow Multiple Inputs Flag
             )
@@ -81,8 +81,8 @@ DEFINE_VIS_NODE(circleGraphLayoutVisNode, CGenericVisNodeBase)
 struct circleGraphLayoutVisNodeData
 {
 	circleGraphLayoutVisNodeData() : graphAddress(0), positionMapAddress(0) {}
-	sandra::Graph* graphAddress;
-	sandra::PositionMap* positionMapAddress;
+	graphdefs::Graph* graphAddress;
+	graphdefs::PositionMap* positionMapAddress;
 	CBoostGraphData graphData;
 	CBoostPositionMapData positionMapData;
 };
@@ -115,7 +115,7 @@ void circleGraphLayoutVisNode::calcLayout()
 {
 	if( d->graphAddress != 0 && d->positionMapAddress != 0 )
 	{
-		sandra::PositionMap positionMap = *d->positionMapAddress;
+		graphdefs::PositionMap positionMap = *d->positionMapAddress;
 
 		// apply Boost's circle layout
 		boost::circle_graph_layout(*d->graphAddress, positionMap, 100);
@@ -127,7 +127,7 @@ void circleGraphLayoutVisNode::calcLayout()
 		osg::ref_ptr<osg::ShapeDrawable> cube;
 		osg::ref_ptr<osg::Geode> geode = new osg::Geode;
 
-		boost::graph_traits<sandra::Graph>::vertex_iterator i, end;
+		boost::graph_traits<graphdefs::Graph>::vertex_iterator i, end;
 		for (boost::tie(i, end) = boost::vertices(*d->graphAddress); i != end; ++i) {
 			position = osg::Vec3( positionMap[*i][0], 0.f, positionMap[*i][1] );
 			cube = new osg::ShapeDrawable( new osg::Box(position, cubeSize) );
@@ -164,7 +164,7 @@ bool circleGraphLayoutVisNode::setInput(IVisSystemNodeConnectionPath* path, IVis
 		bool success = inputData->queryInterface("IBoostGraphIOData", (void**)&data);
 		if(success && data)
 		{
-			sandra::Graph* graph = data->getBoostGraph();
+			graphdefs::Graph* graph = data->getBoostGraph();
 			d->graphAddress = graph;
 			calcLayout();
 			return true;
@@ -179,7 +179,7 @@ bool circleGraphLayoutVisNode::setInput(IVisSystemNodeConnectionPath* path, IVis
 		bool success = inputData->queryInterface("IBoostPositionMapIOData", (void**)&data);
 		if(success && data)
 		{
-			sandra::PositionMap* positionMap = data->getBoostPositionMap();
+			graphdefs::PositionMap* positionMap = data->getBoostPositionMap();
 			d->positionMapAddress = positionMap;
 			calcLayout();
 			return true;

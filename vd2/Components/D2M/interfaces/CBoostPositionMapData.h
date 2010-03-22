@@ -9,7 +9,7 @@ public:
 	CBoostPositionMapData();
 	~CBoostPositionMapData();
 
-	void setPositionMap(sandra::PositionMap* positionMap);
+	void setPositionMap(graphdefs::PositionMap* positionMap);
 
 	//IVisSystemNodeIOData implementation
 	void* dataPointer();
@@ -20,10 +20,10 @@ public:
 	bool destroySelf();
 
 	//IBoostGraphIOData implementation
-	sandra::PositionMap* getBoostPositionMap();
+	graphdefs::PositionMap* getBoostPositionMap();
 
 private:
-	sandra::PositionMap* m_positionMap;
+	graphdefs::PositionMap* m_positionMap;
 };
 
 #endif
