@@ -34,20 +34,10 @@ http://www.gnu.org/copyleft/lesser.txt.
 //!
 
 #include "NodeTreePanel.h"
-#include "ParameterTabPage.h"
-#include "DoubleSlider.h"
-#include "NodeFactory.h"
-#include "Log.h"
-
-#include <QTreeView>
-#include <QFileSystemModel>
-
-Q_DECLARE_METATYPE(Ogre::Vector3)
 
 ///
 /// Constructors and Destructors
 ///
-
 //!
 //! Constructor of the NodeTreePanel class.
 //!
@@ -57,26 +47,9 @@ Q_DECLARE_METATYPE(Ogre::Vector3)
 NodeTreePanel::NodeTreePanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags /* = 0 */ ) :
     ViewPanel(ViewPanel::T_PluginPanel, parent, flags)
 {
-	QString templatesDirectory;
-	QTreeView* dirView;
-	QFileSystemModel* dirModel;
-	// New Dir Browser
-	dirView = new QTreeView(this);
-	dirModel = new QFileSystemModel;
+	setupUi(this);
 
-	templatesDirectory = "patterns";
-
-	dirModel->setRootPath(templatesDirectory);
-	dirView->setModel(dirModel);
-	dirView->setRootIndex(dirModel->setRootPath(templatesDirectory));
-
-	// Show only the file name
-	for(int i=1; i<dirModel->columnCount(); i++)
-		   dirView->setColumnHidden(i, true);
-
-	// Not working...
-	dirView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	dirView->setAlternatingRowColors(true);
+	m_description = false;
 
 }
 
@@ -96,22 +69,6 @@ NodeTreePanel::~NodeTreePanel ()
 ///
 /// Public Funcitons
 ///
-
-
-//!
-//! Connects the panel with the scene.
-//!
-//! \param *nodeModel NodeModel of the scene
-//! \param *sceneModel SceneModel of the scene
-//!
-void NodeTreePanel::registerControl(NodeModel *nodeModel, SceneModel *sceneModel)
-{
-	m_nodeModel = nodeModel;
-	m_sceneModel = sceneModel;
-	update();	
-}
-
-
 //!
 //! Fills the given tool bars with actions for the NodeTreePanel view.
 //!
@@ -134,10 +91,19 @@ void NodeTreePanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar
 	mainToolBar->addAction(ui_descriptionAction);
 }
 
+//!
+//! Returns the tree view that is used to display the scene objects.
+//!
+//! \return The tree view that is used to display the scene objects.
+//!
+QTreeView * NodeTreePanel::getNodeTreePanel ()
+{
+    return nodeTreeView;
+}
+
 ///
 /// Private Slots
 ///
-
 //!
 //! Sets the description mode
 //!
