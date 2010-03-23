@@ -3,6 +3,7 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE)
 SET(CMAKE_DEBUG_POSTFIX _d)
 
 include_directories(
+			${CMAKE_CURRENT_BINARY_DIR}			
 			${CMAKE_CURRENT_SOURCE_DIR}
 			)
 
@@ -16,7 +17,11 @@ set( nodetreepanel_moc ${nodetreepanel_moc}
 			nodetreepanel.h
 			nodetreepanelPlugin.h
 			)
-			
+
+set( nodetreepanel_ui ${nodetreepanel_ui}
+			NodeTreePanel.ui
+			)
+				
 set( nodetreepanel_src ${nodetreepanel_src}	
 			nodetreepanel.cpp
 			nodetreepanelPlugin.cpp
@@ -28,8 +33,10 @@ set( nodetreepanel_res ${nodetreepanel_res}
 
 # Create moc files		   
 qt4_wrap_cpp(nodetreepanel_cxx ${nodetreepanel_moc})
+qt4_wrap_ui(nodetreepanel_ui_h ${nodetreepanel_ui})
 
 # Create source groups
+source_group("Ui Files" FILES ${nodetreepanel_ui})
 source_group("Moc Files" FILES ${nodetreepanel_cxx})
 source_group("Generated Files" FILES ${nodetreepanel_cxx} ${nodetreepanel_ui_h})
 source_group("Header Files" FILES ${nodetreepanel_h})
@@ -41,7 +48,7 @@ IF (WIN32)
 ENDIF(WIN32)
 
 # Create static library
-add_library(nodetreepanel SHARED ${nodetreepanel_src} ${nodetreepanel_cxx} )
+add_library(nodetreepanel SHARED ${nodetreepanel_src} ${nodetreepanel_cxx} ${nodetreepanel_ui_h} )
 
 # Add library dependencies
 target_link_libraries(nodetreepanel
