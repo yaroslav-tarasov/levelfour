@@ -38,19 +38,13 @@ http://www.gnu.org/copyleft/lesser.txt.
 
 #include "FrapperPrerequisites.h"
 #include "ViewPanel.h"
-#include "Node.h"
-#include "Parameter.h"
-#include "NumberParameter.h"
-#include "FilenameParameter.h"
-#include "EnumerationParameter.h"
-#include "ParameterPlugin.h"
-#include <QTreeView>
+#include "ui_PatternExplorerPanel.h"
 
 
 //!
 //! Class representing a view for displaying available patterns (composites of nodes for visual encoding).
 //!
-class PatternExplorerPanel : public ViewPanel
+class PatternExplorerPanel : public ViewPanel, protected Ui::PatternExplorerPanel
 {
 
     Q_OBJECT
@@ -80,15 +74,6 @@ public slots: //
 
 public: // functions
 
-
-	//!
-	//! Connects the panel with the scene.
-	//!
-	//! \param *nodeModel NodeModel of the scene
-	//! \param *sceneModel SceneModel of the scene
-	//!
-	virtual void registerControl(NodeModel *nodeModel, SceneModel *sceneModel);
-
 	//!
 	//! Fills the given tool bars with actions for the PatternExplorerPanel view.
 	//!
@@ -96,6 +81,13 @@ public: // functions
 	//! \param panelToolBar The panel tool bar to fill with actions.
 	//!
 	void fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar );
+	
+	//!
+    //! Returns the tree view that is used to display the scene objects.
+    //!
+    //! \return The tree view that is used to display the scene objects.
+    //!
+    QTreeView * getPatternExplorerViewPanel ();
 
 private slots: //
 
@@ -105,22 +97,6 @@ private slots: //
 	void showDescription(bool description);
 
 private: // data
-
-
-	//!
-	//! Node model
-	//!
-	NodeModel *m_nodeModel;
-
-	//!
-	//! selected node
-	//!
-	Node *m_node;
-
-	//!
-	//! Scene model
-	//!
-	SceneModel *m_sceneModel;
 
 	//!
 	//! Bool if detailed description should be used
