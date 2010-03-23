@@ -34,15 +34,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 //!
 
 #include "PatternExplorerPanel.h"
-#include "ParameterTabPage.h"
-#include "DoubleSlider.h"
-#include "NodeFactory.h"
-#include "Log.h"
-
-#include <QTreeView>
 #include <QFileSystemModel>
-
-Q_DECLARE_METATYPE(Ogre::Vector3)
 
 ///
 /// Constructors and Destructors
@@ -57,26 +49,22 @@ Q_DECLARE_METATYPE(Ogre::Vector3)
 PatternExplorerPanel::PatternExplorerPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags /* = 0 */ ) :
     ViewPanel(ViewPanel::T_PluginPanel, parent, flags)
 {
+	setupUi(this);
+
 	QString templatesDirectory;
-	QTreeView* dirView;
 	QFileSystemModel* dirModel;
 	// New Dir Browser
-	dirView = new QTreeView(this);
 	dirModel = new QFileSystemModel;
 
 	templatesDirectory = "patterns";
 
 	dirModel->setRootPath(templatesDirectory);
-	dirView->setModel(dirModel);
-	dirView->setRootIndex(dirModel->setRootPath(templatesDirectory));
+	patternExplorerView->setModel(dirModel);
+	patternExplorerView->setRootIndex(dirModel->setRootPath(templatesDirectory));
 
 	// Show only the file name
 	for(int i=1; i<dirModel->columnCount(); i++)
-		   dirView->setColumnHidden(i, true);
-
-	// Not working...
-	dirView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	dirView->setAlternatingRowColors(true);
+		   patternExplorerView->setColumnHidden(i, true);
 
 }
 
@@ -99,20 +87,6 @@ PatternExplorerPanel::~PatternExplorerPanel ()
 
 
 //!
-//! Connects the panel with the scene.
-//!
-//! \param *nodeModel NodeModel of the scene
-//! \param *sceneModel SceneModel of the scene
-//!
-void PatternExplorerPanel::registerControl(NodeModel *nodeModel, SceneModel *sceneModel)
-{
-	m_nodeModel = nodeModel;
-	m_sceneModel = sceneModel;
-	update();	
-}
-
-
-//!
 //! Fills the given tool bars with actions for the PatternExplorerPanel view.
 //!
 //! \param mainToolBar The main tool bar to fill with actions.
@@ -132,6 +106,16 @@ void PatternExplorerPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panel
 	connect(ui_descriptionAction, SIGNAL(toggled(bool)), this, SLOT(showDiscription(bool)));
 
 	mainToolBar->addAction(ui_descriptionAction);
+}
+
+//!
+//! Returns the tree view that is used to display the scene objects.
+//!
+//! \return The tree view that is used to display the scene objects.
+//!
+QTreeView * PatternExplorerPanel::getPatternExplorerViewPanel ()
+{
+    return patternExplorerView;
 }
 
 ///

@@ -34,30 +34,6 @@ http://www.gnu.org/copyleft/lesser.txt.
 //!
 
 #include "TableViewPanel.h"
-#include "ParameterTabPage.h"
-#include "DoubleSlider.h"
-#include "NodeFactory.h"
-#include "Log.h"
-#include <QTableWidget>
-/*
-#include <QtGui/QTabWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QCheckBox>
-#include <QtGui/QDoubleSpinBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QFileDialog>
-#include <QtGui/QColorDialog>
-#include <QtGui/QMenu>
-#include <QtGui/QClipboard>
-*/
-
-
-
-Q_DECLARE_METATYPE(Ogre::Vector3)
-
 
 ///
 /// Constructors and Destructors
@@ -73,15 +49,11 @@ TableViewPanel::TableViewPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flag
     ViewPanel(ViewPanel::T_PluginPanel, parent, flags)
 {
 
-	QTableWidget* tableView;
-	tableView = new QTableWidget(this);
+	setupUi(this);
 
-	// Why doesn't this work?
-	tableView->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-	// temporary for viewing purposes
+	// Temporary for viewing purposes
 	tableView->setRowCount(20);
-	tableView->setColumnCount(5);
+	tableView->setColumnCount(8);
 
 	m_description = false;
 }
@@ -102,23 +74,6 @@ TableViewPanel::~TableViewPanel ()
 ///
 /// Public Funcitons
 ///
-
-
-//!
-//! Connects the panel with the scene.
-//!
-//! \param *nodeModel NodeModel of the scene
-//! \param *sceneModel SceneModel of the scene
-//!
-void TableViewPanel::registerControl(NodeModel *nodeModel, SceneModel *sceneModel)
-{
-	m_nodeModel = nodeModel;
-	m_sceneModel = sceneModel;
-	
-	update();	
-}
-
-
 //!
 //! Fills the given tool bars with actions for the TableViewPanel view.
 //!
@@ -145,31 +100,21 @@ void TableViewPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBa
 /// Private Slots
 ///
 
+//! Returns the tree view that is used to display the scene objects.
 //!
-//! Is called a node is selected
+//! \return The tree view that is used to display the scene objects.
 //!
-//! \param selecedNode the selected wich was selected
-//!
-
-//!
-//! Updates the panel if the node model changes
-//!
-void TableViewPanel::update()
+QTableWidget * TableViewPanel::getTableViewPanel ()
 {
-
+    return tableView;
 }
-
-//!
-//! Updates the scene and the panel if a node is selected in the panel
-//!
-
 
 //!
 //! Sets the description mode
 //!
 //! \param description boolean value of the action´s state
 //!
-void TableViewPanel::showDiscription(bool description)
+void TableViewPanel::showDescription(bool description)
 {
 	m_description = description;
 }
