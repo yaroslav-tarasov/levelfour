@@ -38,26 +38,6 @@ http://www.gnu.org/copyleft/lesser.txt.
 #include <QtGui/QStandardItemModel>
 #include <QtGui/QItemSelectionModel>
 
-/*
-#include <QtGui/QTabWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QCheckBox>
-#include <QtGui/QDoubleSpinBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QFileDialog>
-#include <QtGui/QColorDialog>
-#include <QtGui/QMenu>
-#include <QtGui/QClipboard>
-*/
-
-
-
-Q_DECLARE_METATYPE(Ogre::Vector3)
-
-
 ///
 /// Constructors and Destructors
 ///
