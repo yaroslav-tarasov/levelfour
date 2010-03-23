@@ -38,23 +38,13 @@ http://www.gnu.org/copyleft/lesser.txt.
 
 #include "FrapperPrerequisites.h"
 #include "ViewPanel.h"
-#include "Node.h"
-#include "Parameter.h"
-#include "NumberParameter.h"
-#include "FilenameParameter.h"
-#include "EnumerationParameter.h"
-#include "ParameterPlugin.h"
-#include <QtGui/QListWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QItemSelection>
+#include "ui_ListViewPanel.h"
 
 //!
 //! Class representing a view for displaying and editing parameters of nodes.
 //!
-class ListViewPanel : public ViewPanel
+class ListViewPanel : public ViewPanel, protected Ui::ListViewPanel
 {
-
     Q_OBJECT
 
 public: // constructors and destructors
@@ -82,24 +72,6 @@ public slots: //
 
 public: // functions
 
-
-	//!
-	//! Connects the panel with the scene.
-	//!
-	//! \param *nodeModel NodeModel of the scene
-	//! \param *sceneModel SceneModel of the scene
-	//!
-	virtual void registerControl(NodeModel *nodeModel, SceneModel *sceneModel);
-
-	//!
-	//! Adds a item to the list
-	//!
-	//! \param parameter Parameter to be added to a list
-	//! \param groupElement true if element of a parameter group
-	//! \return the created QListWidgetItem
-	//!
-	QListWidgetItem* addItem(Parameter *parameter, bool groupElement);
-
 	//!
 	//! Fills the given tool bars with actions for the ListViewPanel view.
 	//!
@@ -108,24 +80,14 @@ public: // functions
 	//!
 	void fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar );
 
+	//!
+    //! Returns the tree view that is used to display the scene objects.
+    //!
+    //! \return The tree view that is used to display the scene objects.
+    //!
+    QListWidget * getListViewPanel ();
+
 private slots: //
-
-	//!
-	//! Is called a node is selected
-	//!
-	//! \param selecedNode the selected wich was selected
-	//!
-	void updateSelectedNode(Node * selectedNode);
-
-	//!
-	//! Updates the panel if the node model changes
-	//!
-	void update();
-
-	//!
-	//! Updates the scene and the panel if a node is selected in the panel
-	//!
-	void nodeSelected(QListWidgetItem * listItem); 
 
 	//!
 	//! Sets the description mode
@@ -134,41 +96,6 @@ private slots: //
 
 private: // data
 
-
-	//!
-	//! Node model
-	//!
-	NodeModel *m_nodeModel;
-
-	//!
-	//! selected node
-	//!
-	Node *m_node;
-
-	//!
-	//! Scene model
-	//!
-	SceneModel *m_sceneModel;
-
-	//!
-	//! List Widget to show all nodes in the scene
-	//!
-	QListWidget *m_ListNodes;
-
-	//!
-	//! List Widget to show all input parameters of the selected node
-	//!
-	QListWidget *m_InputParameters;
-
-	//!
-	//! List Widget to show all output parameters of the selected node
-	//!
-	QListWidget *m_OutputParameters;
-
-	//!
-	//! List Widget to show all non-pin parameters of the selected node
-	//!
-	QListWidget *m_NodeParameters;
 
 	//!
 	//! Bool if detailed description should be used

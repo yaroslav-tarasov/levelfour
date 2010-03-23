@@ -3,6 +3,7 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE)
 SET(CMAKE_DEBUG_POSTFIX _d)
 
 include_directories(
+			${CMAKE_CURRENT_BINARY_DIR}
 			${CMAKE_CURRENT_SOURCE_DIR}
 			)
 
@@ -16,6 +17,10 @@ set( listviewpanel_moc ${listviewpanel_moc}
 			listviewpanel.h
 			listviewpanelPlugin.h
 			)
+
+set( listviewpanel_ui ${listviewpanel_ui}
+			ListViewPanel.ui
+			)
 			
 set( listviewpanel_src ${listviewpanel_src}	
 			listviewpanel.cpp
@@ -28,8 +33,11 @@ set( listviewpanel_res ${listviewpanel_res}
 
 # Create moc files		   
 qt4_wrap_cpp(listviewpanel_cxx ${listviewpanel_moc})
+qt4_wrap_ui(listviewpanel_ui_h ${listviewpanel_ui})
+
 
 # Create source groups
+source_group("Ui Files" FILES ${listviewpanel_ui})
 source_group("Moc Files" FILES ${listviewpanel_cxx})
 source_group("Generated Files" FILES ${listviewpanel_cxx} ${listviewpanel_ui_h})
 source_group("Header Files" FILES ${listviewpanel_h})
@@ -41,7 +49,7 @@ IF (WIN32)
 ENDIF(WIN32)
 
 # Create static library
-add_library(listviewpanel SHARED ${listviewpanel_src} ${listviewpanel_cxx} )
+add_library(listviewpanel SHARED ${listviewpanel_src} ${listviewpanel_cxx} ${listviewpanel_ui_h} )
 
 # Add library dependencies
 target_link_libraries(listviewpanel

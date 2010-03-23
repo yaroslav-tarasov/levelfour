@@ -38,21 +38,13 @@ http://www.gnu.org/copyleft/lesser.txt.
 
 #include "FrapperPrerequisites.h"
 #include "ViewPanel.h"
-#include "Node.h"
-#include "Parameter.h"
-#include "NumberParameter.h"
-#include "FilenameParameter.h"
-#include "EnumerationParameter.h"
-#include "ParameterPlugin.h"
-#include <QtGui/QListWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QItemSelection>
+#include "ui_TableViewPanel.h"
+
 
 //!
 //! Class representing a view for displaying and editing parameters of nodes.
 //!
-class TableViewPanel : public ViewPanel
+class TableViewPanel : public ViewPanel, protected Ui::TableViewPanel
 {
 
     Q_OBJECT
@@ -82,15 +74,6 @@ public slots: //
 
 public: // functions
 
-
-	//!
-	//! Connects the panel with the scene.
-	//!
-	//! \param *nodeModel NodeModel of the scene
-	//! \param *sceneModel SceneModel of the scene
-	//!
-	virtual void registerControl(NodeModel *nodeModel, SceneModel *sceneModel);
-
 	//!
 	//! Fills the given tool bars with actions for the TableViewPanel view.
 	//!
@@ -99,35 +82,21 @@ public: // functions
 	//!
 	void fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar );
 
-private slots: //
+	//!
+    //! Returns the tree view that is used to display the scene objects.
+    //!
+    //! \return The tree view that is used to display the scene objects.
+    //!
+    QTableWidget * getTableViewPanel ();
 
-	//!
-	//! Updates the panel if the node model changes
-	//!
-	void update();
+private slots: //
 
 	//!
 	//! Sets the description mode
 	//!
-	void showDiscription(bool description);
+	void showDescription(bool description);
 
 private: // data
-
-
-	//!
-	//! Node model
-	//!
-	NodeModel *m_nodeModel;
-
-	//!
-	//! selected node
-	//!
-	Node *m_node;
-
-	//!
-	//! Scene model
-	//!
-	SceneModel *m_sceneModel;
 
 	//!
 	//! Bool if detailed description should be used

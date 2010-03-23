@@ -3,6 +3,7 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE)
 SET(CMAKE_DEBUG_POSTFIX _d)
 
 include_directories(
+			${CMAKE_CURRENT_BINARY_DIR}
 			${CMAKE_CURRENT_SOURCE_DIR}
 			)
 
@@ -16,7 +17,11 @@ set( patternexplorerpanel_moc ${patternexplorerpanel_moc}
 			patternexplorerpanel.h
 			patternexplorerpanelPlugin.h
 			)
-			
+
+set( patternexplorerpanel_ui ${patternexplorerpanel_ui}
+			PatternExplorerPanel.ui
+			)
+						
 set( patternexplorerpanel_src ${patternexplorerpanel_src}	
 			patternexplorerpanel.cpp
 			patternexplorerpanelPlugin.cpp
@@ -28,8 +33,11 @@ set( patternexplorerpanel_res ${patternexplorerpanel_res}
 
 # Create moc files		   
 qt4_wrap_cpp(patternexplorerpanel_cxx ${patternexplorerpanel_moc})
+qt4_wrap_ui(patternexplorerpanel_ui_h ${patternexplorerpanel_ui})
+
 
 # Create source groups
+source_group("Ui Files" FILES ${listviewpanel_ui})
 source_group("Moc Files" FILES ${patternexplorerpanel_cxx})
 source_group("Generated Files" FILES ${patternexplorerpanel_cxx} ${patternexplorerpanel_ui_h})
 source_group("Header Files" FILES ${patternexplorerpanel_h})
@@ -41,7 +49,7 @@ IF (WIN32)
 ENDIF(WIN32)
 
 # Create static library
-add_library(patternexplorerpanel SHARED ${patternexplorerpanel_src} ${patternexplorerpanel_cxx} )
+add_library(patternexplorerpanel SHARED ${patternexplorerpanel_src} ${patternexplorerpanel_cxx} ${patternexplorerpanel_ui_h} )
 
 # Add library dependencies
 target_link_libraries(patternexplorerpanel
