@@ -63,6 +63,10 @@ NetworkPanel::NetworkPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags /*
     connect(ui_displayPinsCollapsedAction, SIGNAL(triggered()), m_networkGraphicsView, SLOT(displayPinsCollapsed()));
     connect(ui_scrollbarsAction, SIGNAL(toggled(bool)), m_networkGraphicsView, SLOT(toggleScrollbars(bool)));
 
+	// added
+	connect(ui_zoomOutAction, SIGNAL(toggled(bool)), m_networkGraphicsView, SLOT(zoomOut()));
+	connect(ui_zoomInAction, SIGNAL(toggled(bool)), m_networkGraphicsView, SLOT(zoomIn()));
+
     // initialize scroll bars
     if (ui_scrollbarsAction->isChecked())
         ui_scrollbarsAction->toggle();
@@ -105,6 +109,9 @@ void NetworkPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar 
     mainToolBar->addAction(ui_displayPinsCollapsedAction);
     mainToolBar->addSeparator();
     mainToolBar->addAction(ui_scrollbarsAction);
+	mainToolBar->addSeparator();
+	mainToolBar->addAction(ui_zoomOutAction);
+	mainToolBar->addAction(ui_zoomInAction);
 }
 
 
