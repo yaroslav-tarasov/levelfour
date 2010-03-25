@@ -114,6 +114,28 @@
     <string>Toggles the display of scrollbars</string>
    </property>
   </action>
+
+  <action name="ui_zoomInAction">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/zoomInIcon</normaloff>:/zoomInIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+  </action>
+  <action name="ui_zoomOutAction">
+   <property name="icon">
+    <iconset resource="../main.qrc">
+     <normaloff>:/zoomOutIcon</normaloff>:/zoomOutIcon</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+  </action>
+
+
+
  </widget>
  <resources>
   <include location="../main.qrc"/>

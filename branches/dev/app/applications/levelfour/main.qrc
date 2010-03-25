@@ -146,5 +146,15 @@
     <file alias="radiobutton_checked" >../../resources/icons/interface/radiobutton_checked.png</file>
     <file alias="radiobutton_checked_hover" >../../resources/icons/interface/radiobutton_checked_hover.png</file>
     <file alias="radiobutton_checked_pressed" >../../resources/icons/interface/radiobutton_checked_pressed.png</file>
+
+    <file alias="zoomOutIcon" >../../resources/icons/interface/zoomout.png</file>
+    <file alias="zoomInIcon" >../../resources/icons/interface/zoomin.png</file>
+
+    <file alias="modelModeIcon" >../../resources/icons/interface/modelMode.png</file>
+    <file alias="editModeIcon" >../../resources/icons/interface/editMode.png</file>
+    <file alias="animationModeIcon" >../../resources/icons/interface/animationMode.png</file>
+    <file alias="analysisModeIcon" >../../resources/icons/interface/analysisMode.png</file>
+
+
   </qresource>
 </RCC>
