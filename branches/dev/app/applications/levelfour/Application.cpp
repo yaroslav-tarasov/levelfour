@@ -99,7 +99,7 @@ Application::Application ( const QString &organizationName, const QString &appli
     m_createMenu(new QMenu(tr("&Create"), m_menuParentWidget)),
     m_animationMenu(new QMenu(tr("&Animation"), m_menuParentWidget)),
     m_viewMenu(new QMenu(tr("&View"), m_menuParentWidget)),
-    m_windowMenu(new QMenu(tr("&Window"), m_menuParentWidget)),
+    m_windowMenu(new QMenu(tr("&Layout"), m_menuParentWidget)),
     m_helpMenu(new QMenu(tr("&Help"), m_menuParentWidget)),
     // application actions
     m_aboutApplicationAction(new QAction(QIcon(":/applicationIcon"), QString("%1 %2").arg(tr("&About")).arg(m_applicationName), this)),
@@ -144,6 +144,12 @@ Application::Application ( const QString &organizationName, const QString &appli
     m_closeWindowAction(new QAction(QIcon(":/removeWindowIcon"), tr("&Close"), this)),
     m_closeWindowAction2(new QAction(QIcon(":/removeWindowIcon"), tr("&Close Window"), this)),
     m_closeAdditionalWindowsAction(new QAction(QIcon(":/closeWindowsIcon"), tr("Close &All"), this)),
+	
+	m_modelLayoutModeAction(new QAction(QIcon(":/modelModeIcon"), tr("Model..."), this)),
+	m_editLayoutModeAction(new QAction(QIcon(":/editModeIcon"), tr("Edit..."), this)),
+	m_animateLayoutModeAction(new QAction(QIcon(":/animationModeIcon"), tr("Animate..."), this)),
+	m_analyzeLayoutModeAction(new QAction(QIcon(":/analysisModeIcon"), tr("Analysis..."), this)),
+
 	m_openWindowLayoutAction(new QAction(QIcon(":/openIcon"), tr("Open Layout..."), this)),
 	m_saveDefaultWindowLayoutAction(new QAction(QIcon(":/saveIcon"), tr("Save Default Layout"), this)),
 	m_saveAsNewWindowLayoutAction(new QAction(QIcon(":/saveIcon"), tr("Save Layout As..."), this)),
@@ -665,7 +671,25 @@ void Application::setUpActions ()
     connect(m_statusBarAction, SIGNAL(triggered()), SLOT(toggleStatusBar()));
 
     /// Window actions
+	
+	// Analyze Layout Mode Action
+    m_modelLayoutModeAction->setShortcut(tr("Ctrl+Shift+M"));
+    m_modelLayoutModeAction->setStatusTip(tr("Open a new window with a default panel layout"));
+    connect(m_modelLayoutModeAction, SIGNAL(triggered()), SLOT(openLayout("model.lt")));
 
+	m_editLayoutModeAction->setShortcut(tr("Ctrl+Shift+E"));
+    m_editLayoutModeAction->setStatusTip(tr("Open a new window with a default panel layout"));
+    connect(m_editLayoutModeAction, SIGNAL(triggered()), SLOT(openLayout("edit.lt")));
+
+	m_animateLayoutModeAction->setShortcut(tr("Ctrl+Shift+A"));
+    m_animateLayoutModeAction->setStatusTip(tr("Open a new window with a default panel layout"));
+    connect(m_animateLayoutModeAction, SIGNAL(triggered()), SLOT(openLayout("animate.lt")));
+	
+	m_analyzeLayoutModeAction->setShortcut(tr("Ctrl+Shift+Y"));
+    m_analyzeLayoutModeAction->setStatusTip(tr("Open a new window with a default panel layout"));
+    connect(m_analyzeLayoutModeAction, SIGNAL(triggered()), SLOT(openLayout("analyze.lt")));
+
+	/*
     // new window
     m_newWindowAction->setShortcut(tr("Ctrl+Shift+N"));
     m_newWindowAction->setStatusTip(tr("Open a new window with a default panel layout"));
@@ -696,6 +720,7 @@ void Application::setUpActions ()
     m_listWindowsAction->setStatusTip(tr("List the application's windows"));
     m_listWindowsAction->setEnabled(false);
     connect(m_listWindowsAction, SIGNAL(triggered()), SLOT(listWindows()));
+	*/
 
     /// Help actions
 
@@ -815,19 +840,15 @@ void Application::setUpMenus ()
     separatorAction1 = m_windowMenu->addSeparator();
     separatorAction2 = m_windowMenu->addSeparator();
     m_windowMenu->addActions(QList<QAction *>()
-        << m_newWindowAction
-        << m_duplicateWindowAction
-        << m_renameWindowAction
-        << m_closeWindowAction
-        << m_closeAdditionalWindowsAction
+        << m_modelLayoutModeAction
+        << m_editLayoutModeAction
+        << m_animateLayoutModeAction
+        << m_analyzeLayoutModeAction
         << separatorAction1
 		<< m_openWindowLayoutAction
 		<< m_saveAsNewWindowLayoutAction
 		<< m_saveDefaultWindowLayoutAction
-		<< separatorAction2
-        << m_listWindowsAction
-
-    );
+	);
 
     // help menu
     m_helpMenu->setObjectName("HelpMenu");

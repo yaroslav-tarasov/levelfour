@@ -591,6 +591,11 @@ private: // data: menu system
 	QAction *m_saveDefaultWindowLayoutAction;
     QAction *m_listWindowsAction;
 
+	QAction *m_modelLayoutModeAction;
+	QAction *m_editLayoutModeAction;
+	QAction *m_animateLayoutModeAction;
+	QAction *m_analyzeLayoutModeAction;
+
     // help actions
     QAction *m_documentationAction;
 
