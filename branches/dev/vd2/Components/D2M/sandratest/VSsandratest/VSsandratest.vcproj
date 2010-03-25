@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\L4\src\boost\boost_1_42"
+				AdditionalIncludeDirectories="D:\L4\src\boost\boost_1_42;../source"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -164,7 +164,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\source\GraphPropertyMapper.h"
+				>
+			</File>
+			<File
 				RelativePath="..\kamada_layout_example.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\TestPlotter.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\TestPlotter.h"
 				>
 			</File>
 		</Filter>
