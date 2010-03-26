@@ -612,6 +612,7 @@ void AnimatableMeshNode::parseMaterialParameters ()
                 Ogre::Pass* pass = passIter.getNext();
                 ParameterGroup *passGroup = new ParameterGroup("Pass: " + QString(pass->getName().c_str()));
                 subMeshGroup->addParameter(passGroup);
+				// fragment shader
                 if (pass->hasFragmentProgram()) {
                     ParameterGroup *progGroup = new ParameterGroup("FP: " + QString(pass->getFragmentProgram()->getName().c_str()));
                     passGroup->addParameter(progGroup);
@@ -621,10 +622,10 @@ void AnimatableMeshNode::parseMaterialParameters ()
                     const Ogre::GpuConstantDefinitionMap &fpParamMap = namedConstants.map;
                     //Ogre::GpuConstantDefinitionMap fpParamMap = fpParams->getConstantDefinitions().map;
                     Ogre::GpuConstantDefinitionMap::const_iterator fpParamIter;
-                    for (fpParamIter = fpParamMap.begin(); fpParamIter != fpParamMap.end(); ++fpParamIter) {
+					for (fpParamIter = fpParamMap.begin(); fpParamIter != fpParamMap.end(); ++fpParamIter) {
                         if	(fpParamIter->second.isFloat() && 
                             (fpParamIter->second.constType == Ogre::GpuConstantType::GCT_FLOAT1) &&
-                            (fpParamIter->first.find("[0]") == Ogre::String::npos)) {
+							(fpParamIter->first.find("[0]") == Ogre::String::npos)) {
                                 float value = *fpParams->getFloatPointer(fpParamIter->second.physicalIndex);
                                 NumberParameter *numberPara = new NumberParameter(QString(fpParamIter->first.c_str()), Parameter::Type::T_Float, value);
                                 numberPara->setInputMethod(NumberParameter::IM_SliderPlusSpinBox);
@@ -637,19 +638,52 @@ void AnimatableMeshNode::parseMaterialParameters ()
                         }
                     }
                 }
+				// vertex shader
                 if (pass->hasVertexProgram()) {
                     ParameterGroup *progGroup = new ParameterGroup("VP: " + QString(pass->getVertexProgram()->getName().c_str()));
                     passGroup->addParameter(progGroup);
                     Ogre::GpuProgramParametersSharedPtr vpParams = pass->getVertexProgramParameters();
                     Ogre::GpuConstantDefinitionMap vpParamMap = vpParams->getConstantDefinitions().map;
                     Ogre::GpuConstantDefinitionMap::iterator vpParamIter;
-                    for (vpParamIter = vpParamMap.begin(); vpParamIter != vpParamMap.end(); ++vpParamIter) {
+					for (vpParamIter = vpParamMap.begin(); vpParamIter != vpParamMap.end(); ++vpParamIter) {
                         if	(vpParamIter->second.isFloat() && 
                             (vpParamIter->second.constType == Ogre::GpuConstantType::GCT_FLOAT1) &&
-                            (vpParamIter->first.find("[0]") == Ogre::String::npos))
-                            progGroup->addParameter(new NumberParameter(vpParamIter->first.c_str(), Parameter::Type::T_Float, 0.0));
+							(vpParamIter->first.find("[0]") == Ogre::String::npos)) {
+						    float value = *vpParams->getFloatPointer(vpParamIter->second.physicalIndex);
+                            NumberParameter *numberPara = new NumberParameter(QString(vpParamIter->first.c_str()), Parameter::Type::T_Float, value);
+                            numberPara->setInputMethod(NumberParameter::IM_SliderPlusSpinBox);
+                            value = pow(10.0f, (float) ceil(log10(abs(value+0.001))));
+                            numberPara->setMinValue(-value);
+                            numberPara->setMaxValue( value);
+                            numberPara->setStepSize(value/100.0);
+                            progGroup->addParameter(numberPara);
+                            numberPara->setChangeFunction(SLOT(setMaterialParameter()));
+						}
                     }
-                }
+				}
+				// geometry shader
+				if (pass->hasGeometryProgram()) {
+					ParameterGroup *progGroup = new ParameterGroup("GP: " + QString(pass->getGeometryProgram()->getName().c_str()));
+                    passGroup->addParameter(progGroup);
+					Ogre::GpuProgramParametersSharedPtr gpParams = pass->getGeometryProgramParameters();
+                    Ogre::GpuConstantDefinitionMap gpParamMap = gpParams->getConstantDefinitions().map;
+                    Ogre::GpuConstantDefinitionMap::iterator gpParamIter;
+					for (gpParamIter = gpParamMap.begin(); gpParamIter != gpParamMap.end(); ++gpParamIter) {
+                        if	(gpParamIter->second.isFloat() && 
+                            (gpParamIter->second.constType == Ogre::GpuConstantType::GCT_FLOAT1) &&
+							(gpParamIter->first.find("[0]") == Ogre::String::npos)) {
+						    float value = *gpParams->getFloatPointer(gpParamIter->second.physicalIndex);
+                            NumberParameter *numberPara = new NumberParameter(QString(gpParamIter->first.c_str()), Parameter::Type::T_Float, value);
+                            numberPara->setInputMethod(NumberParameter::IM_SliderPlusSpinBox);
+                            value = pow(10.0f, (float) ceil(log10(abs(value+0.001))));
+                            numberPara->setMinValue(-value);
+                            numberPara->setMaxValue( value);
+                            numberPara->setStepSize(value/100.0);
+                            progGroup->addParameter(numberPara);
+                            numberPara->setChangeFunction(SLOT(setMaterialParameter()));
+						}
+                    }
+				}
             }
         }
     }
@@ -783,6 +817,11 @@ void AnimatableMeshNode::setMaterialParameter ()
                         Ogre::GpuProgramParametersSharedPtr vpParams = pass->getVertexProgramParameters();
                         if (vpParams->_findNamedConstantDefinition(numberParameter->getName().toStdString()) != 0)
                             vpParams->setNamedConstant(numberParameter->getName().toStdString(), (Ogre::Real) numberParameter->getValue().toDouble());
+                    }
+					if (pass->hasGeometryProgram()) {
+						Ogre::GpuProgramParametersSharedPtr gpParams = pass->getGeometryProgramParameters();
+                        if (gpParams->_findNamedConstantDefinition(numberParameter->getName().toStdString()) != 0)
+                            gpParams->setNamedConstant(numberParameter->getName().toStdString(), (Ogre::Real) numberParameter->getValue().toDouble());
                     }
                 }
             }

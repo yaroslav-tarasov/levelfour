@@ -396,7 +396,7 @@ public:
                 --nbr;
                 return Find_Chr(ref, search, nbr, (int) ref.find(search, pos+1));
             }
-        }
+        } const
 
         static inline int FindNbrChrs(std::string str, std::string set)
         {
