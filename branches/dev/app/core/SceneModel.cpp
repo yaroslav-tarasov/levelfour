@@ -474,8 +474,6 @@ void SceneModel::createScene ( daeElement *rootElement )
                                         daeElement *parameterElement = parameterElements.get(i);
                                         if (QString(parameterElement->getElementName()) == "frapper_parameter") {
 											const QString &parameterName = QString::fromStdString(parameterElement->getAttribute("name"));
-											if (parameterName == "AU_AngerC")
-												int debug = 1;
                                             const QString &parameterValue = QString::fromStdString(parameterElement->getAttribute("value"));
 											const QString &parameterState = QString::fromStdString(parameterElement->getAttribute("state"));
 											daeElement *keysElement = parameterElement->getChild("keys");
@@ -486,7 +484,6 @@ void SceneModel::createScene ( daeElement *rootElement )
 													numberParameter = dynamic_cast<NumberParameter *>(rootGroup->getParameter(parameterName));
 												else {
 													numberParameter = new NumberParameter(parameterName, Parameter::T_Float, parameterValue);
-													//numberParameter->setPinType(Parameter::PT_Output);
 													rootGroup->addParameter(numberParameter);
 												}
 												daeTArray<daeSmartRef<daeElement>> &keyElements = keysElement->getChildren();
