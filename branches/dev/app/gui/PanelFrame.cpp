@@ -211,6 +211,15 @@ PanelFrame::PanelFrame ( Panel::Type panelType, QWidget *parent /* = 0 */, Qt::W
     connect(this, SIGNAL(duplicateRequested(PanelFrame *)), window(), SLOT(duplicatePanelFrame(PanelFrame *)));
     connect(this, SIGNAL(extractRequested(PanelFrame *)), window(), SLOT(extractPanelFrame(PanelFrame *)), Qt::QueuedConnection);
     connect(this, SIGNAL(closeRequested(PanelFrame *)), window(), SLOT(closePanelFrame(PanelFrame *)), Qt::QueuedConnection);
+
+	// insert border widget to ui_vboxLayout at index 1 just after toolbar vbox
+	QString borderStyle ( "border-top: 1px solid #393939; border-bottom: 1px solid #959595" );
+	QFrame *borderFrame = new QFrame(this);
+	borderFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	borderFrame->setMinimumHeight(2);
+	borderFrame->setMaximumHeight(2);
+	borderFrame->setStyleSheet(borderStyle);
+	ui_vboxLayout->insertWidget(1, borderFrame);
 }
 
 

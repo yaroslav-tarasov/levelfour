@@ -210,7 +210,7 @@ void ViewportPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar
 
     // create the camera selection combo box
     m_cameraComboBox = new QComboBox(panelToolBar);
-    m_cameraComboBox->setMinimumHeight(22);
+    m_cameraComboBox->setMinimumHeight(15);
     connect(m_cameraComboBox, SIGNAL(currentIndexChanged(const QString &)), SLOT(selectCamera(const QString &)));
     //m_cameraComboBox->addItem(tr("Free Camera"));
     ui_saveViewAction->setEnabled(false);
