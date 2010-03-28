@@ -163,6 +163,7 @@ Window::~Window ()
 void Window::getLayoutSettings (QSettings &settings, QObject *rootChild) const
 {
 	QSplitter *splitter;
+	splitter->setHandleWidth(1);
 	PanelFrame *panelFrame;
 	const QObjectList &children = rootChild->children();
 
@@ -225,6 +226,7 @@ QWidget * Window::setLayoutSettings (QSettings &settings, QString index)
 
 	if (typeVariant.toString() == "Splitter") {
 		QSplitter *splitter = new QSplitter(this);
+		splitter->setHandleWidth(1);
 		splitter->addWidget(setLayoutSettings(settings, leftVariant.toString()));
 		splitter->addWidget(setLayoutSettings(settings, rightVariant.toString()));
 		splitter->restoreState(statesVariant.toByteArray());
@@ -249,6 +251,7 @@ QWidget * Window::setLayoutSettings (QSettings &settings, QString index)
 void Window::setLayoutIds (QObject *rootChild)
 {
 	QSplitter *splitter;
+	splitter->setHandleWidth(1);
 	PanelFrame *panelFrame;
 	static unsigned int counter = 0;
 	const QObjectList &children = rootChild->children();
@@ -456,12 +459,14 @@ void Window::closePanelFrame ( PanelFrame *panelFrame )
 
     // check if the parent widget is a splitter (which it should be at this point)
     QSplitter *parentSplitter = qobject_cast<QSplitter *>(panelFrame->parentWidget());
+	parentSplitter->setHandleWidth(1);
     if (parentSplitter) {
         // get a pointer to the other widget in the splitter
         int otherWidgetIndex = parentSplitter->indexOf(panelFrame) == 0;
         QWidget *otherWidget = parentSplitter->widget(otherWidgetIndex);
         // replace parent splitter in its parent splitter with the other widget
         QSplitter *parentParentSplitter = qobject_cast<QSplitter *>(parentSplitter->parentWidget());
+		parentParentSplitter->setHandleWidth(1);
         if (parentParentSplitter) {
             // save parent parent splitter's sizes
             QList<int> sizes = parentParentSplitter->sizes();
@@ -572,42 +577,26 @@ void Window::applyLayout ( const QString &layoutName, Panel::Type panelType /* =
 			PanelFrame *hierarchyPanelFrame = new PanelFrame(Panel::T_HierarchyEditor, this);
 			PanelFrame *parameterPanelFrame = new PanelFrame(Panel::T_ParameterEditor, this);
 			PanelFrame *timelinePanelFrame = new PanelFrame(Panel::T_Timeline, this);
-			PanelFrame *logPanelFrame = new PanelFrame(Panel::T_Log, this);
-			PanelFrame *historyPanelFrame = new PanelFrame(Panel::T_History, this);
-	        
+				        
+			QSplitter *viewportNetworkSplitter = new QSplitter(Qt::Vertical, this);
+			viewportNetworkSplitter->setHandleWidth(1);
+			viewportNetworkSplitter->addWidget(viewportPanelFrame);
+			viewportNetworkSplitter->addWidget(networkPanelFrame);
+			viewportNetworkSplitter->setStretchFactor(0, 3);
+			viewportNetworkSplitter->setStretchFactor(1, 2);
+
 			QSplitter *hierarchyViewportSplitter = new QSplitter(Qt::Horizontal, this);
+			hierarchyViewportSplitter->setHandleWidth(2);
 			hierarchyViewportSplitter->addWidget(hierarchyPanelFrame);
-			hierarchyViewportSplitter->addWidget(viewportPanelFrame);
+			hierarchyViewportSplitter->addWidget(viewportNetworkSplitter);
+			hierarchyViewportSplitter->addWidget(parameterPanelFrame);
 			hierarchyViewportSplitter->setStretchFactor(0, 1);
 			hierarchyViewportSplitter->setStretchFactor(1, 3);
 
-			QSplitter *networkParameterSplitter = new QSplitter(Qt::Horizontal, this);
-			networkParameterSplitter->addWidget(networkPanelFrame);
-			networkParameterSplitter->addWidget(parameterPanelFrame);
-			networkParameterSplitter->setStretchFactor(0, 3);
-			networkParameterSplitter->setStretchFactor(1, 2);
-
-			QSplitter *logHistorySplitter = new QSplitter(Qt::Horizontal, this);
-			logHistorySplitter->addWidget(logPanelFrame);
-			logHistorySplitter->addWidget(historyPanelFrame);
-			logHistorySplitter->setStretchFactor(0, 2);
-			logHistorySplitter->setStretchFactor(1, 1);
-
-			QSplitter *networkParameterLogHistorySplitter = new QSplitter(Qt::Vertical, this);
-			networkParameterLogHistorySplitter->addWidget(networkParameterSplitter);
-			networkParameterLogHistorySplitter->addWidget(logHistorySplitter);
-			networkParameterLogHistorySplitter->setStretchFactor(0, 2);
-			networkParameterLogHistorySplitter->setStretchFactor(1, 1);
-
-			QSplitter *networkParameterLogHistoryTimelineSplitter = new QSplitter(Qt::Vertical, this);
-			networkParameterLogHistoryTimelineSplitter->addWidget(networkParameterLogHistorySplitter);
-			networkParameterLogHistoryTimelineSplitter->addWidget(timelinePanelFrame);
-			networkParameterLogHistoryTimelineSplitter->setStretchFactor(0, 10);
-			networkParameterLogHistoryTimelineSplitter->setStretchFactor(1, 1);
-
 			QSplitter *mainSplitter = new QSplitter(Qt::Vertical, this);
+			mainSplitter->setHandleWidth(1);
 			mainSplitter->addWidget(hierarchyViewportSplitter);
-			mainSplitter->addWidget(networkParameterLogHistoryTimelineSplitter);
+			mainSplitter->addWidget(timelinePanelFrame);
 			mainSplitter->setStretchFactor(0, 2);
 			mainSplitter->setStretchFactor(1, 1);
 
