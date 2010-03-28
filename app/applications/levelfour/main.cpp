@@ -36,14 +36,14 @@ int main ( int argc, char **argv )
     Log::initialize(true);
 
     // set application strings
-    QString organizationName ("Level Four");
-    QString applicationName ("Level Four");
+    QString organizationName ("Acuity4d");
+    QString applicationName ("Acuity4d");
     QString aboutText (
         "<div align=\"center\">"
         "<a href=\"http://frapper.sourceforge.net\"></a><br>"
         "<b>Version 1.0 Pre-Alpha</b><br>"
         "<br>"
-        "Copyright &copy; 2010 Level Four. All rights reserved."
+        "Copyright &copy; 2010 Acuity4d. All rights reserved."
     );
 
 

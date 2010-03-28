@@ -81,6 +81,22 @@ TimelinePanel::TimelinePanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags 
 
     // set the special value text for the frame step spin box to an empty string that is displayed instead of "1st"
     ui_frameStepSpinBox->setSpecialValueText(" ");
+
+	// Give a little space to the keyframe widget
+	QWidget *spacerWidget = new QWidget();
+    spacerWidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+	spacerWidget->setMinimumHeight(5);
+	spacerWidget->setMaximumHeight(5);
+	ui_verticalLayout->insertWidget(0, spacerWidget);
+
+	// insert border widget to ui_verticalLayout at index 1 just over toolbar vbox
+	QString borderStyle ( "border-top: 1px solid #393939; border-bottom: 1px solid #959595" );
+	QFrame *borderFrame = new QFrame(this);
+	borderFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	borderFrame->setMinimumHeight(2);
+	borderFrame->setMaximumHeight(2);
+	borderFrame->setStyleSheet(borderStyle);
+	ui_verticalLayout->insertWidget(2, borderFrame);
 }
 
 
