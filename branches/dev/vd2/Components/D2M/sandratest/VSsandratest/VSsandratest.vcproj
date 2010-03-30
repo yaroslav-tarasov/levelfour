@@ -164,15 +164,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\cone3D_layout_example.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\GraphPropertyMapper.h"
-				>
-			</File>
-			<File
-				RelativePath="..\kamada_layout_example.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\source\TestPlotter.cpp"
 				>
 			</File>
 			<File

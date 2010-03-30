@@ -1,11 +1,14 @@
 #ifndef GRAPH_PROPERTY_MAPPER_H
 #define GRAPH_PROPERTY_MAPPER_H
 
+#include "cone_layout3D.hpp"
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topology.hpp>
 #include <boost/graph/circle_layout.hpp>
 #include <boost/graph/random_layout.hpp>
 #include <boost/graph/kamada_kawai_spring_layout.hpp>
+
 
 namespace graphdefs
 {
@@ -26,24 +29,25 @@ namespace graphdefs
 	enum layout {
 		circle2D,
 		random2D,
-		kamada_kawai2D
+		kamada_kawai2D,
+		cone3D
 	};
-
 }
 
+template<class Directed = boost::directedS>
 class GraphPropertyMapper
 {
 
 public:
 	//typedef the graph
 	typedef boost::adjacency_list<boost::listS,
-			boost::listS, boost::undirectedS,
-			graphdefs::VertexProperties, graphdefs::EdgeProperties> Graph;
+		boost::listS, Directed, 
+		graphdefs::VertexProperties,graphdefs::EdgeProperties> Graph;
 
-	typedef boost::property_map<Graph, std::size_t graphdefs::VertexProperties::*>::type VertexIdMap;
-	typedef boost::property_map<Graph, graphdefs::Point graphdefs::VertexProperties::*>::type PositionMap;
-	typedef boost::property_map<Graph, double graphdefs::EdgeProperties::*>::type WeightMap;
-	typedef boost::graph_traits<Graph>::vertex_descriptor VertexDescriptor;
+	typedef typename boost::property_map<Graph, std::size_t graphdefs::VertexProperties::*>::type VertexIdMap;
+	typedef typename boost::property_map<Graph, graphdefs::Point graphdefs::VertexProperties::*>::type PositionMap;
+	typedef typename boost::property_map<Graph, double graphdefs::EdgeProperties::*>::type WeightMap;
+	typedef typename boost::graph_traits<Graph>::vertex_descriptor VertexDescriptor;
 
 	Graph g;
 	VertexIdMap vertexIdMap;
@@ -64,6 +68,7 @@ public:
     ~GraphPropertyMapper()
 	{
 
+
 	}
 
 	void addVertex(int i)
@@ -72,7 +77,7 @@ public:
 		vertexIdMap[vd] = i;
 	}
 
-	void addEdge (int startVertex, int endVertex, double weight)
+	void addEdge (int startVertex, int endVertex, const size_t weight)
 	{
 		boost::add_edge(vertex(startVertex,g), vertex(endVertex,g), graphdefs::EdgeProperties(weight), g);
 	}
@@ -84,7 +89,7 @@ public:
 
 	void layoutCircle2D()
 	{
-		boost::circle_graph_layout(g, positionMap, 100);
+		boost::circle_graph_layout(g, positionMap, 10);
 	}
 
 	void layoutRandom2D()
@@ -101,6 +106,8 @@ public:
 		boost::circle_graph_layout(g, positionMap, 100);
 
 		// Then apply boost's kamada layout
+/*THE KAMADA LAYOUT WON'T COMPILE WHEN Directed IS A TEMPLATE PARAMETER. PROBLEM TO BE SOLVED
+
 		bool retval = boost::kamada_kawai_spring_layout(g, positionMap, weightMap, 
 					  boost::square_topology<>(), boost::side_length<double>(10),	
 					  boost::layout_tolerance<>(), 1, vertexIdMap);
@@ -108,6 +115,14 @@ public:
 		{
 			 std::cout << "kamada_kawai_spring_layout returned false";
 		}
+*/
+	}
+
+	void layoutCone3D()
+	{
+		boost::graph_traits<Graph>::vertex_descriptor rootVertex;
+		rootVertex=*(vertices(g).first);
+		graphdefs::cone_graph_layout(g, positionMap, rootVertex);
 	}
 
 	void transformPosition()
@@ -123,7 +138,16 @@ public:
 		case graphdefs::kamada_kawai2D:
 			layoutKamadaKawai2D();
 			break;
+		case graphdefs::cone3D:
+			layoutCone3D();
+			break;
 		}
+	}
+
+	void plotScene()
+	{
+		TestPlotter<Graph, PositionMap, WeightMap> tp;
+		tp.constructScene(g, positionMap, weightMap);
 	}
 
 protected:
