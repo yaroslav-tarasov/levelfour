@@ -108,6 +108,14 @@ void Node::finalize()
 }
 
 
+//!
+//! Execute function for threading.
+//!
+void Node::run ( const QString &parameterName )
+{
+    // noop
+}
+
 ///
 /// Public Functions
 ///
@@ -792,10 +800,10 @@ double Node::getDoubleValue ( const QString &name, bool triggerEvaluation /* = f
     QVariant value = getValue(name, triggerEvaluation);
     if (value.type() == QVariant::Double)
         return value.toDouble();
-    else {
-        Log::warning(QString("Parameter \"%1\" does not contain a double-precision floating point value, but a value of type <%2>.").arg(name, QVariant::typeToName(value.type())), "Node::getDoubleValue");
-        return 0.0;
-    }
+    //else {
+    //    Log::warning(QString("Parameter \"%1\" does not contain a double-precision floating point value, but a value of type <%2>.").arg(name, QVariant::typeToName(value.type())), "Node::getDoubleValue");
+    //    return 0.0;
+    //}
 }
 
 
@@ -956,8 +964,9 @@ void Node::setValue ( const QString &name, const QVariant &value, bool triggerDi
         // optionally trigger the dirtying chain
         if (triggerDirtying)
             parameter->propagateDirty(this);
-    } else
-        Log::error(QString("Parameter \"%1.%2\" not found.").arg(m_name, name), "Node::setValue");
+    } 
+    //else
+    //    Log::error(QString("Parameter \"%1.%2\" not found.").arg(m_name, name), "Node::setValue");
 }
 
 
