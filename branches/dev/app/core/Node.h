@@ -44,6 +44,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "Connection.h"
 #include "InstanceCounterMacros.h"
 #include <QtCore/QObject>
+#include <QtCore/QThread>
 #include <QtCore/QStringList>
 #include "OgreVector3.h"
 
@@ -65,7 +66,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \enddot
 //! <div><center>[<a href="graph_legend.html">legend</a>]</center></div>
 //!
-class FRAPPER_CORE_EXPORT Node : public QObject
+class FRAPPER_CORE_EXPORT Node : public QThread
 {
 
     Q_OBJECT
@@ -98,6 +99,11 @@ public: // constructors and destructors
 
 public: // functions
 
+    //!
+    //! Execute function for threading.
+    //!
+    virtual void run ( const QString &parameterName );
+
     //########### obsolete - just for performance testing
     //!
     //! Processes the node's input data to generate the data for the parameter
@@ -109,7 +115,6 @@ public: // functions
     //! \return True if generating the data succeeded, otherwise False.
     //!
     virtual bool process ( const QString &parameterName );
-
 
     //!
     //! Returns the actual timeline intex.

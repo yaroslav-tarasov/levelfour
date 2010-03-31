@@ -102,6 +102,12 @@ private: // functions
 private slots: //
 
     //!
+    //! Applies the currently set transformation for the node to the OGRE scene.
+    //! on frame change.
+    //!
+    void updateTransform ();
+
+    //!
     //! Applies the currently set position for the node to the OGRE scene
     //! objects contained in this node.
     //!

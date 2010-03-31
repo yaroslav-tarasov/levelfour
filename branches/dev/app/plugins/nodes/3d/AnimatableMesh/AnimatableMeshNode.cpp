@@ -155,7 +155,7 @@ void AnimatableMeshNode::updateAll ()
 
         QString boneName = m_boneNames[i];
         //QVariant value = getValue(QString("AU_%1").arg(boneName));
-        Parameter *parameter = getParameter(QString("AU_%1").arg(boneName));
+        Parameter *parameter = getParameter(boneName);
         if (!parameter) return;
         const QVariant &value = parameter->getValue(true);
         QVariantList valueList = value.toList();
@@ -185,7 +185,7 @@ void AnimatableMeshNode::updateAll ()
 
     for (int i = 0; i < m_animationNames.size(); ++i) {
         QString animationName = m_animationNames[i];
-        Parameter *parameter = getParameter(QString("AU_%1").arg(animationName));
+        Parameter *parameter = getParameter(animationName);
 
         // If AUs are not manually controlled nothing to do here
         double progress = 0.0;
@@ -203,14 +203,14 @@ void AnimatableMeshNode::updateAll ()
         if (getBoolValue("autoPose")) {
             progressAnimation("pose_" + animationName, progress / 100.0);
             if (m_poseNames.contains("pose_" + animationName))
-                setValue("AU_pose_" + animationName, progress);
+                setValue("pose_" + animationName, progress);
         }
     }
 
     if (getBoolValue("manual") /*&& !getBoolValue("autoPose")*/)
         for (int i = 0; i < m_poseNames.size(); ++i) {
             QString poseName = m_poseNames[i];
-            Parameter *parameter = getParameter(QString("AU_%1").arg(poseName));
+            Parameter *parameter = getParameter(poseName);
             double progress = parameter->getValue().toDouble();
             //if (progress == 0.0)
             //    continue;
@@ -733,7 +733,7 @@ void AnimatableMeshNode::geometryFileChanged ()
     const QStringList &animationNames = getAnimationNames();
     for (int i = 0; i < animationNames.size(); ++i) {
         // create a new number parameter for the AU
-        NumberParameter *animationParameter = new NumberParameter(QString("AU_%1").arg(animationNames[i]), Parameter::T_Float, 0.0);
+        NumberParameter *animationParameter = new NumberParameter(animationNames[i], Parameter::T_Float, 0.0);
         animationParameter->setInputMethod(NumberParameter::IM_SliderPlusSpinBox);
         animationParameter->setMinValue(0.0);
         animationParameter->setMaxValue(100.0);
@@ -762,7 +762,7 @@ void AnimatableMeshNode::geometryFileChanged ()
     for (int i = 0; i < boneNames.size(); ++i) {
         if (!boneNames[i].contains("MarkerJoint_") ) {
             // create a new number parameter for the bone
-            NumberParameter *boneParameter = new NumberParameter(QString("AU_%1").arg(boneNames[i]), Parameter::T_Float, 0.0);
+            NumberParameter *boneParameter = new NumberParameter(boneNames[i], Parameter::T_Float, 0.0);
             boneParameter->setInputMethod(NumberParameter::IM_SliderPlusSpinBox);
             boneParameter->setMinValue(0.0);
             boneParameter->setMaxValue(100.0);

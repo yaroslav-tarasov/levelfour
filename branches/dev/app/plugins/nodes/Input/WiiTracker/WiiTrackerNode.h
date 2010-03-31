@@ -43,7 +43,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class representing nodes that can access Wii controllers.
 //!
-class WiiTrackerNode : public Node, public QThread
+class WiiTrackerNode : public Node //, public QThread
 {
 
     Q_OBJECT
