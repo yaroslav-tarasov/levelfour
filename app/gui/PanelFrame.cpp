@@ -465,6 +465,7 @@ void PanelFrame::split ( Qt::Orientation orientation )
 {
     QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parentWidget());
     QSplitter *parentSplitter = qobject_cast<QSplitter *>(parentWidget());
+	parentSplitter->setHandleWidth(1);
     if (!parentSplitter && !mainWindow) {
         QMessageBox::information(this, "Split Panel", "Splitting this panel is not possible.");
         return;
@@ -493,6 +494,7 @@ void PanelFrame::split ( Qt::Orientation orientation )
 
     // create new splitter for this panel and its clone
     QSplitter *newSplitter = new QSplitter(orientation);
+	newSplitter->setHandleWidth(1);
     newSplitter->addWidget(this);
     newSplitter->addWidget(clonedPanelFrame);
     // give both panels in the new splitter the same space
@@ -522,6 +524,7 @@ void PanelFrame::maximizeWidget ( QWidget *widget )
 {
     QWidget *parentWidget = widget->parentWidget();
     QSplitter *parentSplitter = qobject_cast<QSplitter *>(parentWidget);
+	parentSplitter->setHandleWidth(1);
     if (!parentSplitter) {
         QMessageBox::information(this, "Maximize Panel", "The panel is already maximized.");
         return;
@@ -559,6 +562,7 @@ void PanelFrame::minimizeWidget ( QWidget *widget )
 {
     QWidget *parentWidget = widget->parentWidget();
     QSplitter *parentSplitter = qobject_cast<QSplitter *>(parentWidget);
+	parentSplitter->setHandleWidth(1);
     if (!parentSplitter) {
         QMessageBox::information(this, "Minimize Panel", "The last visible panel cannot be minimized.");
         return;

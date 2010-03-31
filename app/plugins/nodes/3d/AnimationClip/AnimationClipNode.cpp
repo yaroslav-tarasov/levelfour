@@ -39,7 +39,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include <QtCore/QDir>
 
 INIT_INSTANCE_COUNTER(AnimationClipNode)
-
+Q_DECLARE_METATYPE(Ogre::Vector3);
 
 ///
 /// Constructors and Destructors
@@ -59,20 +59,34 @@ AnimationClipNode::AnimationClipNode ( QString name, ParameterGroup *parameterRo
     m_timer(0),
     m_lastTimestamp(QTime::currentTime()),
     m_progress(0)
-{
-    // Define group suffixes.
-    m_groupSuffixes << "translateX"
-                    << "translateY"
-                    << "translateZ"
-                    << "rotateX"
-                    << "rotateY"
-                    << "rotateZ";
+    {
+        // Define group suffixes.
+        m_translateSuffixes << "translateX"
+            << "translateY"
+            << "translateZ";
+
+        m_rotateSuffixes << "rotateX"
+            << "rotateY"
+            << "rotateZ";
+
+        m_scaleSuffixes << "scaleX"
+            << "scaleY"
+            << "scaleZ";
+
+        m_boneSuffixes << m_translateSuffixes
+            << m_rotateSuffixes;
+
+        m_groupSuffixes << m_translateSuffixes
+            << m_rotateSuffixes
+            << m_scaleSuffixes;
 
     // set groups
     m_animationGroup = new ParameterGroup("Skeletal Animations");
     m_boneGroup = new ParameterGroup("Bone Animations");
+    m_cameraGroup = new ParameterGroup("Camera Animations");
     getParameterRoot()->addParameter(m_animationGroup);
     getParameterRoot()->addParameter(m_boneGroup);
+    getParameterRoot()->addParameter(m_cameraGroup);
 
     // set animation timer
     m_timer = new QTimer();
@@ -149,8 +163,8 @@ void AnimationClipNode::processAnimationParameter()
         return;
     
     QString auName(parameter->getName());
-    auName.replace("AU_", "");
-
+    //auName.replace("AU_", "");
+    
     // If curve name ends with "_xxxxx" group suffix
     // add subParameters.
     QMap<QString, QMap<QString, double> >::iterator iter = m_parameterMap.find(auName);
@@ -178,7 +192,7 @@ void AnimationClipNode::processAnimationParameter()
 
         double weight = getDoubleValue("weight", true);
 
-        if (subParameterMap.size() > 0) {
+        if (subParameterMap.size() == 6) {
             QMap<QString, double>::iterator subIter = subParameterMap.begin();
             unsigned int index = 0;
             QVariantList subParameterList;
@@ -202,7 +216,40 @@ void AnimationClipNode::processAnimationParameter()
                 ++subIter;
             }
             parameter->setValue(QVariant(subParameterList));
-        } else {
+        }
+        else if (subParameterMap.size() == 3) {
+            QMap<QString, double>::iterator subIter = subParameterMap.begin();
+            unsigned int index = 0;
+            //QVariantList subParameterList;
+            Ogre::Vector3 ogreVector(0.0, 0.0, 0.0);
+            for (int i = 0; i < subParameterMap.size(); ++i) {
+                QString suffix = subIter.key();
+                QMap<QString, unsigned short>::iterator idMapIter = m_forwCurveMap.find(auName + "_" + suffix);
+                double progress = 0.0;
+                // if entry exists in m_forwCurveMap interpolate progress, else progress = 0.0
+                if (idMapIter != m_forwCurveMap.end()) {
+                    unsigned short id = m_forwCurveMap[auName + "_" + suffix];
+                    Ogre::NodeAnimationTrack* track = m_animation->getNodeTrack(id);
+                    if (track) {
+                        Ogre::TransformKeyFrame interpKeyFrame(NULL, time);
+                        Ogre::TimeIndex timeIndex(time);
+                        track->getInterpolatedKeyFrame(timeIndex, &interpKeyFrame);
+                        progress = interpKeyFrame.getScale().x * weight;
+                    }
+                }
+                if (i == 0)
+                    ogreVector += Ogre::Vector3(progress, 0.0, 0.0);
+                else if (i == 1)
+                    ogreVector += Ogre::Vector3(0.0, progress, 0.0);
+                else if (i == 2)
+                    ogreVector += Ogre::Vector3(0.0, 0.0, progress);
+                
+                ++index;
+                ++subIter;
+            }
+            parameter->setValue(QVariant::fromValue<Ogre::Vector3>(ogreVector));
+        }
+        else {
             unsigned short id = m_forwCurveMap[auName];
             Ogre::NodeAnimationTrack *track = m_animation->getNodeTrack(id);
             if (track) {
@@ -490,12 +537,12 @@ bool AnimationClipNode::removeParameters ()
     const QList<QString>& oldCurveNames = m_forwCurveMap.keys();
     for(int i = 0; i < oldCurveNames.size(); ++i)
     {
-        Parameter* parameter = getParameter("AU_" + oldCurveNames[i]);
+        Parameter* parameter = getParameter(oldCurveNames[i]);
         if(parameter) {
             // Remove old affections.
             inputTimeParameter->removeAffectedParameter(parameter);
             // Remove old parameters
-            removeParameter("AU_" + oldCurveNames[i]);
+            removeParameter(oldCurveNames[i]);
         }
     }
 
@@ -531,10 +578,12 @@ bool AnimationClipNode::generateParameters ()
     for (int i = 0; i < curveNames.size(); ++i) {
         QString curveName = curveNames[i];
         QString suffix = curveName.section("_", -1, -1);
-
+        QString secondSuffix = curveName.section("_", -2, -2);
         // if curve name ends with "_xxxxx" group suffix add subParameters
         if (m_groupSuffixes.contains(suffix)) {
             QString prefix = curveName.section("_", 0, -2);
+            //if (prefix.contains("camera"))
+            //    prefix = prefix.left(6);
             QMap<QString, QMap<QString, double> >::iterator iter = m_parameterMap.find(prefix);
             if ( iter != m_parameterMap.end()) {
                 QMap<QString, double> &subParameterMap = iter.value();
@@ -543,20 +592,39 @@ bool AnimationClipNode::generateParameters ()
                     double &value = subIter.value();
                     value = 0.0;
                 }
-            } else {
+            } 
+            else {
                 QMap<QString, double> subParameterMap;
-                for (int i = 0; i < m_groupSuffixes.size(); ++i)
-                    subParameterMap.insert(m_groupSuffixes[i], 0.0);
-                m_parameterMap.insert(prefix, subParameterMap);
+                if (prefix.contains("translate")) {
+                    for (int i = 0; i < m_translateSuffixes.size(); ++i)
+                        subParameterMap.insert(m_translateSuffixes[i], 0.0);
+                    m_parameterMap.insert("translate", subParameterMap);
+                }
+                else if (prefix.contains("rotate")) {
+                    for (int i = 0; i < m_rotateSuffixes.size(); ++i)
+                        subParameterMap.insert(m_rotateSuffixes[i], 0.0);
+                    m_parameterMap.insert("rotate", subParameterMap);
+                }
+                else if (prefix.contains("scale")) {
+                    for (int i = 0; i < m_scaleSuffixes.size(); ++i)
+                        subParameterMap.insert(m_scaleSuffixes[i], 0.0);
+                    m_parameterMap.insert("scale", subParameterMap);
+                }
+                else {
+                    for (int i = 0; i < m_boneSuffixes.size(); ++i)
+                        subParameterMap.insert(m_boneSuffixes[i], 0.0);
+                    m_parameterMap.insert(prefix, subParameterMap);
+                }
             }
-        } else
+        } 
+        else
             // use curve name as parameter name
             m_parameterMap.insert(curveName, QMap<QString, double>());
     }
 
     QMap<QString, QMap<QString, double> >::iterator iter = m_parameterMap.begin();
     while (iter != m_parameterMap.end()) {
-        parameterDescription.setAttribute("name", "AU_" + iter.key());
+        parameterDescription.setAttribute("name", iter.key());
 
         NumberParameter* parameter = static_cast<NumberParameter *>(Parameter::create(parameterDescription));
         if (!parameter)
@@ -577,9 +645,21 @@ bool AnimationClipNode::generateParameters ()
                 ++subParameterIter;
             }
             m_boneGroup->addParameter(parameter);
-            parameter->setMultiplicity(subParameterMap.size());
+            parameter->setSize(subParameterMap.size());
             parameter->setValue(valueList);
-        } else
+        } 
+        //else if (subParameterMap.size() == 3) {
+        //    QMap<QString, double>::iterator subParameterIter = subParameterMap.begin();
+        //    while (subParameterIter != subParameterMap.end()) {
+        //        valueList.append(0.0);
+        //        ++subParameterIter;
+        //    }
+        //    parameter->setName(iter.key());
+        //    m_cameraGroup->addParameter(parameter);
+        //    parameter->setSize(subParameterMap.size());
+        //    parameter->setValue(valueList);
+        //}
+        else
             m_animationGroup->addParameter(parameter);
         
         parameter->setProcessingFunction(SLOT(processAnimationParameter()));

@@ -251,6 +251,7 @@ QList<QAction *> SceneModel::getControlActions () const
         << m_playOptionsAction
         << m_separatorAction
         << m_realtimeAction
+        //<< m_realtimeAction
     ;
 }
 

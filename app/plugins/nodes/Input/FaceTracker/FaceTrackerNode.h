@@ -53,7 +53,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! Class in the Borealis application representing nodes that can
 //! contai OGRE entities with animation.
 //!
-class FaceTrackerNode : public Node, public QThread
+class FaceTrackerNode : public Node  //, public QThread
 {
 
 	Q_OBJECT

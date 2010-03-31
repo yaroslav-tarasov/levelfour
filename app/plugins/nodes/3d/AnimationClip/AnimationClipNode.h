@@ -181,7 +181,12 @@ private: // data
 
     ParameterGroup *m_animationGroup;
     ParameterGroup *m_boneGroup;
+    ParameterGroup *m_cameraGroup;
     QStringList m_groupSuffixes;
+    QStringList m_boneSuffixes;
+    QStringList m_translateSuffixes;
+    QStringList m_rotateSuffixes;
+    QStringList m_scaleSuffixes;
     QMap<QString, QMap<QString, double> > m_parameterMap;
     QMap<QString, unsigned short> m_forwCurveMap;
     QMap<unsigned short, QString> m_backwCurveMap;
