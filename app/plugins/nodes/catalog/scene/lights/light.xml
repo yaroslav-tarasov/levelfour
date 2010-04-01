@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="Light" category="Lights" color="255, 255, 109" plugin="light.dll">
+<nodetype name="Light" category="-- Light" color="255, 255, 109" plugin="light.dll">
   <parameters>
     <parameters name="Transformation">
       <parameter name="Position" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" defaultValue="0, 0, 0" stepSize="0.25"/>

@@ -66,16 +66,34 @@ void NodeFactory::initialize ()
     s_nodeTypeCategories << NodeType::Category("Animation", ":/playLoopingIcon");
     s_nodeTypeCategories << NodeType::Category("Materials", ":/colorSwatchIcon");
     s_nodeTypeCategories << NodeType::Category("Geometry", ":/geometryIcon");
-    s_nodeTypeCategories << NodeType::Category("Cameras", ":/cameraIcon");
-    s_nodeTypeCategories << NodeType::Category("Lights", ":/lightIcon");
     s_nodeTypeCategories << NodeType::Category("Rendering", ":/paletteIcon");
     s_nodeTypeCategories << NodeType::Category("Images", ":/imagesIcon");
     s_nodeTypeCategories << NodeType::CategorySeparator;
-    s_nodeTypeCategories << NodeType::Category("Utility", ":/wrenchIcon");
     s_nodeTypeCategories << NodeType::Category("Face Tracking", ":/webcamIcon");
-    s_nodeTypeCategories << NodeType::Category("Controllers", ":/controllerIcon");
-    s_nodeTypeCategories << NodeType::Category("Solver", ":/tagIcon");
     s_nodeTypeCategories << NodeType::CategorySeparator;
+	s_nodeTypeCategories << NodeType::Category("Sources", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Data", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Geometric", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("Filters", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Add", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Reduce", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("Strategies", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Position", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Shape", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Size", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Style", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("Mappers", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("Scene", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Camera", ":/cameraIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Light", ":/lightIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Renderers", ":/lightIcon");
+	s_nodeTypeCategories << NodeType::Category("-- NPR", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Shaders", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("-- Particles", ":/tagIcon");
+	s_nodeTypeCategories << NodeType::Category("Utility", ":/wrenchIcon");
+	s_nodeTypeCategories << NodeType::Category("Controllers", ":/controllerIcon");
+    s_nodeTypeCategories << NodeType::Category("Solver", ":/tagIcon");
+    
 }
 
 
