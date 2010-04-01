@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="SurfaceCurvature" category="Rendering" color="7, 45, 87" plugin="surfacecurvature.dll">
+<nodetype name="SurfaceCurvature" category="-- Shaders" color="7, 45, 87" plugin="surfacecurvature.dll">
   <parameters>
     <parameter name="Resource Group Name" type="String" defaultValue="SurfaceCurvatureNode"/>
     <parameter name="Reload" type="Command"/>

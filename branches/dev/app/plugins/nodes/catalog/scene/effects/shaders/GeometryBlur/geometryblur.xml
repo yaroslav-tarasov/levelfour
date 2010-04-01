@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="GeometryBlur" category="Rendering" color="7, 45, 87" plugin="geometryblur.dll">
+<nodetype name="GeometryBlur" category="-- Shaders" color="7, 45, 87" plugin="geometryblur.dll">
   <parameters>
     <parameter name="Resource Group Name" type="String" defaultValue="GeometryBlurNode"/>
     <parameter name="Reload" type="Command"/>

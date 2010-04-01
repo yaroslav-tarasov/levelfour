@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="AdvancedRenderer" category="Rendering" color="173, 255, 173" plugin="advancedrender.dll">
+<nodetype name="AdvancedRenderer" category="-- Renderers" color="173, 255, 173" plugin="advancedrender.dll">
   <parameters>
   </parameters>
 </nodetype>

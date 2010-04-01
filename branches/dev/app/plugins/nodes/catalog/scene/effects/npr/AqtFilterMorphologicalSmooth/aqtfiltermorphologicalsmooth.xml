@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="AqtFilterMorphologicalSmooth" category="Rendering" color="7, 45, 87" plugin="aqtfiltermorphologicalsmooth.dll">
+<nodetype name="MorphologicalSmooth" category="-- NPR" color="7, 45, 87" plugin="aqtfiltermorphologicalsmooth.dll">
   <parameters>
     <parameter name="Input Map" type="Image" pin="in" selfEvaluating="true"/>
     <parameter name="Resource Group Name" type="String" defaultValue="MorphologicalSmooth" visible="false"/>
