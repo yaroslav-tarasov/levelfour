@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="AmbientOcclusion" category="Rendering" color="7, 45, 87" plugin="ambientocclusion.dll">
+<nodetype name="AmbientOcclusion" category="-- Shaders" color="7, 45, 87" plugin="ambientocclusion.dll">
   <parameters>
     <parameter name="Normal Map" type="Image" pin="in" selfEvaluating="true"/> 
 	  <parameter name="Depth Map" type="Image" pin="in" selfEvaluating="true"/>
