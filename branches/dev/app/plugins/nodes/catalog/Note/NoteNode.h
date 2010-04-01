@@ -22,43 +22,55 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 */
 
 //!
-//! \file "TestNode.cpp"
-//! \brief Implementation file for TestNode class.
+//! \file "NoteNode.h"
+//! \brief Header file for NoteNode class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \version    1.0
 //! \date       18.05.2009 (last updated)
 //!
 
-#include "TestNode.h"
+#ifndef NoteNode_H
+#define NoteNode_H
 
+#include <Node.h>
 
-///
-/// Constructors and Destructors
-///
+// OGRE
+#include <Ogre.h>
+#if (OGRE_PLATFORM  == OGRE_PLATFORM_WIN32)
+#include <windows.h>
+#endif
 
 
 //!
-//! Constructor of the TestNode class.
+//! Class for a node that is used for debugging purposes.
 //!
-//! \param name The name for the new node.
-//! \param parameterRoot A copy of the parameter tree specific for the type of the node.
-//!
-TestNode::TestNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+class NoteNode : public Node
 {
-}
+
+    Q_OBJECT
+    ADD_INSTANCE_COUNTER
+
+public: // constructors and destructors
+
+    //!
+    //! Constructor of the NoteNode class.
+    //!
+    //! \param name The name for the new node.
+    //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
+    //!
+    NoteNode ( const QString &name, ParameterGroup *parameterRoot );
+
+    //!
+    //! Destructor of the NoteNode class.
+    //!
+    //! Defined virtual to guarantee that the destructor of a derived class
+    //! will be called if the instance of the derived class is saved in a
+    //! variable of its parent class type.
+    //!
+    virtual ~NoteNode ();
+
+};
 
 
-//!
-//! Destructor of the TestNode class.
-//!
-//! Defined virtual to guarantee that the destructor of a derived class
-//! will be called if the instance of the derived class is saved in a
-//! variable of its parent class type.
-//!
-TestNode::~TestNode ()
-{
-}
-
-
+#endif
