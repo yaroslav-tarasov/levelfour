@@ -22,41 +22,43 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 */
 
 //!
-//! \file "KmlSourceNodePlugin.h"
-//! \brief Header file for KmlSourceNodePlugin class.
+//! \file "NoteNode.cpp"
+//! \brief Implementation file for NoteNode class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    0.1
-//! \date       11.02.2009 (last updated)
+//! \version    1.0
+//! \date       18.05.2009 (last updated)
 //!
 
-#ifndef KMLSOURCENODEPLUGIN_H
-#define KMLSOURCENODEPLUGIN_H
+#include "NoteNode.h"
 
-#include "NodeTypeInterface.h"
+
+///
+/// Constructors and Destructors
+///
 
 
 //!
-//! Plugin class for creating ReferenceDataNode objects.
+//! Constructor of the NoteNode class.
 //!
-class KmlSourceNodePlugin : public QObject, public NodeTypeInterface
+//! \param name The name for the new node.
+//! \param parameterRoot A copy of the parameter tree specific for the type of the node.
+//!
+NoteNode::NoteNode ( const QString &name, ParameterGroup *parameterRoot ) :
+    Node(name, parameterRoot)
 {
-
-    Q_OBJECT
-    Q_INTERFACES(NodeTypeInterface)
-
-public: // functions
-
-    //!
-    //! Creates a node of this node type.
-    //!
-    //! \param name The name for the new node.
-    //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
-    //! \return A pointer to the new node.
-    //!
-    virtual Node * createNode ( const QString &name, ParameterGroup *parameterRoot );
-
-};
+}
 
 
-#endif
+//!
+//! Destructor of the NoteNode class.
+//!
+//! Defined virtual to guarantee that the destructor of a derived class
+//! will be called if the instance of the derived class is saved in a
+//! variable of its parent class type.
+//!
+NoteNode::~NoteNode ()
+{
+}
+
+
