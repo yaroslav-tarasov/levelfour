@@ -1,8 +1,9 @@
 #ifndef GRAPH_PROPERTY_MAPPER_H
 #define GRAPH_PROPERTY_MAPPER_H
 
-#include "cone_layout3D.h"
 #include "TestPlotter.h"
+#include "cone_layout3D.h"
+#include "phyllo_layout3D.h"
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topology.hpp>
@@ -32,7 +33,8 @@ namespace graphdefs
 		circle2D,
 		random2D,
 		kamada_kawai2D,
-		cone3D
+		cone3D,
+		phyllo3D
 	};
 }
 
@@ -125,6 +127,15 @@ public:
 		graphdefs::cone_tree_layout(g, positionMap, rootVertex);
 	}
 
+	void layoutPhyllo3D()
+	{
+		boost::graph_traits<Graph>::vertex_descriptor rootVertex;
+		rootVertex=*(vertices(g).first);
+		float angle = 0.3;
+		float spacing = 15.;
+		graphdefs::phyllo_tree_layout(g, positionMap, rootVertex, angle, spacing);
+	}
+
 	void transformPosition()
 	{
 		switch( positionTransform )
@@ -140,6 +151,9 @@ public:
 			break;
 		case graphdefs::cone3D:
 			layoutCone3D();
+			break;
+		case graphdefs::phyllo3D:
+			layoutPhyllo3D();
 			break;
 		}
 	}
