@@ -1,5 +1,4 @@
 #include "GraphPropertyMapper.h"
-#include "TestPlotter.h"
 
 	int main(int,char*[])
 	{

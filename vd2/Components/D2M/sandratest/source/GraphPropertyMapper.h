@@ -1,7 +1,8 @@
 #ifndef GRAPH_PROPERTY_MAPPER_H
 #define GRAPH_PROPERTY_MAPPER_H
 
-#include "cone_layout3D.hpp"
+#include "cone_layout3D.h"
+#include "TestPlotter.h"
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topology.hpp>
@@ -121,7 +122,7 @@ public:
 	{
 		boost::graph_traits<Graph>::vertex_descriptor rootVertex;
 		rootVertex=*(vertices(g).first);
-		graphdefs::cone_graph_layout(g, positionMap, rootVertex);
+		graphdefs::cone_tree_layout(g, positionMap, rootVertex);
 	}
 
 	void transformPosition()
