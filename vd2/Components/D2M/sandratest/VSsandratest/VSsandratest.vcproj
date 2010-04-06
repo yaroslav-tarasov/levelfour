@@ -168,6 +168,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\cone_layout3D.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\GraphPropertyMapper.h"
 				>
 			</File>
