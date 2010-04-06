@@ -12,7 +12,8 @@
 
 namespace graphdefs
 {
-	typedef boost::square_topology<>::point_type Point;
+	typedef boost::cube_topology<>::point_type Point;
+
 	struct VertexProperties
 	{
 		std::size_t id;
@@ -67,8 +68,6 @@ public:
 
     ~GraphPropertyMapper()
 	{
-
-
 	}
 
 	void addVertex(int i)
@@ -96,7 +95,7 @@ public:
 	{
 		boost::minstd_rand gen;
 		gen.seed (static_cast<unsigned int>(std::time(0)));
-		boost::rectangle_topology<boost::minstd_rand> topo = boost::rectangle_topology<boost::minstd_rand>(gen, -50.f,-50.f,50.f,50.f);
+		boost::cube_topology<boost::minstd_rand> topo = boost::cube_topology<boost::minstd_rand>(gen);
 		boost::random_graph_layout(g, positionMap, topo);
 	}
 

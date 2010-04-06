@@ -8,7 +8,6 @@
 
 		// Add vertices to the GraphPropertyMapper
 		for (int i = 0; i < 17; ++i) {
-
 			graphMapper.addVertex(i);
 		}
 
