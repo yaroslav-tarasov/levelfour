@@ -26,8 +26,9 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \brief Implementation file for SceneModel class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
+//! \author		Simon Spielmann <sspielma@filmakademie.de>
 //! \version    1.0
-//! \date       08.07.2009 (last updated)
+//! \date       24.03.2010 (last updated)
 //!
 
 #include "SceneModel.h"
@@ -470,39 +471,7 @@ void SceneModel::createScene ( daeElement *rootElement )
                                 // parse parameters of node
                                 daeElement *parametersElement = nodeElement->getChild("frapper_parameters");
                                 if (parametersElement) {
-                                    daeTArray<daeSmartRef<daeElement>> parameterElements = parametersElement->getChildren();
-                                    for (size_t i = 0; i < parameterElements.getCount(); ++i) {
-                                        daeElement *parameterElement = parameterElements.get(i);
-                                        if (QString(parameterElement->getElementName()) == "frapper_parameter") {
-											const QString &parameterName = QString::fromStdString(parameterElement->getAttribute("name"));
-                                            const QString &parameterValue = QString::fromStdString(parameterElement->getAttribute("value"));
-											const QString &parameterState = QString::fromStdString(parameterElement->getAttribute("state"));
-											daeElement *keysElement = parameterElement->getChild("keys");
-											if (keysElement) {
-												ParameterGroup *rootGroup = node->getParameterRoot();
-												NumberParameter *numberParameter;
-												if (rootGroup->contains(parameterName))
-													numberParameter = dynamic_cast<NumberParameter *>(rootGroup->getParameter(parameterName));
-												else {
-													numberParameter = new NumberParameter(parameterName, Parameter::T_Float, parameterValue);
-													rootGroup->addParameter(numberParameter);
-												}
-												daeTArray<daeSmartRef<daeElement>> &keyElements = keysElement->getChildren();
-												if (numberParameter->isEmpty()) 
-													for (size_t j = 0; j < keyElements.getCount(); ++j) {
-														daeElement *keyElement = keyElements.get(j);
-														const QString &keyIndex = QString::fromStdString(keyElement->getAttribute("index"));
-														const QString &keyValue = QString::fromStdString(keyElement->getAttribute("value"));
-														numberParameter->addKeyPresorted(new Key(keyIndex.toDouble(), keyValue.toDouble()));
-													}
-											}
-											node->setValue(parameterName, parameterValue);
-											if (parameterState == "false")
-												node->setParameterEnabled(parameterName, false);
-											else
-												node->setParameterEnabled(parameterName, true);
-                                        }
-                                    }
+									createParameters(node, node->getParameterRoot(), parametersElement);
                                 }
                                 // need to update the camera again so that viewing parameters can be applied
                                 if (node->getTypeName() == "Camera") {
@@ -555,6 +524,57 @@ void SceneModel::createScene ( daeElement *rootElement )
 		if (nodeGraphicsItem)
 			nodeGraphicsItem->refresh();
     }
+}
+
+void SceneModel::createParameters(Node *node, ParameterGroup *parentGroup, daeElement *parametersElement)
+{
+	daeTArray<daeSmartRef<daeElement>> &parameterElements = parametersElement->getChildren();
+	for (size_t i = 0; i < parameterElements.getCount(); ++i) {
+		daeElement *parameterElement = parameterElements.get(i);
+		if (QString(parameterElement->getElementName()) == "frapper_group" && node->isSaveable()) {
+			const QString &parameterName = QString::fromStdString(parameterElement->getAttribute("name"));
+			if (parameterName == "Data")
+				int debug = 1;
+			ParameterGroup *parameterGroup;
+			if (parentGroup->containsGroup(parameterName))
+				parameterGroup = parentGroup->getParameterGroup(parameterName);
+			else {
+				parameterGroup = new ParameterGroup(parameterName);
+				parentGroup->addParameter(parameterGroup);
+			}
+			createParameters(node, parameterGroup, parameterElement);
+		}
+		else if (QString(parameterElement->getElementName()) == "frapper_parameter") {
+			const QString &parameterName = QString::fromStdString(parameterElement->getAttribute("name"));
+			const QString &parameterValue = QString::fromStdString(parameterElement->getAttribute("value"));
+			const QString &parameterState = QString::fromStdString(parameterElement->getAttribute("state"));
+			daeElement *keysElement = parameterElement->getChild("keys");
+			if (keysElement) {
+				ParameterGroup *rootGroup = node->getParameterRoot();
+				NumberParameter *numberParameter;
+				if (rootGroup->contains(parameterName))
+					numberParameter = dynamic_cast<NumberParameter *>(rootGroup->getParameter(parameterName));
+				else {
+					numberParameter = new NumberParameter(parameterName, Parameter::T_Float, parameterValue);
+					numberParameter->setPinType(Parameter::PT_Output);
+					parentGroup->addParameter(numberParameter);
+				}
+				daeTArray<daeSmartRef<daeElement>> &keyElements = keysElement->getChildren();
+				if (numberParameter->isEmpty()) 
+					for (size_t j = 0; j < keyElements.getCount(); ++j) {
+						daeElement *keyElement = keyElements.get(j);
+						const QString &keyIndex = QString::fromStdString(keyElement->getAttribute("index"));
+						const QString &keyValue = QString::fromStdString(keyElement->getAttribute("value"));
+						numberParameter->addKeyPresorted(new Key(keyIndex.toDouble(), keyValue.toDouble()));
+					}
+			}
+			parentGroup->setValue(parameterName, parameterValue);
+			if (parameterState == "false")
+				parentGroup->setParameterEnabled(parameterName, false);
+			else
+				parentGroup->setParameterEnabled(parameterName, true);
+		}
+	}
 }
 
 
@@ -2230,10 +2250,13 @@ void SceneModel::createDaeElements ( ParameterGroup *parameterGroup, daeElement 
         // check if the abstract parameter from the list is a group
         AbstractParameter *abstractParameter = parameterList->at(i);
 		if (abstractParameter->isGroup()) {
-			//daeElement *frapperGroupElement = parentElement->add("frapper_group");
-			//frapperGroupElement->setAttribute("name", abstractParameter->getName().toStdString().c_str());
+			daeElement *frapperGroupElement = parentElement->add("frapper_group");
+			frapperGroupElement->setAttribute("name", abstractParameter->getName().toStdString().c_str());
             // recursively create DAE elements for the nested parameter group
-            createDaeElements(dynamic_cast<ParameterGroup *>(abstractParameter), parentElement);
+			if (parameterGroup->getNode()->isSaveable())
+				createDaeElements(dynamic_cast<ParameterGroup *>(abstractParameter), frapperGroupElement);
+			else
+				createDaeElements(dynamic_cast<ParameterGroup *>(abstractParameter), parentElement);
 		}
         else {
             // skip input and output parameters, text info and command parameters, and parameters holding default values

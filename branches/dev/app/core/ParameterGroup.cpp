@@ -26,9 +26,9 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \brief Implementation file for ParameterGroup class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \author     Simon Spielmann <sspielma@filmakademie.de>
+//! \author		Simon Spielmann <sspielma@filmakademie.de>
 //! \version    1.0
-//! \date       05.08.2009 (last updated)
+//! \date       07.04.2010 (last updated)
 //!
 
 #include "ParameterGroup.h"
@@ -36,6 +36,10 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "Log.h"
 
 INIT_INSTANCE_COUNTER(ParameterGroup)
+Q_DECLARE_METATYPE(ParameterGroup *);
+Q_DECLARE_METATYPE(Ogre::Vector3);
+Q_DECLARE_METATYPE(Ogre::SceneNode *);
+Q_DECLARE_METATYPE(Ogre::TexturePtr);
 
 
 ///
@@ -74,6 +78,377 @@ ParameterGroup::~ParameterGroup ()
 ///
 /// Public Functions
 ///
+
+
+///
+/// Public Value Setter Functions
+///
+
+
+//!
+//! Sets the value of the parameter with the given name to the given value
+//! while optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The new value for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, const QVariant &value, bool triggerDirtying /* = false */ )
+{
+    QString parameterName = name;
+
+    // check if the parameter name ends with an index into value list
+    QRegExp indexExpression ("\\[(\\d+)\\]$");
+    int index = -1;
+    if (indexExpression.indexIn(name) > -1) {
+        index = indexExpression.cap(1).toInt();
+        parameterName = name.left(name.indexOf('['));
+    }
+
+    // obtain the parameter with the given name
+    Parameter *parameter = getParameter(parameterName);
+    if (parameter) {
+        // set the value for the parameter
+        if (index == -1)
+            parameter->setValue(value);
+        else
+            parameter->setValue(index, value);
+
+        // optionally trigger the dirtying chain
+        if (triggerDirtying)
+            parameter->propagateDirty(0);
+	} else {
+		QString nodeName = "NO_NODE";
+		if (m_node)
+			nodeName = m_node->getName();
+        Log::error(QString("Parameter \"%1.%2\" not found.").arg(nodeName, name), "ParameterGroup::setValue");
+	}
+}
+
+
+//!
+//! Convenience function for setting the value of a boolean parameter
+//! while optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, bool value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QVariant(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of an integer parameter
+//! while optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, int value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QVariant(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of an unsigned integer
+//! parameter while optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, unsigned int value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QVariant(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of a double-precision
+//! floating point parameter while optionally triggering the dirtying
+//! chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, double value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QVariant(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of a string parameter while
+//! optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, char *value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QString(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of a string parameter while
+//! optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, const char *value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QString(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of a string parameter while
+//! optionally triggering the dirtying chain.
+//!
+//! If the parameter with the given name is not a string parameter the
+//! given value will be converted according to the parameter's type.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, const QString &value, bool triggerDirtying /* = false */)
+{
+    // obtain the parameter with the given name
+    Parameter *parameter = getParameter(name);
+
+	// check if the parameter exists
+	if (!parameter) {
+		// create the parameter if the intended type for the node is unsupported
+		if (m_node->getTypeUnknown()) {
+			Parameter *parameter = new Parameter(name, Parameter::T_String, value);
+			parameter->setDefaultValue("");     // to make sure the parameter is considered when saving the scene
+			parameter->setReadOnly(true);
+			addParameter(parameter);
+			QString nodeName = "NO_NODE";
+			if (m_node)
+				nodeName = m_node->getName();
+			Log::debug(QString("The \"%1\" parameter has been automatically added to the node \"%2\".").arg(name, nodeName), "ParameterGroup::setValue");
+		} else {
+			QString nodeName = "NO_NODE";
+			if (m_node)
+				nodeName = m_node->getName();
+			Log::error(QString("Parameter \"%1.%2\" not found.").arg(nodeName, name), "ParameterGroup::setValue");
+		}
+		return;
+	}
+
+    // find out if the value contains a separator
+    QString separator;
+    if (value.contains(", "))
+        separator = ", ";
+    else if (value.contains(" "))
+        separator = " ";
+
+    // check the type of the parameter and try converting the given value according to the parameter's type if it's not a string-based type
+    switch (parameter->getType()) {
+
+        // character string-based parameters
+        case Parameter::T_String:
+        case Parameter::T_Filename:
+        case Parameter::T_TextInfo:
+            setValue(name, QVariant(value), triggerDirtying);
+            break;
+
+        // boolean parameters
+        case Parameter::T_Bool:
+            setValue(name, value == "true", triggerDirtying);
+            break;
+
+        // integer number parameters
+        case Parameter::T_Int:
+            if (separator.isEmpty()) {
+                // convert a single value
+                bool ok = true;
+                int intValue = value.toInt(&ok);
+                if (ok)
+                    setValue(name, intValue, triggerDirtying);
+                else
+                    Log::error(QString("The value \"%1\" for parameter \"%2\" could not be converted to an integer number.").arg(value, name), "ParameterGroup::setValue");
+            } else {
+                // convert a list of values
+                QStringList valueParts = value.split(separator);
+                bool ok = true;
+                for (int i = 0; i < valueParts.size(); ++i) {
+                    int intValue = valueParts[i].toInt(&ok);
+                    if (ok)
+                        setValue(QString("%1[%2]").arg(name).arg(i), intValue, triggerDirtying);
+                    else
+                        Log::error(QString("The value part \"%1\" for parameter \"%2\" could not be converted to an integer number.").arg(valueParts[i], name), "ParameterGroup::setValue");
+                }
+            }
+            break;
+
+        // unsigned integer number parameters
+        case Parameter::T_UnsignedInt:
+            if (separator.isEmpty()) {
+                // convert a single value
+                bool ok = true;
+                unsigned int unsignedIntValue = value.toUInt(&ok);
+                if (ok)
+                    setValue(name, unsignedIntValue, triggerDirtying);
+                else
+                    Log::error(QString("The value \"%1\" for parameter \"%2\" could not be converted to an unsigned integer number.").arg(value, name), "ParameterGroup::setValue");
+            } else {
+                // convert a list of values
+                QStringList valueParts = value.split(separator);
+                bool ok = true;
+                for (int i = 0; i < valueParts.size(); ++i) {
+                    unsigned int unsignedIntValue = valueParts[i].toUInt(&ok);
+                    if (ok)
+                        setValue(QString("%1[%2]").arg(name).arg(i), unsignedIntValue, triggerDirtying);
+                    else
+                        Log::error(QString("The value part \"%1\" for parameter \"%2\" could not be converted to an unsigned integer number.").arg(valueParts[i], name), "ParameterGroup::setValue");
+                }
+            }
+            break;
+
+        // floating-point number parameters
+		case Parameter::T_Float:
+            if (separator.isEmpty()) {
+                // convert a single value
+                bool ok = true;
+                double doubleValue = value.toDouble(&ok);
+                if (ok)
+                    setValue(name, doubleValue, triggerDirtying);
+                else
+                    Log::error(QString("The value \"%1\" for parameter \"%2\" could not be converted to a double-precision floating-point number.").arg(value, name), "ParameterGroup::setValue");
+            } else {
+                // convert a list of values
+                QStringList valueParts = value.split(separator);
+                bool ok = true;
+                for (int i = 0; i < valueParts.size(); ++i) {
+                    double doubleValue = valueParts[i].toDouble(&ok);
+                    if (ok)
+                        setValue(QString("%1[%2]").arg(name).arg(i), doubleValue, triggerDirtying);
+                    else
+                        Log::error(QString("The value part \"%1\" for parameter \"%2\" could not be converted to a double-precision floating-point number.").arg(valueParts[i], name), "ParameterGroup::setValue");
+                }
+            }
+            break;
+
+        // color parameters
+        case Parameter::T_Color:
+            setValue(name, QColor(value), triggerDirtying);
+            break;
+
+        // enumeration parameters
+        case Parameter::T_Enumeration:
+            setValue(name, value.toInt(), triggerDirtying);
+            break;
+
+        // unsupported parameters
+        default:
+            Log::warning(QString("Parameter \"%1\" is not a string parameter. The value \"%2\" should be converted to a <%3>.").arg(name, value).arg(Parameter::getTypeName(parameter->getType())), "ParameterGroup::setValue");
+    }
+}
+
+
+//!
+//! Convenience function for setting the value of a color parameter while
+//! optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, const QColor &value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QVariant(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of an OGRE vector parameter
+//! while optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, const Ogre::Vector3 &value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QVariant::fromValue<Ogre::Vector3>(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of a scene node parameter
+//! while optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, Ogre::SceneNode *value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QVariant::fromValue<Ogre::SceneNode *>(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of an OGRE texture parameter
+//! while optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, const Ogre::TexturePtr value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QVariant::fromValue<Ogre::TexturePtr>(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the value of a parameter group
+//! parameter while optionally triggering the dirtying chain.
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param value The value to set for the parameter with the given name.
+//! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+//!
+void ParameterGroup::setValue ( const QString &name, ParameterGroup *value, bool triggerDirtying /* = false */ )
+{
+    setValue(name, QVariant::fromValue<ParameterGroup *>(value), triggerDirtying);
+}
+
+
+//!
+//! Convenience function for setting the enabled flag of a string parameter
+//!
+//! \param name The name of the parameter to set the value for.
+//! \param enabled The enabled flag to set for the parameter with the given name.
+//!
+void ParameterGroup::setParameterEnabled ( const QString &name, bool enabled )
+{
+    // obtain the parameter with the given name
+    Parameter *parameter = getParameter(name);
+
+	if (parameter)
+		parameter->setEnabled(enabled);
+	else {
+		QString nodeName = "NO_NODE";
+		if (m_node)
+			nodeName = m_node->getName();
+		Log::error(QString("Parameter \"%1.%2\" not found.").arg(nodeName, name), "Node::setParameterEnabled");
+	}
+}
 
 
 //!

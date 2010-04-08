@@ -27,9 +27,9 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
-//! \author     Simon Spielmann <sspielma@filmakademie.de>
+//! \author		Simon Spielmann <sspielma@filmakademie.de>
 //! \version    1.0
-//! \date       05.08.2009 (last updated)
+//! \date       07.04.2010 (last updated)
 //!
 
 #ifndef PARAMETERGROUP_H
@@ -57,14 +57,164 @@ public: // constructors and destructors
     //!
     ParameterGroup ( const QString &name = "" );
 
+	////!
+ //   //! Copy Constructor of the ParameterGroup class.
+ //   //!
+ //   //! \param parameterGroup The parameter group to copy.
+ //   //!
+ //   ParameterGroup ( const ParameterGroup &parameterGroup );
+
     //!
     //! Destructor of the ParameterGroup class.
     //!
     virtual ~ParameterGroup ();
 
-public: // functions
+
+public: // value setter functions
 
     //!
+    //! Sets the value of the parameter with the given name to the given value
+    //! while optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The new value for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, const QVariant &value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of a boolean parameter
+    //! while optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, bool value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of an integer parameter
+    //! while optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, int value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of an unsigned integer
+    //! parameter while optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, unsigned int value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of a double-precision
+    //! floating point parameter while optionally triggering the dirtying
+    //! chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, double value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of a string parameter while
+    //! optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, char *value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of a string parameter while
+    //! optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, const char *value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of a string parameter while
+    //! optionally triggering the dirtying chain.
+    //!
+    //! If the parameter with the given name is not a string parameter the
+    //! given value will be converted according to the parameter's type.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, const QString &value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of a color parameter while
+    //! optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, const QColor &value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of an OGRE vector parameter
+    //! while optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, const Ogre::Vector3 &value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of a scene node parameter
+    //! while optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, Ogre::SceneNode *value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of an OGRE texture parameter
+    //! while optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, const Ogre::TexturePtr value, bool triggerDirtying = false );
+
+    //!
+    //! Convenience function for setting the value of a parameter group
+    //! parameter while optionally triggering the dirtying chain.
+    //!
+    //! \param name The name of the parameter to set the value for.
+    //! \param value The value to set for the parameter with the given name.
+    //! \param triggerDirtying Flag to control whether to trigger the dirtying chain.
+    //!
+    void setValue ( const QString &name, ParameterGroup *value, bool triggerDirtying = false );
+
+	//!
+	//! Convenience function for setting the enabled flag of a string parameter
+	//!
+	//! \param name The name of the parameter to set the value for.
+	//! \param enabled The enabled flag to set for the parameter with the given name.
+	//!
+	void setParameterEnabled ( const QString &name, bool enabled );
+
+	//!
     //! Sets whether the controls for editing the parameter group in the UI
     //! should be enabled.
     //!
@@ -84,6 +234,8 @@ public: // functions
     //! \param node The node to which the parameter group belongs.
     //!
     virtual void setNode ( Node *node );
+
+public: // functions
 
     //!
     //! Creates an exact copy of the parameter.

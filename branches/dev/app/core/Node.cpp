@@ -27,8 +27,9 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
+//! \author		Simon Spielmann <sspielma@filmakademie.de>
 //! \version    1.0
-//! \date       05.08.2009 (last updated)
+//! \date       24.03.2010 (last updated)
 //!
 
 #include "Node.h"
@@ -132,6 +133,13 @@ bool Node::process ( const QString &parameterName )
 {
     return true;
 }
+
+
+bool Node::getTypeUnknown () const
+{
+	return m_typeUnknown;
+}
+
 
 //!
 //! Returns the actual timeline parameter.
@@ -942,31 +950,7 @@ ParameterGroup * Node::getGroupValue ( const QString &name, bool triggerEvaluati
 //!
 void Node::setValue ( const QString &name, const QVariant &value, bool triggerDirtying /* = false */ )
 {
-    QString parameterName = name;
-
-    // check if the parameter name ends with an index into value list
-    QRegExp indexExpression ("\\[(\\d+)\\]$");
-    int index = -1;
-    if (indexExpression.indexIn(name) > -1) {
-        index = indexExpression.cap(1).toInt();
-        parameterName = name.left(name.indexOf('['));
-    }
-
-    // obtain the parameter with the given name
-    Parameter *parameter = getParameter(parameterName);
-    if (parameter) {
-        // set the value for the parameter
-        if (index == -1)
-            parameter->setValue(value);
-        else
-            parameter->setValue(index, value);
-
-        // optionally trigger the dirtying chain
-        if (triggerDirtying)
-            parameter->propagateDirty(this);
-    } 
-    //else
-    //    Log::error(QString("Parameter \"%1.%2\" not found.").arg(m_name, name), "Node::setValue");
+	m_parameterRoot->setValue(name, value, triggerDirtying);
 }
 
 
@@ -1068,131 +1052,7 @@ void Node::setValue ( const QString &name, const char *value, bool triggerDirtyi
 //!
 void Node::setValue ( const QString &name, const QString &value, bool triggerDirtying /* = false */)
 {
-    // obtain the parameter with the given name
-    Parameter *parameter = getParameter(name);
-
-    // check if the parameter exists
-    if (!parameter) {
-        // create the parameter if the intended type for the node is unsupported
-        if (m_typeUnknown) {
-            Parameter *parameter = new Parameter(name, Parameter::T_String, value);
-            parameter->setDefaultValue("");     // to make sure the parameter is considered when saving the scene
-            parameter->setReadOnly(true);
-            m_parameterRoot->addParameter(parameter);
-            Log::debug(QString("The \"%1\" parameter has been automatically added to the node \"%2\".").arg(name, m_name), "Node::setValue");
-        } else
-            Log::error(QString("Parameter \"%1.%2\" not found.").arg(m_name, name), "Node::setValue");
-        return;
-    }
-
-    // find out if the value contains a separator
-    QString separator;
-    if (value.contains(", "))
-        separator = ", ";
-    else if (value.contains(" "))
-        separator = " ";
-
-    // check the type of the parameter and try converting the given value according to the parameter's type if it's not a string-based type
-    switch (parameter->getType()) {
-
-        // character string-based parameters
-        case Parameter::T_String:
-        case Parameter::T_Filename:
-        case Parameter::T_TextInfo:
-            setValue(name, QVariant(value), triggerDirtying);
-            break;
-
-        // boolean parameters
-        case Parameter::T_Bool:
-            setValue(name, value == "true", triggerDirtying);
-            break;
-
-        // integer number parameters
-        case Parameter::T_Int:
-            if (separator.isEmpty()) {
-                // convert a single value
-                bool ok = true;
-                int intValue = value.toInt(&ok);
-                if (ok)
-                    setValue(name, intValue, triggerDirtying);
-                else
-                    Log::error(QString("The value \"%1\" for parameter \"%2\" could not be converted to an integer number.").arg(value, name), "Node::setValue");
-            } else {
-                // convert a list of values
-                QStringList valueParts = value.split(separator);
-                bool ok = true;
-                for (int i = 0; i < valueParts.size(); ++i) {
-                    int intValue = valueParts[i].toInt(&ok);
-                    if (ok)
-                        setValue(QString("%1[%2]").arg(name).arg(i), intValue, triggerDirtying);
-                    else
-                        Log::error(QString("The value part \"%1\" for parameter \"%2\" could not be converted to an integer number.").arg(valueParts[i], name), "Node::setValue");
-                }
-            }
-            break;
-
-        // unsigned integer number parameters
-        case Parameter::T_UnsignedInt:
-            if (separator.isEmpty()) {
-                // convert a single value
-                bool ok = true;
-                unsigned int unsignedIntValue = value.toUInt(&ok);
-                if (ok)
-                    setValue(name, unsignedIntValue, triggerDirtying);
-                else
-                    Log::error(QString("The value \"%1\" for parameter \"%2\" could not be converted to an unsigned integer number.").arg(value, name), "Node::setValue");
-            } else {
-                // convert a list of values
-                QStringList valueParts = value.split(separator);
-                bool ok = true;
-                for (int i = 0; i < valueParts.size(); ++i) {
-                    unsigned int unsignedIntValue = valueParts[i].toUInt(&ok);
-                    if (ok)
-                        setValue(QString("%1[%2]").arg(name).arg(i), unsignedIntValue, triggerDirtying);
-                    else
-                        Log::error(QString("The value part \"%1\" for parameter \"%2\" could not be converted to an unsigned integer number.").arg(valueParts[i], name), "Node::setValue");
-                }
-            }
-            break;
-
-        // floating-point number parameters
-		case Parameter::T_Float:
-            if (separator.isEmpty()) {
-                // convert a single value
-                bool ok = true;
-                double doubleValue = value.toDouble(&ok);
-                if (ok)
-                    setValue(name, doubleValue, triggerDirtying);
-                else
-                    Log::error(QString("The value \"%1\" for parameter \"%2\" could not be converted to a double-precision floating-point number.").arg(value, name), "Node::setValue");
-            } else {
-                // convert a list of values
-                QStringList valueParts = value.split(separator);
-                bool ok = true;
-                for (int i = 0; i < valueParts.size(); ++i) {
-                    double doubleValue = valueParts[i].toDouble(&ok);
-                    if (ok)
-                        setValue(QString("%1[%2]").arg(name).arg(i), doubleValue, triggerDirtying);
-                    else
-                        Log::error(QString("The value part \"%1\" for parameter \"%2\" could not be converted to a double-precision floating-point number.").arg(valueParts[i], name), "Node::setValue");
-                }
-            }
-            break;
-
-        // color parameters
-        case Parameter::T_Color:
-            setValue(name, QColor(value), triggerDirtying);
-            break;
-
-        // enumeration parameters
-        case Parameter::T_Enumeration:
-            setValue(name, value.toInt(), triggerDirtying);
-            break;
-
-        // unsupported parameters
-        default:
-            Log::warning(QString("Parameter \"%1\" is not a string parameter. The value \"%2\" should be converted to a <%3>.").arg(name, value).arg(Parameter::getTypeName(parameter->getType())), "Node::setValue");
-    }
+	m_parameterRoot->setValue(name, value, triggerDirtying);
 }
 
 
@@ -1274,13 +1134,7 @@ void Node::setValue ( const QString &name, ParameterGroup *value, bool triggerDi
 //!
 void Node::setParameterEnabled ( const QString &name, bool enabled )
 {
-    // obtain the parameter with the given name
-    Parameter *parameter = getParameter(name);
-
-	if (parameter)
-		parameter->setEnabled(enabled);
-	else
-		Log::error(QString("Parameter \"%1.%2\" not found.").arg(m_name, name), "Node::setParameterEnabled");
+	m_parameterRoot->setParameterEnabled(name, enabled);
 }
 
 ///

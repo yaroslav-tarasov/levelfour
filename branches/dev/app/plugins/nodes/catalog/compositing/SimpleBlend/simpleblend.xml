@@ -19,7 +19,8 @@
       <parameter name="Operator" type="Enumeration" defaultValue="Add">
         <literal name="Add" value="Add"/>
         <literal name="Mul" value="Mul"/>
-		<literal name="A over B" value="A over B"/>
+		    <literal name="A over B" value="A over B"/>
+        <literal name="Stencil" value="Stencil"/>
       </parameter>
 	  <parameter name="Linear Blend Factor" type="Float" minValue="0.0" maxValue="100.0" defaultValue="50.0" inputMethod="SliderPlusSpinBox" stepSize="1.0" unit=""/>
   </parameters>
