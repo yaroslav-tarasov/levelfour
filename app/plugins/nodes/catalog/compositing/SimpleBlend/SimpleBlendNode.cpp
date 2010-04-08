@@ -92,10 +92,12 @@ void SimpleBlendNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialP
             if (!value.isNull()) {
                 if (value == "Add")
                     setShaderParameter(fpParams, "op", (Ogre::Real) 1.0);
-                if (value == "Mul")
+                else if (value == "Mul")
                     setShaderParameter(fpParams, "op", (Ogre::Real) 2.0);
-                if (value == "A over B")
+                else if (value == "A over B")
                     setShaderParameter(fpParams, "op", (Ogre::Real) 3.0);
+				else if (value == "Stencil")
+                    setShaderParameter(fpParams, "op", (Ogre::Real) 4.0);
             }
         }
 

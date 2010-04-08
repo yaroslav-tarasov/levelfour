@@ -27,9 +27,9 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
-//! \author     Simon Spielmann <sspielma@filmakademie.de>
+//! \author		Simon Spielmann <sspielma@filmakademie.de>
 //! \version    1.0
-//! \date       27.07.2009 (last updated)
+//! \date       24.03.2010 (last updated)
 //!
 
 #ifndef NUMBERPARAMETER_H

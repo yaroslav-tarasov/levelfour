@@ -26,8 +26,9 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \brief Header file for SceneModel class.
 //!
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
+//! \author		Simon Spielmann <sspielma@filmakademie.de>
 //! \version    1.0
-//! \date       29.06.2009 (last updated)
+//! \date       24.03.2010 (last updated)
 //!
 
 #ifndef SCENEMODEL_H
@@ -742,6 +743,8 @@ private: // functions
     //! \param parentElement The element under which to create the COLLADA elements representing the parameter group.
     //!
     void createDaeElements ( ParameterGroup *parameterGroup, daeElement *parentElement ) const;
+
+	void createParameters(Node *node, ParameterGroup *parameterGroup, daeElement *parametersElement);
 
 private: // data
 

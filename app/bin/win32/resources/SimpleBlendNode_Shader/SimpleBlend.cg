@@ -77,6 +77,13 @@ void sb_ps( in  float2 texCoord : TEXCOORD0,
 		color.rgb =  color2 * (newBlendFactor * alpha2) +  color1 * (1.0 - (alpha2 * newBlendFactor));
 		color.a = 1.0;
 	}
+	else if (op == 4.0) {
+		//Stencil
+		float3 color2 = colorSample1.rgb;
+		float alpha1 = colorSample0.a;
+		color.rgb =  color2;
+		color.a = alpha1;
+	}
 
 	
 }
