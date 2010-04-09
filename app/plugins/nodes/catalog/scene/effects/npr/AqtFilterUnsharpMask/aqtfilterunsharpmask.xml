@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="UnsharpMask" category="-- NPR" color="7, 45, 87" plugin="aqtfilterunsharpmask.dll">
+<nodetype name="UnsharpMask" category="NPR" color="7, 45, 87" plugin="aqtfilterunsharpmask.dll">
   <parameters>
     <parameter name="Input Map" type="Image" pin="in" selfEvaluating="true"/>
     <parameter name="Resource Group Name" type="String" defaultValue="UnsharpMask" visible="false"/>

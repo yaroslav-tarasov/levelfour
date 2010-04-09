@@ -298,9 +298,8 @@ void ImageFileNode::processOutputImage ()
             index = lastIndex;
         index += getIntValue("Start Frame Offset");
         setNumberOfImagesToCache(lastIndex - firstIndex + 1);
-    }
-
-    filename = QString("%1%2%3.png").arg(prefix).arg(index, indexString.size(), 10, QChar('0')).arg(suffix);
+		filename = QString("%1%2%3.png").arg(prefix).arg(index, indexString.size(), 10, QChar('0')).arg(suffix);
+	}
 
     // check if the file exists
     if (!QFile::exists(QString("%1/%2").arg(path, filename))) {

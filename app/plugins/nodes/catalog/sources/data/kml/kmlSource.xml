@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="KMLReader" category="-- Data" color="40, 40, 40" plugin="kmlSource.dll">
+<nodetype name="KMLReader" category="Sources" color="40, 40, 40" plugin="kmlSource.dll">
   <parameters>
     <parameters name="Simple">
       <parameter name="Description" type="TextInfo" defaultValue="This group contains parameters that have no additional attributes, just a name and a type."/>

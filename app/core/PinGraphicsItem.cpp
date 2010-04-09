@@ -233,26 +233,33 @@ PinGraphicsItem::~PinGraphicsItem ()
 //!
 void PinGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /* = 0 */ )
 {
-    const QColor penColor (109, 109, 109);
-
+    const QColor penColor (30, 30, 30);
+	
+	QRadialGradient radialGradient (rect().center(), 5);
+    radialGradient.setColorAt(1, m_color.darker(200));
+	radialGradient.setColorAt(0, m_color);
+	
     // set the brush
     QBrush brush;
-    if (isEnabled())
+	
+	if (isEnabled())
         if (m_hovered && m_clicked)
-            brush = QBrush(m_color.darker(115));
-        else if (m_hovered || m_clicked)
-            brush = QBrush(m_color.lighter(115));
+            radialGradient.setColorAt(0.5, m_color.lighter(100));
+	    else if (m_hovered || m_clicked)
+			radialGradient.setColorAt(0.5, m_color.lighter(100));
         else
-            brush = QBrush(m_color);
+			radialGradient.setColorAt(0.5, m_color.darker(150));
     else
         brush = Qt::NoBrush;
 
     // paint the pin
-    painter->setPen(QPen(QBrush(penColor), 1));
-    painter->setBrush(brush);
-    painter->drawRoundRect(rect());
-
-    // check if the parameter the pin represents is a parameter group
+	brush = QBrush(radialGradient);
+	painter->setRenderHint(QPainter::Antialiasing);
+	painter->setPen(QPen(QBrush(penColor), 1));
+    painter->setBrush(brush);	
+	painter->drawEllipse(rect().center(), 5, 5);
+    
+	// check if the parameter the pin represents is a parameter group
     //if (m_abstractParameter && m_abstractParameter->isGroup()) {
     //    painter->setPen(QPen(penColor));
     //    painter->setBrush(QBrush(QColor(Qt::black)));

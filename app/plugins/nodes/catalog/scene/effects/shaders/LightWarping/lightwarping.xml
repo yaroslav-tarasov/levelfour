@@ -11,7 +11,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="LightWarping" category="-- Shaders" color="7, 45, 87" plugin="lightwarping.dll">
+<nodetype name="LightWarping" category="Shaders" color="7, 45, 87" plugin="lightwarping.dll">
   <parameters>
     <parameter name="Resource Group Name" type="String" defaultValue="LightWarpingNode"/>
     <parameter name="Reload" type="Command"/>
