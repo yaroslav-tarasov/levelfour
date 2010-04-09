@@ -61,7 +61,7 @@ namespace graphdefs {
 		} // end while loop
 
 		delete childList;
-	} // end function cone_graph_layout
+	} // end function cone_tree_layout
 } // end namespace graphdefs
 
 #endif // CONE_LAYOUT_HPP

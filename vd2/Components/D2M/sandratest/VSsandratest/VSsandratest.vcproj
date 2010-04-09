@@ -164,19 +164,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\source\cone_layout3D.h"
-				>
-			</File>
-			<File
 				RelativePath="..\source\GraphPropertyMapper.h"
 				>
 			</File>
 			<File
-				RelativePath="..\source\phyllo_layout3D.h"
-				>
-			</File>
-			<File
-				RelativePath="..\phyllotree3D_layout_example.cpp"
+				RelativePath="..\kamada_layout_example.cpp"
 				>
 			</File>
 			<File

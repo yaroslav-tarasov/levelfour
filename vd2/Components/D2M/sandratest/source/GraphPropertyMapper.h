@@ -4,13 +4,12 @@
 #include "TestPlotter.h"
 #include "cone_layout3D.h"
 #include "phyllo_layout3D.h"
+#include "kamada_layout3D.h"
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topology.hpp>
 #include <boost/graph/circle_layout.hpp>
 #include <boost/graph/random_layout.hpp>
-#include <boost/graph/kamada_kawai_spring_layout.hpp>
-
 
 namespace graphdefs
 {
@@ -31,7 +30,7 @@ namespace graphdefs
 
 	enum layout {
 		circle2D,
-		random2D,
+		random3D,
 		kamada_kawai2D,
 		cone3D,
 		phyllo3D
@@ -94,7 +93,7 @@ public:
 		boost::circle_graph_layout(g, positionMap, 10);
 	}
 
-	void layoutRandom2D()
+	void layoutRandom3D()
 	{
 		boost::minstd_rand gen;
 		gen.seed (static_cast<unsigned int>(std::time(0)));
@@ -107,17 +106,15 @@ public:
 		// First apply boost's circle layout as a starting point
 		boost::circle_graph_layout(g, positionMap, 100);
 
-		// Then apply boost's kamada layout
-/*THE KAMADA LAYOUT WON'T COMPILE WHEN Directed IS A TEMPLATE PARAMETER. PROBLEM TO BE SOLVED
+		// Then apply our kamada layout
+		bool retval = graphdefs::kamada_kawai_spring_layout(g, positionMap, weightMap, boost::cube_topology<>(), 
+															graphdefs::detail::graph::edge_or_side<true, double>(10),
+															graphdefs::layout_tolerance<>(), 1, vertexIdMap);
 
-		bool retval = boost::kamada_kawai_spring_layout(g, positionMap, weightMap, 
-					  boost::square_topology<>(), boost::side_length<double>(10),	
-					  boost::layout_tolerance<>(), 1, vertexIdMap);
 		if (!retval)
 		{
 			 std::cout << "kamada_kawai_spring_layout returned false";
 		}
-*/
 	}
 
 	void layoutCone3D()
@@ -143,8 +140,8 @@ public:
 		case graphdefs::circle2D:
 			layoutCircle2D();
 			break;
-		case graphdefs::random2D:
-			layoutRandom2D();
+		case graphdefs::random3D:
+			layoutRandom3D();
 			break;
 		case graphdefs::kamada_kawai2D:
 			layoutKamadaKawai2D();
@@ -161,7 +158,7 @@ public:
 	void plotScene()
 	{
 		TestPlotter<Graph, PositionMap, WeightMap> tp;
-		tp.constructScene(g, positionMap, weightMap);
+		tp.constructScene(g, positionMap, weightMap);  // tp.constructScene(g, positionMap); //TODO
 	}
 
 protected:
