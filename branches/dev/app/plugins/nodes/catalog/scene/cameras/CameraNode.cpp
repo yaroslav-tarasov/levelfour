@@ -309,14 +309,21 @@ void CameraNode::applyOrientation ()
 	if (!getBoolValue("lookAtEnabled")) {
 		Ogre::Vector3 orientation = getVectorValue("Orientation");
 
-		// decode the parameter's values
-		//Ogre::Radian xRadian = Ogre::Radian(Ogre::Degree(orientation.x));
-		//Ogre::Radian yRadian = Ogre::Radian(Ogre::Degree(orientation.y));
-		//Ogre::Radian zRadian = Ogre::Radian(Ogre::Degree(orientation.z));
-
-        Ogre::Radian xRadian = Ogre::Radian(orientation.x);
-		Ogre::Radian yRadian = Ogre::Radian(orientation.y);
-		Ogre::Radian zRadian = Ogre::Radian(orientation.z);
+		Ogre::Radian xRadian;
+		Ogre::Radian yRadian;
+		Ogre::Radian zRadian;
+		bool useRadians = getBoolValue("useRadians");
+		if (useRadians) {
+			// decode the parameter's values
+			xRadian = Ogre::Radian(orientation.x);
+			yRadian = Ogre::Radian(orientation.y);
+			zRadian = Ogre::Radian(orientation.z);
+		}
+		else {
+			xRadian = Ogre::Radian(Ogre::Degree(orientation.x));
+			yRadian = Ogre::Radian(Ogre::Degree(orientation.y));
+			zRadian = Ogre::Radian(Ogre::Degree(orientation.z));
+		}
 
 		// apply the orientation to the camera's scene node and all its copies
 		m_sceneNode->resetOrientation();

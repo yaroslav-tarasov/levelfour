@@ -417,6 +417,38 @@ void SceneModel::createScene ( daeElement *rootElement )
     progressDialog.setWindowTitle(tr("Open Scene"));
     progressDialog.setWindowModality(Qt::ApplicationModal);
 
+	// load scene properties
+	daeElement *sceneElement = rootElement->getChild("scene");
+	if (sceneElement) {
+		daeElement *extraPropertiesElement = sceneElement->getChild("extra");
+		if (extraPropertiesElement) {
+			daeElement *techniquePropertiesElement = extraPropertiesElement->getChild("technique");
+			if (techniquePropertiesElement) {
+				daeElement *timelineElement = techniquePropertiesElement->getChild("timeline");
+				if (timelineElement) {
+					QString frameString = QString::fromStdString(timelineElement->getAttribute("frame"));
+					QString frameInString = QString::fromStdString(timelineElement->getAttribute("frameIn"));
+					QString frameOutString = QString::fromStdString(timelineElement->getAttribute("frameOut"));
+					QString frameRangeInString = QString::fromStdString(timelineElement->getAttribute("frameRangeIn"));
+					QString frameRangeOutString = QString::fromStdString(timelineElement->getAttribute("frameRangeOut"));
+					QString fpsString = QString::fromStdString(timelineElement->getAttribute("fps"));
+					setStartFrame(frameInString.toInt());
+					setEndFrame(frameOutString.toInt());
+					setCurrentFrame(frameString.toInt());
+					setInFrame(frameRangeInString.toInt());
+					setOutFrame(frameRangeOutString.toInt());
+					setFrameRate(fpsString.toInt());
+					//m_frameParameter->setMinValue(frameInString.toInt());
+					//m_frameParameter->setMaxValue(frameOutString.toInt());
+					//m_frameParameter->setValue(frameString.toInt());
+					//m_frameRangeParameter->setMinValue(frameRangeInString.toInt());
+					//m_frameRangeParameter->setMaxValue(frameRangeOutString.toInt());
+					//m_fpsParameter->setMinValue(fpsString.toInt());
+				}
+			}
+		}
+	}
+
     // obtain scene library element
     daeElement *sceneLibraryElement = rootElement->getChild("library_visual_scenes");
     if (!sceneLibraryElement) {
@@ -435,7 +467,7 @@ void SceneModel::createScene ( daeElement *rootElement )
     daeTArray<daeSmartRef<daeElement>> sceneElements = visualSceneElement->getChildren();
     progressDialog.setMaximum((int) sceneElements.getCount());
     for (size_t i = 0; i < sceneElements.getCount(); ++i) {
-        daeElement *sceneElement = sceneElements.get(i);
+		daeElement *sceneElement = sceneElements.get(i);
         if (QString(sceneElement->getTypeName()) == "node") {
             progressDialog.setLabelText(QString(tr("Creating node \"%1\"...")).arg(sceneElement->getID()));
             daeElement *extraElement = sceneElement->getChild("extra");
@@ -924,6 +956,26 @@ void SceneModel::createDaeElements ( daeElement *parentElement ) const
         frapperConnectionElement->setAttribute("targetNode", targetNodeName.toStdString().c_str());
         frapperConnectionElement->setAttribute("targetParameter", targetParameterName.toStdString().c_str());
     }
+}
+
+
+//!
+//! Creates a COLLADA elements representing global scene properties.
+//!
+//! \param parentElement The element under which to create the COLLADA element tree representing the scene.
+//!
+void SceneModel::createSceneDAEProperties ( daeElement *parentElement ) const
+{
+	// Add global scene parameters
+	daeElement *techniqueElement = parentElement->add("technique");
+    techniqueElement->setAttribute("profile", "frapper");
+	daeElement *timelineElement = techniqueElement->add("timeline");
+	timelineElement->setAttribute("frame", QString::number((int) m_frameParameter->getValue().toDouble()).toStdString().c_str());
+	timelineElement->setAttribute("frameIn", QString::number((int) m_frameParameter->getMinValue().toDouble()).toStdString().c_str());
+	timelineElement->setAttribute("frameOut", QString::number((int) m_frameParameter->getMaxValue().toDouble()).toStdString().c_str());
+	timelineElement->setAttribute("frameRangeIn", QString::number((int) m_frameRangeParameter->getMinValue().toDouble()).toStdString().c_str());
+	timelineElement->setAttribute("frameRangeOut", QString::number((int) m_frameRangeParameter->getMaxValue().toDouble()).toStdString().c_str());
+	timelineElement->setAttribute("fps", QString::number((int) m_fpsParameter->getValue().toDouble()).toStdString().c_str());
 }
 
 

@@ -262,7 +262,7 @@ void ConnectionGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphi
     painter->setPen(QPen(shadowColor, 2));
     painter->drawPath(m_shadowPath);
     if (m_hovered)
-        painter->setPen(QPen(Qt::blue, 2));
+        painter->setPen(QPen(Qt::white, 2));
     else
         painter->setPen(QPen(m_color, 2));
     painter->drawPath(m_mainPath);

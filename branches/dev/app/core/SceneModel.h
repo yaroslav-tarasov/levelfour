@@ -267,6 +267,13 @@ public: // functions
     //!
     void createDaeElements ( daeElement *parentElement ) const;
 
+	//!
+	//! Creates a COLLADA elements representing global scene properties.
+	//!
+	//! \param parentElement The element under which to create the COLLADA element tree representing the scene.
+	//!
+	void createSceneDAEProperties ( daeElement *parentElement ) const;
+
     //!
     //! Deletes all objects contained in the scene.
     //!
