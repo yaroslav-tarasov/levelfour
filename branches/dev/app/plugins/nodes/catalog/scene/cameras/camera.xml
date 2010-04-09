@@ -10,10 +10,11 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="Camera" category="-- Camera" color="109, 158, 255" icon=":/cameraIcon" plugin="camera.dll">
+<nodetype name="Camera" category="Scene" color="109, 158, 255" plugin="camera.dll">
   <parameters>
     <parameters name="Transformation">
       <parameter name="Position" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" defaultValue="0, 0, 0" stepSize="0.25" pin="in" selfEvaluating="true"/>
+      <parameter name="úseRadians" type="Bool" defaultValue="false"/>
       <parameter name="Orientation" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-360" maxValue="360" defaultValue="0, 0, 0" pin="in" selfEvaluating="true"/>
     </parameters>
     <parameters name="Render Resolution">

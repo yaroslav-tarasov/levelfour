@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="NormalFlatten" category="-- Shaders" color="7, 45, 87" plugin="normalflatten.dll">
+<nodetype name="NormalFlatten" category="Shaders" color="7, 45, 87" plugin="normalflatten.dll">
   <parameters>
     <parameter name="Resource Group Name" type="String" defaultValue="NormalFlattenNode"/>
     <parameter name="Reload" type="Command"/>

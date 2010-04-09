@@ -1159,6 +1159,8 @@ bool Application::saveFile ( const QString &filename )
 
     // create the scene elements
     daeElement *sceneElement = rootElement->add("scene");
+	daeElement *extraElement = sceneElement->add("extra");
+    m_sceneModel->createSceneDAEProperties(extraElement);
     daeElement *instanceVisualSceneElement = sceneElement->add("instance_visual_scene");
     instanceVisualSceneElement->setAttribute("url", "#RootNode");
 

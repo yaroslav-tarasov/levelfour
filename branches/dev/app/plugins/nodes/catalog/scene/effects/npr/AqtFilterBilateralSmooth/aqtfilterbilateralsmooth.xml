@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="BilateralSmooth" category="-- NPR" color="7, 45, 87" plugin="aqtfilterbilateralsmooth.dll">
+<nodetype name="BilateralSmooth" category="NPR" color="7, 45, 87" plugin="aqtfilterbilateralsmooth.dll">
   <parameters>
     <parameter name="Input Map" type="Image" pin="in" selfEvaluating="true"/>
     <parameter name="Resource Group Name" type="String" defaultValue="BilateralSmooth" visible="false"/>
