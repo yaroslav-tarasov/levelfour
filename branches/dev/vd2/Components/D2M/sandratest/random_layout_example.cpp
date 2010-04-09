@@ -1,10 +1,9 @@
 #include "GraphPropertyMapper.h"
-#include "TestPlotter.h"
 
 	int main(int,char*[])
 	{
 		// Create a GraphPropertyMapper
-		GraphPropertyMapper graphMapper;
+		GraphPropertyMapper<boost::undirectedS> graphMapper;
 
 		// Add vertices to the GraphPropertyMapper
 		for (int i = 0; i < 7; ++i) {
@@ -12,21 +11,20 @@
 		}
 
 		// Add edges to the GraphPropertyMapper
-/*		graphMapper.addEdge(0,1);
-		graphMapper.addEdge(1,2);
-		graphMapper.addEdge(2,3);
-		graphMapper.addEdge(3,4);
-		graphMapper.addEdge(4,5);
-		graphMapper.addEdge(5,6);
-		graphMapper.addEdge(6,0);
-*/
+		graphMapper.addEdge(0,1,1);
+		graphMapper.addEdge(1,2,1);
+		graphMapper.addEdge(2,3,1);
+		graphMapper.addEdge(3,4,1);
+		graphMapper.addEdge(4,5,1);
+		graphMapper.addEdge(5,6,1);
+		graphMapper.addEdge(6,0,1);
+
 		// Apply the layout
-		graphMapper.setPositionTransform(graphdefs::random2D);
+		graphMapper.setPositionTransform(graphdefs::random3D);
 		graphMapper.transformPosition();
 		
 		// Create an OSG scene and save it as an osg file
-		TestPlotter tp;
-		tp.constructScene(graphMapper.g, graphMapper.positionMap);
+		graphMapper.plotScene();
 		return 0;
 
 	}

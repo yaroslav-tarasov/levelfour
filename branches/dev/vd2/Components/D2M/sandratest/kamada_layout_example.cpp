@@ -1,10 +1,9 @@
 #include "GraphPropertyMapper.h"
-#include "TestPlotter.h"
 
 	int main(int,char*[])
 	{
 		// Create a GraphPropertyMapper
-		GraphPropertyMapper graphMapper;
+		GraphPropertyMapper<boost::undirectedS> graphMapper;
 
 		// Add vertices to the GraphPropertyMapper
 		for (int i = 0; i < 8; ++i) {
@@ -26,8 +25,8 @@
 		graphMapper.transformPosition();
 		
 		// Create an OSG scene and save it as an osg file
-		TestPlotter tp;
-		tp.constructScene(graphMapper.g, graphMapper.positionMap, graphMapper.weightMap);
+		graphMapper.plotScene();
+
 		return 0;
 
 	}

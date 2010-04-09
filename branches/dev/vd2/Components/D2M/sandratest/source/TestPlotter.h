@@ -10,7 +10,7 @@
 #include <osg/ShapeDrawable>
 #include <osgDB/WriteFile>
 
-template<typename Graph, typename PositionMap, typename WeightMap>
+template<typename VertexListGraph, typename PositionMap, typename WeightMap>
 class TestPlotter
 {
 
@@ -42,7 +42,7 @@ public:
 		return cylinder;
 	}
 
-	void constructScene(Graph &g, PositionMap &positionMap, WeightMap &weightMap)
+	void constructScene(VertexListGraph &g, PositionMap &positionMap, WeightMap &weightMap)
 	{
 		//Create a cube for each vertex and a cylinder for each edge
 		//Add all cubes and cylinders to a Geode
@@ -54,8 +54,8 @@ public:
 		osg::ref_ptr<osg::ShapeDrawable> line;
 		osg::ref_ptr<osg::Geode> geode = new osg::Geode;
 		
-		boost::graph_traits<GraphPropertyMapper<boost::directedS>::Graph>::vertex_iterator i, end;
-		boost::graph_traits<GraphPropertyMapper<boost::directedS>::Graph>::out_edge_iterator ei, edge_end;
+		boost::graph_traits<VertexListGraph>::vertex_iterator i, end;
+		boost::graph_traits<VertexListGraph>::out_edge_iterator ei, edge_end;
 		for (boost::tie(i, end) = boost::vertices(g); i != end; ++i) {
 			position1 = osg::Vec3( positionMap[*i][0], positionMap[*i][1], positionMap[*i][2] );
 			cube = new osg::ShapeDrawable( new osg::Box(position1, cubeSize) );
@@ -73,7 +73,7 @@ public:
 		saveOsgFile(geode);
 	}
 
-	void constructScene(Graph &g, PositionMap &positionMap)
+	void constructScene(VertexListGraph &g, PositionMap &positionMap)
 	{
 		//Create a cube for each vertex and a cylinder for each edge
 		//Add all cubes and cylinders to a Geode
@@ -84,8 +84,8 @@ public:
 		osg::ref_ptr<osg::ShapeDrawable> line;
 		osg::ref_ptr<osg::Geode> geode = new osg::Geode;
 		
-		boost::graph_traits<GraphPropertyMapper<boost::directedS>::Graph>::vertex_iterator i, end;
-		boost::graph_traits<GraphPropertyMapper<boost::directedS>::Graph>::out_edge_iterator ei, edge_end;
+		boost::graph_traits<VertexListGraph>::vertex_iterator i, end;
+		boost::graph_traits<VertexListGraph>::out_edge_iterator ei, edge_end;
 		for (boost::tie(i, end) = boost::vertices(g); i != end; ++i) {
 			position1 = osg::Vec3( positionMap[*i][0], positionMap[*i][1], positionMap[*i][2] );
 			cube = new osg::ShapeDrawable( new osg::Box(position1, cubeSize) );
