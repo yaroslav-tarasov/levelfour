@@ -19,9 +19,11 @@
 		graphMapper.addEdge(5,6,1);
 		graphMapper.addEdge(6,7,1);
 		graphMapper.addEdge(7,0,1);
+		graphMapper.addEdge(5,1,1);
+		graphMapper.addEdge(7,3,5);
 
 		// Apply the layout
-		graphMapper.setPositionTransform(graphdefs::kamada_kawai2D);
+		graphMapper.setPositionTransform(graphdefs::kamada_kawai3D);
 		graphMapper.transformPosition();
 		
 		// Create an OSG scene and save it as an osg file
