@@ -5,6 +5,7 @@
 #include "cone_layout3D.h"
 #include "phyllo_layout3D.h"
 #include "kamada_layout3D.h"
+#include "sphere_layout3D.h"
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topology.hpp>
@@ -30,8 +31,10 @@ namespace graphdefs
 
 	enum layout {
 		circle2D,
+		sphere3D,
 		random3D,
 		kamada_kawai2D,
+		kamada_kawai3D,
 		cone3D,
 		phyllo3D
 	};
@@ -93,6 +96,11 @@ public:
 		boost::circle_graph_layout(g, positionMap, 10);
 	}
 
+	void layoutSphere3D()
+	{
+		graphdefs::sphere_graph_layout(g, positionMap);
+	}
+
 	void layoutRandom3D()
 	{
 		boost::minstd_rand gen;
@@ -117,6 +125,23 @@ public:
 		}
 	}
 
+	void layoutKamadaKawai3D()
+	{
+		// First apply our sphere layout as a starting point
+		graphdefs::sphere_graph_layout(g, positionMap);
+
+		// Then apply our kamada layout
+		bool retval = graphdefs::kamada_kawai_spring_layout(g, positionMap, weightMap, boost::cube_topology<>(), 
+															graphdefs::detail::graph::edge_or_side<true, double>(10),
+															graphdefs::layout_tolerance<>(), 1, vertexIdMap);
+
+		if (!retval)
+		{
+			 std::cout << "kamada_kawai_spring_layout returned false";
+		}
+	}
+
+
 	void layoutCone3D()
 	{
 		boost::graph_traits<Graph>::vertex_descriptor rootVertex;
@@ -140,11 +165,17 @@ public:
 		case graphdefs::circle2D:
 			layoutCircle2D();
 			break;
+		case graphdefs::sphere3D:
+			layoutSphere3D();
+			break;
 		case graphdefs::random3D:
 			layoutRandom3D();
 			break;
 		case graphdefs::kamada_kawai2D:
 			layoutKamadaKawai2D();
+			break;
+		case graphdefs::kamada_kawai3D:
+			layoutKamadaKawai3D();
 			break;
 		case graphdefs::cone3D:
 			layoutCone3D();

@@ -168,7 +168,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\kamada_layout3D.h"
+				>
+			</File>
+			<File
 				RelativePath="..\kamada_layout_example.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\sphere_layout3D.h"
 				>
 			</File>
 			<File
