@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="SizeByValue" category="Mappers" color="40, 40, 40" plugin="sizeByValue.dll">
+  <parameters>
+    <parameters name="Size By Value Parameters">
+      <parameter name="Description" type="TextInfo" defaultValue="Size by Value is ..."/>
+      <parameter name="Symbol Size Proportionality" type="Enumeration" defaultValue="Power">
+        <literal name="Square root"/>
+        <literal name="Linear"/>
+        <literal name="Power"/>
+      </parameter>
+      <parameter name="Symbol Angle Method" type="Enumeration" defaultValue="Fixed">
+        <literal name="Fixed"/>
+        <literal name="AngleFromData"/>
+      </parameter>
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="idIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="attribute" type="Enumeration" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="idOut" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="size" type="Enumeration" pin="out" visible="false"/>
+  </parameters>
+</nodetype>
