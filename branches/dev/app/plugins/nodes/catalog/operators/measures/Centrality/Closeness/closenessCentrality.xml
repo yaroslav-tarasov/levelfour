@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="Closeness" category="Centrality" color="40, 40, 40" plugin="closenessCentrality.dll">
+  <parameters>
+    <parameters name="Closeness Centrality Settings">
+      <parameter name="Description" type="TextInfo" defaultValue="The closeness centrality of a vertex measures how easily other vertices 
+ can be reached from it (or the other way: how easily it can be reached 
+ from the other vertices)."/>
+      <parameter name="Diagonals" type="TextInfo" defaultValue="Boolean indicating whether or not the diagonal should be treated as valid data."/>
+      <parameter name="Diag" type="Bool"/>
+      <parameter name="Maximum Deviation" type="TextInfo" defaultValue="Whether or not the theoretical maximum absolute deviation from the 
+maximum nodal centrality should be returned"/>
+      <parameter name="MaxDev" type="Bool"/>
+      <parameter name="Rescale to 1" type="TextInfo" defaultValue="If true, centrality scores are rescaled such that they sum to 1."/>
+      <parameter name="Rescale" type="Bool"/>
+      <parameter name="Weighted Edges" type="TextInfo" defaultValue="Consider the edge weights in determining the shortest paths."/>
+      <parameter name="Weighted_Edges" type="Bool"/>
+      <parameter name="Ignore Breaks" type="TextInfo" defaultValue="Unreachable nodes are ignored for disconnected graphs."/>
+      <parameter name="Ignore_Breaks" type="Bool"/>
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="Graph" type="Enumeration" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="In-Closeness" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="Out-Closeness" type="Enumeration" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

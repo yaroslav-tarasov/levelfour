@@ -91,22 +91,32 @@ static const char *ParameterTypeNames[Parameter::T_NumTypes] = {
 //! List of colors of parameter types.
 //!
 static const QColor ParameterTypeColors[Parameter::T_NumTypes] = {
-    QColor(158, 109, 158),      // Bool
+    QColor(20, 20, 20),      // Bool
     QColor(109, 255, 109),      // Int
     QColor(158, 255, 158),      // UnsignedInt
     QColor(109, 173, 158),      // Float
     QColor(109, 255, 255),      // String
     QColor(173, 173, 255),      // Filename
-    QColor(255, 109, 255),      // Color
-    QColor(173, 158, 173),      // Enumeration
+    QColor(230, 45, 137),       // Color
+    QColor(0, 172, 236),        // Enumeration
     QColor(174, 174, 174),      // TextInfo
     QColor( 40,  40, 140),      // Command
-    QColor(255, 192, 171),      // Geometry
-    QColor(255, 255, 109),      // Light
-    QColor(109, 158, 255),      // Camera
+    QColor(255, 0, 0),          // Geometry
+    QColor(255, 255, 0),        // Light
+    QColor(255, 103, 0),        // Camera
     QColor(173, 255, 173),      // Image
     QColor(100, 100, 100),       // Group
 	QColor(0, 255, 0)       // Plugin
+
+// (230, 45, 137) // Pink
+// (255, 0, 0) // Red
+// (255, 103, 0) // Orange
+// (255, 255, 0) // Yellow
+// (101, 255, 50) // Green
+// (0, 195, 136) // Aqua
+// (125, 43, 139) // Purple
+// (0, 172, 236) // Light Blue
+
 };
 
 

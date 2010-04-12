@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="MergeTable" category="Data" color="40, 40, 40" plugin="mergeTable.dll">
+  <parameters>
+    <parameters name="Closeness Centrality Settings">
+      <parameter name="Description" type="TextInfo" defaultValue="The closeness centrality of a vertex measures how easily other vertices 
+ can be reached from it (or the other way: how easily it can be reached 
+ from the other vertices)."/>
+      <parameter name="Match Id" type="Enumeration" defaultValue="">
+        <literal name="Select Id"/>
+      </parameter>
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="ExampleTable" type="Enumeration" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="ExampleTable" type="Enumeration" pin="out" visible="false"/>
+  </parameters>
+</nodetype>
