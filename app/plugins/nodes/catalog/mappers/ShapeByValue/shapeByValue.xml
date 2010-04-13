@@ -23,8 +23,11 @@
       </parameter>
     </parameters>
     <!-- input parameters -->
-    <parameter name="MeshIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="MeshIn" type="Geometry" pin="in" visible="false"/>
+    <parameter name="ColorIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="MaterialIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="SizeIn" type="Enumeration" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="MeshOut" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="ShapeOut" type="Geometry" pin="out" visible="false"/>
   </parameters>
 </nodetype>

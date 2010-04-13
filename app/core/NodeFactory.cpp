@@ -71,6 +71,7 @@ void NodeFactory::initialize ()
     s_nodeTypeCategories << NodeType::Category("Geometric", ":/geometryIcon");
     s_nodeTypeCategories << NodeType::Category("Images", ":/imagesIcon");
     s_nodeTypeCategories << NodeType::CategorySeparator;
+	s_nodeTypeCategories << NodeType::Category("Layouts", ":/colorSwatchIcon");
 	s_nodeTypeCategories << NodeType::Category("Centrality", ":/colorSwatchIcon");
     s_nodeTypeCategories << NodeType::CategorySeparator;
 	s_nodeTypeCategories << NodeType::Category("Mappers", ":/tagIcon");
