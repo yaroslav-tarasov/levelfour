@@ -10,18 +10,15 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="MergeTable" category="Data" color="40, 40, 40" plugin="mergeTable.dll">
+<nodetype name="Single-Cycle Layouter" category="Layouts" color="40, 40, 40" plugin="singleCycleLayouter.dll">
   <parameters>
-    <parameters name="Merge Table Parameters">
-      <parameter name="Description" type="TextInfo" defaultValue="Merge Table provides ..."/>
-      <parameter name="Match Id" type="Enumeration" defaultValue="">
-        <literal name="Select Id"/>
-      </parameter>
+    <parameters name="Single-Cycle Layouter Parameters">
+      <parameter name="Description" type="TextInfo" defaultValue="This layouter ..."/>
     </parameters>
     <!-- input parameters -->
-    <parameter name="ExampleTableAIn" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="ExampleTableBIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="ExampleTableIn" type="Enumeration" pin="in" visible="false"/>
     <!-- output parameters -->
     <parameter name="ExampleTableOut" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="Graph" type="Enumeration" pin="out" visible="false"/>
   </parameters>
 </nodetype>
