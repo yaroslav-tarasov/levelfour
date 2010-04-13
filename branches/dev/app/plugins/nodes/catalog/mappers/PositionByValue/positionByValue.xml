@@ -51,10 +51,11 @@
       </parameter>
     </parameters>
     <!-- input parameters -->
-    <parameter name="id" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="X" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="Y" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="Z" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="idIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="Xin" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="Yin" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="Zin" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="Shape" type="Enumeration" pin="in" visible="false"/>
     <!-- output parameters -->
     <parameter name="Scene" type="Enumeration" pin="out" visible="false"/>
   </parameters>
