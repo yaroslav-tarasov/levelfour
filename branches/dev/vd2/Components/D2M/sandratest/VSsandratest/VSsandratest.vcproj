@@ -58,7 +58,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgd.lib osgDBd.lib"
+				AdditionalDependencies="osgd.lib osgDBd.lib osgTextd.lib"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -164,19 +164,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\cone3D_layout_example.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\cone_layout3D.h"
+				>
+			</File>
+			<File
 				RelativePath="..\source\GraphPropertyMapper.h"
-				>
-			</File>
-			<File
-				RelativePath="..\source\kamada_layout3D.h"
-				>
-			</File>
-			<File
-				RelativePath="..\kamada_layout_example.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\source\sphere_layout3D.h"
 				>
 			</File>
 			<File

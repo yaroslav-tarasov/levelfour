@@ -188,8 +188,8 @@ public:
 
 	void plotScene()
 	{
-		TestPlotter<Graph, PositionMap, WeightMap> tp;
-		tp.constructScene(g, positionMap, weightMap);  // tp.constructScene(g, positionMap); //TODO
+		TestPlotter<Graph, PositionMap, VertexIdMap, WeightMap> tp;
+		tp.constructScene(g, positionMap, vertexIdMap, weightMap);  // tp.constructScene(g, positionMap); //TODO
 	}
 
 protected:
