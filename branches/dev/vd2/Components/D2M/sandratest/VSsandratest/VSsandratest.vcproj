@@ -164,15 +164,31 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\cone3D_layout_example.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\source\cone_layout3D.h"
 				>
 			</File>
 			<File
+				RelativePath="..\source\ConeTreeLayouter.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\source\ConeTreeLayouter.h"
+				>
+			</File>
+			<File
+				RelativePath="..\source\DataTableCreator.h"
+				>
+			</File>
+			<File
 				RelativePath="..\source\GraphPropertyMapper.h"
+				>
+			</File>
+			<File
+				RelativePath="..\source\phyllo_layout3D.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\phyllotree3D_layout_example.cpp"
 				>
 			</File>
 			<File
