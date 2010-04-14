@@ -520,10 +520,6 @@ private:
 								SpringStrengthMatrix spring_strength,
 								PartialDerivativeMap partial_derivatives)
 	{
-		BOOST_STATIC_ASSERT((is_convertible<
-											typename graph_traits<Graph>::directed_category*,
-											undirected_tag*
-											>::value));
 
 		detail::graph::kamada_kawai_spring_layout_impl< Topology,
 														Graph,
