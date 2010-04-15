@@ -37,6 +37,9 @@ http://www.gnu.org/copyleft/lesser.txt.
 #include <QMenu>
 #include <QLineEdit>
 #include <QMenuBar>
+#include "vtkQtTableModelAdapter.h"
+#include "vtkTable.h"
+#include "VTKTableNode.h"
 
 ///
 /// Constructors and Destructors
@@ -53,10 +56,6 @@ TableViewPanel::TableViewPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flag
 {
 
 	setupUi(this);
-
-	// Temporary for viewing purposes
-	tableView->setRowCount(20);
-	tableView->setColumnCount(8);
 
 	m_description = false;
 }
@@ -162,7 +161,7 @@ void TableViewPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBa
 //!
 //! \return The tree view that is used to display the scene objects.
 //!
-QTableWidget * TableViewPanel::getTableViewPanel ()
+QTableView * TableViewPanel::getTableViewPanel ()
 {
     return tableView;
 }
@@ -177,3 +176,55 @@ void TableViewPanel::showDescription(bool description)
 	m_description = description;
 }
 
+
+void TableViewPanel::registerControl(NodeModel *nodeModel, SceneModel *sceneModel)
+{
+    QObject::connect(nodeModel, SIGNAL(nodeSelected(Node *)), this, SLOT(showTable(Node *)));
+
+    // display the parameters of the first selected node in the new table panel
+    QStringList selectedNodes = sceneModel->getSelectedObjects();
+    if (selectedNodes.size() > 0) {
+        Node *selectedNode = nodeModel->getNode(selectedNodes.at(0));
+        showTable(selectedNode);
+    }
+}
+
+void TableViewPanel::showTable(Node * node)
+{
+	if (QString::compare(node->getTypeName(), "VTKTableNode", Qt::CaseInsensitive))
+	{
+		if (m_currentTableNode == node)
+			return;
+		// register node selected
+		m_currentTableNode = static_cast<VTKTableNode*> (node);
+		if (!m_currentTableNode->getTable())
+		{
+			m_currentTableNode = 0;
+			return;
+		}
+		
+		// connect table panel to signals emitted by the node selected
+	    QObject::connect(m_currentTableNode, SIGNAL(tableChanged(vtkTable *)), this, SLOT(updateTable()));
+	    QObject::connect(m_currentTableNode, SIGNAL(destroyed()), this, SLOT(disconnect()));
+
+		vtkQtTableModelAdapter * adapter = new vtkQtTableModelAdapter;
+		adapter->SetVTKDataObject(m_currentTableNode->getTable());
+		tableView->setModel(adapter);
+	}
+}
+
+void TableViewPanel::disconnect()
+{
+	tableView->setModel(0);
+	m_currentTableNode = 0;
+}
+
+void TableViewPanel::updateTable()
+{
+	if (m_currentTableNode)
+	{
+		vtkQtTableModelAdapter * adapter = new vtkQtTableModelAdapter;
+		adapter->SetVTKDataObject(m_currentTableNode->getTable());
+		tableView->setModel(adapter);
+	}
+}
