@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="D:\L4\src\boost\boost_1_42;../source"
+				AdditionalIncludeDirectories="D:\L4\src\boost\boost_1_42;&quot;D:\LevelFour\vd2\VTK5\include\vtk-5.5&quot;;../source"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,7 +58,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgd.lib osgDBd.lib osgTextd.lib"
+				AdditionalDependencies="osgd.lib osgDBd.lib osgTextd.lib D:\LevelFour\vd2\VTK5\lib\vtk-5.5\vtksys.lib D:\LevelFour\vd2\VTK5\lib\vtk-5.5\vtkFiltering.lib D:\LevelFour\vd2\VTK5\lib\vtk-5.5\vtkCommon.lib"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -164,6 +164,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\cone3D_layout_example.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\cone_layout3D.h"
 				>
 			</File>
@@ -181,14 +185,6 @@
 			</File>
 			<File
 				RelativePath="..\source\GraphPropertyMapper.h"
-				>
-			</File>
-			<File
-				RelativePath="..\source\phyllo_layout3D.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\phyllotree3D_layout_example.cpp"
 				>
 			</File>
 			<File

@@ -2,6 +2,7 @@
 #define GRAPH_PROPERTY_MAPPER_H
 
 #include "TestPlotter.h"
+#include "DataTableCreator.h"
 #include "cone_layout3D.h"
 #include "phyllo_layout3D.h"
 #include "kamada_layout3D.h"
@@ -11,6 +12,8 @@
 #include <boost/graph/topology.hpp>
 #include <boost/graph/circle_layout.hpp>
 #include <boost/graph/random_layout.hpp>
+
+class vtkTable;
 
 namespace graphdefs
 {
@@ -190,6 +193,12 @@ public:
 	{
 		TestPlotter<Graph, PositionMap, VertexIdMap, WeightMap> tp;
 		tp.constructScene(g, positionMap, vertexIdMap, weightMap);  // tp.constructScene(g, positionMap); //TODO
+	}
+
+	vtkTable *createVtkTable()
+	{
+		DataTableCreator<Graph, PositionMap, VertexIdMap> tableCreator;
+		return tableCreator.createTable(g, positionMap, vertexIdMap);
 	}
 
 protected:
