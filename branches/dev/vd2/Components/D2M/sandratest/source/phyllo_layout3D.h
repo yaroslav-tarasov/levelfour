@@ -5,8 +5,15 @@
 
 namespace graphdefs {
 
-	extern float convertPolarToX(float phi, float radius);
-	extern float convertPolarToY(float phi, float radius);
+	inline float convertPolarToX(float phi, float radius)
+	{
+		return radius * std::cos(phi);
+	}
+
+	inline float convertPolarToY(float phi, float radius)
+	{
+		return radius * std::sin(phi);
+	}
 
 	template<typename VertexListGraph, typename PositionMap>
 	void placePhylloChildren(const VertexListGraph& g, PositionMap position, typename boost::graph_traits<VertexListGraph>::vertex_descriptor parentVertex, float angle, float spacing, double centreX, double centreY, double zVal)
