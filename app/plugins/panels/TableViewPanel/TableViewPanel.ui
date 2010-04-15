@@ -27,17 +27,7 @@
     <number>1</number>
    </property>
    <item>
-    <widget class="QTableWidget" name="tableView">
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="alternatingRowColors">
-      <bool>false</bool>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::ExtendedSelection</enum>
-     </property>
-    </widget>
+    <widget class="QTableView" name="tableView"/>
    </item>
   </layout>
   <action name="ui_filterAction">
@@ -137,8 +127,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="../main.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

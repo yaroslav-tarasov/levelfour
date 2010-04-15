@@ -38,6 +38,7 @@ http://www.gnu.org/copyleft/lesser.txt.
 
 #include "FrapperPrerequisites.h"
 #include "ViewPanel.h"
+#include "VTKTableNode.h"
 #include "ui_TableViewPanel.h"
 
 
@@ -87,7 +88,12 @@ public: // functions
     //!
     //! \return The tree view that is used to display the scene objects.
     //!
-    QTableWidget * getTableViewPanel ();
+    QTableView * getTableViewPanel ();
+
+	//!
+	//! Connects the panel with the scene.
+	//!
+	virtual void registerControl(NodeModel *nodeModel, SceneModel *sceneModel);
 
 private slots: //
 
@@ -95,6 +101,21 @@ private slots: //
 	//! Sets the description mode
 	//!
 	void showDescription(bool description);
+	
+	//!
+	//! Show the table view associated with the node (if any)
+	//!
+	void showTable(Node * selectedNode);
+
+	//!
+	//! Disconnect panel from selected node and reset the currentTableNode selection
+	//!
+	void disconnect();
+
+	//!
+	//! Update table when changes have been signalled by the current vtkTableNode
+	//!
+	void updateTable();
 
 private: // data
 
@@ -104,6 +125,11 @@ private: // data
 	//! \param description boolean value of the action´s state
 	//!
 	bool m_description;
+
+	//!
+	//! Store reference of current node selected
+	//!
+	VTKTableNode * m_currentTableNode;
 };
 
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="TextDelimiterSource" category="Data" color="10,70,150" plugin="TextDelimiterSource.dll">
+  <parameters>
+    <parameter name="Source File" type="Filename" filter="CSV Files (*.csv), Text Files (*.txt)"/>
+    <parameter name="Field Delimiter Characters" type="String"/>
+    <parameter name="String Delimiter" type="String" size="1"/>
+    <parameter name="Use String Delimiter" type="Bool" value="true"/>
+    <parameter name="Have Header" type="Bool" value="true"/>
+    <parameter name="Merge Consecutive Delimiters" type="Bool" value="false"/>
+    <parameter name="MaxRecords" type="Int"/>
+    <parameter name="Detect Numeric Columns" type="Bool" value="false"/>
+  </parameters>
+</nodetype>
