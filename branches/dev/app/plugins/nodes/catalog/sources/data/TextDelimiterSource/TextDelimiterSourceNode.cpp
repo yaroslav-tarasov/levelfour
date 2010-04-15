@@ -97,13 +97,6 @@ bool TextDelimiterSourceNode::loadFile()
         return false;
     }
 
-    // split the absolute filename to path and base filename
-    int lastSlashIndex = filename.lastIndexOf('/');
-    QString path = "";
-    if (lastSlashIndex > -1) {
-        path = filename.mid(0, lastSlashIndex);
-        filename = filename.mid(lastSlashIndex + 1);
-    }
 	if (!filename.endsWith(".csv") && !filename.endsWith(".txt")) {
         Log::error("The source file has to be a csv or txt.", "TextDelimiterSourceNode::loadFile");
         return false;
