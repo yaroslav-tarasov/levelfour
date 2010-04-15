@@ -18,6 +18,7 @@ include_directories(
 			${frappergui_SOURCE_DIR}
 			${frappercore_BINARY_DIR}
 			${frappergui_BINARY_DIR}
+			$ENV{VTK_INC}
 			$ENV{OGRE_HOME}/include
 			${CMAKE_SOURCE_DIR}/thirdparty_libraries/collada/include
 			${CMAKE_SOURCE_DIR}/thirdparty_libraries/collada/include/1.5
@@ -28,6 +29,7 @@ link_directories(
 			${frappercore_BINARY_DIR}
 			${frappergui_BINARY_DIR}
 			${QT_LIBRARY_DIR}
+			$ENV{VTK_LIB}
 			$ENV{OGRE_HOME}/lib
 			${CMAKE_SOURCE_DIR}/thirdparty_libraries/collada/lib
 			)

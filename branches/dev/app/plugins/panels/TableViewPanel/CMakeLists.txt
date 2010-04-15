@@ -3,7 +3,6 @@ set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE)
 SET(CMAKE_DEBUG_POSTFIX _d)
 
 include_directories(
-			${CMAKE_CURRENT_BINARY_DIR}
 			${CMAKE_CURRENT_SOURCE_DIR}
 			)
 
@@ -58,6 +57,8 @@ target_link_libraries(tableviewpanel
 			optimized QtXml4 debug QtXmld4
 			optimized OgreMain debug OgreMain_d
 			optimized frappercore debug frappercore_d
+			optimized vtkInfovis debug vtkInfovis
+			optimized QVTK debug QVTK
 			optimized frappergui debug frappergui_d
 			)
 

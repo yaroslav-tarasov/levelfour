@@ -48,6 +48,7 @@ set( frappercore_h ${frappercore_h}
 			ViewFlagGraphicsItem.h
 			ViewingParameters.h
 			ViewNode.h
+			VTKTableNode.h
 			)
 
 set( frappercore_moc ${frappercore_moc}	
@@ -74,6 +75,7 @@ set( frappercore_moc ${frappercore_moc}
 			 SceneNodeParameter.h
 			 ViewFlagGraphicsItem.h
 			 ViewNode.h
+			 VTKTableNode.h
 			 )
 
 set( frappercore_src ${frappercore_src}	
@@ -113,6 +115,7 @@ set( frappercore_src ${frappercore_src}
 			ViewFlagGraphicsItem.cpp
 			ViewingParameters.cpp
 			ViewNode.cpp
+			VTKTableNode.cpp
 			)
 
 # Create moc files		   
@@ -140,6 +143,8 @@ target_link_libraries(frappercore
 			optimized QtXml4 debug QtXmld4
 			optimized OgreMain debug OgreMain_d
 			optimized libcollada15dom21 debug libcollada15dom21-d
+			optimized vtkFiltering debug vtkFiltering
+			optimized vtkInfovis debug vtkInfovis
 			)
 
 # Install files
