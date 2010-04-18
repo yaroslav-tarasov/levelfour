@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="ParticleSystem" category="Particles" color="40, 40, 40" plugin="particleSystem.dll">
+  <parameters>
+    <parameters name="Attributes">
+      <parameter name="Description" type="TextInfo" defaultValue="This group contains parameters that have no additional attributes, just a name and a type."/>
+      <parameter name="Material" type="Enumeration"/>
+      <parameter name="Width" type="String"/>
+      <parameter name="Height" type="String"/>
+      <parameter name="Quota" type="String"/>
+      <parameter name="Cull each" type="Bool"/>
+      <parameter name="Sorted" type="Bool"/>
+      <parameter name="Local space" type="Bool"/>
+      <parameter name="Accurate facing" type="Bool"/>
+      <parameter name="Point rendering" type="Bool"/>
+      <parameter name="Rendering" type="Enumeration"/>
+      <parameter name="Facing" type="Enumeration"/>
+      <parameter name="Origin" type="Enumeration"/>
+      <parameter name="Rotation" type="Enumeration"/>
+      <parameter name="Interval" type="Int"/>
+      <parameter name="Timeout" type="Int"/>
+    </parameters>
+    <parameters name="Emitters">
+      <parameter name="Description" type="TextInfo" defaultValue="This group contains parameters that have a size attribute with value 3."/>
+      <parameter name="Emitter" type="Enumeration" />
+      <parameter name="EmitterType" type="Enumeration" />
+      <parameter name="StartColor" type="Color" />
+      <parameter name="EndColor" type="Color" />
+    </parameters>
+    <parameters name="Affectors">
+      <parameter name="Description" type="TextInfo" defaultValue="This group contains parameters that have a size attribute with value 3."/>
+      <parameter name="Affector" type="Enumeration" />
+      <parameter name="AffectorType" type="Enumeration" />
+      <parameter name="AffectorColor" type="Color" />
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="Enumeration in" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="Image in" type="Image" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="Geometry out" type="Geometry" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

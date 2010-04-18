@@ -33,16 +33,14 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #define SingleCycleLayouterNODE_H
 
 #include "Node.h"
-
-// OGRE
-#include <Ogre.h>
-#if (OGRE_PLATFORM  == OGRE_PLATFORM_WIN32)
-#include <windows.h>
-#endif
+#include "vtkGraph.h"
+#include "vtkTree.h"
+#include "vtkTable.h"
+#include <QString>
 
 
 //!
-//! Class for a Degree Centrality Measure
+//! Class for a SingleCycleLayouter
 //!
 class SingleCycleLayouterNode : public Node
 {
@@ -68,6 +66,73 @@ public: // constructors and destructors
     //! variable of its parent class type.
     //!
     virtual ~SingleCycleLayouterNode ();
+
+public slots:
+
+protected: // functions
+
+	//!
+    //! Convert graph to table
+    //!
+	vtkTable * createTableFromGraph(vtkGraph *graph);
+
+	//!
+    //! Convert table to graph
+    //!
+	vtkGraph * createGraphFromTable(vtkTable *table);
+
+	//!
+    //! Create graph from tree
+    //!
+	vtkGraph * createGraphFromTree( vtkTree *tree);
+
+private slots:
+
+
+private: // functions
+
+	//!
+    //! Loads the source node list.
+    //!
+    //! \return True if the file was successfully loaded, otherwise False.
+    //!
+    bool loadVertexTable ();
+
+	//!
+    //! Loads the edge list.
+    //!
+    //! \return True if the file was successfully loaded, otherwise False.
+    //!
+    bool loadEdgeTable ();
+
+	//!
+    //! Loads the source graph tree.
+    //!
+    //! \return True if the file was successfully loaded, otherwise False.
+    //!
+    bool loadGraphTree ();
+
+private: // data
+
+	//!
+    //! The nodeTable that this node represents.
+    //!
+    vtkTable * m_nTable;
+
+	//!
+    //! The graph that this node represents.
+    //!
+    vtkGraph * m_nGraph;
+	
+	//!
+    //! The name of the output table parameter.
+    //!
+	QString * m_oTable;
+
+	//!
+    //! The name of the output graph parameter.
+    //!	
+	QString * m_oGraph;
 
 };
 
