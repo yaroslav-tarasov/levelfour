@@ -35,6 +35,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "NumberParameter.h"
 #include "FilenameParameter.h"
 #include "EnumerationParameter.h"
+#include "VTKTableParameter.h"
 #include "SceneNodeParameter.h"
 #include "ParameterPlugin.h"
 #include "Node.h"
@@ -46,6 +47,7 @@ INIT_INSTANCE_COUNTER(Parameter)
 Q_DECLARE_METATYPE(Ogre::Vector3)
 Q_DECLARE_METATYPE(Ogre::TexturePtr)
 Q_DECLARE_METATYPE(ParameterGroup *)
+Q_DECLARE_METATYPE(vtkTable *)
 
 
 ///
@@ -83,7 +85,8 @@ static const char *ParameterTypeNames[Parameter::T_NumTypes] = {
     "Camera",
     "Image",
     "Group",
-	"PlugIn"
+	"PlugIn",
+	"VTKTable"
 };
 
 
@@ -106,7 +109,9 @@ static const QColor ParameterTypeColors[Parameter::T_NumTypes] = {
     QColor(255, 103, 0),        // Camera
     QColor(173, 255, 173),      // Image
     QColor(100, 100, 100),       // Group
-	QColor(0, 255, 0)       // Plugin
+	QColor(0, 255, 0),       // Plugin
+
+    QColor(125, 43, 139)       // VTKTable
 
 // (230, 45, 137) // Pink
 // (255, 0, 0) // Red
@@ -132,6 +137,7 @@ static const QList<Parameter::Type> ParameterMultiplicityTypes = QList<Parameter
     << Parameter::T_Camera
     << Parameter::T_Image
 	<< Parameter::T_Group
+	<< Parameter::T_VTKTable
 ;
 
 
@@ -155,6 +161,8 @@ static const QVariantList ParameterDefaultValues = QVariantList()
     << QVariant::fromValue<Ogre::TexturePtr>(Ogre::TexturePtr(0))   // Image
     << QVariant::fromValue<ParameterGroup *>(0)                     // Group
 	<< QVariant()				// PlugIn
+	<< QVariant::fromValue<vtkTable *>(0)                     // VTKTable
+
 ;
 
 
@@ -391,6 +399,8 @@ Parameter * Parameter::create ( const QString &name, Parameter::Type type, QVari
             return new LightParameter(name);
         case T_Camera:
             return new CameraParameter(name);
+        case T_VTKTable:
+			return new VTKTableParameter(name);
 		case T_PlugIn:
 			return new ParameterPlugin(name, defaultValue);
         default:
@@ -711,6 +721,8 @@ Parameter * Parameter::clone ( const Parameter &parameter )
             return new LightParameter(dynamic_cast<const LightParameter &>(parameter));
         case T_Camera:
             return new CameraParameter(dynamic_cast<const CameraParameter &>(parameter));
+        case T_VTKTable:
+            return new VTKTableParameter(dynamic_cast<const VTKTableParameter &>(parameter));
 		case T_PlugIn:
             return new ParameterPlugin(dynamic_cast<const ParameterPlugin &>(parameter));
         default:
