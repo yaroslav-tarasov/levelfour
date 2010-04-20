@@ -90,7 +90,7 @@ TimelinePanel::TimelinePanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags 
 	ui_verticalLayout->insertWidget(0, spacerWidget);
 
 	// insert border widget to ui_verticalLayout at index 1 just over toolbar vbox
-	QString borderStyle ( "border-top: 1px solid #393939; border-bottom: 1px solid #959595" );
+	QString borderStyle ( "border-top: 1px solid #191919; border-bottom: 1px solid #4b4b4b" );
 	QFrame *borderFrame = new QFrame(this);
 	borderFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	borderFrame->setMinimumHeight(2);

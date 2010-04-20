@@ -66,7 +66,7 @@ TimelineWidget::TimelineWidget ( QWidget *parent /* = 0 */, Qt::WindowFlags flag
     m_endGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_AfterFrame, palette().color(QPalette::Button), this)),
     m_inGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_BeforeFrame, palette().color(QPalette::Mid), this)),
     m_outGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_AfterFrame, palette().color(QPalette::Mid), this)),
-    m_currentGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_OnFrame, QColor(115, 191, 77), this)),
+    m_currentGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_OnFrame, QColor(255, 0, 0), this)),
     m_movedGrabber(0),
     m_currentFrameEdit(new QLineEdit(this)),
     m_currentFrameValidator(new QIntValidator(this)),
@@ -91,7 +91,7 @@ TimelineWidget::TimelineWidget ( QWidget *parent /* = 0 */, Qt::WindowFlags flag
     m_currentFrameEdit->setValidator(m_currentFrameValidator);
     QFont font (m_currentFrameEdit->font());
     font.setBold(true);
-    m_currentFrameEdit->setFont(font);
+	m_currentFrameEdit->setFont(font);
     m_currentFrameEdit->setAutoFillBackground(false);
     m_currentFrameEdit->setStyleSheet(QString("background-color: %1; border: 1px solid %2;").arg(buttonColorName, midColorName));
 
@@ -545,9 +545,9 @@ void TimelineWidget::paintImage ( const QRect &rectangle )
 
     // define colors
     QColor buttonColor (palette().color(QPalette::Button));
-    QColor midColor (58,58,58);
-    QColor baseColor (114,114,114);
-    QColor windowColor (114,114,114);
+    QColor midColor (190,190,190);
+    QColor baseColor (50,50,50);
+    QColor windowColor (50,50,50);
     QColor buttonTextColor (palette().color(QPalette::ButtonText));
     QColor buttonAlphaColor (buttonColor);
     buttonAlphaColor.setAlpha(200);
