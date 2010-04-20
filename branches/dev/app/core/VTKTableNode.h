@@ -2,12 +2,14 @@
 #define VTKTABLENODE_H
 
 #include "vtkTable.h"
-#include "Node.h"
+#include "ViewNode.h"
+
+Q_DECLARE_METATYPE(vtkTable *)
 
 //!
 //! Base class representing nodes that provide access to vtk tables.
 //!
-class FRAPPER_CORE_EXPORT VTKTableNode : public Node
+class FRAPPER_CORE_EXPORT VTKTableNode : public ViewNode
 {
 
     Q_OBJECT
@@ -20,7 +22,7 @@ public: // constructors and destructors
     //! \param name The name to give the new mesh node.
     //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
     //!
-    VTKTableNode ( const QString &name, ParameterGroup *parameterRoot );
+    VTKTableNode ( const QString &name, ParameterGroup *parameterRoot, const QString &outputVTKTableName /* = "VTKTable" */ );
 
     //!
     //! Destructor of the VTKTableNode class.
@@ -52,6 +54,11 @@ protected: // functions
 protected: // data
 
 	vtkTable * m_table;
+
+    //!
+    //! The name of the vtk table output parameter.
+    //!
+	QString m_outputVTKTableName; 
 
 };
 

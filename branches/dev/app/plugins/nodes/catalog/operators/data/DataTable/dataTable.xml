@@ -15,9 +15,5 @@
     <parameters name="Closeness Centrality Settings">
       <parameter name="Description" type="TextInfo" defaultValue="Data Table is..."/>
     </parameters>
-    <!-- input parameters -->
-    <parameter name="ExampleTableIn" type="Enumeration" pin="in" visible="false"/>
-    <!-- output parameters -->
-    <parameter name="ExampleTableOut" type="Enumeration" pin="out" visible="false"/>
   </parameters>
 </nodetype>

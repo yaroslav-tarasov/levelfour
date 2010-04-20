@@ -32,7 +32,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef DataTableNODE_H
 #define DataTableNODE_H
 
-#include "Node.h"
+#include "VTKTableNode.h"
 
 // OGRE
 #include <Ogre.h>
@@ -44,7 +44,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class for a Degree Centrality Measure
 //!
-class DataTableNode : public Node
+class DataTableNode : public VTKTableNode
 {
 
     Q_OBJECT
@@ -69,6 +69,18 @@ public: // constructors and destructors
     //!
     virtual ~DataTableNode ();
 
+public slots: //
+
+    //!
+    //! Processes the node's input data to generate the node's output table.
+    //!
+    void processOutputVTKTable ();
+
+protected: 
+    //!
+    //! The name of the input vtk table parameter.
+    //!
+    QString m_inputVTKTableParameterName;
 };
 
 

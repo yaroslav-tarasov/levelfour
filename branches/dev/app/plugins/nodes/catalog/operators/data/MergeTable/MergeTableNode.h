@@ -32,7 +32,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef MergeTableNODE_H
 #define MergeTableNODE_H
 
-#include "Node.h"
+#include "VTKTableNode.h"
 
 // OGRE
 #include <Ogre.h>
@@ -44,7 +44,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class for a Degree Centrality Measure
 //!
-class MergeTableNode : public Node
+class MergeTableNode : public VTKTableNode
 {
 
     Q_OBJECT
@@ -69,6 +69,18 @@ public: // constructors and destructors
     //!
     virtual ~MergeTableNode ();
 
+public slots: //
+
+    //!
+    //! Processes the node's input data to generate the node's output table.
+    //!
+    void processOutputVTKTable ();
+
+protected: 
+    //!
+    //! The name of the input vtk table parameter.
+    //!
+    QString m_inputVTKTableParameterName;
 };
 
 

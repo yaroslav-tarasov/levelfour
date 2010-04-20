@@ -49,6 +49,8 @@ target_link_libraries(mergeTable
 			optimized QtXml4 debug QtXmld4
 			optimized OgreMain debug OgreMain_d
 			optimized frappercore debug frappercore_d
+			optimized vtkFiltering debug vtkFiltering
+			optimized vtkInfovis debug vtkInfovis
 			)
 
 # Install files
