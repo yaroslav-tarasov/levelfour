@@ -1328,6 +1328,9 @@ void ParameterPanel::addRows ( Parameter *parameter, QFormLayout *formLayout )
                 widget = createImageWidget(parameter);
                 connect(parameter, SIGNAL(valueChanged()), SLOT(updateImageWidget()));
                 break;
+            case Parameter::T_VTKTable:
+                return;
+                break;
             case Parameter::T_Group:
                 {
                     ParameterGroup *parameterGroup = m_node->getGroupValue(parameter->getName());

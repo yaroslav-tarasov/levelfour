@@ -98,6 +98,7 @@ public: // nested enumerations
         T_Image,
         T_Group,
 		T_PlugIn,
+		T_VTKTable,
 
         T_NumTypes
     };

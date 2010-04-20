@@ -6,6 +6,7 @@
 #include "FilenameParameter.h"
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include "VTKTableParameter.h"
 
 INIT_INSTANCE_COUNTER(TextDelimiterSourceNode)
 
@@ -22,7 +23,7 @@ INIT_INSTANCE_COUNTER(TextDelimiterSourceNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 TextDelimiterSourceNode::TextDelimiterSourceNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    VTKTableNode (name, parameterRoot),
+    VTKTableNode (name, parameterRoot, "VTKTable"),
 		m_dtxt(0)
 {
     // set affections and functions
@@ -64,8 +65,12 @@ TextDelimiterSourceNode::TextDelimiterSourceNode ( const QString &name, Paramete
 TextDelimiterSourceNode::~TextDelimiterSourceNode ()
 {
 	emit destroyed();
-	m_dtxt->Delete();
-    DEC_INSTANCE_COUNTER
+	if (m_dtxt && m_dtxt->GetOutput()) 
+	{
+		m_dtxt->Delete();
+		m_table = 0;
+	}
+	DEC_INSTANCE_COUNTER
     Log::info(QString("TextDelimiterSourceNode destroyed."), "TextDelimiterSourceNode::~TextDelimiterSourceNode");
 }
 
@@ -230,5 +235,11 @@ void TextDelimiterSourceNode::detectNumericColumnsChanged ()
 void TextDelimiterSourceNode::updateTable()
 {
 	m_table = m_dtxt->GetOutput();
+
+	VTKTableParameter * outParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_outputVTKTableName));
+	outParameter->setVTKTable(m_table);
+	outParameter->propagateDirty(0);
+//	setValue(m_outputVTKTableName, QVariant::fromValue<vtkTable *>(m_table), true);
+
 	emit tableChanged(m_table);
 }

@@ -51,6 +51,7 @@ Reference
 
 
 #include "DataTableNode.h"
+#include "VTKTableParameter.h"
 
 ///
 /// Constructors and Destructors
@@ -63,8 +64,25 @@ Reference
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 DataTableNode::DataTableNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+	VTKTableNode(name, parameterRoot, "VTKTable"),
+	m_inputVTKTableParameterName("VTKTableInput")
 {
+    // create the mandatory vtk table input parameter - multiplicity *
+	VTKTableParameter * inputVTKTableParameter = new VTKTableParameter(m_inputVTKTableParameterName);
+	inputVTKTableParameter->setMultiplicity(1);
+    inputVTKTableParameter->setPinType(Parameter::PT_Input);
+    inputVTKTableParameter->setSelfEvaluating(true);
+    parameterRoot->addParameter(inputVTKTableParameter);
+    connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTable()));
+
+	// link the input parameter to the output processing
+	Parameter * outputParameter = getParameter(m_outputVTKTableName);
+    if (outputParameter) 
+	{
+		outputParameter->setProcessingFunction(SLOT(processOutputVTKTable()));
+
+        outputParameter->addAffectingParameter(inputVTKTableParameter);
+	}
 }
 
 
@@ -80,3 +98,27 @@ DataTableNode::~DataTableNode ()
 }
 
 
+//!
+//! Processes the node's input data to generate the node's output table.
+//!
+void DataTableNode::processOutputVTKTable ()
+{
+	// load the input vtk parameter 
+	VTKTableParameter * inputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_inputVTKTableParameterName));
+	if (!inputParameter->isConnected())
+		return;
+
+	// get the source parameter (output of source node) connected to the input parameter
+	VTKTableParameter * sourceParameter = dynamic_cast<VTKTableParameter*>(inputParameter->getConnectedParameter());
+
+	// get the vtk table that comes with the source parameter and set it into the input parameter of this node
+	inputParameter->setVTKTable(sourceParameter->getVTKTable());	
+
+	// set the output vtk parameter exactly the same of the input one
+	VTKTableParameter * outputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_outputVTKTableName));
+
+	if (outputParameter)
+		outputParameter->setVTKTable(inputParameter->getVTKTable());
+	
+	m_table = outputParameter->getVTKTable();
+}
