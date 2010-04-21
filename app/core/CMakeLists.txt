@@ -48,6 +48,7 @@ set( frappercore_h ${frappercore_h}
 			ViewFlagGraphicsItem.h
 			ViewingParameters.h
 			ViewNode.h
+			VTKGraphParameter.h
 			VTKTableParameter.h
 			VTKTableNode.h
 			)
@@ -116,6 +117,7 @@ set( frappercore_src ${frappercore_src}
 			ViewFlagGraphicsItem.cpp
 			ViewingParameters.cpp
 			ViewNode.cpp
+			VTKGraphParameter.cpp
 			VTKTableParameter.cpp
 			VTKTableNode.cpp
 			)

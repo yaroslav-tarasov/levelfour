@@ -36,6 +36,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "FilenameParameter.h"
 #include "EnumerationParameter.h"
 #include "VTKTableParameter.h"
+#include "VTKGraphParameter.h"
 #include "SceneNodeParameter.h"
 #include "ParameterPlugin.h"
 #include "Node.h"
@@ -48,6 +49,7 @@ Q_DECLARE_METATYPE(Ogre::Vector3)
 Q_DECLARE_METATYPE(Ogre::TexturePtr)
 Q_DECLARE_METATYPE(ParameterGroup *)
 Q_DECLARE_METATYPE(vtkTable *)
+Q_DECLARE_METATYPE(vtkGraph *)
 
 
 ///
@@ -87,6 +89,7 @@ static const char *ParameterTypeNames[Parameter::T_NumTypes] = {
     "Group",
 	"PlugIn",
 	"VTKTable"
+	"VTKGraph"
 };
 
 
@@ -111,7 +114,8 @@ static const QColor ParameterTypeColors[Parameter::T_NumTypes] = {
     QColor(100, 100, 100),       // Group
 	QColor(0, 255, 0),       // Plugin
 
-    QColor(125, 43, 139)       // VTKTable
+    QColor(125, 43, 139),       // VTKTable
+    QColor(230, 45, 137)       // VTKGraph
 
 // (230, 45, 137) // Pink
 // (255, 0, 0) // Red
@@ -162,6 +166,7 @@ static const QVariantList ParameterDefaultValues = QVariantList()
     << QVariant::fromValue<ParameterGroup *>(0)                     // Group
 	<< QVariant()				// PlugIn
 	<< QVariant::fromValue<vtkTable *>(0)                     // VTKTable
+	<< QVariant::fromValue<vtkGraph *>(0)                     // VTKGraph
 
 ;
 
@@ -401,6 +406,8 @@ Parameter * Parameter::create ( const QString &name, Parameter::Type type, QVari
             return new CameraParameter(name);
         case T_VTKTable:
 			return new VTKTableParameter(name);
+        case T_VTKGraph:
+			return new VTKGraphParameter(name);
 		case T_PlugIn:
 			return new ParameterPlugin(name, defaultValue);
         default:
@@ -723,6 +730,8 @@ Parameter * Parameter::clone ( const Parameter &parameter )
             return new CameraParameter(dynamic_cast<const CameraParameter &>(parameter));
         case T_VTKTable:
             return new VTKTableParameter(dynamic_cast<const VTKTableParameter &>(parameter));
+        case T_VTKGraph:
+			return new VTKGraphParameter(dynamic_cast<const VTKGraphParameter &>(parameter));
 		case T_PlugIn:
             return new ParameterPlugin(dynamic_cast<const ParameterPlugin &>(parameter));
         default:

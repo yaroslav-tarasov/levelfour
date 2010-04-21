@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="TextDelimiterSource" category="Data" color="10,70,150" plugin="TextDelimiterSource.dll">
+<nodetype name="TextDelimiterSource" typeName="VTKTableNode" category="Data" color="10,70,150" plugin="TextDelimiterSource.dll">
   <parameters>
     <parameter name="Source File" type="Filename" filter="CSV Files (*.csv), Text Files (*.txt)"/>
     <parameter name="Field Delimiter Characters" type="String"/>

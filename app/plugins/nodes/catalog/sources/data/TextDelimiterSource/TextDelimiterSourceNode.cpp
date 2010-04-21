@@ -234,6 +234,7 @@ void TextDelimiterSourceNode::detectNumericColumnsChanged ()
 
 void TextDelimiterSourceNode::updateTable()
 {
+	m_dtxt->Update();
 	m_table = m_dtxt->GetOutput();
 
 	VTKTableParameter * outParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_outputVTKTableName));
