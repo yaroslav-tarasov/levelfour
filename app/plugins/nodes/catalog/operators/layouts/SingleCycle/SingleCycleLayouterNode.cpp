@@ -27,7 +27,7 @@ file "SingleCycleLayouterNode.cpp"
 brief Implementation file for SingleCycleLayouterNode class.
 
 version    1.0
-date       18.05.2009 (last updated)
+date       21.04.2010 (last updated)
 
 Description
 -----------
@@ -41,21 +41,17 @@ This node is based on the vtkCircularLayoutStrategy implementation.
 Inputs
 ----------
       
-	In: vtkTree
-	InVertex: vtkTable
-	InEdge: vtkTable
+	In: vtkGraph
 
 Outputs
 -------
 
 	Out: vtkTable (used for data model)
-	Out: vtkGraph (used for measure processing)
 
 Result
 ------
 
 A vtkTable is produced with 4 columns: nodeId, posX, posY, posZ.
-A vtkGraph is produced for use in measures (e.g., centrality)
 
 Properties
 -------
@@ -67,8 +63,7 @@ Notes
 -----
 
 Layouters are based on a generic pipeline of: 
-	a.) vtkTable->vtkTableToGraph->vtkGraphLayout->vtkGraph->vtkTable
-	b.) vtkTree->vtkGraphLayout->vtkGraph->vtkTable
+	a.) vtkTable->vtkTableToGraph->vtkGraph->vtkGraphLayout->vtkTable
 
 Given this pipeline, vtkCircularLayoutStrategy is set to the vtkGraphLayout.
 
@@ -98,6 +93,9 @@ Proc. Graph Drawing (GD ’96), 1996, pp.92–100.
 #include "vtkFloatArray.h"
 #include "vtkVariant.h"
 
+#include "VTKGraphParameter.h"
+#include "VTKTableParameter.h"
+
 INIT_INSTANCE_COUNTER(SingleCycleLayouterNode)
 ///
 /// Constructors and Destructors
@@ -110,32 +108,32 @@ INIT_INSTANCE_COUNTER(SingleCycleLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 SingleCycleLayouterNode::SingleCycleLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
-		/*
-		m_nTable(0),
-		m_nGraph(0)
-		*/
+    ViewNode(name, parameterRoot),
+	m_ouputVTKTableParameterName("VTKTableOutput"),
+	m_inputVTKGraphName("VTKGraphInput"),
+	m_outputTable(0),
+	m_inGraph(0)
 {
-
-	// Set source
-	// if source is vtkTable(s), apply vtkTableToGraph
-
-	// Create layout (vtkGraphLayout)
-
-	// Set layout strategy (vtkCircularLayoutStrategy)
-
-	// Create graph ouput (m_oGraph)
-
-	// Create table ouput (m_oTable)
-
-	// Set affections and callback functions
-
-	// Create output vtkGraph parameter
-
-	// Create output vtkTable parameter
-
 	setTypeName("SingleCycleLayouterNode");
 
+    // create the mandatory vtk graph input parameter 
+	VTKGraphParameter * inputVTKGraphParameter = new VTKGraphParameter(m_inputVTKGraphName);
+	inputVTKGraphParameter->setMultiplicity(1);
+    inputVTKGraphParameter->setPinType(Parameter::PT_Input);
+    inputVTKGraphParameter->setSelfEvaluating(true);
+    parameterRoot->addParameter(inputVTKGraphParameter);
+	connect(inputVTKGraphParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTable()));
+
+    // create the mandatory vtk table output parameter 
+	addOutputParameter(new VTKTableParameter(m_ouputVTKTableParameterName));
+
+	// link the input parameter to the output processing
+	Parameter * outputParameter = getParameter(m_ouputVTKTableParameterName);
+    if (outputParameter) 
+	{
+		outputParameter->setProcessingFunction(SLOT(processOutputVTKTable()));
+        outputParameter->addAffectingParameter(inputVTKGraphParameter);
+	}
     INC_INSTANCE_COUNTER
 }
 
@@ -154,38 +152,40 @@ SingleCycleLayouterNode::~SingleCycleLayouterNode ()
     Log::info(QString("SingleCycleLayouterNode destroyed."), "SingleCycleLayouterNode::~SingleCycleLayouterNode");
 }
 
-bool SingleCycleLayouterNode::loadVertexTable()
+//!
+//! Processes the node's input data to generate the node's output table.
+//!
+void SingleCycleLayouterNode::processOutputVTKTable()
 {
-	return true;
+	if (updateGraph() != 0)
+		return;
+
+	m_outputTable = createTableFromGraph(m_inGraph);
+
+	// process the output vtk table
+	VTKTableParameter * outputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_ouputVTKTableParameterName));
+
+	if (outputParameter) 
+		outputParameter->setVTKTable(m_outputTable);
 }
 
-bool SingleCycleLayouterNode::loadEdgeTable()
+vtkTable * SingleCycleLayouterNode::createTableFromGraph(vtkGraph *graph)
 {
-	return true;
-}
-
-bool SingleCycleLayouterNode::loadGraphTree()
-{
-	return true;
-}
-
-vtkTable *SingleCycleLayouterNode::createTableFromGraph(vtkGraph *graph)
-{
-	m_nTable = vtkTable::New();
+	vtkTable *myTable = vtkTable::New();
 	//Create a column named "NodeId"
 	vtkStringArray *colNodeId = vtkStringArray::New();
 	colNodeId->SetName("NodeId");
-	m_nTable->AddColumn(colNodeId);
+	myTable->AddColumn(colNodeId);
 	//Create columns named "X", "Y" and "Z"
-	vtkFloatArray *posX = vtkFloatArray::New();
-	posX->SetName("X");
-	m_nTable->AddColumn(posX);
-	vtkFloatArray *posY = vtkFloatArray::New();
-	posY->SetName("Y");
-	m_nTable->AddColumn(posY);
-	vtkFloatArray *posZ = vtkFloatArray::New();
-	posZ->SetName("Z");
-	m_nTable->AddColumn(posZ);
+	vtkFloatArray *colX = vtkFloatArray::New();
+	colX->SetName("X");
+	myTable->AddColumn(colX);
+	vtkFloatArray *colY = vtkFloatArray::New();
+	colY->SetName("Y");
+	myTable->AddColumn(colY);
+	vtkFloatArray *colZ = vtkFloatArray::New();
+	colZ->SetName("Z");
+	myTable->AddColumn(colZ);
 
 	//Fill the table with data from the graph vertices
 	vtkVertexListIterator *vertices = vtkVertexListIterator::New();
@@ -201,25 +201,30 @@ vtkTable *SingleCycleLayouterNode::createTableFromGraph(vtkGraph *graph)
 		colNodeId->InsertNextValue( vertexId );
 		//Add the position values to columns "X", "Y" and "Z"
 		graph->GetPoint(i, position);
-		posX->InsertNextValue( position[0] );
-		posY->InsertNextValue( position[1] );
-		posZ->InsertNextValue( position[2] );
+		colX->InsertNextValue( position[0] );
+		colY->InsertNextValue( position[1] );
+		colZ->InsertNextValue( position[2] );
 		++i;
 	}
-	return m_nTable;
+	return myTable;
 }
 
-vtkGraph *SingleCycleLayouterNode::createGraphFromTable(vtkTable *table)
+//!
+//! Update the input graph
+//!
+int SingleCycleLayouterNode::updateGraph()
 {
-	// vtkTableToGraph filter applied here
-	// This is where table columns are mapped to "from" and "to"
-	// AddLinkVertex
-	// AddLinkEdge
+	// load the input vtk parameter 
+	VTKGraphParameter * inputParameter = dynamic_cast<VTKGraphParameter*>(getParameter(m_inputVTKGraphName));
+	if (!inputParameter->isConnected())
+		return 1;
 
-	return m_nGraph;
-}
+	// get the source parameter (output of source node) connected to the input parameter
+	VTKGraphParameter * sourceParameter = dynamic_cast<VTKGraphParameter*>(inputParameter->getConnectedParameter());
 
-vtkGraph *SingleCycleLayouterNode::createGraphFromTree(vtkTree *tree)
-{
-	return m_nGraph;
+	// get the vtk graph that comes with the source parameter and set it into the input parameter of this node
+	m_inGraph = sourceParameter->getVTKGraph();
+	inputParameter->setVTKGraph(m_inGraph);
+
+	return (m_inGraph == 0);
 }

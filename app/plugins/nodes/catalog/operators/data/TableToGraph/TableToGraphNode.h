@@ -36,12 +36,6 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "vtkGraph.h"
 #include "vtkTable.h"
 
-// OGRE
-#include <Ogre.h>
-#if (OGRE_PLATFORM  == OGRE_PLATFORM_WIN32)
-#include <windows.h>
-#endif
-
 
 //!
 //! Class for a Degree Centrality Measure
