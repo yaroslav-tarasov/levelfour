@@ -1331,6 +1331,9 @@ void ParameterPanel::addRows ( Parameter *parameter, QFormLayout *formLayout )
             case Parameter::T_VTKTable:
                 return;
                 break;
+			case Parameter::T_VTKGraph:
+                return;
+                break;
             case Parameter::T_Group:
                 {
                     ParameterGroup *parameterGroup = m_node->getGroupValue(parameter->getName());

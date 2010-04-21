@@ -155,9 +155,6 @@ void TableToGraphNode::updateGraph ()
 	if (updateTable() != 0)
 		return;
 
-	if (m_graph)
-		m_graph->Delete();
-
 	vtkTableToGraph * tableToGraph = vtkTableToGraph::New();
 	tableToGraph->SetInput(m_inputTable);
 	QString vertexID = vertexIDParameter->getCurrentLiteral();
@@ -172,6 +169,8 @@ void TableToGraphNode::updateGraph ()
 
 	if (outputParameter) 
 		outputParameter->setVTKGraph(m_graph);
+
+	tableToGraph->Delete();
 }
 
 //!
