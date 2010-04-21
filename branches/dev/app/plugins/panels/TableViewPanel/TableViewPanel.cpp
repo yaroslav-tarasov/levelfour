@@ -191,26 +191,27 @@ void TableViewPanel::registerControl(NodeModel *nodeModel, SceneModel *sceneMode
 
 void TableViewPanel::showTable(Node * node)
 {
-	if (QString::compare(node->getTypeName(), "VTKTableNode", Qt::CaseInsensitive))
-	{
-		if (m_currentTableNode == node)
-			return;
-		// register node selected
-		m_currentTableNode = static_cast<VTKTableNode*> (node);
-		if (!m_currentTableNode->getTable())
-		{
-			m_currentTableNode = 0;
-			return;
-		}
-		
-		// connect table panel to signals emitted by the node selected
-	    QObject::connect(m_currentTableNode, SIGNAL(tableChanged(vtkTable *)), this, SLOT(updateTable()));
-	    QObject::connect(m_currentTableNode, SIGNAL(destroyed()), this, SLOT(disconnect()));
+	if (!(QString::compare(node->getTypeName(), "VTKTableNode", Qt::CaseInsensitive) == 0) &&
+		!(QString::compare(node->getTypeName(), "TextDelimiterSource", Qt::CaseInsensitive) == 0)) 
+		return;
 
-		vtkQtTableModelAdapter * adapter = new vtkQtTableModelAdapter;
-		adapter->SetVTKDataObject(m_currentTableNode->getTable());
-		tableView->setModel(adapter);
+	if (m_currentTableNode == node)
+		return;
+	// register node selected
+	m_currentTableNode = static_cast<VTKTableNode*> (node);
+	if (!m_currentTableNode->getTable())
+	{
+		m_currentTableNode = 0;
+		return;
 	}
+	
+	// connect table panel to signals emitted by the node selected
+    QObject::connect(m_currentTableNode, SIGNAL(tableChanged(vtkTable *)), this, SLOT(updateTable()));
+    QObject::connect(m_currentTableNode, SIGNAL(destroyed()), this, SLOT(disconnect()));
+
+	vtkQtTableModelAdapter * adapter = new vtkQtTableModelAdapter;
+	adapter->SetVTKDataObject(m_currentTableNode->getTable());
+	tableView->setModel(adapter);
 }
 
 void TableViewPanel::disconnect()

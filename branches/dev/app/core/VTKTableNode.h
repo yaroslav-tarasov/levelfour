@@ -7,7 +7,7 @@
 Q_DECLARE_METATYPE(vtkTable *)
 
 //!
-//! Base class representing nodes that provide access to vtk tables.
+//! Base class representing nodes that provide a vtkTable output.
 //!
 class FRAPPER_CORE_EXPORT VTKTableNode : public ViewNode
 {

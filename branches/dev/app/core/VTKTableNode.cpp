@@ -30,7 +30,7 @@ VTKTableNode::VTKTableNode ( const QString &name, ParameterGroup *parameterRoot,
 
 
 //!
-//! Destructor of the TextDelimiterSourceNode class.
+//! Destructor of the VTKTableNode class.
 //!
 VTKTableNode::~VTKTableNode ()
 {
