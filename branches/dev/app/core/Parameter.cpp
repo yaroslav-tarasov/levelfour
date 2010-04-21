@@ -88,7 +88,7 @@ static const char *ParameterTypeNames[Parameter::T_NumTypes] = {
     "Image",
     "Group",
 	"PlugIn",
-	"VTKTable"
+	"VTKTable",
 	"VTKGraph"
 };
 
