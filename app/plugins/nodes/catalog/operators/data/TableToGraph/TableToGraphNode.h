@@ -34,6 +34,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 
 #include "ViewNode.h"
 #include "vtkGraph.h"
+#include "vtkTable.h"
 
 // OGRE
 #include <Ogre.h>
@@ -70,14 +71,25 @@ public: // constructors and destructors
     //!
     virtual ~TableToGraphNode ();
 
-public slots: //
+private slots: //
 
     //!
     //! Processes the node's input data to generate the node's output table.
     //!
     void processOutputVTKGraph ();
 
-protected: 
+    //!
+    //! Update the graph (called for example when parameters change)
+    //!
+    void updateGraph ();
+
+    //!
+    //! Update the input table 
+    //! return It returns 0 if it succeeds, otherwise 1
+    //!
+    int updateTable ();
+
+private: 
     //!
     //! The name of the input vtk table parameter.
     //!
@@ -88,6 +100,19 @@ protected:
     //!
     QString m_outputVTKGraphName;
 
+    //!
+    //! The parameters that defines the edgeFrom/To and vertices for the graph.
+    //!
+	EnumerationParameter * edgesFromParameter, * edgesToParameter, * vertexIDParameter;
+	
+    //!
+    //! The input table 
+    //!
+	vtkTable * m_inputTable;
+
+	//!
+    //! The resulting graph
+    //!
 	vtkGraph * m_graph;
 	
 };
