@@ -32,7 +32,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef SingleCycleLayouterNODE_H
 #define SingleCycleLayouterNODE_H
 
-#include "Node.h"
+#include "ViewNode.h"
 #include "vtkGraph.h"
 #include "vtkTree.h"
 #include "vtkTable.h"
@@ -42,7 +42,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class for a SingleCycleLayouter
 //!
-class SingleCycleLayouterNode : public Node
+class SingleCycleLayouterNode : public ViewNode
 {
 
     Q_OBJECT
@@ -67,73 +67,47 @@ public: // constructors and destructors
     //!
     virtual ~SingleCycleLayouterNode ();
 
-public slots:
+private slots: //
+
+    //!
+    //! Processes the node's input data to generate the node's output table.
+    //!
+    void processOutputVTKTable();
+
+    //!
+    //! Update the graph (called for example when parameters change)
+    //! return It returns 0 if it succeeds, otherwise 1
+    //!
+    int updateGraph ();
 
 protected: // functions
 
-	//!
-    //! Convert graph to table
+    //!
+    //! Create a vtkTable with ID, x, y, z from an vtk graph 
     //!
 	vtkTable * createTableFromGraph(vtkGraph *graph);
 
-	//!
-    //! Convert table to graph
-    //!
-	vtkGraph * createGraphFromTable(vtkTable *table);
-
-	//!
-    //! Create graph from tree
-    //!
-	vtkGraph * createGraphFromTree( vtkTree *tree);
-
-private slots:
-
-
-private: // functions
-
-	//!
-    //! Loads the source node list.
-    //!
-    //! \return True if the file was successfully loaded, otherwise False.
-    //!
-    bool loadVertexTable ();
-
-	//!
-    //! Loads the edge list.
-    //!
-    //! \return True if the file was successfully loaded, otherwise False.
-    //!
-    bool loadEdgeTable ();
-
-	//!
-    //! Loads the source graph tree.
-    //!
-    //! \return True if the file was successfully loaded, otherwise False.
-    //!
-    bool loadGraphTree ();
-
 private: // data
 
-	//!
-    //! The nodeTable that this node represents.
     //!
-    vtkTable * m_nTable;
+    //! The name of the input vtk graph parameter.
+    //!
+    QString m_inputVTKGraphName;
 
-	//!
-    //! The graph that this node represents.
     //!
-    vtkGraph * m_nGraph;
+    //! The name of the output vtk table parameter.
+    //!
+    QString m_ouputVTKTableParameterName;
 	
 	//!
-    //! The name of the output table parameter.
+    //! The output Table
     //!
-	QString * m_oTable;
+    vtkTable * m_outputTable;
 
 	//!
-    //! The name of the output graph parameter.
-    //!	
-	QString * m_oGraph;
-
+    //! The input graph
+    //!
+    vtkGraph * m_inGraph;
 };
 
 
