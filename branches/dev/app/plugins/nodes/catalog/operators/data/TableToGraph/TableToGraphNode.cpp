@@ -71,6 +71,7 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
 	ViewNode(name, parameterRoot),
 	m_inputVTKTableParameterName("VTKTableInput"),
 	m_outputVTKGraphName("VTKGraphOutput"),
+	m_inputTable(0),
 	m_graph(0)
 {
     // create the mandatory vtk table input parameter - multiplicity *
@@ -93,13 +94,20 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
 	}
 
     // create the enumeration parameter with the list of columns representing the edgeFrom
-    parameterRoot->addParameter(new EnumerationParameter("From", Parameter::getDefaultValue(Parameter::T_Enumeration)));
+	edgesFromParameter = new EnumerationParameter("From", Parameter::getDefaultValue(Parameter::T_Enumeration));
+	parameterRoot->addParameter(edgesFromParameter);
 	
     // create the enumeration parameter with the list of columns representing the edgeTo
-    parameterRoot->addParameter(new EnumerationParameter("To", Parameter::getDefaultValue(Parameter::T_Enumeration)));
+	edgesToParameter = new EnumerationParameter("To", Parameter::getDefaultValue(Parameter::T_Enumeration));
+    parameterRoot->addParameter(edgesToParameter);
 
     // create the enumeration parameter with the list of fields representing the vertexID
-    parameterRoot->addParameter(new EnumerationParameter("VertexID", Parameter::getDefaultValue(Parameter::T_Enumeration)));
+	vertexIDParameter = new EnumerationParameter("VertexID", Parameter::getDefaultValue(Parameter::T_Enumeration));
+    parameterRoot->addParameter(vertexIDParameter);
+
+	connect(edgesFromParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
+	connect(edgesToParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
+	connect(vertexIDParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
 }
 
 
@@ -120,53 +128,68 @@ TableToGraphNode::~TableToGraphNode ()
 //!
 void TableToGraphNode::processOutputVTKGraph ()
 {
+	if (updateTable() != 0)
+		return;
+
+	// recreate the From/To and vertices parameter with the list of the input table attributes
+	QStringList literals;
+	for (int i = 0; i < m_inputTable->GetNumberOfColumns(); i++)
+		literals << m_inputTable->GetColumnName(i);
+
+	edgesFromParameter->setLiterals(literals);
+	edgesFromParameter->setValues(literals);
+
+	edgesToParameter->setLiterals(literals);
+	edgesToParameter->setValues(literals);
+
+	vertexIDParameter->setLiterals(literals);
+	vertexIDParameter->setValues(literals);
+
+}
+
+//!
+//! Update the graph (called for example when parameters change)
+//!
+void TableToGraphNode::updateGraph ()
+{
+	if (updateTable() != 0)
+		return;
+
+	if (m_graph)
+		m_graph->Delete();
+
+	vtkTableToGraph * tableToGraph = vtkTableToGraph::New();
+	tableToGraph->SetInput(m_inputTable);
+	QString vertexID = vertexIDParameter->getCurrentLiteral();
+	QString edgeFrom = edgesFromParameter->getCurrentLiteral();
+	QString edgeTo = edgesToParameter->getCurrentLiteral();
+	tableToGraph->AddLinkVertex(vertexID.toLatin1());
+	tableToGraph->AddLinkEdge(edgeFrom.toLatin1(), edgeTo.toLatin1());
+
+	m_graph = tableToGraph->GetOutput();
+	// process the output vtk graph 
+	VTKGraphParameter * outputParameter = dynamic_cast<VTKGraphParameter*>(getParameter(m_outputVTKGraphName));
+
+	if (outputParameter) 
+		outputParameter->setVTKGraph(m_graph);
+}
+
+//!
+//! Update the input table 
+//!
+int TableToGraphNode::updateTable ()
+{
 	// load the input vtk parameter 
 	VTKTableParameter * inputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_inputVTKTableParameterName));
 	if (!inputParameter->isConnected())
-		return;
+		return 1;
 
 	// get the source parameter (output of source node) connected to the input parameter
 	VTKTableParameter * sourceParameter = dynamic_cast<VTKTableParameter*>(inputParameter->getConnectedParameter());
 
 	// get the vtk table that comes with the source parameter and set it into the input parameter of this node
-	vtkTable * inputTable = sourceParameter->getVTKTable();
-	inputParameter->setVTKTable(inputTable);
+	m_inputTable = sourceParameter->getVTKTable();
+	inputParameter->setVTKTable(m_inputTable);
 
-	if (!inputTable)
-		return;
-
-	// recreate the From parameter with the list of attributes
-	EnumerationParameter * edgesFromParameter = dynamic_cast<EnumerationParameter*>(getParameter("From"));
-	QStringList literals;
-	for (int i = 0; i < inputTable->GetNumberOfColumns(); i++)
-		literals << inputTable->GetColumnName(i);
-
-	edgesFromParameter->setLiterals(literals);
-	edgesFromParameter->setValues(literals);
-
-	// recreate the To parameter with the list of attributes
-	EnumerationParameter * edgesToParameter = dynamic_cast<EnumerationParameter*>(getParameter("To"));
-
-	edgesToParameter->setLiterals(literals);
-	edgesToParameter->setValues(literals);
-
-	// recreate the vertextID parameter with the list of attributes
-	EnumerationParameter * vertexIDParameter = dynamic_cast<EnumerationParameter*>(getParameter("VertexID"));
-
-	vertexIDParameter->setLiterals(literals);
-	vertexIDParameter->setValues(literals);
-
-	// get the attributes from the table and update the columns parameter
-//	vtkDataSetAttributes * attributes = inputTable->GetRowData();
-	QString name(inputTable->GetColumnName(1));
-	vtkTableToGraph * tableToGraph = vtkTableToGraph::New();
-	tableToGraph->SetInput(inputTable);
-	tableToGraph->AddLinkVertex("Author");
-	// process the output vtk graph 
-	VTKGraphParameter * outputParameter = dynamic_cast<VTKGraphParameter*>(getParameter(m_outputVTKGraphName));
-
-	if (outputParameter) 
-		outputParameter->setVTKGraph(tableToGraph->GetOutput());
-	
-	m_graph = outputParameter->getVTKGraph();
+	return (m_inputTable == 0);
 }
