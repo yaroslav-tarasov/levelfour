@@ -99,6 +99,7 @@ public: // nested enumerations
         T_Group,
 		T_PlugIn,
 		T_VTKTable,
+		T_VTKGraph,
 
         T_NumTypes
     };
