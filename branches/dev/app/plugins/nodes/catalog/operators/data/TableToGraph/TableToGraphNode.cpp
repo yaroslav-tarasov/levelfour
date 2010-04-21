@@ -53,7 +53,6 @@ Reference
 #include "VTKGraphParameter.h"
 #include "VTKTableParameter.h"
 #include "TableToGraphNode.h"
-#include "vtkDataSetAttributes.h"
 #include "vtkTableToGraph.h"
 #include "vtkGraph.h"
 
@@ -108,6 +107,7 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
 	connect(edgesFromParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
 	connect(edgesToParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
 	connect(vertexIDParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
+
 }
 
 
@@ -120,6 +120,8 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
 //!
 TableToGraphNode::~TableToGraphNode ()
 {
+	emit destroyed();
+    Log::info(QString("TableToGraphNode destroyed."), "TableToGraphNode::~TableToGraphNode");
 }
 
 
