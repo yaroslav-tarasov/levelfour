@@ -92,9 +92,14 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
         outputParameter->addAffectingParameter(inputVTKTableParameter);
 	}
 
-    // create the enumeration parameter with the list of columns
-    parameterRoot->addParameter(new EnumerationParameter("columnsParameter", Parameter::getDefaultValue(Parameter::T_Enumeration)));
+    // create the enumeration parameter with the list of columns representing the edgeFrom
+    parameterRoot->addParameter(new EnumerationParameter("From", Parameter::getDefaultValue(Parameter::T_Enumeration)));
 	
+    // create the enumeration parameter with the list of columns representing the edgeTo
+    parameterRoot->addParameter(new EnumerationParameter("To", Parameter::getDefaultValue(Parameter::T_Enumeration)));
+
+    // create the enumeration parameter with the list of fields representing the vertexID
+    parameterRoot->addParameter(new EnumerationParameter("VertexID", Parameter::getDefaultValue(Parameter::T_Enumeration)));
 }
 
 
@@ -130,14 +135,26 @@ void TableToGraphNode::processOutputVTKGraph ()
 	if (!inputTable)
 		return;
 
-	// recreate the columns parameter with the list of attributes
-	EnumerationParameter * columnParameter = dynamic_cast<EnumerationParameter*>(getParameter("columnsParameter"));
+	// recreate the From parameter with the list of attributes
+	EnumerationParameter * edgesFromParameter = dynamic_cast<EnumerationParameter*>(getParameter("From"));
 	QStringList literals;
 	for (int i = 0; i < inputTable->GetNumberOfColumns(); i++)
 		literals << inputTable->GetColumnName(i);
 
-	columnParameter->setLiterals(literals);
-	columnParameter->setValues(literals);
+	edgesFromParameter->setLiterals(literals);
+	edgesFromParameter->setValues(literals);
+
+	// recreate the To parameter with the list of attributes
+	EnumerationParameter * edgesToParameter = dynamic_cast<EnumerationParameter*>(getParameter("To"));
+
+	edgesToParameter->setLiterals(literals);
+	edgesToParameter->setValues(literals);
+
+	// recreate the vertextID parameter with the list of attributes
+	EnumerationParameter * vertexIDParameter = dynamic_cast<EnumerationParameter*>(getParameter("VertexID"));
+
+	vertexIDParameter->setLiterals(literals);
+	vertexIDParameter->setValues(literals);
 
 	// get the attributes from the table and update the columns parameter
 //	vtkDataSetAttributes * attributes = inputTable->GetRowData();
