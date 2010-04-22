@@ -55,6 +55,7 @@ Reference
 #include "TableToGraphNode.h"
 #include "vtkTableToGraph.h"
 #include "vtkGraph.h"
+#include "vtkVertexListIterator.h"
 
 ///
 /// Constructors and Destructors
@@ -166,11 +167,18 @@ void TableToGraphNode::updateGraph ()
 	tableToGraph->AddLinkEdge(edgeFrom.toLatin1(), edgeTo.toLatin1());
 
 	m_graph = tableToGraph->GetOutput();
+
+	vtkVertexListIterator *vertices = vtkVertexListIterator::New();
+	m_graph->GetVertices(vertices);
+
 	// process the output vtk graph 
 	VTKGraphParameter * outputParameter = dynamic_cast<VTKGraphParameter*>(getParameter(m_outputVTKGraphName));
 
 	if (outputParameter) 
+	{
 		outputParameter->setVTKGraph(m_graph);
+		outputParameter->propagateDirty(0);
+	}
 
 	tableToGraph->Delete();
 }

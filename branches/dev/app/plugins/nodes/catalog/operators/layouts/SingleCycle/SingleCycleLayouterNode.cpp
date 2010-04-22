@@ -157,10 +157,16 @@ SingleCycleLayouterNode::~SingleCycleLayouterNode ()
 //!
 void SingleCycleLayouterNode::processOutputVTKTable()
 {
-	if (updateGraph() != 0)
+	if (updateInputGraph() != 0)
 		return;
 
-	m_outputTable = createTableFromGraph(m_inGraph);
+	vtkGraphLayout *layout = vtkGraphLayout::New();
+	layout->SetInput( m_inGraph );
+	vtkCircularLayoutStrategy *circular = vtkCircularLayoutStrategy::New();
+	layout->SetLayoutStrategy(circular);
+	layout->Update();
+
+	m_outputTable = createTableFromGraph(layout->GetOutput());
 
 	// process the output vtk table
 	VTKTableParameter * outputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_ouputVTKTableParameterName));
@@ -179,13 +185,10 @@ vtkTable * SingleCycleLayouterNode::createTableFromGraph(vtkGraph *graph)
 	//Create columns named "X", "Y" and "Z"
 	vtkFloatArray *colX = vtkFloatArray::New();
 	colX->SetName("X");
-	myTable->AddColumn(colX);
 	vtkFloatArray *colY = vtkFloatArray::New();
 	colY->SetName("Y");
-	myTable->AddColumn(colY);
 	vtkFloatArray *colZ = vtkFloatArray::New();
 	colZ->SetName("Z");
-	myTable->AddColumn(colZ);
 
 	//Fill the table with data from the graph vertices
 	vtkVertexListIterator *vertices = vtkVertexListIterator::New();
@@ -206,13 +209,18 @@ vtkTable * SingleCycleLayouterNode::createTableFromGraph(vtkGraph *graph)
 		colZ->InsertNextValue( position[2] );
 		++i;
 	}
+	myTable->AddColumn(colX);
+	myTable->AddColumn(colY);
+	myTable->AddColumn(colZ);
+	Log::info(QString("Number rows \"%1\" created: ").arg(myTable->GetNumberOfRows()), "SingleCycleLayouterNode::createTableFromGraph");
+	Log::info(QString("Number columns \"%1\" created: ").arg(myTable->GetNumberOfColumns()), "SingleCycleLayouterNode::createTableFromGraph");
 	return myTable;
 }
 
 //!
 //! Update the input graph
 //!
-int SingleCycleLayouterNode::updateGraph()
+int SingleCycleLayouterNode::updateInputGraph()
 {
 	// load the input vtk parameter 
 	VTKGraphParameter * inputParameter = dynamic_cast<VTKGraphParameter*>(getParameter(m_inputVTKGraphName));

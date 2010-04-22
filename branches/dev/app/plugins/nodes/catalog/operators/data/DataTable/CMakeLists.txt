@@ -49,6 +49,8 @@ target_link_libraries(dataTable
 			optimized QtXml4 debug QtXmld4
 			optimized OgreMain debug OgreMain_d
 			optimized frappercore debug frappercore_d
+			optimized vtkInfovis debug vtkInfovis
+			optimized vtkFiltering debug vtkFiltering
 			)
 
 # Install files
