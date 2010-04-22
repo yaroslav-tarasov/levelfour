@@ -52,7 +52,7 @@ Reference
 
 #include "DataTableNode.h"
 #include "VTKTableParameter.h"
-
+#include "vtkTable.h"
 ///
 /// Constructors and Destructors
 ///
@@ -121,4 +121,10 @@ void DataTableNode::processOutputVTKTable ()
 		outputParameter->setVTKTable(inputParameter->getVTKTable());
 	
 	m_table = outputParameter->getVTKTable();
+
+	if (m_table)
+	{
+		Log::info(QString("Number rows \"%1\" created: ").arg(m_table->GetNumberOfRows()), "DataTableNode::processOutputVTKTable");
+		Log::info(QString("Number columns \"%1\" created: ").arg(m_table->GetNumberOfColumns()), "DataTableNode::processOutputVTKTable");
+	}
 }
