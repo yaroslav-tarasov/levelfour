@@ -53,6 +53,9 @@ Reference
 #include "DataTableNode.h"
 #include "VTKTableParameter.h"
 #include "vtkTable.h"
+
+INIT_INSTANCE_COUNTER(DataTableNode)
+
 ///
 /// Constructors and Destructors
 ///
@@ -83,6 +86,7 @@ DataTableNode::DataTableNode ( const QString &name, ParameterGroup *parameterRoo
 
         outputParameter->addAffectingParameter(inputVTKTableParameter);
 	}
+    INC_INSTANCE_COUNTER
 }
 
 
@@ -95,6 +99,9 @@ DataTableNode::DataTableNode ( const QString &name, ParameterGroup *parameterRoo
 //!
 DataTableNode::~DataTableNode ()
 {
+	emit destroyed();
+    Log::info(QString("DataTableNode destroyed."), "DataTableNode::~DataTableNode");
+    DEC_INSTANCE_COUNTER
 }
 
 
@@ -121,6 +128,8 @@ void DataTableNode::processOutputVTKTable ()
 		outputParameter->setVTKTable(inputParameter->getVTKTable());
 	
 	m_table = outputParameter->getVTKTable();
+
+	emit tableChanged(m_table);
 
 	if (m_table)
 	{

@@ -57,6 +57,8 @@ Reference
 #include "vtkGraph.h"
 #include "vtkVertexListIterator.h"
 
+INIT_INSTANCE_COUNTER(TableToGraphNode)
+
 ///
 /// Constructors and Destructors
 ///
@@ -109,6 +111,7 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
 	connect(edgesToParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
 	connect(vertexIDParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
 
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -123,6 +126,7 @@ TableToGraphNode::~TableToGraphNode ()
 {
 	emit destroyed();
     Log::info(QString("TableToGraphNode destroyed."), "TableToGraphNode::~TableToGraphNode");
+    DEC_INSTANCE_COUNTER
 }
 
 

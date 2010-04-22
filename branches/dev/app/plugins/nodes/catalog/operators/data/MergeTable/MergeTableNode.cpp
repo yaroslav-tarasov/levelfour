@@ -13,6 +13,8 @@ date       20.04.2010 (last updated)
 #include <vtkMergeTables.h>
 #include <vtkTable.h>
 
+INIT_INSTANCE_COUNTER(MergeTableNode)
+
 ///
 /// Constructors and Destructors
 ///
@@ -42,6 +44,7 @@ MergeTableNode::MergeTableNode ( const QString &name, ParameterGroup *parameterR
 		outputParameter->setProcessingFunction(SLOT(processOutputVTKTable()));
         outputParameter->addAffectingParameter(inputVTKTableParameter);
 	}
+    INC_INSTANCE_COUNTER
 }
 
 
@@ -54,6 +57,9 @@ MergeTableNode::MergeTableNode ( const QString &name, ParameterGroup *parameterR
 //!
 MergeTableNode::~MergeTableNode ()
 {
+	emit destroyed();
+    Log::info(QString("MergeTableNode destroyed."), "MergeTableNode::~MergeTableNode");
+    DEC_INSTANCE_COUNTER
 }
 
 //!
@@ -95,5 +101,7 @@ void MergeTableNode::processOutputVTKTable ()
 		outputParameter->setVTKTable(mergeTable);
 	
 	m_table = outputParameter->getVTKTable();
+
+	emit tableChanged(m_table);
 }
 

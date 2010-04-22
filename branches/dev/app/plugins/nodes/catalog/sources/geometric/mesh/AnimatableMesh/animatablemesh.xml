@@ -16,7 +16,7 @@
     <parameter name="Number of Vertices" type="TextInfo"/>
     <parameter name="Number of Triangles" type="TextInfo"/>
     <!--<parameter name="ready" type="Bool" defaultValue="false" pin="in" visible="false"/>-->
-    <parameter name="time" type="int" defaultValue="0" visible="false"/>
+    <parameter name="time" type="Int" defaultValue="0" visible="false"/>
     <!--parameter name="Casts Shadows" type="Bool" defaultValue="true"/>
     <parameter name="Receives Shadows" type="Bool" defaultValue="false"/>
     <parameter name="Units" type="Enumeration" defaultValue="mm">
