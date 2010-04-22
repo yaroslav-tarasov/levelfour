@@ -1,7 +1,7 @@
 project(mappers)
 
-add_subdirectory(ColorByValue)
-add_subdirectory(MaterialByValue)
-add_subdirectory(PositionByValue)
-add_subdirectory(ShapeByValue)
-add_subdirectory(SizeByValue)
+add_subdirectory(ColorMapper)
+add_subdirectory(MaterialMapper)
+add_subdirectory(PositionMapper)
+add_subdirectory(ShapeMapper)
+add_subdirectory(SizeMapper)

@@ -1,3 +1,10 @@
 project(layouts)
 
+add_subdirectory(Axis)
+add_subdirectory(ConeTree)
+add_subdirectory(CosmicTree)
+add_subdirectory(PhylloTree)
+add_subdirectory(RadialTree)
 add_subdirectory(SingleCycle)
+add_subdirectory(Spherical)
+add_subdirectory(TreeOrbit)
