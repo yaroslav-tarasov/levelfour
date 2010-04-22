@@ -842,3 +842,80 @@ QToolTip
 	opacity: 150;
 	color: #CCCCCC;
 }
+
+QDoubleSpinBox 
+{
+    padding-right: 15px; /* make room for the arrows */
+	background: #646464;
+    border: 1px solid #0d0d0d;
+    color: #ffffff;
+   	border-top-left-radius: 5px; /* same radius as the QComboBox */
+	border-bottom-left-radius: 5px;
+}
+ 
+QDoubleSpinBox::up-button
+{
+    subcontrol-origin: border;
+    subcontrol-position: top right; /* position at the top right corner */
+    width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+	border: 1px solid #222222;
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #565656, stop:1 #464646);
+}
+
+QDoubleSpinBox::up-button:hover
+{
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2b2b2b, stop:1 #232323);
+}
+
+QDoubleSpinBox::up-button:pressed
+{
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2b2b2b, stop:1 #232323);
+}
+
+QDoubleSpinBox::up-arrow
+{
+     image: url(:/arrow_up);
+     width: 11px;
+     height: 6px;
+}
+
+QDoubleSpinBox::up-arrow:disabled, QDoubleSpinBox::up-arrow:off
+{ /* off state when value is max */
+    image: url(:/arrow_up);
+}
+
+QDoubleSpinBox::down-button
+{
+    subcontrol-origin: border;
+    subcontrol-position: bottom right; /* position at bottom right corner */
+    width: 16px;
+	border-top: 0px solid #222222;
+	border-left: 1px solid #222222;
+	border-bottom: 1px solid #222222;
+	border-right: 1px solid #222222;
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #565656, stop:1 #464646);
+    border-top-width: 0;
+}
+
+QDoubleSpinBox::down-button:hover
+{
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2b2b2b, stop:1 #232323);
+}
+
+QDoubleSpinBox::down-button:pressed
+{
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2b2b2b, stop:1 #232323);
+}
+
+QDoubleSpinBox::down-arrow
+{
+     image: url(:/arrow_down);
+     width: 11px;
+     height: 6px;
+}
+
+QDoubleSpinBox::down-arrow:disabled,
+QDoubleSpinBox::down-arrow:off 
+{ /* off state when value in min */
+    image: url(:/arrow_down);
+}
