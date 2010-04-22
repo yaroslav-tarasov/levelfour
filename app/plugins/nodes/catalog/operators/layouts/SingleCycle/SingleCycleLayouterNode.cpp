@@ -90,7 +90,7 @@ Proc. Graph Drawing (GD ’96), 1996, pp.92–100.
 #include "vtkGraph.h"
 #include "vtkVertexListIterator.h"
 #include "vtkStringArray.h"
-#include "vtkFloatArray.h"
+#include "vtkDoubleArray.h"
 #include "vtkVariant.h"
 
 #include "VTKGraphParameter.h"
@@ -183,11 +183,11 @@ vtkTable * SingleCycleLayouterNode::createTableFromGraph(vtkGraph *graph)
 	colNodeId->SetName("NodeId");
 	myTable->AddColumn(colNodeId);
 	//Create columns named "X", "Y" and "Z"
-	vtkFloatArray *colX = vtkFloatArray::New();
+	vtkDoubleArray *colX = vtkDoubleArray::New();
 	colX->SetName("X");
-	vtkFloatArray *colY = vtkFloatArray::New();
+	vtkDoubleArray *colY = vtkDoubleArray::New();
 	colY->SetName("Y");
-	vtkFloatArray *colZ = vtkFloatArray::New();
+	vtkDoubleArray *colZ = vtkDoubleArray::New();
 	colZ->SetName("Z");
 
 	//Fill the table with data from the graph vertices
