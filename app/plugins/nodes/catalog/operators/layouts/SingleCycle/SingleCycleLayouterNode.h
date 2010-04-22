@@ -75,10 +75,10 @@ private slots: //
     void processOutputVTKTable();
 
     //!
-    //! Update the graph (called for example when parameters change)
+    //! Update the input graph (called for example when input parameters have been dirtied)
     //! return It returns 0 if it succeeds, otherwise 1
     //!
-    int updateGraph ();
+    int updateInputGraph ();
 
 protected: // functions
 
