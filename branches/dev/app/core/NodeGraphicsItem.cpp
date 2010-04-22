@@ -175,16 +175,16 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
 
     // define background color
     QColor backgroundColor;
-	QColor lightBackground = QColor(133,133,133);
-	QColor darkBackground = QColor(190,190,190);
+	QColor lightBackground = QColor(82,82,82);
+	QColor darkBackground = QColor(50,50,50);
 
     if (widget)
-        backgroundColor = QColor(75,75,75);
+        backgroundColor = QColor(20,20,20);
     else
         backgroundColor = lightBackground;
     if (m_hovered) // isUnderMouse() didn't always work here
         // backgroundColor = m_color;
-		backgroundColor = backgroundColor.darker(145);
+		backgroundColor = backgroundColor.lighter(145);
 
     // draw selection border
     if (isSelected()) {
@@ -197,9 +197,9 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
 	
     QLinearGradient linearGradient (0, rect().top(), 0, rect().bottom());
     
-	linearGradient.setColorAt(0, darkBackground);
-	linearGradient.setColorAt(0.1, lightBackground);
-	linearGradient.setColorAt(0.9, QColor(186,186,186));
+	linearGradient.setColorAt(0, lightBackground);
+	linearGradient.setColorAt(0.1, darkBackground);
+	linearGradient.setColorAt(0.9, QColor(35,35,35));
 	
     if (m_node && m_node->isEvaluated())
         linearGradient.setColorAt(1, backgroundColor);
@@ -226,7 +226,7 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
 
     // draw the node's name
     if (isEnabled())
-        painter->setPen(QPen(Qt::black, 1));
+        painter->setPen(QPen(Qt::white, 1));
     else
         painter->setPen(QPen(QColor (200,200,200), 1));
     painter->setClipping(true);
