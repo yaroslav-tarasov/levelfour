@@ -138,7 +138,8 @@ bool Model2SceneNode::loadMesh ()
 void Model2SceneNode::geometryFileChanged ()
 {
     // load new mesh and skeleton
-    loadMesh();
+    if (loadMesh())
+		processScene();
 }
 
 //!
@@ -148,7 +149,7 @@ void Model2SceneNode::processScene()
 {
 	// load the input vtk parameter 
 	VTKTableParameter * inputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_inputVTKTableParameterName));
-	if (!inputParameter->isConnected())
+	if (!inputParameter || !inputParameter->isConnected())
 		return;
 
 	// get the source parameter (output of source node) connected to the input parameter
@@ -158,6 +159,9 @@ void Model2SceneNode::processScene()
 
 	vtkTable * xyzTable = inputParameter->getVTKTable();
 
+	if (!m_entity || !xyzTable || !m_sceneNode)
+		return;
+
 	//Get columns named "NodeID", "X", "Y" and "Z"
 	vtkStringArray *colNodeId = dynamic_cast<vtkStringArray*>(xyzTable->GetColumnByName("NodeId"));
 	vtkDoubleArray *colX = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName("X"));
@@ -166,9 +170,6 @@ void Model2SceneNode::processScene()
 
 	destroyAllAttachedMovableObjects(m_sceneNode);
 	destroyAllChildren(m_sceneNode);
-
-	if (!m_entity || !xyzTable || !m_sceneNode)
-		return;
 
 	Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 
