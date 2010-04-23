@@ -51,6 +51,8 @@ set( frappercore_h ${frappercore_h}
 			VTKGraphParameter.h
 			VTKTableParameter.h
 			VTKTableNode.h
+			VTKTreeParameter.h
+			VTKTreeNode.h
 			)
 
 set( frappercore_moc ${frappercore_moc}	
@@ -78,6 +80,7 @@ set( frappercore_moc ${frappercore_moc}
 			 ViewFlagGraphicsItem.h
 			 ViewNode.h
 			 VTKTableNode.h
+			 VTKTreeNode.h
 			 )
 
 set( frappercore_src ${frappercore_src}	
@@ -120,6 +123,8 @@ set( frappercore_src ${frappercore_src}
 			VTKGraphParameter.cpp
 			VTKTableParameter.cpp
 			VTKTableNode.cpp
+			VTKTreeParameter.cpp
+			VTKTreeNode.cpp
 			)
 
 # Create moc files		   
