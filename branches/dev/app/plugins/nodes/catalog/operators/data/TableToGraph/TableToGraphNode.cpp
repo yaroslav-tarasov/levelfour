@@ -82,7 +82,6 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
     inputVTKTableParameter->setPinType(Parameter::PT_Input);
     inputVTKTableParameter->setSelfEvaluating(true);
     parameterRoot->addParameter(inputVTKTableParameter);
-    connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processOutputVTKGraph()));
 
     // create the mandatory vtk graph output parameter 
 	addOutputParameter(new VTKGraphParameter(m_outputVTKGraphName));
@@ -107,6 +106,7 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
 	vertexIDParameter = new EnumerationParameter("VertexID", Parameter::getDefaultValue(Parameter::T_Enumeration));
     parameterRoot->addParameter(vertexIDParameter);
 
+    connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processOutputVTKGraph()));
 	connect(edgesFromParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
 	connect(edgesToParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
 	connect(vertexIDParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
@@ -135,7 +135,7 @@ TableToGraphNode::~TableToGraphNode ()
 //!
 void TableToGraphNode::processOutputVTKGraph ()
 {
-	if (updateTable() != 0)
+	if (!updateTable())
 		return;
 
 	// recreate the From/To and vertices parameter with the list of the input table attributes
@@ -151,7 +151,6 @@ void TableToGraphNode::processOutputVTKGraph ()
 
 	vertexIDParameter->setLiterals(literals);
 	vertexIDParameter->setValues(literals);
-
 }
 
 //!
@@ -159,7 +158,7 @@ void TableToGraphNode::processOutputVTKGraph ()
 //!
 void TableToGraphNode::updateGraph ()
 {
-	if (updateTable() != 0)
+	if (!m_inputTable)
 		return;
 
 	vtkTableToGraph * tableToGraph = vtkTableToGraph::New();
@@ -183,19 +182,17 @@ void TableToGraphNode::updateGraph ()
 		outputParameter->setVTKGraph(m_graph);
 		outputParameter->propagateDirty(0);
 	}
-
-	tableToGraph->Delete();
 }
 
 //!
 //! Update the input table 
 //!
-int TableToGraphNode::updateTable ()
+bool TableToGraphNode::updateTable ()
 {
 	// load the input vtk parameter 
 	VTKTableParameter * inputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_inputVTKTableParameterName));
 	if (!inputParameter->isConnected())
-		return 1;
+		return false;
 
 	// get the source parameter (output of source node) connected to the input parameter
 	VTKTableParameter * sourceParameter = dynamic_cast<VTKTableParameter*>(inputParameter->getConnectedParameter());
@@ -204,5 +201,5 @@ int TableToGraphNode::updateTable ()
 	m_inputTable = sourceParameter->getVTKTable();
 	inputParameter->setVTKTable(m_inputTable);
 
-	return (m_inputTable == 0);
+	return (m_inputTable != 0);
 }
