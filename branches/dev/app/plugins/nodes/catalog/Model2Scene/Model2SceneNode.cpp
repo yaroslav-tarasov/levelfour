@@ -30,8 +30,8 @@ INIT_INSTANCE_COUNTER(Model2SceneNode)
 //!
 Model2SceneNode::Model2SceneNode ( const QString &name, ParameterGroup *parameterRoot ) :
     GeometryNode(name, parameterRoot, "SceneNode"),
-    m_sceneNode(0),
-    m_entity(0), 
+	m_sceneNode(0),
+	m_entity(0), 
     m_entityContainer(0),
     m_oldResourceGroupName("")
 {
@@ -49,7 +49,9 @@ Model2SceneNode::Model2SceneNode ( const QString &name, ParameterGroup *paramete
     setCommandFunction("Geometry File", SLOT(geometryFileChanged()));
     connect(this, SIGNAL(frameChanged(int)), SLOT(updateAll()));
 
-    INC_INSTANCE_COUNTER
+	createSceneNode();
+
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -59,6 +61,7 @@ Model2SceneNode::Model2SceneNode ( const QString &name, ParameterGroup *paramete
 Model2SceneNode::~Model2SceneNode ()
 {
     destroyEntity();
+	destroyAllAttachedMovableObjects(m_sceneNode);
     OgreTools::destroyResourceGroup(m_oldResourceGroupName);
     emit viewNodeUpdated();
 
@@ -81,31 +84,16 @@ Model2SceneNode::~Model2SceneNode ()
 //!
 bool Model2SceneNode::loadMesh ()
 {
-    QString filename = getStringValue("Geometry File");
+    // destroy an existing OGRE entity for the mesh
+    destroyEntity();
+
+	QString filename = getStringValue("Geometry File");
     if (filename == "") {
         Log::debug(QString("Geometry file has not been set yet. (\"%1\")").arg(m_name), "Model2SceneNode::loadMesh");
         return false;
     }
 
-    // obtain the OGRE scene manager
-    Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
-    if (!sceneManager) {
-        Log::error("Could not obtain OGRE scene manager.", "Model2SceneNode::loadMesh");
-        return false;
-    }
-
-    // destroy an existing OGRE entity for the mesh
-    destroyEntity();
-
-    // create new scene node
-    m_sceneNode = OgreManager::createSceneNode(m_name);
-    if (!m_sceneNode) {
-        Log::error(QString("Scene node for node \"%1\" could not be created.").arg(m_name), "Model2SceneNode::loadMesh");
-        return false;
-    }
-    setValue(m_outputGeometryName, m_sceneNode, true);
-
-    // check if the file exists
+	// check if the file exists
     if (!QFile::exists(filename)) {
         Log::error(QString("Mesh file \"%1\" not found.").arg(filename), "Model2SceneNode::loadMesh");
         return false;
@@ -122,69 +110,20 @@ bool Model2SceneNode::loadMesh ()
         Log::error("The geometry file has to be an OGRE mesh file.", "Model2SceneNode::loadMesh");
         return false;
     }
-
-    // destroy old resource group and generate new one
+	// destroy old resource group and generate new one
     QString resourceGroupName = QString::fromStdString(createUniqueName("ResourceGroup_" + filename + "_Model2SceneNode"));
     OgreTools::destroyResourceGroup(m_oldResourceGroupName);
     m_oldResourceGroupName = resourceGroupName;
     OgreTools::createResourceGroup(resourceGroupName, path);
 
-    // create a new OGRE entity for each vertex
-    m_entity = sceneManager->createEntity(m_name.toStdString(), filename.toStdString());
-    if (m_entity) {
-        // set cumulative blend mode instead of Ogre::ANIMBLEND_AVERAGE which is default
-        if (m_entity->hasSkeleton()) {
-            Ogre::Skeleton *skeleton = m_entity->getSkeleton();
-            skeleton->setBlendMode(Ogre::ANIMBLEND_CUMULATIVE);
-        }
-        m_sceneNode->attachObject(m_entity);
-    }
+    // recreating the entity
+	createEntity(m_name, filename);
 
-    // create a container for the entity
-    m_entityContainer = new OgreContainer(m_entity);
-    m_entity->setUserAny(Ogre::Any(m_entityContainer));
+	if (!m_sceneNode)
+		createSceneNode();
 
     Log::info(QString("Mesh file \"%1\" loaded.").arg(filename), "Model2SceneNode::loadMesh");
     return true;
-}
-
-
-
-//!
-//! Removes the OGRE entity containing the mesh geometry from the scene and
-//! destroys it along with the OGRE scene node.
-//!
-void Model2SceneNode::destroyEntity ()
-{
-    if (m_entity) {
-        // delete entity container
-        if (m_entityContainer) {
-            delete m_entityContainer;
-            m_entityContainer = 0;
-        }
-
-        // remove the entity from the scene node it is attached to
-        Ogre::SceneNode *parentSceneNode = m_entity->getParentSceneNode();
-        if (parentSceneNode)
-            parentSceneNode->detachObject(m_entity);
-
-        // destroy the entity through its scene manager
-        Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
-        if (sceneManager) {
-            sceneManager->destroyEntity(m_entity);
-            m_entity = 0;
-        }
-    }
-
-    if (m_sceneNode) {
-        // destroy the scene node through its scene manager
-        Ogre::SceneManager *sceneManager = m_sceneNode->getCreator();
-        if (sceneManager) {
-            sceneManager->destroySceneNode(m_sceneNode);
-            m_sceneNode = 0;
-            setValue(m_outputGeometryName, m_sceneNode, true);
-        }
-    }
 }
 
 
@@ -225,20 +164,27 @@ void Model2SceneNode::processScene()
 	vtkDoubleArray *colY = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName("Y"));
 	vtkDoubleArray *colZ = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName("Z"));
 
-	if (!m_entity)
+	destroyAllAttachedMovableObjects(m_sceneNode);
+	destroyAllChildren(m_sceneNode);
+
+	if (!m_entity || !xyzTable || !m_sceneNode)
 		return;
 
-	if (m_sceneNode)
-		m_sceneNode->removeAndDestroyAllChildren();
+	Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 
 	for (int i=0; i<xyzTable->GetNumberOfRows(); i++)
 	{
-		Ogre::String nodeID(colNodeId->GetValue(i));
+		vtkStdString colIDValue(colNodeId->GetValue(i));
+		Ogre::String nodeID(QString(m_name + ":" + colIDValue.c_str()).toStdString());
+
+		// create new scene node for each item
+		Ogre::SceneNode *sceneItem = sceneManager->createSceneNode(nodeID);
+
 		// create new entity for each item
 		Ogre::Entity *entityItem = m_entity->clone(nodeID);
-		// create new scene node for each item
-		Ogre::SceneNode *sceneItem = OgreManager::createSceneNode(QString(colNodeId->GetValue(i)));
+		
 		sceneItem->attachObject(entityItem);
+
 		double x = colX->GetValue(i);
 		double y = colY->GetValue(i);
 		double z = colZ->GetValue(i);
@@ -246,4 +192,153 @@ void Model2SceneNode::processScene()
 		m_sceneNode->addChild(sceneItem);
 		
 	}
+}
+
+// private functions
+
+//!
+//! Removes the OGRE entity containing the mesh geometry from the scene and
+//! destroys it along with the OGRE scene node.
+//!
+void Model2SceneNode::destroyEntity ()
+{
+    if (m_entity) {
+        // delete entity container
+        if (m_entityContainer) {
+            delete m_entityContainer;
+            m_entityContainer = 0;
+        }
+
+        // remove the entity from the scene node it is attached to
+        Ogre::SceneNode *parentSceneNode = m_entity->getParentSceneNode();
+        if (parentSceneNode)
+            parentSceneNode->detachObject(m_entity);
+
+        // destroy the entity through its scene manager
+        Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
+        if (sceneManager) {
+            sceneManager->destroyEntity(m_entity);
+            m_entity = 0;
+        }
+    }
+}
+
+
+//!
+//! Create new scene.
+//! \return True if the scene was successfully created, otherwise False.
+//!
+bool Model2SceneNode::createEntity(QString name, QString fileName)
+{
+    // destroy the entity through its scene manager
+    Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
+    // create a new OGRE entity for each vertex
+    m_entity = sceneManager->createEntity(name.toStdString(), fileName.toStdString());
+    if (m_entity) {
+        // set cumulative blend mode instead of Ogre::ANIMBLEND_AVERAGE which is default
+        if (m_entity->hasSkeleton()) {
+            Ogre::Skeleton *skeleton = m_entity->getSkeleton();
+            skeleton->setBlendMode(Ogre::ANIMBLEND_CUMULATIVE);
+        }
+    }
+
+    // create a container for the entity
+    m_entityContainer = new OgreContainer(m_entity);
+    m_entity->setUserAny(Ogre::Any(m_entityContainer));
+
+	return true;
+}
+
+//!
+//! Remove and destroy this scene.
+//!
+void Model2SceneNode::destroySceneNode()
+{
+    if (m_sceneNode) {
+        // destroy the scene node through its scene manager
+        Ogre::SceneManager *sceneManager =OgreManager::getSceneManager();
+        if (sceneManager) {
+            sceneManager->destroySceneNode(m_sceneNode);
+            m_sceneNode = 0;
+            setValue(m_outputGeometryName, m_sceneNode, true);
+        }
+    }
+}
+
+//!
+//! Create new scene.
+//! \return True if the scene was successfully created, otherwise False.
+//!
+bool Model2SceneNode::createSceneNode()
+{
+    // obtain the OGRE scene manager
+    Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
+    if (!sceneManager) {
+        Log::error("Could not obtain OGRE scene manager.", "Model2SceneNode::loadMesh");
+        return false;
+    }
+
+	// create new scene node
+    m_sceneNode = OgreManager::createSceneNode(m_name);
+    if (!m_sceneNode) {
+        Log::error(QString("Scene node for node \"%1\" could not be created.").arg(m_name), "Model2SceneNode::loadMesh");
+        return false;
+    }
+    setValue(m_outputGeometryName, m_sceneNode, true);
+	return m_sceneNode != 0;
+}
+
+
+//!
+//! Remove and destroy all movable objects of this scene.
+//! \param The scenenode to be destroyed
+//!
+void Model2SceneNode::destroyAllAttachedMovableObjects( Ogre::SceneNode* i_pSceneNode )
+{
+   if ( !i_pSceneNode )
+      return;
+
+   // Destroy all the attached objects
+   Ogre::SceneNode::ObjectIterator itObject = i_pSceneNode->getAttachedObjectIterator();
+
+   while ( itObject.hasMoreElements() )
+   {
+      Ogre::MovableObject* pObject = static_cast<Ogre::MovableObject*>(itObject.getNext());
+      i_pSceneNode->getCreator()->destroyMovableObject( pObject );
+   }
+
+   // Recurse to child SceneNodes
+   Ogre::SceneNode::ChildNodeIterator itChild = i_pSceneNode->getChildIterator();
+
+   while ( itChild.hasMoreElements() )
+   {
+      Ogre::SceneNode* pChildNode = static_cast<Ogre::SceneNode*>(itChild.getNext());
+      destroyAllAttachedMovableObjects( pChildNode );
+   }
+}
+
+//!
+//! Remove and destroy this scene children.
+//! \param The scenenode to be destroyed
+//!
+void Model2SceneNode::destroyAllChildren( Ogre::SceneNode* i_pSceneNode )
+{
+	if ( !i_pSceneNode || i_pSceneNode->numChildren() == 0 )
+      return;
+
+   // Destroy all the attached objects
+   Ogre::SceneNode::ObjectIterator itObject = i_pSceneNode->getAttachedObjectIterator();
+
+   // Recurse to child SceneNodes
+   Ogre::SceneNode::ChildNodeIterator itChild = i_pSceneNode->getChildIterator();
+
+   while ( itChild.hasMoreElements() )
+   {
+      Ogre::SceneNode* pChildNode = static_cast<Ogre::SceneNode*>(itChild.getNext());
+      destroyAllAttachedMovableObjects( pChildNode );
+	  // obtain the OGRE scene manager
+	  Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
+	  if (pChildNode != m_sceneNode)
+		  sceneManager->destroySceneNode( pChildNode->getName() );
+   }
 }
