@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="TableToTree" category="Data" color="40, 40, 40" plugin="tableToTree.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="TableToTree is a filter for converting a Table data structure into a vtkTree datastructure. 
+Currently, this will convert the table into a star, with each row of the 
+table as a child of a new root node. The columns of the table are passed 
+as node fields of the tree."/>
+    <parameters name="TableToTree Parameters">
+      <parameter name="Note:" type="There are no parameters for this node."/>
+    </parameters>
+    <!-- input parameters -->
+    <!-- output parameters -->
+  </parameters>
+</nodetype>
