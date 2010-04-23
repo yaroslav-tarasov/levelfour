@@ -1,33 +1,6 @@
-/*
------------------------------------------------------------------------------
-This source file is part of FRAPPER
-research.animationsinstitut.de
-sourceforge.net/projects/frapper
-
-Copyright (c) 2008-2009 Filmakademie Baden-Wuerttemberg, Institute of Animation 
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
-Foundation; version 2.1 of the License.
-
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
------------------------------------------------------------------------------
-*/
-
 //!
 //! \file "RadialTreeLayouterNode.cpp"
 //! \brief Implementation file for RadialTreeLayouterNode class.
-//!
-//! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
 //!
 
 #include "RadialTreeLayouterNode.h"
@@ -35,6 +8,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "vtkTreeLayoutStrategy.h"
 #include "vtkTable.h"
 #include "vtkGraph.h"
+#include "vtkTree.h"
 #include "vtkVertexListIterator.h"
 #include "vtkStringArray.h"
 #include "vtkDoubleArray.h"
@@ -42,13 +16,9 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 
 #include "VTKGraphParameter.h"
 #include "VTKTableParameter.h"
+#include "VTKTreeParameter.h"
 
 INIT_INSTANCE_COUNTER(RadialTreeLayouterNode)
-
-///
-/// Constructors and Destructors
-///
-
 
 //!
 //! Constructor of the RadialTreeLayouterNode class.
@@ -60,12 +30,14 @@ RadialTreeLayouterNode::RadialTreeLayouterNode ( const QString &name, ParameterG
     ViewNode(name, parameterRoot),
 	m_ouputVTKTableParameterName("VTKTableOutput"),
 	m_inputVTKGraphName("VTKGraphInput"),
+	m_inputVTKTreeName("VTKTreeInput"),
 	m_outputTable(0),
-	m_inGraph(0)
+	m_inGraph(0),
+	m_inTree(0)
 {
 	setTypeName("RadialTreeLayouterNode");
 
-    // create the mandatory vtk graph input parameter 
+    // create the vtk graph input parameter 
 	VTKGraphParameter * inputVTKGraphParameter = new VTKGraphParameter(m_inputVTKGraphName);
 	inputVTKGraphParameter->setMultiplicity(1);
     inputVTKGraphParameter->setPinType(Parameter::PT_Input);
@@ -73,7 +45,15 @@ RadialTreeLayouterNode::RadialTreeLayouterNode ( const QString &name, ParameterG
     parameterRoot->addParameter(inputVTKGraphParameter);
 	connect(inputVTKGraphParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTable()));
 
-    // create the mandatory vtk table output parameter 
+	// create the vtk tree input parameter 
+	VTKTreeParameter * inputVTKTreeParameter = new VTKTreeParameter(m_inputVTKTreeName);
+	inputVTKTreeParameter->setMultiplicity(1);
+    inputVTKTreeParameter->setPinType(Parameter::PT_Input);
+    inputVTKTreeParameter->setSelfEvaluating(true);
+    parameterRoot->addParameter(inputVTKTreeParameter);
+	connect(inputVTKTreeParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTable()));
+
+    // create the vtk table output parameter 
 	addOutputParameter(new VTKTableParameter(m_ouputVTKTableParameterName));
 
 	// link the input parameter to the output processing
@@ -82,6 +62,7 @@ RadialTreeLayouterNode::RadialTreeLayouterNode ( const QString &name, ParameterG
 	{
 		outputParameter->setProcessingFunction(SLOT(processOutputVTKTable()));
         outputParameter->addAffectingParameter(inputVTKGraphParameter);
+		outputParameter->addAffectingParameter(inputVTKTreeParameter);
 	}
     INC_INSTANCE_COUNTER
 }
@@ -108,13 +89,30 @@ void RadialTreeLayouterNode::processOutputVTKTable()
 {
 	if (updateInputGraph() != 0)
 		return;
+	else if (updateInputTree() != 0)
+		return;
 
 	vtkGraphLayout *layout = vtkGraphLayout::New();
-	layout->SetInput( m_inGraph );
+	
+	// need a condition clause for whether input is graph or tree to set input
+	if (updateInputGraph() == 0)
+		layout->SetInput( m_inGraph );
+	else if (updateInputTree() == 0)
+		layout->SetInput( m_inTree);
+	
 	vtkTreeLayoutStrategy *radialTree = vtkTreeLayoutStrategy::New();
 
 	// params for radial tree
 	radialTree->SetRadial(true);
+	// these are controlled by property editor
+	// set angle
+	radialTree->SetAngle(360); // 0 to 360
+	// set log spacing value
+	radialTree->SetLogSpacingValue(1); // 0 to 1
+	// set leaf spacing
+	radialTree->SetLeafSpacing(1); // 0 to 1
+	// set distance array name
+	// radialTree->SetDistanceArrayName(distance);
 
 	layout->SetLayoutStrategy(radialTree);
 	layout->Update();
@@ -188,6 +186,23 @@ int RadialTreeLayouterNode::updateInputGraph()
 	inputParameter->setVTKGraph(m_inGraph);
 
 	return (m_inGraph == 0);
+}
+
+int RadialTreeLayouterNode::updateInputTree()
+{
+	// load the input vtk parameter 
+	VTKTreeParameter * inputParameter = dynamic_cast<VTKTreeParameter*>(getParameter(m_inputVTKTreeName));
+	if (!inputParameter->isConnected())
+		return 1;
+
+	// get the source parameter (output of source node) connected to the input parameter
+	VTKTreeParameter * sourceParameter = dynamic_cast<VTKTreeParameter*>(inputParameter->getConnectedParameter());
+
+	// get the vtk tree that comes with the source parameter and set it into the input parameter of this node
+	m_inTree = sourceParameter->getVTKTree();
+	inputParameter->setVTKTree(m_inTree);
+
+	return (m_inTree == 0);
 }
 
 
