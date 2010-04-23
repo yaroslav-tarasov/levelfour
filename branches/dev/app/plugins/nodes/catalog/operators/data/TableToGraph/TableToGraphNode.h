@@ -79,9 +79,9 @@ private slots: //
 
     //!
     //! Update the input table 
-    //! return It returns 0 if it succeeds, otherwise 1
+    //! \return True if it succeeds, otherwise false
     //!
-    int updateTable ();
+    bool updateTable ();
 
 private: 
     //!
