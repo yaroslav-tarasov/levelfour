@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="BalloonLayouter" category="Layouts" color="40, 40, 40" plugin="balloonLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="Layout that computes a circular balloon-tree layout of a tree. 
+This layout places children nodes radially around their parents, 
+and is equivalent to a top-down flattened view of a ConeTree."/>
+    <parameter name="References" type="TextInfo" defaultValue="G. Melan on and I. Herman from their research paper 
+Circular Drawings of Rooted Trees, 
+Reports of the Centre for Mathematics and Computer Sciences, 
+Report Number INS, 9817, 1998."/>
+    <parameters name="Balloon Layouter Parameters">
+      <parameter name="TextInfo" type="TextInfo"/>
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="Enumeration in" type="Enumeration" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="Enumeration out" type="Enumeration" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

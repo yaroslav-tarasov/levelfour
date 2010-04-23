@@ -12,23 +12,31 @@
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
 <nodetype name="TreeOrbitLayouter" category="Layouts" color="40, 40, 40" plugin="treeOrbitLayouter.dll">
   <parameters>
-    <parameter name="Description" type="TextInfo" defaultValue="Assigns points to the nodes of a tree to an orbital layout. Each parent is orbited by its children, recursively."/>
+    <parameter name="Description" type="TextInfo" defaultValue="
+Assigns points to the nodes of a tree to an orbital layout. 
+Each parent is orbited by its children, recursively."/>
     <parameters name="Tree Orbit Layouter Parameters">
-      <parameter name="LogSpacingValue" type="TextInfo" defaultValue="The spacing of orbital levels. Levels near zero give more space 
-to levels near the root, while levels near one (the default) create evenly-spaced levels. 
-Levels above one give more space to levels near the leaves.
+      <parameter name="LogSpacingValue" type="TextInfo" defaultValue="
+The spacing of orbital levels. Levels near zero give more space 
+to levels near the root, while levels near one (the default) 
+create evenly-spaced levels. Levels above one give more 
+space to levels near the leaves.
 
 Note: this should be of type double"/>
       <parameter name="SetLogSpacingValue" type="Float"/>
-      <parameter name="LeafSpacing" type="TextInfo" defaultValue="The spacing of leaves. Levels near one evenly space leaves 
-with no gaps between subtrees. Levels near zero creates large gaps between subtrees. 
+      <parameter name="LeafSpacing" type="TextInfo" defaultValue="
+The spacing of leaves. Levels near one evenly space leaves 
+with no gaps between subtrees. Levels near zero creates 
+large gaps between subtrees. 
 
 Note: this should be of type double 
 "/>
       <parameter name="SetLeafSpacing" type="Float"/>
-      <parameter name="ChildRadiusFactor" type="TextInfo" defaultValue="This is a magic number right now. 
-Controls the radius of the child layout, all of this should be fixed at 
-some point with a more logical layout. Defaults to .5
+      <parameter name="ChildRadiusFactor" type="TextInfo" defaultValue="
+This is a magic number right now. 
+Controls the radius of the child layout, all of this should 
+be fixed at some point with a more logical layout. 
+Defaults to .5
 
 Note: this should be of type double
 "/>
