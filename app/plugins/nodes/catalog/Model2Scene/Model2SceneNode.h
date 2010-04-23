@@ -72,6 +72,35 @@ private: // functions
     //!
     void destroyEntity ();
 
+    //!
+    //! Create new scene.
+    //! \return True if the scene was successfully created, otherwise False.
+    //!
+	bool createEntity(QString name, QString fileName);
+
+	//!
+    //! Remove and destroy this scene.
+    //!
+	void destroySceneNode();
+
+	//!
+    //! Remove and destroy all movable objects of this scene.
+    //! \param The scenenode to be destroyed
+    //!
+	void destroyAllAttachedMovableObjects( Ogre::SceneNode* i_pSceneNode );
+
+	//!
+    //! Remove and destroy this scene and all its children.
+    //! \param The scenenode to be destroyed
+    //!
+	void destroyAllChildren( Ogre::SceneNode* i_pSceneNode );
+
+	//!
+    //! Create new scene.
+    //! \return True if the scene was successfully created, otherwise False.
+    //!
+	bool createSceneNode();
+
 private slots: //
 
     //!
