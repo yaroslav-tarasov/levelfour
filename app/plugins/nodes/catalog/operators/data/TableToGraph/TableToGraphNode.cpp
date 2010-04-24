@@ -152,6 +152,25 @@ void TableToGraphNode::processOutputVTKGraph ()
 
 	vertexIDParameter->setLiterals(literals);
 	vertexIDParameter->setValues(literals);
+
+	vtkTableToGraph * tableToGraph = vtkTableToGraph::New();
+	tableToGraph->SetInput(m_inputTable);
+	QString vertexID = vertexIDParameter->getCurrentLiteral();
+	QString edgeFrom = edgesFromParameter->getCurrentLiteral();
+	QString edgeTo = edgesToParameter->getCurrentLiteral();
+	tableToGraph->AddLinkVertex(vertexID.toLatin1());
+	tableToGraph->AddLinkEdge(edgeFrom.toLatin1(), edgeTo.toLatin1());
+
+	m_graph = tableToGraph->GetOutput();
+
+	vtkVertexListIterator *vertices = vtkVertexListIterator::New();
+	m_graph->GetVertices(vertices);
+
+	// process the output vtk graph 
+	VTKGraphParameter * outputParameter = dynamic_cast<VTKGraphParameter*>(getParameter(m_outputVTKGraphName));
+
+	if (outputParameter) 
+		outputParameter->setVTKGraph(m_graph);
 }
 
 //!
