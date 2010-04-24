@@ -27,7 +27,7 @@ INIT_INSTANCE_COUNTER(RadialTreeLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 RadialTreeLayouterNode::RadialTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    ViewNode(name, parameterRoot),
+    Node(name, parameterRoot),
 	m_ouputVTKTableParameterName("VTKTableOutput"),
 	m_inputVTKGraphName("VTKGraphInput"),
 	m_inputVTKTreeName("VTKTreeInput"),
@@ -54,16 +54,44 @@ RadialTreeLayouterNode::RadialTreeLayouterNode ( const QString &name, ParameterG
 	connect(inputVTKTreeParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTable()));
 
     // create the vtk table output parameter 
-	addOutputParameter(new VTKTableParameter(m_ouputVTKTableParameterName));
+	VTKTableParameter * outputVTKTableParameter = new VTKTableParameter(m_ouputVTKTableParameterName);
+    outputVTKTableParameter->setPinType(Parameter::PT_Output);
+    parameterRoot->addParameter(outputVTKTableParameter);
+
+	/*
+	// set affections and callback functions
+	setChangeFunction("SetZRange", SLOT(zRangeChanged()));
+    setCommandFunction("SetZRange", SLOT(zRangeChanged()));
+	// layout SetZRange is available in vtk 5.7
+	// e.g. layout->SetZRange(100);
+
+	// set angle
+	setChangeFunction("SetAngle", SLOT(angleChanged()));
+    setCommandFunction("SetAngle", SLOT(angleChanged()));
+	// radialTree->SetAngle(360); // 0 to 360
+
+	// set log spacing value
+	setChangeFunction("SetLogSpacingValue", SLOT(logSpacingValueChanged()));
+    setCommandFunction("SetLogSpacingValue", SLOT(logSpacingValueChanged()));
+	// radialTree->SetLogSpacingValue(1); // 0 to 1
+
+	// set leaf spacing
+	setChangeFunction("SetLeafSpacing", SLOT(leafSpacingChanged()));
+    setCommandFunction("SetLeafSpacing", SLOT(leafSpacingChanged()));
+	// radialTree->SetLeafSpacing(1); // 0 to 1
+
+	// set distance array name
+	// radialTree->SetDistanceArrayName(distance);
+	*/
 
 	// link the input parameter to the output processing
-	Parameter * outputParameter = getParameter(m_ouputVTKTableParameterName);
-    if (outputParameter) 
+    if (outputVTKTableParameter) 
 	{
-		outputParameter->setProcessingFunction(SLOT(processOutputVTKTable()));
-        outputParameter->addAffectingParameter(inputVTKGraphParameter);
-		outputParameter->addAffectingParameter(inputVTKTreeParameter);
+		outputVTKTableParameter->setProcessingFunction(SLOT(processOutputVTKTable()));
+        outputVTKTableParameter->addAffectingParameter(inputVTKGraphParameter);
+		outputVTKTableParameter->addAffectingParameter(inputVTKTreeParameter);
 	}
+
     INC_INSTANCE_COUNTER
 }
 
@@ -104,15 +132,6 @@ void RadialTreeLayouterNode::processOutputVTKTable()
 
 	// params for radial tree
 	radialTree->SetRadial(true);
-	// these are controlled by property editor
-	// set angle
-	radialTree->SetAngle(360); // 0 to 360
-	// set log spacing value
-	radialTree->SetLogSpacingValue(1); // 0 to 1
-	// set leaf spacing
-	radialTree->SetLeafSpacing(1); // 0 to 1
-	// set distance array name
-	// radialTree->SetDistanceArrayName(distance);
 
 	layout->SetLayoutStrategy(radialTree);
 	layout->Update();
