@@ -119,9 +119,6 @@ bool Model2SceneNode::loadMesh ()
     // recreating the entity
 	createEntity(m_name, filename);
 
-	if (!m_sceneNode)
-		createSceneNode();
-
     Log::info(QString("Mesh file \"%1\" loaded.").arg(filename), "Model2SceneNode::loadMesh");
     return true;
 }
@@ -158,6 +155,9 @@ void Model2SceneNode::processScene()
 	inputParameter->setVTKTable(sourceParameter->getVTKTable());
 
 	vtkTable * xyzTable = inputParameter->getVTKTable();
+
+	if (!m_sceneNode && !createSceneNode())
+
 
 	if (!m_entity || !xyzTable || !m_sceneNode)
 		return;
@@ -281,6 +281,13 @@ bool Model2SceneNode::createSceneNode()
 
 	// create new scene node
     m_sceneNode = OgreManager::createSceneNode(m_name);
+
+	// get the scene if it could not create it and if it already exists
+    Ogre::String sceneNodeName = QString("%1SceneNode").arg(m_name).toStdString();  
+	if (!m_sceneNode && sceneManager->hasSceneNode(sceneNodeName))
+		m_sceneNode = sceneManager->getSceneNode(sceneNodeName);
+
+	// alert in case it could not be either created or loaded
     if (!m_sceneNode) {
         Log::error(QString("Scene node for node \"%1\" could not be created.").arg(m_name), "Model2SceneNode::loadMesh");
         return false;
