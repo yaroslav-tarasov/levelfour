@@ -2,14 +2,14 @@
 #define VTKTreeNODE_H
 
 #include "vtkTree.h"
-#include "ViewNode.h"
+#include "Node.h"
 
 Q_DECLARE_METATYPE(vtkTree *)
 
 //!
 //! Base class representing nodes that provide a vtkTree output.
 //!
-class FRAPPER_CORE_EXPORT VTKTreeNode : public ViewNode
+class FRAPPER_CORE_EXPORT VTKTreeNode : public Node 
 {
 
     Q_OBJECT

@@ -85,14 +85,15 @@ TableToTreeNode::TableToTreeNode ( const QString &name, ParameterGroup *paramete
     connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTree()));
 
     // create the mandatory vtk Tree output parameter 
-	addOutputParameter(new VTKTreeParameter(m_outputVTKTreeName));
+	VTKTreeParameter * outputVTKTreeParameter = new VTKTreeParameter(m_outputVTKTreeName);
+    outputVTKTreeParameter->setPinType(Parameter::PT_Output);
+    parameterRoot->addParameter(outputVTKTreeParameter);
 
 	// link the input parameter to the output processing
-	Parameter * outputParameter = getParameter(m_outputVTKTreeName);
-    if (outputParameter) 
+    if (outputVTKTreeParameter) 
 	{
-		outputParameter->setProcessingFunction(SLOT(processOutputVTKTree()));
-        outputParameter->addAffectingParameter(inputVTKTableParameter);
+		outputVTKTreeParameter->setProcessingFunction(SLOT(processOutputVTKTree()));
+        outputVTKTreeParameter->addAffectingParameter(inputVTKTableParameter);
 	}
 
     // create the enumeration parameter with the list of columns representing the edgeFrom
