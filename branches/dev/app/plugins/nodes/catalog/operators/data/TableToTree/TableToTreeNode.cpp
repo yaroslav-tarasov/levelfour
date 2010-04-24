@@ -70,7 +70,7 @@ INIT_INSTANCE_COUNTER(TableToTreeNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 TableToTreeNode::TableToTreeNode ( const QString &name, ParameterGroup *parameterRoot ) :
-	ViewNode(name, parameterRoot),
+	Node(name, parameterRoot),
 	m_inputVTKTableParameterName("VTKTableInput"),
 	m_outputVTKTreeName("VTKTreeOutput"),
 	m_inputTable(0),

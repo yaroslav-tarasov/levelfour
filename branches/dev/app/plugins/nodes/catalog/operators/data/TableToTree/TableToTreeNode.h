@@ -32,7 +32,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef TableToTreeNODE_H
 #define TableToTreeNODE_H
 
-#include "ViewNode.h"
+#include "Node.h"
 #include "vtkTree.h"
 #include "vtkTable.h"
 
@@ -40,7 +40,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class for a Degree Centrality Measure
 //!
-class TableToTreeNode : public ViewNode
+class TableToTreeNode : public Node
 {
 
     Q_OBJECT
