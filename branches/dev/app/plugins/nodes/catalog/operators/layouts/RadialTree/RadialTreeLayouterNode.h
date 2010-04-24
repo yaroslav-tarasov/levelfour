@@ -6,13 +6,13 @@
 #ifndef RadialTreeLayouterNode_H
 #define RadialTreeLayouterNode_H
 
-#include "ViewNode.h"
+#include "Node.h"
 #include "vtkGraph.h"
 #include "vtkTree.h"
 #include "vtkTable.h"
 #include <QString>
 
-class RadialTreeLayouterNode : public ViewNode
+class RadialTreeLayouterNode : public Node
 {
 
     Q_OBJECT
