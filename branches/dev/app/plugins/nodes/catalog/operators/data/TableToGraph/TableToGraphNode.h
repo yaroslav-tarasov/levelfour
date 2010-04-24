@@ -32,7 +32,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef TableToGraphNODE_H
 #define TableToGraphNODE_H
 
-#include "ViewNode.h"
+#include "Node.h"
 #include "vtkGraph.h"
 #include "vtkTable.h"
 
@@ -40,7 +40,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class for a Degree Centrality Measure
 //!
-class TableToGraphNode : public ViewNode
+class TableToGraphNode : public Node
 {
 
     Q_OBJECT

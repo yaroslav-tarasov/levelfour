@@ -32,7 +32,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef SingleCycleLayouterNODE_H
 #define SingleCycleLayouterNODE_H
 
-#include "ViewNode.h"
+#include "Node.h"
 #include "vtkGraph.h"
 #include "vtkTree.h"
 #include "vtkTable.h"
@@ -42,7 +42,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class for a SingleCycleLayouter
 //!
-class SingleCycleLayouterNode : public ViewNode
+class SingleCycleLayouterNode : public Node
 {
 
     Q_OBJECT

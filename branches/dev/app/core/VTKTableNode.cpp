@@ -18,14 +18,17 @@
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 VTKTableNode::VTKTableNode ( const QString &name, ParameterGroup *parameterRoot, const QString &outputVTKTableName /* = "VTKTable" */ ) :
-    ViewNode (name, parameterRoot),
+    Node(name, parameterRoot),
 	m_outputVTKTableName(outputVTKTableName),
 	m_table(0)
 {
 	setTypeName("VTKTableNode");
-	// add output table
-    addOutputParameter(new VTKTableParameter(m_outputVTKTableName));
-    INC_INSTANCE_COUNTER
+    // create the mandatory vtk table output parameter 
+	VTKTableParameter * outputVTKTableParameter = new VTKTableParameter(m_outputVTKTableName);
+    outputVTKTableParameter->setPinType(Parameter::PT_Output);
+    parameterRoot->addParameter(outputVTKTableParameter);
+
+	INC_INSTANCE_COUNTER
 }
 
 

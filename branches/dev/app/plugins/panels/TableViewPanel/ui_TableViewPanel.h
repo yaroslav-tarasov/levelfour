@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'TableViewPanel.ui'
 **
-** Created: Wed Apr 14 12:45:35 2010
+** Created: Fri 23. Apr 21:39:22 2010
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

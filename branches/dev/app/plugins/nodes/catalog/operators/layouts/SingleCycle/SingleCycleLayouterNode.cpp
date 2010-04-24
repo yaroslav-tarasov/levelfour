@@ -108,7 +108,7 @@ INIT_INSTANCE_COUNTER(SingleCycleLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 SingleCycleLayouterNode::SingleCycleLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    ViewNode(name, parameterRoot),
+    Node(name, parameterRoot),
 	m_ouputVTKTableParameterName("VTKTableOutput"),
 	m_inputVTKGraphName("VTKGraphInput"),
 	m_outputTable(0),
@@ -125,14 +125,15 @@ SingleCycleLayouterNode::SingleCycleLayouterNode ( const QString &name, Paramete
 	connect(inputVTKGraphParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTable()));
 
     // create the mandatory vtk table output parameter 
-	addOutputParameter(new VTKTableParameter(m_ouputVTKTableParameterName));
+	VTKTableParameter * outputVTKTableParameter = new VTKTableParameter(m_ouputVTKTableParameterName);
+    outputVTKTableParameter->setPinType(Parameter::PT_Output);
+    parameterRoot->addParameter(outputVTKTableParameter);
 
 	// link the input parameter to the output processing
-	Parameter * outputParameter = getParameter(m_ouputVTKTableParameterName);
-    if (outputParameter) 
+    if (outputVTKTableParameter) 
 	{
-		outputParameter->setProcessingFunction(SLOT(processOutputVTKTable()));
-        outputParameter->addAffectingParameter(inputVTKGraphParameter);
+		outputVTKTableParameter->setProcessingFunction(SLOT(processOutputVTKTable()));
+        outputVTKTableParameter->addAffectingParameter(inputVTKGraphParameter);
 	}
     INC_INSTANCE_COUNTER
 }

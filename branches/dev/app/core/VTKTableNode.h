@@ -2,14 +2,14 @@
 #define VTKTABLENODE_H
 
 #include "vtkTable.h"
-#include "ViewNode.h"
+#include "Node.h"
 
 Q_DECLARE_METATYPE(vtkTable *)
 
 //!
 //! Base class representing nodes that provide a vtkTable output.
 //!
-class FRAPPER_CORE_EXPORT VTKTableNode : public ViewNode
+class FRAPPER_CORE_EXPORT VTKTableNode : public Node
 {
 
     Q_OBJECT

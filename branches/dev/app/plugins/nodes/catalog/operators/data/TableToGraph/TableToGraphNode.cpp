@@ -70,7 +70,7 @@ INIT_INSTANCE_COUNTER(TableToGraphNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parameterRoot ) :
-	ViewNode(name, parameterRoot),
+	Node(name, parameterRoot),
 	m_inputVTKTableParameterName("VTKTableInput"),
 	m_outputVTKGraphName("VTKGraphOutput"),
 	m_inputTable(0),
@@ -84,14 +84,15 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
     parameterRoot->addParameter(inputVTKTableParameter);
 
     // create the mandatory vtk graph output parameter 
-	addOutputParameter(new VTKGraphParameter(m_outputVTKGraphName));
+	VTKGraphParameter * outputVTKGraphParameter = new VTKGraphParameter(m_outputVTKGraphName);
+    outputVTKGraphParameter->setPinType(Parameter::PT_Output);
+    parameterRoot->addParameter(outputVTKGraphParameter);
 
 	// link the input parameter to the output processing
-	Parameter * outputParameter = getParameter(m_outputVTKGraphName);
-    if (outputParameter) 
+    if (outputVTKGraphParameter) 
 	{
-		outputParameter->setProcessingFunction(SLOT(processOutputVTKGraph()));
-        outputParameter->addAffectingParameter(inputVTKTableParameter);
+		outputVTKGraphParameter->setProcessingFunction(SLOT(processOutputVTKGraph()));
+        outputVTKGraphParameter->addAffectingParameter(inputVTKTableParameter);
 	}
 
     // create the enumeration parameter with the list of columns representing the edgeFrom
