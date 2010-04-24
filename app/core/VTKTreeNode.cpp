@@ -18,14 +18,17 @@
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 VTKTreeNode::VTKTreeNode ( const QString &name, ParameterGroup *parameterRoot, const QString &outputVTKTreeName /* = "VTKTree" */ ) :
-    ViewNode (name, parameterRoot),
+    Node (name, parameterRoot),
 	m_outputVTKTreeName(outputVTKTreeName),
 	m_Tree(0)
 {
 	setTypeName("VTKTreeNode");
 	// add output Tree
-    addOutputParameter(new VTKTreeParameter(m_outputVTKTreeName));
-    INC_INSTANCE_COUNTER
+	VTKTreeParameter * outputVTKTreeParameter = new VTKTreeParameter(m_outputVTKTreeName);
+    outputVTKTreeParameter->setPinType(Parameter::PT_Output);
+    parameterRoot->addParameter(outputVTKTreeParameter);
+
+	INC_INSTANCE_COUNTER
 }
 
 
