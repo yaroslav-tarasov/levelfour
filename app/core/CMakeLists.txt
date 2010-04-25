@@ -48,6 +48,7 @@ set( frappercore_h ${frappercore_h}
 			ViewFlagGraphicsItem.h
 			ViewingParameters.h
 			ViewNode.h
+			VTKGraphLayoutNode.h
 			VTKGraphParameter.h
 			VTKTableParameter.h
 			VTKTableNode.h
@@ -79,6 +80,7 @@ set( frappercore_moc ${frappercore_moc}
 			 SceneNodeParameter.h
 			 ViewFlagGraphicsItem.h
 			 ViewNode.h
+			 VTKGraphLayoutNode.h
 			 VTKTableNode.h
 			 VTKTreeNode.h
 			 )
@@ -120,6 +122,7 @@ set( frappercore_src ${frappercore_src}
 			ViewFlagGraphicsItem.cpp
 			ViewingParameters.cpp
 			ViewNode.cpp
+			VTKGraphLayoutNode.cpp
 			VTKGraphParameter.cpp
 			VTKTableParameter.cpp
 			VTKTableNode.cpp
@@ -154,6 +157,7 @@ target_link_libraries(frappercore
 			optimized libcollada15dom21 debug libcollada15dom21-d
 			optimized vtkFiltering debug vtkFiltering
 			optimized vtkInfovis debug vtkInfovis
+			optimized vtkCommon debug vtkCommon
 			)
 
 # Install files
