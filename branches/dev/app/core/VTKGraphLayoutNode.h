@@ -45,7 +45,7 @@ public: // constructors and destructors
     //!
     virtual ~VTKGraphLayoutNode ();
 
-private slots: //
+protected slots: //
 
     //!
     //! Processes the node's input data to generate the node's output table.
@@ -72,7 +72,7 @@ protected: // data
     //!
 	vtkGraphLayoutStrategy * m_layoutInstance;
 
-private: // data
+protected: // data
 
     //!
     //! The name of the input vtk graph parameter.

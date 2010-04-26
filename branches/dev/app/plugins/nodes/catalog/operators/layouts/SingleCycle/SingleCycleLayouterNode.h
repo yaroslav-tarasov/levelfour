@@ -61,6 +61,30 @@ public: // constructors and destructors
     //! variable of its parent class type.
     //!
     virtual ~SingleCycleLayouterNode ();
+
+private slots: //
+
+    //!
+    //! Set the single layout angular radius property
+    //!
+    void setAngularRadius ();
+
+    //!
+    //! Set the single layout edge weight field property
+    //!
+    void setEdgeWeightField ();
+
+private: // data
+
+    //!
+    //! Angular radius
+    //!
+	double m_angularRadius;
+
+    //!
+    //! Edge field
+    //!
+	QString m_edgeWeightField;
 };
 
 
