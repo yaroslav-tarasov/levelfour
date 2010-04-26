@@ -51,8 +51,6 @@ TextDelimiterSourceNode::TextDelimiterSourceNode ( const QString &name, Paramete
 	setChangeFunction("Detect Numeric Columns", SLOT(detectNumericColumnsChanged()));
     setCommandFunction("Detect Numeric Columns", SLOT(detectNumericColumnsChanged()));
 
-	connect(this, SIGNAL(frameChanged(int)), SLOT(updateAll()));
-
 	setTypeName("TextDelimiterSourceNode");
 
     INC_INSTANCE_COUNTER
