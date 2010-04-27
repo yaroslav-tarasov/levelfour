@@ -12,8 +12,9 @@
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
 <nodetype name="ShapeMapper" category="Mappers" color="40, 40, 40" plugin="shapeMapper.dll">
   <parameters>
-    <parameters name="Shape By Value Parameters">
-      <parameter name="Description" type="TextInfo" defaultValue="Shape by Value is..."/>
+    <parameter name="Description" type="TextInfo" defaultValue="Shape Mapper is..."/>
+    <parameters name="Shape Mapper Parameters">
+      <parameter name="Text" type="TextInfo" defaultValue="Shape by Value is..."/>
       <parameter name="Centroid Offset" type="Enumeration" defaultValue="Center">
         <literal name="Center"/>
         <literal name="Left"/>
@@ -28,6 +29,6 @@
     <parameter name="MaterialIn" type="Enumeration" pin="in" visible="false"/>
     <parameter name="SizeIn" type="Enumeration" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="ShapeOut" type="Geometry" pin="out" visible="false"/>
+    <parameter name="MeshOut" type="Geometry" pin="out" visible="false"/>
   </parameters>
 </nodetype>
