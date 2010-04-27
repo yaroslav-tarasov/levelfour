@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="3dCirclesLayouter" category="Layouts" color="40, 40, 40" plugin="threeDCirclesLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+Places vertices on circles depending on the graph vertices
+hierarchy level. The source graph could be DirectedAcyclicGraph 
+or DirectedGraph if MarkedStartPoints array was added. 
+The algorithm collects the standalone points, too and 
+take them to a separated circle.
+
+In first step initial points are searched. A point is 
+initial, if its in degree equal zero and out degree 
+is greater than zero (or marked by MarkedStartVertices 
+and out degree is greater than zero). 
+
+Independent vertices (in and out degree equal zero) are 
+collected separatelly. In second step the hierarchical 
+level is generated for every vertex. In third step the 
+hierarchical order is generated. If a vertex has no 
+hierarchical level and it is not independent, the 
+graph has loop so the algorithm exit with error 
+message. Finally the vertices positions are 
+calculated by the hierarchical order and by 
+the vertices hierarchy levels."/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+This group contains parameters that have no additional 
+attributes, just a name and a type."/>
+    <parameters name="3d Circles Layouter Parameters">
+      <parameter name="FixedRadiusMethod" type="
+ If method is FixedRadiusMethod, the radius of the circles 
+ will be equal."/>
+      <parameter name="FixedDistanceMethod" type="
+ If method is FixedDistanceMethod, the distance between the 
+ points on circles will be equal."/>
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="Graph" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="Tree" type="Enumeration" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="Table" type="Enumeration" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

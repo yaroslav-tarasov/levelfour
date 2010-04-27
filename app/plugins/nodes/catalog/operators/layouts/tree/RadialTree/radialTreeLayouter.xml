@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="RadialTreeLayouter" category="Layouts" color="40, 40, 40" plugin="radialTreeLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+Assigns points to the nodes of a tree in a radial layout.
+Places each level on a concentric circle. You may specify the sweep angle 
+of the tree which constrains the tree to be contained within a wedge. 
+Also, you may indicate the log scale of the tree, which diminishes 
+the length of arcs at lower levels of the tree. 
+
+Values near zero give a large proportion of the space to the tree 
+levels near the root, while values near one give nearly equal 
+proportions of space to all tree levels.
+
+The user may also specify an array to use to indicate the distance 
+from the root radially by specifing this with SetDistanceArrayName."/>
+    <parameter name="Reference:" type="TextInfo" defaultValue="
+K.-P. Yee, D. Fisher, R. Dhamija, and M. A. Hearst, 
+Animated exploration of dynamic graphs with radial layout, 
+in INFOVIS, pp. 43--50, 2001.
+
+Wills, G. J., 
+NicheWorks—interactive visualization of very large graphs,
+Proceedings of Graph Drawing ’97, 1997.
+"/>
+      <parameters name="Radial Tree Layouter Parameters">
+      <parameter name="Angle" type="TextInfo" defaultValue="The sweep angle of the tree - this can be between 0 and 360."/>
+      <parameter name="SetAngle" type="Float" size="1" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="360" defaultValue="360" stepSize="5" />
+      <parameter name="LogSpacingValue" type="TextInfo" defaultValue="The spacing of tree levels. Levels near zero give more space 
+to levels near the root, while levels near one (the default) 
+create evenly-spaced levels. Levels above one give more 
+space to levels near the leaves. ."/>
+      <parameter name="SetLogSpacingValue" type="Float" size="1" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="2" defaultValue=".8" stepSize=".1"/>
+      <parameter name="LeafSpacing" type="TextInfo" defaultValue="The spacing of leaves. Levels near one evenly space leaves 
+with no gaps between subtrees.
+
+Levels near zero creates large gaps between subtrees."/>
+      <parameter name="SetLeafSpacing" type="Float" size="1" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="1" defaultValue=".5" stepSize=".1"/>
+      <parameter name="DistanceArrayName" type="TextInfo" defaultValue="Set the array to use to determine the distance from the root."/>
+      <parameter name="SetDistanceArrayName" type="Enumeration"/>
+    </parameters>
+    <!-- input parameters inline -->
+    <!-- output parameters inline -->
+  </parameters>
+</nodetype>

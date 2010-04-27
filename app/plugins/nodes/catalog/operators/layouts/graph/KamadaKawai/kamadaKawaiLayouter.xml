@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="KamadaKawaiLayouter" category="Layouts" color="40, 40, 40" plugin="kamadaKawaiLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+This group contains parameters that have no additional attributes, just a name and a type."/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+Kamada, T. and Kawai, S.: 
+An Algorithm for Drawing General Undirected Graphs. 
+Information Processing Letters, 31/1, 7—15, 1989.
+
+Tomihisa Kamada: On visualization of abstract objects and relations.
+Ph.D. dissertation, Dept. of Information Science, Univ. of Tokyo, Dec. 1988.
+"/>
+    <parameters name="Kamada Kawai Layouter Parameters">
+      <parameter name="TextInfo" type="TextInfo"/>
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="Graph" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="Tree" type="Enumeration" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="Table" type="Enumeration" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

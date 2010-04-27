@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="PhylloTreeLayouter" category="Layouts" color="40, 40, 40" plugin="phylloTreeLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+The use of nature’s phyllotactic patterns to inform 
+the layout of hierarchical data. These naturally occurring patterns 
+provide a non-overlapping, optimal packing when the total number 
+of nodes is not known a priori. "/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+Petra Neumann, M. Sheelagh T. Carpendale and Anand Agarawala. 
+PhylloTrees: Phyllotactic Patterns for Tree Layout. 
+In Proceedings of Eurographics / IEEE VGTC Symposium on Visualization 
+(EuroVis 2006, 8 – 10 May 2006, Lisbon, Portugal). 
+Eurographics, pages 59-66, 2006.  "/>
+    <parameters name="Pyllo Tree Parameters">
+      <parameter name="AngularConstant" type="TextInfo" defaultValue="Default is 137.5"/>
+        <parameter name="SetAngularConstant" type="int" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="360" defaultValue="360" stepSize="5" />
+      </parameters>
+    <!-- input parameters inline -->
+    <!-- output parameters inline -->
+  </parameters>
+</nodetype>
