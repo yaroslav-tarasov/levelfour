@@ -156,6 +156,7 @@ target_link_libraries(frappergui
 			optimized QtXml4 debug QtXmld4
 			optimized OgreMain debug OgreMain_d
 			optimized frappercore debug frappercore_d
+			optimized QVTK debug QVTK
 			)
 
 # Install files

@@ -1,7 +1,6 @@
 project(operators)
 
-add_subdirectory(Transform)
+add_subdirectory(Modifiers)
 add_subdirectory(Data)
 add_subdirectory(Layouts)
-#add_subdirectory(Multiplier)
 #add_subdirectory(Measures)

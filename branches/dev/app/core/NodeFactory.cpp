@@ -72,6 +72,12 @@ void NodeFactory::initialize ()
     s_nodeTypeCategories << NodeType::Category("Images", ":/imagesIcon");
     s_nodeTypeCategories << NodeType::CategorySeparator;
 	s_nodeTypeCategories << NodeType::Category("Layouts", ":/colorSwatchIcon");
+	s_nodeTypeCategories << NodeType::Category("Axis", ":/colorSwatchIcon");
+	s_nodeTypeCategories << NodeType::Category("Area", ":/colorSwatchIcon");
+	s_nodeTypeCategories << NodeType::Category("Feature", ":/colorSwatchIcon");
+	s_nodeTypeCategories << NodeType::Category("Geo", ":/colorSwatchIcon");
+	s_nodeTypeCategories << NodeType::Category("Graph", ":/colorSwatchIcon");
+	s_nodeTypeCategories << NodeType::Category("Tree", ":/colorSwatchIcon");
 	s_nodeTypeCategories << NodeType::Category("Centrality", ":/colorSwatchIcon");
     s_nodeTypeCategories << NodeType::CategorySeparator;
 	s_nodeTypeCategories << NodeType::Category("Mappers", ":/tagIcon");

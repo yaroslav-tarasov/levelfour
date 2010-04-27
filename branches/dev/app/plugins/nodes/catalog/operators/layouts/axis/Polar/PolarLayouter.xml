@@ -10,16 +10,18 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="PolarLayouter" category="Layouts" color="40, 40, 40" plugin="PolarLayouter.dll">
+<nodetype name="PolarLayouter" category="Axis" color="40, 40, 40" plugin="PolarLayouter.dll">
   <parameters>
-    <parameter name="Description" type="TextInfo" defaultValue="Layout that computes a circular balloon-tree layout of a tree. 
+    <parameter name="Description" type="TextInfo" defaultValue="
+Layout that computes a circular balloon-tree layout of a tree. 
 This layout places children nodes radially around their parents, 
 and is equivalent to a top-down flattened view of a ConeTree."/>
-    <parameter name="References" type="TextInfo" defaultValue="G. Melan on and I. Herman from their research paper 
+    <parameter name="References" type="TextInfo" defaultValue="
+G. Melan on and I. Herman from their research paper 
 Circular Drawings of Rooted Trees, 
 Reports of the Centre for Mathematics and Computer Sciences, 
 Report Number INS, 9817, 1998."/>
-    <parameters name="Balloon Layouter Parameters">
+    <parameters name="Polar Layouter Parameters">
       <parameter name="TextInfo" type="TextInfo"/>
     </parameters>
     <!-- input parameters -->
