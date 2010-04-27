@@ -170,6 +170,7 @@ target_link_libraries(frappercore
 			optimized vtkFiltering debug vtkFiltering
 			optimized vtkInfovis debug vtkInfovis
 			optimized vtkCommon debug vtkCommon
+			optimized QVTK debug QVTK
 			)
 
 # Install files
