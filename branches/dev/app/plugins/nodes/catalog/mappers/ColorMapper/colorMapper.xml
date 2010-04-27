@@ -28,9 +28,9 @@
       </parameter>
     </parameters>
     <!-- input parameters -->
-    <parameter name="TableIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="TableIn" type="VTKTable" pin="in" visible="false"/>
     <parameter name="ColorBrewer" type="Enumeration" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="TableOut" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="TColor" type="Color" pin="out" visible="false"/>
   </parameters>
 </nodetype>

@@ -15,6 +15,7 @@
     <parameter name="Description" type="TextInfo" defaultValue="Shape Mapper is..."/>
     <parameters name="Shape Mapper Parameters">
       <parameter name="Text" type="TextInfo" defaultValue="Shape by Value is..."/>
+      <parameter name="Select Size Attribute" type="Enumeration" defaultValue="" />
       <parameter name="Centroid Offset" type="Enumeration" defaultValue="Center">
         <literal name="Center"/>
         <literal name="Left"/>
@@ -24,10 +25,11 @@
       </parameter>
     </parameters>
     <!-- input parameters -->
+    <parameter name="Table" type="VTKTable" pin="in" visible="false"/>
     <parameter name="MeshIn" type="Geometry" pin="in" visible="false"/>
-    <parameter name="ColorIn" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="MaterialIn" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="SizeIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="ColorIn" type="Color" pin="in" visible="false"/>
+    <parameter name="MaterialIn" type="Image" pin="in" visible="false"/>
+    <parameter name="SizeIn" type="Float" pin="in" visible="false"/>
     <!-- output parameters -->
     <parameter name="MeshOut" type="Geometry" pin="out" visible="false"/>
   </parameters>

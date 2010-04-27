@@ -12,18 +12,11 @@
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
 <nodetype name="PositionMapper" category="Mappers" color="40, 40, 40" plugin="positionMapper.dll">
   <parameters>
-    <parameter name="Description" type="TextInfo" defaultValue="Position By Value is ..."/>
+    <parameter name="Description" type="TextInfo" defaultValue="Position Mapper"/>
     <parameters name="Position Mapper Parameters">
-      <parameter name="Text" type="TextInfo" defaultValue="Position By Value is ..."/>
-      <parameter name="idIn" type="Enumeration" />
-      <parameter name="Xin" type="Enumeration" />
-      <parameter name="Yin" type="Enumeration" />
-      <parameter name="Zin" type="Enumeration" />
-    </parameters>
+      <parameter name="Assign Variables" type="TextInfo" defaultValue="Assign position variables from table fields."/>
+   </parameters>
     <!-- input parameters -->
-    <parameter name="Table" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="Geometry" type="Enumeration" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="Geometry" type="Enumeration" pin="out" visible="false"/>
   </parameters>
 </nodetype>
