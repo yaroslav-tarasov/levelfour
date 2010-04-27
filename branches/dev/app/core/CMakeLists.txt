@@ -54,6 +54,10 @@ set( frappercore_h ${frappercore_h}
 			VTKTableNode.h
 			VTKTreeParameter.h
 			VTKTreeNode.h
+			VTKTreeLayoutNode.h
+			VTKAreaLayoutNode.h
+			VTKAxisLayoutNode.h
+			VTKGeoLayoutNode.h
 			)
 
 set( frappercore_moc ${frappercore_moc}	
@@ -83,6 +87,10 @@ set( frappercore_moc ${frappercore_moc}
 			 VTKGraphLayoutNode.h
 			 VTKTableNode.h
 			 VTKTreeNode.h
+			 VTKTreeLayoutNode.h
+			 VTKAreaLayoutNode.h
+			 VTKAxisLayoutNode.h
+			 VTKGeoLayoutNode.h
 			 )
 
 set( frappercore_src ${frappercore_src}	
@@ -128,6 +136,10 @@ set( frappercore_src ${frappercore_src}
 			VTKTableNode.cpp
 			VTKTreeParameter.cpp
 			VTKTreeNode.cpp
+			VTKTreeLayoutNode.cpp
+			VTKAreaLayoutNode.cpp
+			VTKAxisLayoutNode.cpp
+			VTKGeoLayoutNode.cpp
 			)
 
 # Create moc files		   
