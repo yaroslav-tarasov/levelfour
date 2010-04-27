@@ -30,9 +30,8 @@ in some proportion to an attribute."/>
       </parameter>
     </parameters>
     <!-- input parameters -->
-    <parameter name="TableIn" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="GeometryIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="TableIn" type="VTKTable" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="GeometryOut" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="Size" type="Float" pin="out" visible="false"/>
   </parameters>
 </nodetype>
