@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="HDELayouter" category="Layouts" color="40, 40, 40" plugin="hdeLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+Layout using higher dimensional embedding. 
+The graph is assumed to be connected; if there are disconnected
+components the output will not be correct."/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+D. Harel and Y. Koren, 
+Graph Drawing by High-Dimensional Embedding, 
+Proceedings of Graph Drawing 2002, Volume 2528 
+of Lecture Notes in Computer Science, pp. 207-219,
+Springer Verlag, 2002."/>
+    <parameters name="HDE Layouter Parameters">
+      <parameter name="Notes" type="TextInfo" defaultValue="
+The algorithm requires only two parameters: the dimensionality
+of the space in which the embedding is performed (default 40),
+and the dimension of the space in which the drawing is done
+(effectively either 2 or 3).  The size of the embedding space
+must be no larger that the number of nodes; for a small graph,
+a small space is required."/>
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="Graph" type="Enumeration" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="Table" type="Enumeration" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

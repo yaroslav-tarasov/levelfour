@@ -57,9 +57,9 @@ target_link_libraries(tableviewpanel
 			optimized QtXml4 debug QtXmld4
 			optimized OgreMain debug OgreMain_d
 			optimized frappercore debug frappercore_d
+			optimized frappergui debug frappergui_d
 			optimized vtkInfovis debug vtkInfovis
 			optimized QVTK debug QVTK
-			optimized frappergui debug frappergui_d
 			)
 
 # Install files
