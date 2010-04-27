@@ -10,16 +10,19 @@ include_directories(
 set( ShpSource_h ${ShpSource_h}
 			ShpSourceNode.h
 			ShpSourceNodePlugin.h
+			vtkShapefileReader.h
 			)
 
 set( ShpSource_moc ${ShpSource_moc}	
 			ShpSourceNode.h
 			ShpSourceNodePlugin.h
+			vtkShapefileReader.h
 			)
 
 set( ShpSource_src ${ShpSource_src}	
 			ShpSourceNode.cpp
 			ShpSourceNodePlugin.cpp
+			vtkShapefileReader.cpp
 			)
 
 set( ShpSource_res ${ShpSource_res}	
@@ -49,6 +52,9 @@ target_link_libraries(ShpSource
 			optimized QtXml4 debug QtXmld4
 			optimized OgreMain debug OgreMain_d
 			optimized frappercore debug frappercore_d
+			optimized vtkFiltering debug vtkFiltering
+			optimized vtkInfovis debug vtkInfovis
+			optimized vtkCommon debug vtkCommon
 			)
 
 # Install files
