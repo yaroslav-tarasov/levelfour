@@ -835,12 +835,12 @@ QToolButton:pressed
 
 QToolTip
 {
-	border: 1px solid #ffffff;
-	background: #333333;
+	border: 1px solid #111111;
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #363636, stop:0.2 #e5e5e5, stop:0.8 #ffffff, stop:1 #262626);
 	padding: 3px;
-	border-radius: 5px;
+	border-radius: 0px;
 	opacity: 150;
-	color: #CCCCCC;
+	color: #000000;
 }
 
 QDoubleSpinBox 

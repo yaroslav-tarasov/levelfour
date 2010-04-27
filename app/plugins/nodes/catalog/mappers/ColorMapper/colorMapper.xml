@@ -12,12 +12,14 @@
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
 <nodetype name="ColorMapper" category="Mappers" color="40, 40, 40" plugin="colorMapper.dll">
   <parameters>
-    <parameters name="Color By Value Settings">
-      <parameter name="Description" type="TextInfo" defaultValue="Color by Value is..."/>
-      <parameter name="StepsDesc" type="TextInfo" defaultValue="Steps is..."/>
-      <parameter name="Steps" type="Int"/>
-      <parameter name="ClassificationMethodDesc" type="TextInfo" defaultValue="Classification method is..."/>
-      <parameter name="ClassificationMethod" type="Enumeration" defaultValue="Equal Number">
+    <parameter name="Description" type="TextInfo" defaultValue="Color Mapper is..."/>
+    <parameters name="Color Mapper Settings">
+      <parameter name="SelectId" type="Enumeration" />
+      <parameter name="SelectColorAttribute" type="Enumeration" />
+      <parameter name="Steps" type="TextInfo" defaultValue="Steps is..."/>
+      <parameter name="SetSteps" type="Int"/>
+      <parameter name="ClassificationMethod" type="TextInfo" defaultValue="Classification method is..."/>
+      <parameter name="SetClassificationMethod" type="Enumeration" defaultValue="Equal Number">
         <literal name="Equal Number"/>
         <literal name="Equal Intervals"/>
         <literal name="User Defined"/>
@@ -26,11 +28,9 @@
       </parameter>
     </parameters>
     <!-- input parameters -->
-    <parameter name="idIn" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="attribute" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="TableIn" type="Enumeration" pin="in" visible="false"/>
     <parameter name="ColorBrewer" type="Enumeration" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="idOut" type="Enumeration" pin="out" visible="false"/>
-    <parameter name="Color" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="TableOut" type="Enumeration" pin="out" visible="false"/>
   </parameters>
 </nodetype>

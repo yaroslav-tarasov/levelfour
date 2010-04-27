@@ -12,23 +12,27 @@
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
 <nodetype name="SizeMapper" category="Mappers" color="40, 40, 40" plugin="sizeMapper.dll">
   <parameters>
-    <parameters name="Size By Value Parameters">
-      <parameter name="Description" type="TextInfo" defaultValue="Size by Value is ..."/>
-      <parameter name="Symbol Size Proportionality" type="Enumeration" defaultValue="Power">
+    <parameter name="Description" type="TextInfo" defaultValue="
+Size Mapper is a transform to effect a given shape
+in some proportion to an attribute."/>
+    <parameters name="Size Mapper Parameters">
+      <parameter name="Text" type="TextInfo" defaultValue="Size by Value is ..."/>
+      <parameter name="Select id" type="Enumeration" />
+      <parameter name="Select weight attribute" type="Enumeration" />
+      <parameter name="Size Proportionality" type="Enumeration" defaultValue="Power">
         <literal name="Square root"/>
         <literal name="Linear"/>
         <literal name="Power"/>
       </parameter>
-      <parameter name="Symbol Angle Method" type="Enumeration" defaultValue="Fixed">
+      <parameter name="Angle Method" type="Enumeration" defaultValue="Fixed">
         <literal name="Fixed"/>
         <literal name="AngleFromData"/>
       </parameter>
     </parameters>
     <!-- input parameters -->
-    <parameter name="idIn" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="attribute" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="TableIn" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="GeometryIn" type="Enumeration" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="idOut" type="Enumeration" pin="out" visible="false"/>
-    <parameter name="size" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="GeometryOut" type="Enumeration" pin="out" visible="false"/>
   </parameters>
 </nodetype>
