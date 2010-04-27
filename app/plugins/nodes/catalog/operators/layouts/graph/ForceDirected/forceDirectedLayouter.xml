@@ -10,8 +10,14 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="ForceDirectedLayouter" category="Layouts" color="40, 40, 40" plugin="ForceDirectedLayouter.dll">
-  <parameters>    
+<nodetype name="ForceDirectedLayouter" category="Graph" color="40, 40, 40" plugin="ForceDirectedLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+This group contains parameters that have no additional 
+attributes, just a name and a type."/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+This group contains parameters that have no additional 
+attributes, just a name and a type."/>
   <!--  <parameters name="ForceDirected Layouter Parameters">-->
     <!-- input parameters inline -->
     <!-- output parameters inline -->
