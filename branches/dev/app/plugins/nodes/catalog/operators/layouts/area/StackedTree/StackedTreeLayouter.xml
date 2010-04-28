@@ -12,20 +12,42 @@
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
 <nodetype name="StackedTreeLayouter" category="Area" color="40, 40, 40" plugin="StackedTreeLayouter.dll">
   <parameters>
-    <parameter name="Description" type="TextInfo" defaultValue="Layout that computes a circular balloon-tree layout of a tree. 
-This layout places children nodes radially around their parents, 
-and is equivalent to a top-down flattened view of a ConeTree."/>
-    <parameter name="References" type="TextInfo" defaultValue="G. Melan on and I. Herman from their research paper 
-Circular Drawings of Rooted Trees, 
-Reports of the Centre for Mathematics and Computer Sciences, 
-Report Number INS, 9817, 1998."/>
-    <parameters name="Balloon Layouter Parameters">
-      <parameter name="TextInfo" type="TextInfo"/>
+    <parameter name="Description" type="TextInfo" defaultValue="
+Performs a tree ring (sunburst) or icicle layout on a tree.
+This involves assigning a sector region to each vertex 
+in the tree, and placing that information in a data 
+array with four components per tuple representing 
+(innerRadius, outerRadius, startAngle, endAngle)."/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+Stasko, John, Catrambone, Richard, Guzdial, Mark and McDonald, Kevin,
+An Evaluation of Space-Filling Information Visualizations for 
+Depicting Hierarchical Structures, 
+International Journal of Human-Computer Studies, 
+Vol. 53, No. 5, November 2000, pp. 663-694.
+
+Stasko, John T. and Zhang, Eugene, 
+Focus+Context Display and Navigation Techniques for Enhancing Radial, 
+Space-Filling Hierarchy Visualizations,
+Proceedings of IEEE Information Visualization 
+2000, Salt Lake City, UT, October 2000, pp. 57-65."/>
+    <parameters name="Stacked Tree Layouter Parameters">
+      <parameter name="Id Field" type="TextInfo"/>
+      <parameter name="SetIdField" type="Enumeration"/>
+      <parameter name="Sector Field" type="TextInfo"/>
+      <parameter name="SetSectorField" type="Enumeration"/>
+      <parameter name="Size Field" type="TextInfo"/>
+      <parameter name="SetSizeField" type="Enumeration"/>
+      <parameter name="SetInteriorRadius" type="Int"/>
+      <parameter name="SetRingThickness" type="Int"/>
+      <parameter name="SetRootStartAngle" type="Int"/>
+      <parameter name="SetRootEndAngle" type="Int"/>
+      <parameter name="SetUseRectangularCoordinates" type="Bool"/>
+      <parameter name="SetReverse" type="Bool"/>
+      <parameter name="SetInteriorLogSpacingValue" type="Int"/>
     </parameters>
     <!-- input parameters -->
-    <parameter name="Graph" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="Tree" type="Enumeration" pin="in" visible="false"/>
+    <parameter name="Tree" type="VTKTree" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="Table" type="Enumeration" pin="out" visible="false"/>
+    <parameter name="Table" type="VTKTable" pin="out" visible="false"/>
   </parameters>
 </nodetype>
