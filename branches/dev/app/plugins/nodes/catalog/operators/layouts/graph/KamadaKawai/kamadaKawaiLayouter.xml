@@ -13,7 +13,16 @@
 <nodetype name="KamadaKawaiLayouter" category="Layouts" color="40, 40, 40" plugin="kamadaKawaiLayouter.dll">
   <parameters>
     <parameter name="Description" type="TextInfo" defaultValue="
-This group contains parameters that have no additional attributes, just a name and a type."/>
+The Kamada-Kawai Algorithm is a force directed layout algorithm. 
+It performs graph layout for connected, undirected graphs. It operates 
+by relating the layout of graphs to a dynamic spring system and 
+minimizing the energy within that system. The strength of a spring 
+between two vertices is inversely proportional to the square of 
+the shortest distance (in graph terms) between those two vertices. 
+Essentially, vertices that are closer in the graph-theoretic 
+sense (i.e., by following edges) will have stronger springs 
+and will therefore be placed closer together.
+"/>
     <parameter name="Reference" type="TextInfo" defaultValue="
 Kamada, T. and Kawai, S.: 
 An Algorithm for Drawing General Undirected Graphs. 
