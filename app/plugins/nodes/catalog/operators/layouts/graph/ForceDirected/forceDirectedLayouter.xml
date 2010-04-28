@@ -13,12 +13,20 @@
 <nodetype name="ForceDirectedLayouter" category="Graph" color="40, 40, 40" plugin="ForceDirectedLayouter.dll">
   <parameters>
     <parameter name="Description" type="TextInfo" defaultValue="
-This group contains parameters that have no additional 
-attributes, just a name and a type."/>
+Lays out a graph in 2D or 3D using a force-directed algorithm. 
+The user may specify whether to layout the graph randomly initially, 
+the bounds, the number of dimensions (2 or 3), and the cool-down rate."/>
     <parameter name="Reference" type="TextInfo" defaultValue="
-This group contains parameters that have no additional 
-attributes, just a name and a type."/>
-  <!--  <parameters name="ForceDirected Layouter Parameters">-->
+"/>
+    <parameters name="ForceDirected Layouter Parameters">
+      <parameter name="SetRandomSeed" type="Float"/>
+      <parameter name="SetMaxNumberOfIterations" type="Int"/>      
+      <parameter name="SetIterationsPerLayout" type="Int"/>
+      <parameter name="SetInitialTemperature" type="Float"/>
+      <parameter name="SetCoolDownRate" type="Int"/>
+      <parameter name="SetThreeDimensionalLayout" type="Int"/>
+      <parameter name="SetRandomInitialPoints" type="Int"/>
+    </parameters>
     <!-- input parameters inline -->
     <!-- output parameters inline -->
   </parameters>

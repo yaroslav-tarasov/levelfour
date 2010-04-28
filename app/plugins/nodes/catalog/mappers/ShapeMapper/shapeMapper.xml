@@ -14,8 +14,17 @@
   <parameters>
     <parameter name="Description" type="TextInfo" defaultValue="Shape Mapper is..."/>
     <parameters name="Shape Mapper Parameters">
-      <parameter name="Text" type="TextInfo" defaultValue="Shape by Value is..."/>
-      <parameter name="Select Size Attribute" type="Enumeration" defaultValue="" />
+      <parameter name="Labels" type="TextInfo" defaultValue="Shape by Value is..."/>
+      <parameter name="SetLabels" type="Bool" />
+      <parameter name="Select Label Field" type="Enumeration" defaultValue="" />
+      <parameter name="setLabelPlacement" type="Enumeration" defaultValue="Center">
+        <literal name="Center"/>
+        <literal name="Left"/>
+        <literal name="Right"/>
+        <literal name="Top"/>
+        <literal name="Bottom"/>
+      </parameter>
+      <parameter name="Shape Placement to Position" type="TextInfo" defaultValue="Shape by Value is..."/>
       <parameter name="Centroid Offset" type="Enumeration" defaultValue="Center">
         <literal name="Center"/>
         <literal name="Left"/>
