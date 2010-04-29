@@ -1,42 +1,17 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of FRAPPER
-research.animationsinstitut.de
-sourceforge.net/projects/frapper
-
-Copyright (c) 2008-2009 Filmakademie Baden-Wuerttemberg, Institute of Animation 
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
-Foundation; version 2.1 of the License.
-
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
------------------------------------------------------------------------------
+file "ClusteringLayouterNode.cpp"
+brief Implementation file for ClusteringLayouterNode class.
 */
 
-//!
-//! \file "ClusteringLayouterNode.cpp"
-//! \brief Implementation file for ClusteringLayouterNode class.
-//!
-//! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
-//!
-
 #include "ClusteringLayouterNode.h"
+#include "vtkClustering2DLayoutStrategy.h"
+#include "VTKTableParameter.h"
 
-
+INIT_INSTANCE_COUNTER(ClusteringLayouterNode)
 ///
 /// Constructors and Destructors
 ///
-
 
 //!
 //! Constructor of the ClusteringLayouterNode class.
@@ -45,8 +20,31 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 ClusteringLayouterNode::ClusteringLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+    VTKGraphLayoutNode(name, parameterRoot)
 {
+	setTypeName("ClusteringLayouterNode");
+
+	m_layoutInstance = vtkClustering2DLayoutStrategy::New();
+
+	setChangeFunction("Set Random Seed", SLOT(setRandomSeed()));
+    setCommandFunction("Set Random Seed", SLOT(setRandomSeed()));
+
+	setChangeFunction("Set Max Number Of Iterations", SLOT(setMaxNumberOfIterations()));
+    setCommandFunction("Set Max Number Of Iterations", SLOT(setMaxNumberOfIterations()));
+
+	setChangeFunction("Set Iterations Per Layout", SLOT(setIterationsPerLayout()));
+    setCommandFunction("Set Iterations Per Layout", SLOT(setIterationsPerLayout()));
+
+	setChangeFunction("Set Initial Temperature", SLOT(setInitialTemperature()));
+    setCommandFunction("Set Initial Temperature", SLOT(setInitialTemperature()));
+
+	setChangeFunction("Set Cool Down Rate", SLOT(setCoolDownRate()));
+    setCommandFunction("Set Cool Down Rate", SLOT(setCoolDownRate()));
+
+	setChangeFunction("Set Rest Distance", SLOT(setRestDistance()));
+    setCommandFunction("Set Rest Distance", SLOT(setRestDistance()));
+
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -59,6 +57,41 @@ ClusteringLayouterNode::ClusteringLayouterNode ( const QString &name, ParameterG
 //!
 ClusteringLayouterNode::~ClusteringLayouterNode ()
 {
+	emit destroyed();
+    DEC_INSTANCE_COUNTER
+    Log::info(QString("ClusteringLayouterNode destroyed."), "ClusteringLayouterNode::~ClusteringLayouterNode");
 }
 
+//!
+//! Set the layout properties
+//!
+void ClusteringLayouterNode::setRandomSeed ()
+{
+	m_layoutInstance->SetRandomSeed(m_randomSeed);
+}
+
+void ClusteringLayouterNode::setMaxNumberOfIterations ()
+{
+	m_layoutInstance->SetMaxNumberOfIterations(m_maxIterations);
+}
+
+void ClusteringLayouterNode::setIterationsPerLayout ()
+{
+	m_layoutInstance->SetIterationsPerLayout(m_layoutIterations);
+}
+
+void ClusteringLayouterNode::setInitialTemperature ()
+{
+	m_layoutInstance->SetInitialTemperature(m_initialTemperature);
+}
+
+void ClusteringLayouterNode::setCoolDownRate ()
+{
+	m_layoutInstance->SetCoolDownRate(m_coolDownRate);
+}
+
+void ClusteringLayouterNode::setRestDistance ()
+{
+	m_layoutInstance->SetRestDistance(m_restDistance);
+}
 

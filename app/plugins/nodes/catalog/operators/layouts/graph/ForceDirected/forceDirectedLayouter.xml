@@ -19,13 +19,13 @@ the bounds, the number of dimensions (2 or 3), and the cool-down rate."/>
     <parameter name="Reference" type="TextInfo" defaultValue="
 "/>
     <parameters name="ForceDirected Layouter Parameters">
-      <parameter name="SetRandomSeed" type="Float"/>
-      <parameter name="SetMaxNumberOfIterations" type="Int"/>      
-      <parameter name="SetIterationsPerLayout" type="Int"/>
-      <parameter name="SetInitialTemperature" type="Float"/>
-      <parameter name="SetCoolDownRate" type="Int"/>
-      <parameter name="SetThreeDimensionalLayout" type="Int"/>
-      <parameter name="SetRandomInitialPoints" type="Int"/>
+      <parameter name="Set Three Dimensional Layout" type="Int"/>
+      <parameter name="Set Random Seed" type="Float"/>
+      <parameter name="Set Max Number Of Iterations" type="Int"/>      
+      <parameter name="Set Iterations Per Layout" type="Int"/>
+      <parameter name="Set Initial Temperature" type="Float"/>
+      <parameter name="Set Cool Down Rate" type="Int"/>
+      <parameter name="Set Random Initial Points" type="Int"/>
     </parameters>
     <!-- input parameters inline -->
     <!-- output parameters inline -->

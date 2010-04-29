@@ -1,42 +1,14 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of FRAPPER
-research.animationsinstitut.de
-sourceforge.net/projects/frapper
-
-Copyright (c) 2008-2009 Filmakademie Baden-Wuerttemberg, Institute of Animation 
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
-Foundation; version 2.1 of the License.
-
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
------------------------------------------------------------------------------
+file "ConstrainedLayouterNode.cpp"
+brief Implementation file for ConstrainedLayouterNode class.
 */
 
-//!
-//! \file "ConstrainedLayouterNode.cpp"
-//! \brief Implementation file for ConstrainedLayouterNode class.
-//!
-//! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
-//!
-
 #include "ConstrainedLayouterNode.h"
+#include "vtkConstrained2DLayoutStrategy.h"
+#include "VTKTableParameter.h"
 
-
-///
-/// Constructors and Destructors
-///
-
+INIT_INSTANCE_COUNTER(ConstrainedLayouterNode)
 
 //!
 //! Constructor of the ConstrainedLayouterNode class.
@@ -45,8 +17,40 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 ConstrainedLayouterNode::ConstrainedLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+    VTKGraphLayoutNode(name, parameterRoot)
 {
+	setTypeName("ConstrainedLayouterNode");
+
+	m_layoutInstance = vtkConstrained2DLayoutStrategy::New();
+
+	// These properties relate to graph layout
+	// Constrained layout is a 2d layout, therefore Z range is given as an option
+	setChangeFunction("Set Z Range", SLOT(setZRange()));
+    setCommandFunction("Set Z Range", SLOT(setZRange()));
+
+	// These properties relate specifically to the layout strategy
+	setChangeFunction("Set Input Array Name", SLOT(setInputArrayName()));
+    setCommandFunction("Set Input Array Name", SLOT(setInputArrayName()));
+
+	setChangeFunction("Set Random Seed", SLOT(setRandomSeed()));
+    setCommandFunction("Set Random Seed", SLOT(setRandomSeed()));
+
+	setChangeFunction("Set Max Number Of Iterations", SLOT(setMaxNumberOfIterations()));
+    setCommandFunction("Set Max Number Of Iterations", SLOT(setMaxNumberOfIterations()));
+
+	setChangeFunction("Set Iterations Per Layout", SLOT(setIterationsPerLayout()));
+    setCommandFunction("Set Iterations Per Layout", SLOT(setIterationsPerLayout()));
+
+	setChangeFunction("Set Initial Temperature", SLOT(setInitialTemperature()));
+    setCommandFunction("Set Initial Temperature", SLOT(setInitialTemperature()));
+
+	setChangeFunction("Set Cool Down Rate", SLOT(setCoolDownRate()));
+    setCommandFunction("Set Cool Down Rate", SLOT(setCoolDownRate()));
+
+	setChangeFunction("Set Rest Distance", SLOT(setRestDistance()));
+    setCommandFunction("Set Rest Distance", SLOT(setRestDistance()));
+
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -59,6 +63,67 @@ ConstrainedLayouterNode::ConstrainedLayouterNode ( const QString &name, Paramete
 //!
 ConstrainedLayouterNode::~ConstrainedLayouterNode ()
 {
+	emit destroyed();
+    DEC_INSTANCE_COUNTER
+    Log::info(QString("ConstrainedLayouterNode destroyed."), "ConstrainedLayouterNode::~ConstrainedLayouterNode");
 }
 
+//!
+//! Set the layout properties
+//!
+void ConstrainedLayouterNode::setZRange ()
+{
+	m_layoutInstance->SetZRange(m_zRange);
+}
 
+void ConstrainedLayouterNode::setRandomSeed ()
+{
+	m_layoutInstance->SetRandomSeed(m_randomSeed);
+}
+
+void ConstrainedLayouterNode::setMaxNumberOfIterations ()
+{
+	m_layoutInstance->SetMaxNumberOfIterations(m_maxIterations);
+}
+
+void ConstrainedLayouterNode::setIterationsPerLayout ()
+{
+	m_layoutInstance->SetIterationsPerLayout(m_layoutIterations);
+}
+
+void ConstrainedLayouterNode::setInitialTemperature ()
+{
+	m_layoutInstance->SetInitialTemperature(m_initialTemperature);
+}
+
+void ConstrainedLayouterNode::setCoolDownRate ()
+{
+	m_layoutInstance->SetCoolDownRate(m_coolDownRate);
+}
+
+void ConstrainedLayouterNode::setRestDistance ()
+{
+	m_layoutInstance->SetRestDistance(m_restDistance);
+}
+
+void ConstrainedLayouterNode::setInputArrayName ()
+{
+	QString newfieldValue = getStringValue("Set Input Array Name");
+	if (QString::compare(m_inputArrayName, newfieldValue) == 0)
+		return;
+
+	m_inputArrayName = newfieldValue;
+
+    if (m_inputArrayName == "") {
+        Log::debug(QString("Input Array Name has not been set yet. (\"%1\")").arg(m_name), "ConstrainedLayouterNode::setInputArrayName");
+        return;
+    }
+
+	m_layoutInstance->SetInputArrayName(m_inputArrayName.toLatin1());
+	
+	processOutputVTKTable();
+
+	// propagate dirtying 
+	VTKTableParameter * outputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_ouputVTKTableParameterName));
+	outputParameter->propagateDirty(0);
+}
