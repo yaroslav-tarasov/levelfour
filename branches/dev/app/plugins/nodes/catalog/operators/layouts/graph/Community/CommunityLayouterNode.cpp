@@ -1,42 +1,14 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of FRAPPER
-research.animationsinstitut.de
-sourceforge.net/projects/frapper
-
-Copyright (c) 2008-2009 Filmakademie Baden-Wuerttemberg, Institute of Animation 
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
-Foundation; version 2.1 of the License.
-
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
------------------------------------------------------------------------------
+file "CommunityLayouterNode.cpp"
+brief Implementation file for CommunityLayouterNode class.
 */
 
-//!
-//! \file "CommunityLayouterNode.cpp"
-//! \brief Implementation file for CommunityLayouterNode class.
-//!
-//! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
-//!
-
 #include "CommunityLayouterNode.h"
+#include "vtkCommunity2DLayoutStrategy.h"
+#include "VTKTableParameter.h"
 
-
-///
-/// Constructors and Destructors
-///
-
+INIT_INSTANCE_COUNTER(CommunityLayouterNode)
 
 //!
 //! Constructor of the CommunityLayouterNode class.
@@ -45,8 +17,43 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 CommunityLayouterNode::CommunityLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+    VTKGraphLayoutNode(name, parameterRoot)
 {
+	setTypeName("CommunityLayouterNode");
+
+	m_layoutInstance = vtkCommunity2DLayoutStrategy::New();
+
+	// These properties relate to graph layout
+	// Community layout is a 2d layout, therefore Z range is given as an option
+	setChangeFunction("Set Z Range", SLOT(setZRange()));
+    setCommandFunction("Set Z Range", SLOT(setZRange()));
+
+	// These properties relate specifically to the layout strategy
+	setChangeFunction("Set Community Array Name", SLOT(setCommunityArrayName()));
+    setCommandFunction("Set Community Array Name", SLOT(setCommunityArrayName()));
+
+	setChangeFunction("Set Community Strength", SLOT(setCommunityStrength()));
+    setCommandFunction("Set Community Strength", SLOT(setCommunityStrength()));
+
+	setChangeFunction("Set Random Seed", SLOT(setRandomSeed()));
+    setCommandFunction("Set Random Seed", SLOT(setRandomSeed()));
+
+	setChangeFunction("Set Max Number Of Iterations", SLOT(setMaxNumberOfIterations()));
+    setCommandFunction("Set Max Number Of Iterations", SLOT(setMaxNumberOfIterations()));
+
+	setChangeFunction("Set Iterations Per Layout", SLOT(setIterationsPerLayout()));
+    setCommandFunction("Set Iterations Per Layout", SLOT(setIterationsPerLayout()));
+
+	setChangeFunction("Set Initial Temperature", SLOT(setInitialTemperature()));
+    setCommandFunction("Set Initial Temperature", SLOT(setInitialTemperature()));
+
+	setChangeFunction("Set Cool Down Rate", SLOT(setCoolDownRate()));
+    setCommandFunction("Set Cool Down Rate", SLOT(setCoolDownRate()));
+
+	setChangeFunction("Set Rest Distance", SLOT(setRestDistance()));
+    setCommandFunction("Set Rest Distance", SLOT(setRestDistance()));
+
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -59,6 +66,72 @@ CommunityLayouterNode::CommunityLayouterNode ( const QString &name, ParameterGro
 //!
 CommunityLayouterNode::~CommunityLayouterNode ()
 {
+	emit destroyed();
+    DEC_INSTANCE_COUNTER
+    Log::info(QString("CommunityLayouterNode destroyed."), "CommunityLayouterNode::~CommunityLayouterNode");
 }
 
+//!
+//! Set the layout properties
+//!
+void CommunityLayouterNode::setZRange ()
+{
+	m_layoutInstance->SetZRange(m_zRange);
+}
 
+void CommunityLayouterNode::setRandomSeed ()
+{
+	m_layoutInstance->SetRandomSeed(m_randomSeed);
+}
+
+void CommunityLayouterNode::setMaxNumberOfIterations ()
+{
+	m_layoutInstance->SetMaxNumberOfIterations(m_maxIterations);
+}
+
+void CommunityLayouterNode::setIterationsPerLayout ()
+{
+	m_layoutInstance->SetIterationsPerLayout(m_layoutIterations);
+}
+
+void CommunityLayouterNode::setInitialTemperature ()
+{
+	m_layoutInstance->SetInitialTemperature(m_initialTemperature);
+}
+
+void CommunityLayouterNode::setCoolDownRate ()
+{
+	m_layoutInstance->SetCoolDownRate(m_coolDownRate);
+}
+
+void CommunityLayouterNode::setRestDistance ()
+{
+	m_layoutInstance->SetRestDistance(m_restDistance);
+}
+
+void CommunityLayouterNode::setCommunityStrength ()
+{
+	m_layoutInstance->SetCommunityStrength(m_communityStrength);
+}
+
+void CommunityLayouterNode::setCommunityArrayName ()
+{
+	QString newfieldValue = getStringValue("Set Community Array Name");
+	if (QString::compare(m_communityArrayName, newfieldValue) == 0)
+		return;
+
+	m_communityArrayName = newfieldValue;
+
+    if (m_communityArrayName == "") {
+        Log::debug(QString("Community Array Name has not been set yet. (\"%1\")").arg(m_name), "CommunityLayouterNode::setCommunityArrayName");
+        return;
+    }
+
+	m_layoutInstance->SetCommunityArrayName(m_communityArrayName.toLatin1());
+	
+	processOutputVTKTable();
+
+	// propagate dirtying 
+	VTKTableParameter * outputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_ouputVTKTableParameterName));
+	outputParameter->propagateDirty(0);
+}

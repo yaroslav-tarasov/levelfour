@@ -17,13 +17,12 @@ A density grid based force directed layout strategy."/>
     <parameter name="Reference" type="TextInfo" defaultValue="
 "/>    
     <parameters name="Clustering Layouter Parameters">
-      <parameter name="SetVertexAttribute" type="Enumeration"/>
-      <parameter name="SetRandomSeed" type="Int"/>
-      <parameter name="SetMaxNumberOfIterations" type="Int"/>
-      <parameter name="SetIterationsPerLayout" type="Int"/>
-      <parameter name="SetInitialTemperature" type="Float"/>
-      <parameter name="SetCoolDownRate" type="Int"/>
-      <parameter name="SetRestDistance" type="Float"/>
+      <parameter name="Set Random Seed" type="Int"/>
+      <parameter name="Set Max Number Of Iterations" type="Int"/>
+      <parameter name="Set Iterations Per Layout" type="Int"/>
+      <parameter name="Set Initial Temperature" type="Float"/>
+      <parameter name="Set Cool Down Rate" type="Int"/>
+      <parameter name="Set Rest Distance" type="Float"/>
     </parameters>
     <!-- input parameters -->
     <!-- output parameters -->

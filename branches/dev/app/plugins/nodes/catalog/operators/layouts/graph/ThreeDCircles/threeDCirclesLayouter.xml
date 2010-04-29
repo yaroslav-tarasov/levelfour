@@ -43,11 +43,18 @@ attributes, just a name and a type."/>
       <parameter name="FixedDistanceMethod" type="
  If method is FixedDistanceMethod, the distance between the 
  points on circles will be equal."/>
+      <parameter name="Set Method" type="Int" />
+      <parameter name="Set Radius" type="Float" />
+      <parameter name="Set Height" type="Float" />
+      <parameter name="Set Marked Start Vertices" type="String" />
+      <parameter name="Set Marked Value" type="Int" />
+      <parameter name="Set Force To Use Universal Start Points Finder" type="Int" />
+      <parameter name="Set Auto Height" type="Int" />
+      <parameter name="Set Minimum Radian" type="Float" />
+      <parameter name="Set Minimum Degree" type="Float" />
+      <parameter name="Set Hierarchical Layers" type="String" />
     </parameters>
     <!-- input parameters -->
-    <parameter name="Graph" type="Enumeration" pin="in" visible="false"/>
-    <parameter name="Tree" type="Enumeration" pin="in" visible="false"/>
-    <!-- output parameters -->
-    <parameter name="Table" type="Enumeration" pin="out" visible="false"/>
+   <!-- output parameters -->
   </parameters>
 </nodetype>
