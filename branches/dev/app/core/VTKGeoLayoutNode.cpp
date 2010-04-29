@@ -13,23 +13,5 @@ data structures. This class is particularized for working with
 latitude and longitude data as well as other specialized
 cartographic use cases.
 
-Inputs
-----------
-	In: varies
-
-Outputs
--------
-	Out: vtkTable
-	Out: geometry
-
-Result
-------
-
-Notes
------
-
-
 -----------------------------------------------------------------------------
 */
-
-#include "vtkTree.h"

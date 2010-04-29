@@ -6,38 +6,6 @@ brief Implementation file for VTKGraphLayoutNode class.
 version    1.0
 date       21.04.2010 (last updated)
 
-Description
------------
-
-Base class for all layouts based on vtk graphs. 
-
-This node is based on the vtkGraphLayoutStrategy implementation.
-
-Inputs
-----------
-      
-	In: vtkGraph
-
-Outputs
--------
-
-	Out: vtkTable (used for data model)
-
-Result
-------
-
-A vtkTable is produced with 4 columns: nodeId, posX, posY, posZ.
-
-Properties
--------
-
-Notes
------
-
-Layouters are based on a generic pipeline of: 
-	a.) vtkTable->vtkTableToGraph->vtkGraph->vtkGraphLayout->vtkTable
-
------------------------------------------------------------------------------
 */
 
 #include "VTKGraphLayoutNode.h"
