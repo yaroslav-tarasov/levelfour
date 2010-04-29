@@ -13,8 +13,12 @@
 <nodetype name="OrthogonalLayouter" category="Layouts" color="40, 40, 40" plugin="OrthogonalLayouter.dll">
   <parameters>
     <parameter name="Description" type="TextInfo" defaultValue="
-This group contains parameters that have no additional 
-attributes, just a name and a type."/>
+Orthogonal layout places nodes with approaches that reduce the 
+number of edge crossings and optimize area occupation. The layout 
+creates schematic representations using only horizontal and 
+vertical edge routing. Orthogonal layout places the graph's 
+nodes on a grid of rows and columns, and routes the edges
+parallel to the x and y axes. "/>
     <parameter name="Reference" type="TextInfo" defaultValue="
 This group contains parameters that have no additional 
 attributes, just a name and a type."/>
