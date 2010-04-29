@@ -5,7 +5,7 @@ brief Implementation file for ForceDirectedLayouterNode class.
 */
 
 #include "ForceDirectedLayouterNode.h"
-#include "vtkForceDirected2DLayoutStrategy.h"
+#include "vtkForceDirectedLayoutStrategy.h"
 #include "VTKTableParameter.h"
 
 INIT_INSTANCE_COUNTER(ForceDirectedLayouterNode)
@@ -21,7 +21,7 @@ ForceDirectedLayouterNode::ForceDirectedLayouterNode ( const QString &name, Para
 {
 	setTypeName("ForceDirectedLayouterNode");
 
-	m_layoutInstance = vtkForceDirected2DLayoutStrategy::New();
+	m_layoutInstance = vtkForceDirectedLayoutStrategy::New();
 
 	// These properties relate to graph layout
 	// None
