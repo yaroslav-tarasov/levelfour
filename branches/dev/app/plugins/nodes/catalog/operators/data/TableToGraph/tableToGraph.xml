@@ -15,5 +15,6 @@
     <parameters name="Attribute selection">
       <parameter name="Description" type="TextInfo" defaultValue="Table to Graph is..."/>
     </parameters>
+    <parameter name="Tree" type="VTKTree" pin="out" visible="false"/>
   </parameters>
 </nodetype>

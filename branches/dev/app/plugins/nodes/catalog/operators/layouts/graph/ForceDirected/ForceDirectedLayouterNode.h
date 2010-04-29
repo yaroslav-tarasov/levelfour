@@ -2,12 +2,18 @@
 //! \file "ForceDirectedLayouterNode.h"
 //! \brief Header file for ForceDirectedLayouterNode class.
 //!
+//! \version    1.0
+//! \date       18.05.2009 (last updated)
+//!
 
-#ifndef ForceDirectedLayouterNode_H
-#define ForceDirectedLayouterNode_H
+#ifndef ForceDirectedLayouterNODE_H
+#define ForceDirectedLayouterNODE_H
 
 #include "VTKGraphLayoutNode.h"
 
+//!
+//! Class for a ForceDirectedLayouter
+//!
 class ForceDirectedLayouterNode : public VTKGraphLayoutNode
 {
 
@@ -32,6 +38,56 @@ public: // constructors and destructors
     //! variable of its parent class type.
     //!
     virtual ~ForceDirectedLayouterNode ();
+
+private slots: //
+
+	//!
+    //! Set the single layout angular radius property
+    //!
+    void SetThreeDimensionalLayout ();
+
+	//!
+    //! Set the single layout angular radius property
+    //!
+    void setRandomSeed ();
+
+    //!
+    //! Set the single layout edge weight field property
+    //!
+    void setMaxNumberOfIterations ();
+
+	//!
+    //! Set the single layout edge weight field property
+    //!
+    void setIterationsPerLayout ();
+
+	//!
+    //! Set the single layout edge weight field property
+    //!
+    void setInitialTemperature ();
+
+	//!
+    //! Set the single layout edge weight field property
+    //!
+    void setCoolDownRate ();
+
+	//!
+    //! Set the single layout edge weight field property
+    //!
+    void setRandomInitialPoints ();
+
+private: // data
+
+    int m_threeD;
+	int m_randomSeed;
+	int m_maxIterations;
+	int m_layoutIterations;
+	float m_initialTemperature;
+	double m_coolDownRate;
+	int m_randomPoints;
+
+
+
 };
 
 

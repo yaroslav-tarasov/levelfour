@@ -1,42 +1,14 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of FRAPPER
-research.animationsinstitut.de
-sourceforge.net/projects/frapper
-
-Copyright (c) 2008-2009 Filmakademie Baden-Wuerttemberg, Institute of Animation 
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
-Foundation; version 2.1 of the License.
-
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
------------------------------------------------------------------------------
+file "ThreeDCirclesLayouterNode.cpp"
+brief Implementation file for ThreeDCirclesLayouterNode class.
 */
 
-//!
-//! \file "ThreeDCirclesLayouterNode.cpp"
-//! \brief Implementation file for ThreeDCirclesLayouterNode class.
-//!
-//! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
-//!
-
 #include "ThreeDCirclesLayouterNode.h"
+#include "vtkSimple3DCirclesStrategy.h"
+#include "VTKTableParameter.h"
 
-
-///
-/// Constructors and Destructors
-///
-
+INIT_INSTANCE_COUNTER(ThreeDCirclesLayouterNode)
 
 //!
 //! Constructor of the ThreeDCirclesLayouterNode class.
@@ -45,8 +17,47 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 ThreeDCirclesLayouterNode::ThreeDCirclesLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+    VTKGraphLayoutNode(name, parameterRoot)
 {
+	setTypeName("ThreeDCirclesLayouterNode");
+
+	m_layoutInstance = vtkSimple3DCirclesStrategy::New();
+
+	// These properties relate to graph layout
+	// none for this layout
+
+	// These properties relate specifically to the layout strategy
+	setChangeFunction("Set Method", SLOT(setMethod()));
+    setCommandFunction("Set Method", SLOT(setMethod()));
+
+	setChangeFunction("Set Radius", SLOT(setRadius()));
+    setCommandFunction("Set Radius", SLOT(setRadius()));
+
+	setChangeFunction("Set Height", SLOT(setHeight()));
+    setCommandFunction("Set Height", SLOT(setHeight()));
+
+	setChangeFunction("Set Marked Start Vertices", SLOT(setMarkedStartVertices()));
+    setCommandFunction("Set Marked Start Vertices", SLOT(setMarkedStartVertices()));
+
+	setChangeFunction("Set Marked Value", SLOT(setMarkedValue()));
+    setCommandFunction("Set Marked Value", SLOT(setMarkedValue()));
+
+	setChangeFunction("Set Force To Use Universal Start Points Finder", SLOT(setForceToUseUniversalStartPointsFinder()));
+    setCommandFunction("Set Force To Use Universal Start Points Finder", SLOT(setForceToUseUniversalStartPointsFinder()));
+
+	setChangeFunction("Set Auto Height", SLOT(setAutoHeight()));
+    setCommandFunction("Set Auto Height", SLOT(setAutoHeight()));
+
+	setChangeFunction("Set Minimum Radian", SLOT(setMinimumRadian()));
+    setCommandFunction("Set Minimum Radian", SLOT(setMinimumRadian()));
+
+	setChangeFunction("Set Minimum Degree", SLOT(setMinimumDegree()));
+    setCommandFunction("Set Minimum Degree", SLOT(setMinimumDegree()));
+
+	setChangeFunction("Set Hierarchical Layers", SLOT(setHierarchicalLayers()));
+    setCommandFunction("Set Hierarchical Layers", SLOT(setHierarchicalLayers()));
+
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -59,6 +70,61 @@ ThreeDCirclesLayouterNode::ThreeDCirclesLayouterNode ( const QString &name, Para
 //!
 ThreeDCirclesLayouterNode::~ThreeDCirclesLayouterNode ()
 {
+	emit destroyed();
+    DEC_INSTANCE_COUNTER
+    Log::info(QString("ThreeDCirclesLayouterNode destroyed."), "ThreeDCirclesLayouterNode::~ThreeDCirclesLayouterNode");
 }
 
+//!
+//! Set the layout properties
+//!
+void ThreeDCirclesLayouterNode::setMethod ()
+{
+	m_layoutInstance->SetMethod(m_setMethod);
+}
 
+void ThreeDCirclesLayouterNode::setRadius ()
+{
+	m_layoutInstance->SetRadius(m_setRadius);
+}
+
+void ThreeDCirclesLayouterNode::setHeight ()
+{
+	m_layoutInstance->SetHeight(m_setHeight);
+}
+
+void ThreeDCirclesLayouterNode::setMarkedStartVertices ()
+{
+	m_layoutInstance->SetMarkedStartVertices(m_setMarkedStartVertices);
+}
+
+void ThreeDCirclesLayouterNode::setMarkedValue ()
+{
+	m_layoutInstance->SetMarkedValue(m_setMarkedValue);
+}
+
+void ThreeDCirclesLayouterNode::setForceToUseUniversalStartPointsFinder ()
+{
+	m_layoutInstance->SetForceToUseUniversalStartPointsFinder(m_setForceToUseUniversalStartPointsFinder);
+}
+
+void ThreeDCirclesLayouterNode::setAutoHeight ()
+{
+	m_layoutInstance->SetAutoHeight(m_setAutoHeight);
+}
+
+void ThreeDCirclesLayouterNode::setMinimumRadian ()
+{
+	m_layoutInstance->SetMinimumRadian(m_setMinimumRadian);
+}
+
+void ThreeDCirclesLayouterNode::setMinimumDegree ()
+{
+	m_layoutInstance->SetMinimumDegree(m_setMinimumDegree);
+}
+
+void ThreeDCirclesLayouterNode::setHierarchicalLayers ()
+{
+	m_layoutInstance->SetHierarchicalLayers(m_setHierarchicalLayers);
+
+}
