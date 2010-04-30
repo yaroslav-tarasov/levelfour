@@ -612,30 +612,62 @@ void AnimatableMeshNode::parseMaterialParameters ()
                 Ogre::Pass* pass = passIter.getNext();
                 ParameterGroup *passGroup = new ParameterGroup("Pass: " + QString(pass->getName().c_str()));
                 subMeshGroup->addParameter(passGroup);
+
+				// reload textures
+                Ogre::Pass::TextureUnitStateIterator textureUnitStateIterator = pass->getTextureUnitStateIterator();
+				if (textureUnitStateIterator.hasMoreElements()) { 
+					ParameterGroup *texGroup = new ParameterGroup("Reload Textures:");
+					passGroup->addParameter(texGroup);				
+					NumberParameter *numberPara = new NumberParameter(QString("Reload All Textures"), Parameter::Type::T_Command, "__rla__"+QString(pass->getName().c_str()) );					 					
+					texGroup->addParameter(numberPara);
+					numberPara->setCommandFunction(SLOT(reloadTexture()));					
+                while (textureUnitStateIterator.hasMoreElements())
+                    {
+                     Ogre::TextureUnitState* textureUnitState = textureUnitStateIterator.getNext();
+					 NumberParameter *numberPara = new NumberParameter(QString(textureUnitState->getTextureName().c_str()), Parameter::Type::T_Command, "reload");					 
+					 texGroup->addParameter(numberPara);
+					 numberPara->setCommandFunction(SLOT(reloadTexture()));						 
+					}
+				}				
+
 				// fragment shader
                 if (pass->hasFragmentProgram()) {
                     ParameterGroup *progGroup = new ParameterGroup("FP: " + QString(pass->getFragmentProgram()->getName().c_str()));
                     passGroup->addParameter(progGroup);
-                    Ogre::GpuProgramParametersSharedPtr fpParams = pass->getFragmentProgramParameters();
-                    // NILZ: DEBUG:
+                    Ogre::GpuProgramParametersSharedPtr fpParams = pass->getFragmentProgramParameters();                   
                     const Ogre::GpuNamedConstants &namedConstants = fpParams->getConstantDefinitions();
                     const Ogre::GpuConstantDefinitionMap &fpParamMap = namedConstants.map;
-                    //Ogre::GpuConstantDefinitionMap fpParamMap = fpParams->getConstantDefinitions().map;
                     Ogre::GpuConstantDefinitionMap::const_iterator fpParamIter;
 					for (fpParamIter = fpParamMap.begin(); fpParamIter != fpParamMap.end(); ++fpParamIter) {
-                        if	(fpParamIter->second.isFloat() && 
+                        // float
+						if	(fpParamIter->second.isFloat() && 
                             (fpParamIter->second.constType == Ogre::GpuConstantType::GCT_FLOAT1) &&
 							(fpParamIter->first.find("[0]") == Ogre::String::npos)) {
                                 float value = *fpParams->getFloatPointer(fpParamIter->second.physicalIndex);
                                 NumberParameter *numberPara = new NumberParameter(QString(fpParamIter->first.c_str()), Parameter::Type::T_Float, value);
-                                numberPara->setInputMethod(NumberParameter::IM_SliderPlusSpinBox);
+                                numberPara->setInputMethod(NumberParameter::IM_SliderPlusSpinBox);								
                                 value = pow(10.0f, (float) ceil(log10(abs(value+0.001))));
                                 numberPara->setMinValue(-value);
                                 numberPara->setMaxValue( value);
                                 numberPara->setStepSize(value/100.0);
                                 progGroup->addParameter(numberPara);
-                                numberPara->setChangeFunction(SLOT(setMaterialParameter()));
+                                numberPara->setChangeFunction(SLOT(setMaterialParameter()));								
+								numberPara->setDescription(subMeshMaterialName.c_str());
                         }
+						// float3
+						if	(fpParamIter->second.isFloat() && 							
+                            (fpParamIter->second.constType == Ogre::GpuConstantType::GCT_FLOAT3) &&
+							(fpParamIter->first.find("[0]") == Ogre::String::npos)) {
+								float value = *fpParams->getFloatPointer(fpParamIter->second.physicalIndex);
+								NumberParameter *numberPara = new NumberParameter(QString(fpParamIter->first.c_str()), Parameter::Type::T_Color, value);				
+								numberPara->setInputMethod(NumberParameter::IM_SliderPlusSpinBox);
+                                /*value = pow(10.0f, (float) ceil(log10(abs(value+0.001))));
+                                numberPara->setMinValue(-value);
+                                numberPara->setMaxValue( value);
+                                numberPara->setStepSize(value/100.0);*/
+                                progGroup->addParameter(numberPara);
+                                numberPara->setChangeFunction(SLOT(setMaterialParameter()));
+						}
                     }
                 }
 				// vertex shader
@@ -643,8 +675,9 @@ void AnimatableMeshNode::parseMaterialParameters ()
                     ParameterGroup *progGroup = new ParameterGroup("VP: " + QString(pass->getVertexProgram()->getName().c_str()));
                     passGroup->addParameter(progGroup);
                     Ogre::GpuProgramParametersSharedPtr vpParams = pass->getVertexProgramParameters();
-                    Ogre::GpuConstantDefinitionMap vpParamMap = vpParams->getConstantDefinitions().map;
-                    Ogre::GpuConstantDefinitionMap::iterator vpParamIter;
+					const Ogre::GpuNamedConstants &namedConstants = vpParams->getConstantDefinitions();
+					const Ogre::GpuConstantDefinitionMap &vpParamMap = namedConstants.map;
+					Ogre::GpuConstantDefinitionMap::const_iterator vpParamIter;					
 					for (vpParamIter = vpParamMap.begin(); vpParamIter != vpParamMap.end(); ++vpParamIter) {
                         if	(vpParamIter->second.isFloat() && 
                             (vpParamIter->second.constType == Ogre::GpuConstantType::GCT_FLOAT1) &&
@@ -658,6 +691,7 @@ void AnimatableMeshNode::parseMaterialParameters ()
                             numberPara->setStepSize(value/100.0);
                             progGroup->addParameter(numberPara);
                             numberPara->setChangeFunction(SLOT(setMaterialParameter()));
+							numberPara->setDescription(subMeshMaterialName.c_str());
 						}
                     }
 				}
@@ -666,8 +700,9 @@ void AnimatableMeshNode::parseMaterialParameters ()
 					ParameterGroup *progGroup = new ParameterGroup("GP: " + QString(pass->getGeometryProgram()->getName().c_str()));
                     passGroup->addParameter(progGroup);
 					Ogre::GpuProgramParametersSharedPtr gpParams = pass->getGeometryProgramParameters();
-                    Ogre::GpuConstantDefinitionMap gpParamMap = gpParams->getConstantDefinitions().map;
-                    Ogre::GpuConstantDefinitionMap::iterator gpParamIter;
+					const Ogre::GpuNamedConstants &namedConstants = gpParams->getConstantDefinitions();
+					const Ogre::GpuConstantDefinitionMap &gpParamMap = namedConstants.map;
+					Ogre::GpuConstantDefinitionMap::const_iterator gpParamIter;							
 					for (gpParamIter = gpParamMap.begin(); gpParamIter != gpParamMap.end(); ++gpParamIter) {
                         if	(gpParamIter->second.isFloat() && 
                             (gpParamIter->second.constType == Ogre::GpuConstantType::GCT_FLOAT1) &&
@@ -681,6 +716,7 @@ void AnimatableMeshNode::parseMaterialParameters ()
                             numberPara->setStepSize(value/100.0);
                             progGroup->addParameter(numberPara);
                             numberPara->setChangeFunction(SLOT(setMaterialParameter()));
+							numberPara->setDescription(subMeshMaterialName.c_str());
 						}
                     }
 				}
@@ -785,6 +821,37 @@ void AnimatableMeshNode::geometryFileChanged ()
 }
 
 //!
+//! Texture Reload Function
+//!
+void AnimatableMeshNode::reloadTexture ()
+{
+	Parameter *parameter = dynamic_cast<Parameter *>(sender());
+	NumberParameter *numberParameter = static_cast<NumberParameter *>(parameter);
+
+	Ogre::TextureManager::ResourceMapIterator textureResourceMapIterator = Ogre::TextureManager::getSingleton().getResourceIterator();
+    while (textureResourceMapIterator.hasMoreElements())
+        {
+            Ogre::TexturePtr texturePtr = textureResourceMapIterator.getNext();
+            std::string textureName = texturePtr->getName();
+            std::string groupName = texturePtr->getGroup();
+            if (textureName.empty())
+            {
+                continue;
+            }                        
+			if (numberParameter->getName().toStdString()=="Reload All Textures")
+			{
+				texturePtr->reload();					         
+			}
+			if (!textureName.compare(numberParameter->getName().toStdString()))
+            {
+				texturePtr->reload();
+				break;
+            }			
+	}
+	triggerRedraw();
+}
+
+//!
 //! Change function for the Material parameters.
 //!
 void AnimatableMeshNode::setMaterialParameter ()
@@ -794,19 +861,22 @@ void AnimatableMeshNode::setMaterialParameter ()
         return;
     else {
         NumberParameter *numberParameter = static_cast<NumberParameter *>(parameter);
-        const Ogre::MeshPtr meshPtr = m_entity->getMesh();
-
-        Ogre::Mesh::SubMeshIterator subMeshIter = meshPtr->getSubMeshIterator();
+		const Ogre::MeshPtr meshPtr = m_entity->getMesh();
+		Ogre::Mesh::SubMeshIterator subMeshIter = meshPtr->getSubMeshIterator();
         while (subMeshIter.hasMoreElements()) {
             Ogre::SubMesh* subMesh = subMeshIter.getNext();
             Ogre::String subMeshMaterialName = subMesh->getMaterialName();
-            Ogre::MaterialPtr subMeshMaterial = (Ogre::MaterialPtr)Ogre::MaterialManager::getSingleton().getByName(subMeshMaterialName);
+			Ogre::MaterialPtr subMeshMaterial;
+			if (getBoolValue("Global Material Parameter Update")) {
+				subMeshMaterial = (Ogre::MaterialPtr)Ogre::MaterialManager::getSingleton().getByName(subMeshMaterialName); }
+			else {
+				subMeshMaterial = (Ogre::MaterialPtr)Ogre::MaterialManager::getSingleton().getByName(numberParameter->getDescription().toStdString()); }
             if (!subMeshMaterial.isNull()) {
                 Ogre::Technique* tech = subMeshMaterial->getTechnique(0);
                 if (!tech)
                     continue;
                 Ogre::Technique::PassIterator passIter = tech->getPassIterator();
-                while (passIter.hasMoreElements()) {
+				while (passIter.hasMoreElements()) {
                     Ogre::Pass* pass = passIter.getNext();
                     if (pass->hasFragmentProgram()) {
                         Ogre::GpuProgramParametersSharedPtr fpParams = pass->getFragmentProgramParameters();
@@ -823,7 +893,7 @@ void AnimatableMeshNode::setMaterialParameter ()
                         if (gpParams->_findNamedConstantDefinition(numberParameter->getName().toStdString()) != 0)
                             gpParams->setNamedConstant(numberParameter->getName().toStdString(), (Ogre::Real) numberParameter->getValue().toDouble());
                     }
-                }
+				}
             }
         }
     }
