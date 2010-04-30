@@ -1,42 +1,17 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of FRAPPER
-research.animationsinstitut.de
-sourceforge.net/projects/frapper
-
-Copyright (c) 2008-2009 Filmakademie Baden-Wuerttemberg, Institute of Animation 
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
-Foundation; version 2.1 of the License.
-
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
------------------------------------------------------------------------------
+file "CosmicTreeLayouterNode.cpp"
+brief Implementation file for CosmicTreeLayouterNode class.
 */
 
-//!
-//! \file "CosmicTreeLayouterNode.cpp"
-//! \brief Implementation file for CosmicTreeLayouterNode class.
-//!
-//! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
-//!
-
 #include "CosmicTreeLayouterNode.h"
+#include "vtkCosmicTreeLayoutStrategy.h"
+#include "VTKTableParameter.h"
 
-
+INIT_INSTANCE_COUNTER(CosmicTreeLayouterNode)
 ///
 /// Constructors and Destructors
 ///
-
 
 //!
 //! Constructor of the CosmicTreeLayouterNode class.
@@ -45,8 +20,25 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 CosmicTreeLayouterNode::CosmicTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+    VTKTreeLayoutNode(name, parameterRoot)
 {
+	setTypeName("CosmicTreeLayouterNode");
+
+	m_layoutInstance = vtkCosmicTreeLayoutStrategy::New();
+
+	setChangeFunction("Set Size Leaf Nodes Only", SLOT(setSizeLeafNodesOnly()));
+    setCommandFunction("Set Size Leaf Nodes Only", SLOT(setSizeLeafNodesOnly()));
+
+	setChangeFunction("Set Layout Depth", SLOT(setLayoutDepth()));
+    setCommandFunction("Set Layout Depth", SLOT(setLayoutDepth()));
+
+	setChangeFunction("Set Layout Root", SLOT(setLayoutRoot()));
+    setCommandFunction("Set Layout Root", SLOT(setLayoutRoot()));
+
+	setChangeFunction("Set Node Size Array Name", SLOT(setNodeSizeArrayName()));
+    setCommandFunction("Set Node Size Array Name", SLOT(setNodeSizeArrayName()));
+
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -59,6 +51,28 @@ CosmicTreeLayouterNode::CosmicTreeLayouterNode ( const QString &name, ParameterG
 //!
 CosmicTreeLayouterNode::~CosmicTreeLayouterNode ()
 {
+	emit destroyed();
+    DEC_INSTANCE_COUNTER
+    Log::info(QString("CosmicTreeLayouterNode destroyed."), "CosmicTreeLayouterNode::~CosmicTreeLayouterNode");
 }
 
+void CosmicTreeLayouterNode::setSizeLeafNodesOnly ()
+{
+	m_layoutInstance->SetSizeLeafNodesOnly(m_sizeLeafNodesOnly);
+}
+
+void CosmicTreeLayouterNode::setLayoutDepth ()
+{
+	m_layoutInstance->SetLayoutDepth(m_layoutDepth);
+}
+
+void CosmicTreeLayouterNode::setLayoutRoot ()
+{
+	m_layoutInstance->SetLayoutRoot(m_layoutRoot);
+}
+
+void CosmicTreeLayouterNode::setNodeSizeArrayName ()
+{
+	m_layoutInstance->SetNodeSizeArrayName(m_nodeSizeArrayName);
+}
 

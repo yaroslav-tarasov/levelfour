@@ -1,43 +1,14 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of FRAPPER
-research.animationsinstitut.de
-sourceforge.net/projects/frapper
-
-Copyright (c) 2008-2009 Filmakademie Baden-Wuerttemberg, Institute of Animation 
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
-Foundation; version 2.1 of the License.
-
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
------------------------------------------------------------------------------
+file "SpanTreeLayouterNode.cpp"
+brief Implementation file for SpanTreeLayouterNode class.
 */
 
-//!
-//! \file "SpanTreeLayouterNode.cpp"
-//! \brief Implementation file for SpanTreeLayouterNode class.
-//!
-//! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
-//!
-
 #include "SpanTreeLayouterNode.h"
+#include "vtkSpanTreeLayoutStrategy.h"
+#include "VTKTableParameter.h"
 
-
-///
-/// Constructors and Destructors
-///
-
-
+INIT_INSTANCE_COUNTER(SpanTreeLayouterNode)
 //!
 //! Constructor of the SpanTreeLayouterNode class.
 //!
@@ -45,8 +16,16 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 SpanTreeLayouterNode::SpanTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+    VTKTreeLayoutNode(name, parameterRoot)
 {
+	setTypeName("SpanTreeLayouterNode");
+
+	m_layoutInstance = vtkSpanTreeLayoutStrategy::New();
+
+	setChangeFunction("Set Depth First Spanning Tree", SLOT(setDepthFirstSpanningTree()));
+    setCommandFunction("Set Depth First Spanning Tree", SLOT(setDepthFirstSpanningTree()));
+
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -59,6 +38,15 @@ SpanTreeLayouterNode::SpanTreeLayouterNode ( const QString &name, ParameterGroup
 //!
 SpanTreeLayouterNode::~SpanTreeLayouterNode ()
 {
+	emit destroyed();
+    DEC_INSTANCE_COUNTER
+    Log::info(QString("SpanTreeLayouterNode destroyed."), "SpanTreeLayouterNode::~SpanTreeLayouterNode");
 }
 
-
+//!
+//! Set the single layout angular radius property
+//!
+void SpanTreeLayouterNode::setDepthFirstSpanningTree ()
+{
+	m_layoutInstance->SetDepthFirstSpanningTree(m_depthFirst);
+}

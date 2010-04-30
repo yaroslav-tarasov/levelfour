@@ -2,17 +2,19 @@
 //! \file "ConeTreeLayouterNode.h"
 //! \brief Header file for ConeTreeLayouterNode class.
 //!
+//! \version    1.0
+//! \date       18.05.2009 (last updated)
+//!
 
-#ifndef ConeTreeLayouterNode_H
-#define ConeTreeLayouterNode_H
+#ifndef ConeTreeLayouterNODE_H
+#define ConeTreeLayouterNODE_H
 
-#include "Node.h"
-#include "vtkGraph.h"
-#include "vtkTree.h"
-#include "vtkTable.h"
-#include <QString>
+#include "VTKTreeLayoutNode.h"
 
-class ConeTreeLayouterNode : public Node
+//!
+//! Class for a ConeTreeLayouter
+//!
+class ConeTreeLayouterNode : public VTKTreeLayoutNode
 {
 
     Q_OBJECT
@@ -39,46 +41,15 @@ public: // constructors and destructors
 
 private slots: //
 
-    //!
-    //! Processes the node's input data to generate the node's output table.
-    //!
-    void processOutputVTKTable();
-
-	//!
-    //! Update the input graph (called for example when input parameters have been dirtied)
-    //! return It returns 0 if it succeeds, otherwise 1
-    //!
-    int updateInputTree ();
-
-protected: // functions
-
-    //!
-    //! Create a vtkTable with ID, x, y, z from an vtk graph 
-    //!
-	vtkTable * createTableFromGraph(vtkGraph *graph);
+    void setCompactness ();
+    void setCompression ();
+	void setSpacing ();
 
 private: // data
 
-    //!
-    //! The name of the input vtk tree parameter.
-    //!
-    QString m_inputVTKTreeName;
-
-    //!
-    //! The name of the output vtk table parameter.
-    //!
-    QString m_ouputVTKTableParameterName;
-	
-	//!
-    //! The output Table
-    //!
-    vtkTable * m_outputTable;
-
-	//!
-    //! The input tree
-    //!
-    vtkTree * m_inTree;
-
+	float m_Compactness;
+	int m_Compression;
+	float m_Spacing;
 };
 
 

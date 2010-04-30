@@ -1,4 +1,4 @@
-project(singleCycleLayouter)
+project(SingleCycleLayouter)
 set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE) 
 SET(CMAKE_DEBUG_POSTFIX _d)
 
@@ -6,44 +6,44 @@ include_directories(
 			${CMAKE_CURRENT_SOURCE_DIR}
 			)
 
-# singleCycleLayouter
-set( singleCycleLayouter_h ${singleCycleLayouter_h}
-			singleCycleLayouterNode.h
-			singleCycleLayouterNodePlugin.h
+# SingleCycleLayouter
+set( SingleCycleLayouter_h ${SingleCycleLayouter_h}
+			SingleCycleLayouterNode.h
+			SingleCycleLayouterNodePlugin.h
 			)
 
-set( singleCycleLayouter_moc ${singleCycleLayouter_moc}	
-			singleCycleLayouterNode.h
-			singleCycleLayouterNodePlugin.h
+set( SingleCycleLayouter_moc ${SingleCycleLayouter_moc}	
+			SingleCycleLayouterNode.h
+			SingleCycleLayouterNodePlugin.h
 			)
 
-set( singleCycleLayouter_src ${singleCycleLayouter_src}	
-			singleCycleLayouterNode.cpp
-			singleCycleLayouterNodePlugin.cpp
+set( SingleCycleLayouter_src ${SingleCycleLayouter_src}	
+			SingleCycleLayouterNode.cpp
+			SingleCycleLayouterNodePlugin.cpp
 			)
 
-set( singleCycleLayouter_res ${singleCycleLayouter_res}	
-			singleCycleLayouter.xml
+set( SingleCycleLayouter_res ${SingleCycleLayouter_res}	
+			SingleCycleLayouter.xml
 			)
 
 # Create moc files		   
-qt4_wrap_cpp(singleCycleLayouter_cxx ${singleCycleLayouter_moc})
+qt4_wrap_cpp(SingleCycleLayouter_cxx ${SingleCycleLayouter_moc})
 
 # Create source groups
-source_group("Moc Files" FILES ${singleCycleLayouter_cxx})
-source_group("Header Files" FILES ${singleCycleLayouter_h})
-source_group("Resources" FILES ${singleCycleLayouter_res})
+source_group("Moc Files" FILES ${SingleCycleLayouter_cxx})
+source_group("Header Files" FILES ${SingleCycleLayouter_h})
+source_group("Resources" FILES ${SingleCycleLayouter_res})
 
 # Add header files to sources to make headers visible in Visual Studio
 IF (WIN32)
-  set(singleCycleLayouter_src ${singleCycleLayouter_src} ${singleCycleLayouter_h} ${singleCycleLayouter_res})
+  set(SingleCycleLayouter_src ${SingleCycleLayouter_src} ${SingleCycleLayouter_h} ${SingleCycleLayouter_res})
 ENDIF(WIN32)
 
 # Create static library
-add_library(singleCycleLayouter SHARED ${singleCycleLayouter_src} ${singleCycleLayouter_cxx})
+add_library(SingleCycleLayouter SHARED ${SingleCycleLayouter_src} ${SingleCycleLayouter_cxx})
 
 # Add library dependencies
-target_link_libraries(singleCycleLayouter
+target_link_libraries(SingleCycleLayouter
 			optimized QtCore4 debug QtCored4
 			optimized QtGui4 debug QtGuid4
 			optimized QtXml4 debug QtXmld4
@@ -55,5 +55,5 @@ target_link_libraries(singleCycleLayouter
 			)
 
 # Install files
-install( FILES ${singleCycleLayouter_res} DESTINATION ${NODE_PLUGIN_INSTALL} )
-install( TARGETS singleCycleLayouter RUNTIME DESTINATION ${NODE_PLUGIN_INSTALL} )
+install( FILES ${SingleCycleLayouter_res} DESTINATION ${NODE_PLUGIN_INSTALL} )
+install( TARGETS SingleCycleLayouter RUNTIME DESTINATION ${NODE_PLUGIN_INSTALL} )

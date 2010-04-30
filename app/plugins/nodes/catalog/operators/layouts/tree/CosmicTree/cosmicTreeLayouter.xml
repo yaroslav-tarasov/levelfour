@@ -25,26 +25,31 @@ obscured by edges drawn atop it."/>
 Reference...
 " />
     <parameters name="Cosmic Tree Parameters">
-      <parameter name="SizeLeafNodesOnly:" type="TextInfo" defaultValue="Should node size specifications be obeyed at leaf nodes only 
+      <parameter name="Size Leaf Nodes Only" type="TextInfo" defaultValue="Should node size specifications be obeyed at leaf nodes only 
 or (with scaling as required to meet constraints) at every node in the tree? 
 This defaults to true, so that leaf nodes are scaled according to the size 
 specification provided, and the parent node sizes are calculated 
 by the algorithm.  "/>
-      <parameter name="SizeLeafNodesOnlyOn" type="Bool"/>
-      <parameter name="SetSizeLeafNodesOnly" type="Int"/>
-      <parameter name="LayoutDepth:" type="TextInfo" defaultValue="How many levels of the tree should be laid out? 
+      <parameter name="Set Size Leaf Nodes Only" type="Int"/>
+      <parameter name="Layout Depth" type="TextInfo" defaultValue="How many levels of the tree should be laid out? 
 For large trees, you may wish to set the root and maximum depth in order 
 to retrieve the layout for the visible portion of the tree. When this 
 value is zero or negative, all nodes below and including the LayoutRoot 
 will be presented. This defaults to 0. "/>
-      <parameter name="SetLayoutDepth" type="Int"/>
-      <parameter name="LayoutRoot:" type="TextInfo" defaultValue="What is the top-most tree node to lay out? 
+      <parameter name="Set Layout Depth" type="Int"/>
+      <parameter name="Layout Root" type="TextInfo" defaultValue="What is the top-most tree node to lay out? 
 This node will become the largest containing circle in the layout. 
 Use this in combination with SetLayoutDepth to retrieve the layout 
 of a subtree of interest for rendering. Setting LayoutRoot to a 
 negative number signals that the root node of the tree should be 
 used as the root node of the layout. This defaults to -1. "/>
-      <parameter name="SetLayoutRoot" type="Enumeration"/>
+      <parameter name="Set Layout Root" type="String"/>
+      <parameter name="Node Size Array Name" type="TextInfo" defaultValue="
+Set the array to be used for sizing nodes. If this is set 
+to an empty string or NULL (the default), then all leaf 
+nodes (or all nodes, when SizeLeafNodesOnly is false) 
+will be assigned a unit size."/>
+      <parameter name="Set Node Size Array Name" type="String"/>
     </parameters>
     <!-- input parameters inline -->
     <!-- output parameters inline -->
