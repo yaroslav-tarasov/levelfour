@@ -1,4 +1,4 @@
-project(LevelFour)
+project(ACUITY4D)
 set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE) 
 SET(CMAKE_DEBUG_POSTFIX _d)
 
@@ -9,54 +9,54 @@ include_directories(
 			)
 
 # frapperdemo
-set( levelfour_h ${levelfour_h}
+set( ACUITY4D_h ${ACUITY4D_h}
 			Application.h
 			#resource.h
 		   )
 
-set( levelfour_moc ${levelfour_moc}		
+set( ACUITY4D_moc ${ACUITY4D_moc}		
 			Application.h
 		   )
 
-set( levelfour_ui ${levelfour_ui}
+set( ACUITY4D_ui ${ACUITY4D_ui}
 
 		   )
 
-set( levelfour_src ${levelfour_src}
+set( ACUITY4D_src ${ACUITY4D_src}
 			Application.cpp
 			main.cpp
 		   )
 		   
-set ( levelfour_qrc ${levelfour_qrc}
+set ( ACUITY4D_qrc ${ACUITY4D_qrc}
 			main.qrc
 		   )		   
 		   
 # Create moc and ui files			   
-qt4_wrap_cpp(levelfour_cxx ${levelfour_moc})
-qt4_wrap_ui(levelfour_ui_h ${levelfour_ui})
-qt4_add_resources(levelfour_rcc ${levelfour_qrc})
+qt4_wrap_cpp(ACUITY4D_cxx ${ACUITY4D_moc})
+qt4_wrap_ui(ACUITY4D_ui_h ${ACUITY4D_ui})
+qt4_add_resources(ACUITY4D_rcc ${ACUITY4D_qrc})
 
 # Create source groups
-source_group("Ui Files" FILES ${levelfour_ui})
-source_group("Resource Files" FILES ${levelfour_qrc})
-source_group("Generated Files" FILES ${levelfour_cxx} ${levelfour_ui_h} ${levelfour_rcc} ${levelfour_qrc})
-source_group("Header Files" FILES ${levelfour_h})
+source_group("Ui Files" FILES ${ACUITY4D_ui})
+source_group("Resource Files" FILES ${ACUITY4D_qrc})
+source_group("Generated Files" FILES ${ACUITY4D_cxx} ${ACUITY4D_ui_h} ${ACUITY4D_rcc} ${ACUITY4D_qrc})
+source_group("Header Files" FILES ${ACUITY4D_h})
 
 # Add header files to sources to make headers visible in Visual Studio
-set(levelfour_src ${levelfour_src} ${levelfour_h})
+set(ACUITY4D_src ${ACUITY4D_src} ${ACUITY4D_h})
 
 # Create static library
-add_executable(levelfour WIN32 ${levelfour_src} ${levelfour_cxx} ${levelfour_ui_h} ${levelfour_rcc})
+add_executable(ACUITY4D WIN32 ${ACUITY4D_src} ${ACUITY4D_cxx} ${ACUITY4D_ui_h} ${ACUITY4D_rcc})
 
-set_target_properties( levelfour
+set_target_properties( ACUITY4D
      PROPERTIES
-     DEBUG_OUTPUT_NAME "levelfour_d"
-     RELEASE_OUTPUT_NAME "levelfour"
+     DEBUG_OUTPUT_NAME "ACUITY4D_d"
+     RELEASE_OUTPUT_NAME "ACUITY4D"
 )
 
 
 IF (WIN32)
-target_link_libraries(levelfour 
+target_link_libraries(ACUITY4D 
 			#${QT_LIBRARIES}
 			optimized QtCore4 debug QtCored4
 			optimized QtGui4 debug QtGuid4
@@ -69,7 +69,7 @@ target_link_libraries(levelfour
 			)
 ENDIF (WIN32)
 IF (UNIX)
-target_link_libraries(levelfour 
+target_link_libraries(ACUITY4D 
 			#${QT_LIBRARIES}
 			optimized QtCore debug QtCored
 			optimized QtGui debug QtGuid
@@ -85,4 +85,4 @@ target_link_libraries(levelfour
 ENDIF (UNIX)
 
 # Install files
-install( TARGETS levelfour RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX} )
+install( TARGETS ACUITY4D RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX} )

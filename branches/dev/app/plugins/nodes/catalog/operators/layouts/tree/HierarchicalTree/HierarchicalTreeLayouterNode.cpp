@@ -1,42 +1,17 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of FRAPPER
-research.animationsinstitut.de
-sourceforge.net/projects/frapper
-
-Copyright (c) 2008-2009 Filmakademie Baden-Wuerttemberg, Institute of Animation 
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
-Foundation; version 2.1 of the License.
-
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
------------------------------------------------------------------------------
+file "HierarchicalTreeLayouterNode.cpp"
+brief Implementation file for HierarchicalTreeLayouterNode class.
 */
 
-//!
-//! \file "HierarchicalTreeLayouterNode.cpp"
-//! \brief Implementation file for HierarchicalTreeLayouterNode class.
-//!
-//! \author     Stefan Habel <stefan.habel@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
-//!
-
 #include "HierarchicalTreeLayouterNode.h"
+#include "vtkTreeLayoutStrategy.h"
+#include "VTKTableParameter.h"
 
-
+INIT_INSTANCE_COUNTER(HierarchicalTreeLayouterNode)
 ///
 /// Constructors and Destructors
 ///
-
 
 //!
 //! Constructor of the HierarchicalTreeLayouterNode class.
@@ -45,8 +20,33 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 HierarchicalTreeLayouterNode::HierarchicalTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+    VTKTreeLayoutNode(name, parameterRoot)
 {
+	setTypeName("HierarchicalTreeLayouterNode");
+
+	m_layoutInstance = vtkTreeLayoutStrategy::New();
+	m_layoutInstance->SetRadial(false);
+
+	// set affections and callback functions
+	setChangeFunction("Set Z Range", SLOT(setZRange()));
+    setCommandFunction("Set Z Range", SLOT(setZRange()));
+
+	setChangeFunction("Set Angle", SLOT(setAngle()));
+    setCommandFunction("Set Angle", SLOT(setAngle()));
+
+	setChangeFunction("Set Log Spacing Value", SLOT(setLogSpacingValue()));
+    setCommandFunction("Set Log Spacing Value", SLOT(setLogSpacingValue()));
+
+	setChangeFunction("Set Leaf Spacing", SLOT(setLeafSpacing()));
+    setCommandFunction("Set Leaf Spacing", SLOT(setLeafSpacing()));
+
+	setChangeFunction("Set Distance Array Name", SLOT(setDistanceArrayName()));
+    setCommandFunction("Set Distance Array Name", SLOT(setDistanceArrayName()));
+
+	setChangeFunction("Set Rotation", SLOT(setRotation()));
+    setCommandFunction("Set Rotation", SLOT(setRotation()));
+
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -59,6 +59,40 @@ HierarchicalTreeLayouterNode::HierarchicalTreeLayouterNode ( const QString &name
 //!
 HierarchicalTreeLayouterNode::~HierarchicalTreeLayouterNode ()
 {
+	emit destroyed();
+    DEC_INSTANCE_COUNTER
+    Log::info(QString("HierarchicalTreeLayouterNode destroyed."), "HierarchicalTreeLayouterNode::~HierarchicalTreeLayouterNode");
 }
 
+//!
+//! Set the single layout angular radius property
+//!
+void HierarchicalTreeLayouterNode::setZRange ()
+{
+	m_layoutInstance->SetZRange(m_zRange);
+}
 
+void HierarchicalTreeLayouterNode::setAngle ()
+{
+	m_layoutInstance->SetAngle(m_Angle); // 0 to 180
+}
+
+void HierarchicalTreeLayouterNode::setLogSpacingValue ()
+{
+	m_layoutInstance->SetLogSpacingValue(m_logSpacingValue); // 0 to 1
+}
+
+void HierarchicalTreeLayouterNode::setLeafSpacing ()
+{
+	m_layoutInstance->SetLeafSpacing(m_leafSpacing); // 0 to 1
+}
+
+void HierarchicalTreeLayouterNode::setDistanceArrayName ()
+{
+	m_layoutInstance->SetDistanceArrayName(m_distanceArrayName);
+}
+
+void HierarchicalTreeLayouterNode::setRotation ()
+{
+	m_layoutInstance->SetRotation(m_Rotation);
+}

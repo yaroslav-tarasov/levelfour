@@ -1,4 +1,4 @@
-project(mergeTable)
+project(MergeTable)
 set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE) 
 SET(CMAKE_DEBUG_POSTFIX _d)
 
@@ -6,44 +6,44 @@ include_directories(
 			${CMAKE_CURRENT_SOURCE_DIR}
 			)
 
-# mergeTable
-set( mergeTable_h ${mergeTable_h}
-			mergeTableNode.h
-			mergeTableNodePlugin.h
+# MergeTable
+set( MergeTable_h ${MergeTable_h}
+			MergeTableNode.h
+			MergeTableNodePlugin.h
 			)
 
-set( mergeTable_moc ${mergeTable_moc}	
-			mergeTableNode.h
-			mergeTableNodePlugin.h
+set( MergeTable_moc ${MergeTable_moc}	
+			MergeTableNode.h
+			MergeTableNodePlugin.h
 			)
 
-set( mergeTable_src ${mergeTable_src}	
-			mergeTableNode.cpp
-			mergeTableNodePlugin.cpp
+set( MergeTable_src ${MergeTable_src}	
+			MergeTableNode.cpp
+			MergeTableNodePlugin.cpp
 			)
 
-set( mergeTable_res ${mergeTable_res}	
-			mergeTable.xml
+set( MergeTable_res ${MergeTable_res}	
+			MergeTable.xml
 			)
 
 # Create moc files		   
-qt4_wrap_cpp(mergeTable_cxx ${mergeTable_moc})
+qt4_wrap_cpp(MergeTable_cxx ${MergeTable_moc})
 
 # Create source groups
-source_group("Moc Files" FILES ${mergeTable_cxx})
-source_group("Header Files" FILES ${mergeTable_h})
-source_group("Resources" FILES ${mergeTable_res})
+source_group("Moc Files" FILES ${MergeTable_cxx})
+source_group("Header Files" FILES ${MergeTable_h})
+source_group("Resources" FILES ${MergeTable_res})
 
 # Add header files to sources to make headers visible in Visual Studio
 IF (WIN32)
-  set(mergeTable_src ${mergeTable_src} ${mergeTable_h} ${mergeTable_res})
+  set(MergeTable_src ${MergeTable_src} ${MergeTable_h} ${MergeTable_res})
 ENDIF(WIN32)
 
 # Create static library
-add_library(mergeTable SHARED ${mergeTable_src} ${mergeTable_cxx})
+add_library(MergeTable SHARED ${MergeTable_src} ${MergeTable_cxx})
 
 # Add library dependencies
-target_link_libraries(mergeTable
+target_link_libraries(MergeTable
 			optimized QtCore4 debug QtCored4
 			optimized QtGui4 debug QtGuid4
 			optimized QtXml4 debug QtXmld4
@@ -54,5 +54,5 @@ target_link_libraries(mergeTable
 			)
 
 # Install files
-install( FILES ${mergeTable_res} DESTINATION ${NODE_PLUGIN_INSTALL} )
-install( TARGETS mergeTable RUNTIME DESTINATION ${NODE_PLUGIN_INSTALL} )
+install( FILES ${MergeTable_res} DESTINATION ${NODE_PLUGIN_INSTALL} )
+install( TARGETS MergeTable RUNTIME DESTINATION ${NODE_PLUGIN_INSTALL} )
