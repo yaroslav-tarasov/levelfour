@@ -1,2 +1,2 @@
-project(levelfour)
-add_subdirectory(levelfour)
+project(Acuity4D)
+add_subdirectory(Acuity4D)

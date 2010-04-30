@@ -1,4 +1,4 @@
-project(tableviewpanel)
+project(TableViewPanel)
 set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE) 
 SET(CMAKE_DEBUG_POSTFIX _d)
 
@@ -6,52 +6,52 @@ include_directories(
 			${CMAKE_CURRENT_SOURCE_DIR}
 			)
 
-# tableviewpanel
-set( tableviewpanel_h ${tableviewpanel_h}
-			tableviewpanel.h
-			tableviewpanelPlugin.h
+# TableViewPanel
+set( TableViewPanel_h ${TableViewPanel_h}
+			TableViewPanel.h
+			TableViewPanelPlugin.h
 			)
 
-set( tableviewpanel_moc ${tableviewpanel_moc}	
-			tableviewpanel.h
-			tableviewpanelPlugin.h
+set( TableViewPanel_moc ${TableViewPanel_moc}	
+			TableViewPanel.h
+			TableViewPanelPlugin.h
 			)
 
-set( tableviewpanel_ui ${tableviewpanel_ui}
+set( TableViewPanel_ui ${TableViewPanel_ui}
 			TableViewPanel.ui
 			)
 						
-set( tableviewpanel_src ${tableviewpanel_src}	
-			tableviewpanel.cpp
-			tableviewpanelPlugin.cpp
+set( TableViewPanel_src ${TableViewPanel_src}	
+			TableViewPanel.cpp
+			TableViewPanelPlugin.cpp
 			)
 
-set( tableviewpanel_res ${tableviewpanel_res}	
-			tableviewpanel.xml
+set( TableViewPanel_res ${TableViewPanel_res}	
+			TableViewPanel.xml
 			)
 
 # Create moc files		   
-qt4_wrap_cpp(tableviewpanel_cxx ${tableviewpanel_moc})
-qt4_wrap_ui(tableviewpanel_ui_h ${tableviewpanel_ui})
+qt4_wrap_cpp(TableViewPanel_cxx ${TableViewPanel_moc})
+qt4_wrap_ui(TableViewPanel_ui_h ${TableViewPanel_ui})
 
 
 # Create source groups
-source_group("Ui Files" FILES ${tableviewpanel_ui})
-source_group("Moc Files" FILES ${tableviewpanel_cxx})
-source_group("Generated Files" FILES ${tableviewpanel_cxx} ${tableviewpanel_ui_h})
-source_group("Header Files" FILES ${tableviewpanel_h})
-source_group("Resources" FILES ${tableviewpanel_res})
+source_group("Ui Files" FILES ${TableViewPanel_ui})
+source_group("Moc Files" FILES ${TableViewPanel_cxx})
+source_group("Generated Files" FILES ${TableViewPanel_cxx} ${TableViewPanel_ui_h})
+source_group("Header Files" FILES ${TableViewPanel_h})
+source_group("Resources" FILES ${TableViewPanel_res})
 
 # Add header files to sources to make headers visible in Visual Studio
 IF (WIN32)
-  set(tableviewpanel_src ${tableviewpanel_src} ${tableviewpanel_h} ${tableviewpanel_res})
+  set(TableViewPanel_src ${TableViewPanel_src} ${TableViewPanel_h} ${TableViewPanel_res})
 ENDIF(WIN32)
 
 # Create static library
-add_library(tableviewpanel SHARED ${tableviewpanel_src} ${tableviewpanel_cxx} ${tableviewpanel_ui_h} )
+add_library(TableViewPanel SHARED ${TableViewPanel_src} ${TableViewPanel_cxx} ${TableViewPanel_ui_h} )
 
 # Add library dependencies
-target_link_libraries(tableviewpanel
+target_link_libraries(TableViewPanel
 			optimized QtCore4 debug QtCored4
 			optimized QtGui4 debug QtGuid4
 			optimized QtXml4 debug QtXmld4
@@ -63,5 +63,5 @@ target_link_libraries(tableviewpanel
 			)
 
 # Install files
-install( FILES ${tableviewpanel_res} DESTINATION ${PANEL_PLUGIN_INSTALL} )
-install( TARGETS tableviewpanel RUNTIME DESTINATION ${PANEL_PLUGIN_INSTALL} )
+install( FILES ${TableViewPanel_res} DESTINATION ${PANEL_PLUGIN_INSTALL} )
+install( TARGETS TableViewPanel RUNTIME DESTINATION ${PANEL_PLUGIN_INSTALL} )

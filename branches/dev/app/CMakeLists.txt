@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS TRUE)
 cmake_policy(SET CMP0003 NEW)
 
-project(levelfour)
+project(Acuity4D)
 
 # set debug and release, and debug postfix
 #set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE) 

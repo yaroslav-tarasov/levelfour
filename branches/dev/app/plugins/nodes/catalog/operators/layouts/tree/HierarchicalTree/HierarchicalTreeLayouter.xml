@@ -19,11 +19,33 @@ attributes, just a name and a type."/>
 This group contains parameters that have no additional 
 attributes, just a name and a type."/>
     <parameters name="Hierarchical Tree Layouter Parameters">
-      <parameter name="Enumeration" type="Enumeration"/>
-    </parameters>
+      <parameter name="Z Range" type="TextInfo" defaultValue="
+Set the ZRange for the output data. If the initial
+layout is planar (i.e. all z coordinates are zero),
+the coordinates will be evenly spaced from 0.0 to 
+ZRange. The default is zero, which has no effect. "/>
+      <parameter name="Set Z Range" type="Int"/>
+      <parameter name="Angle" type="TextInfo" defaultValue="
+The sweep angle of the tree - this can be between 0 and 360."/>
+      <parameter name="Set Angle" type="Float" size="1" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="180" defaultValue="180" stepSize="5" />
+      <parameter name="Log Spacing Value" type="TextInfo" defaultValue="
+The spacing of tree levels. Levels near zero give more space 
+to levels near the root, while levels near one (the default) 
+create evenly-spaced levels. Levels above one give more 
+space to levels near the leaves. ."/>
+      <parameter name="Set Log Spacing Value" type="Float" size="1" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="2" defaultValue=".8" stepSize=".1"/>
+      <parameter name="Leaf Spacing" type="TextInfo" defaultValue="
+The spacing of leaves. Levels near 1 evenly space leaves 
+with no gaps between subtrees. Levels near zero creates 
+large gaps between subtrees."/>
+      <parameter name="Set Leaf Spacing" type="Float" size="1" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="1" defaultValue=".5" stepSize=".1"/>
+      <parameter name="Distance Array Name" type="TextInfo" defaultValue="
+Set the array to use to determine the distance from the root."/>
+      <parameter name="Set Distance Array Name" type="String"/>
+      <parameter name="Rotation" type="TextInfo" defaultValue="
+The amount of counter-clockwise rotation to apply after the layout. "/>
+      <parameter name="Set Rotation" type="Int"/>    </parameters>
     <!-- input parameters -->
-    <parameter name="Enumeration in" type="Enumeration" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="Enumeration out" type="Enumeration" pin="out" visible="false"/>
   </parameters>
 </nodetype>
