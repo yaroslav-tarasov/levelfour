@@ -295,8 +295,8 @@ void CameraNode::applyPosition ()
 	}
 	m_ogreContainer->updateCopies();
 	
-    // TODO: NILZ: Need for a global update. Not here. Perhaps slider need a redraw connection.
-    //triggerRedraw();
+	// TODO: NILZ: Need for a global update. Not here. Perhaps slider need a redraw connection.
+	//triggerRedraw();
 }
 
 
@@ -480,7 +480,7 @@ void CameraNode::focalLengthChanged ()
     NumberParameter *focalLengthParameter = getNumberParameter("Focal Length");
 	if (m_camera && focalLengthParameter) {
         m_camera->setFocalLength(focalLengthParameter->getValue().toDouble());
-		updateDependentOutputParameters ();
+		updateDependentOutputParameters ();		
 	}
 }
 
@@ -496,6 +496,7 @@ void CameraNode::fieldOfViewChanged ()
 	if (m_camera && fieldOfViewParameter) {
 		m_camera->setFOVy(Ogre::Degree(fieldOfViewParameter->getValue().toDouble()));
 		updateDependentOutputParameters ();
+		triggerRedraw();
 	}
 }
 
@@ -508,11 +509,11 @@ void CameraNode::fieldOfViewChanged ()
 //!
 void CameraNode::horizontalApertureChanged ()
 {
-    NumberParameter *horizontalApertureParameter = getNumberParameter("Horizontal Aperture");
-	if (m_camera && horizontalApertureParameter) {
-        m_camera->setFOVy(Ogre::Radian(horizontalApertureParameter->getValue().toDouble()));
-		updateDependentOutputParameters();
-	}
+ //   NumberParameter *horizontalApertureParameter = getNumberParameter("Horizontal Aperture");
+	//if (m_camera && horizontalApertureParameter) {
+ //       m_camera->setFOVy(Ogre::Radian(horizontalApertureParameter->getValue().toDouble()));
+	//	updateDependentOutputParameters();
+	//}
 }
 
 

@@ -167,8 +167,8 @@ TransformNode::~TransformNode ()
 	if (m_geometrySceneNode) {
         Ogre::SceneManager *sceneManager = m_geometrySceneNode->getCreator();
 		if (sceneManager) {
-            OgreTools::deepDeleteSceneNode(m_geometrySceneNode, sceneManager, true);
-			//sceneManager->destroySceneNode(m_geometrySceneNode);
+            //OgreTools::deepDeleteSceneNode(m_geometrySceneNode, sceneManager, true);
+			sceneManager->destroySceneNode(m_geometrySceneNode);
 		}
     }
 
@@ -225,7 +225,12 @@ TransformNode::~TransformNode ()
 //!
 Ogre::SceneNode * TransformNode::getSceneNode ()
 {
-    QVariant outputGeometryValue = getValue(OutputGeometryParameterName, true);
+	// NILZ: HACK: TransformNode: Dirty the parameter before evaluation so processing function will be executed.
+	Parameter *parameter = getParameter(OutputGeometryParameterName);
+	if (parameter)
+		parameter->setDirty(true);
+    
+	QVariant outputGeometryValue = getValue(OutputGeometryParameterName, true);
     if (outputGeometryValue.isValid()) {
         Ogre::SceneNode *sceneNode = outputGeometryValue.value<Ogre::SceneNode *>();
         return sceneNode;
@@ -306,8 +311,8 @@ void TransformNode::processOutputGeometry ()
     //    Log::warning(QString("Could not convert value of parameter \"%1\" to an Ogre::SceneNode pointer.").arg(name), "Node::getSceneNodeValue");
     //    return 0;
     //}
-    // destroy all scene nodes and objects in the render scene
-    OgreTools::deepDeleteSceneNode(m_geometrySceneNode, m_sceneManager);
+
+	m_geometrySceneNode->removeAllChildren();
     getValue(InputGeometryParameterName);
     Parameter *geometryParameter = getParameter(InputGeometryParameterName);
     QVariantList valueList = geometryParameter->getValueList();
@@ -315,14 +320,30 @@ void TransformNode::processOutputGeometry ()
     for (int i = 0; i < valueList.size(); ++i) {
         if (valueList[i].canConvert<Ogre::SceneNode *>()) {
             Ogre::SceneNode *inputGeometrySceneNode = valueList[i].value<Ogre::SceneNode *>();
-            Ogre::SceneNode *inputGeometrySceneNodeCopy = 0;           
-            OgreTools::deepCopySceneNode(inputGeometrySceneNode, inputGeometrySceneNodeCopy, QString("%1GeometrySceneNode").arg(m_name), m_sceneManager);
-            if (inputGeometrySceneNodeCopy) {
-                m_geometrySceneNode->addChild(inputGeometrySceneNodeCopy);
+            if (inputGeometrySceneNode) {
+                m_geometrySceneNode->addChild(inputGeometrySceneNode);
                 valid = true;
             }
         }
     }
+
+ //   // destroy all scene nodes and objects in the render scene
+	//OgreTools::deepDeleteSceneNode(m_geometrySceneNode, m_sceneManager);
+ //   getValue(InputGeometryParameterName);
+ //   Parameter *geometryParameter = getParameter(InputGeometryParameterName);
+ //   QVariantList valueList = geometryParameter->getValueList();
+ //   bool valid = false;
+ //   for (int i = 0; i < valueList.size(); ++i) {
+ //       if (valueList[i].canConvert<Ogre::SceneNode *>()) {
+ //           Ogre::SceneNode *inputGeometrySceneNode = valueList[i].value<Ogre::SceneNode *>();
+ //           Ogre::SceneNode *inputGeometrySceneNodeCopy = 0;           
+ //           OgreTools::deepCopySceneNode(inputGeometrySceneNode, inputGeometrySceneNodeCopy, QString("%1GeometrySceneNode").arg(m_name), m_sceneManager);
+ //           if (inputGeometrySceneNodeCopy) {
+ //               m_geometrySceneNode->addChild(inputGeometrySceneNodeCopy);
+ //               valid = true;
+ //           }
+ //       }
+ //   }
 
     if (valid)
         setValue(OutputGeometryParameterName, m_geometrySceneNode);

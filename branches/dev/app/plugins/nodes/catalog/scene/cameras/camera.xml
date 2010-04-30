@@ -13,8 +13,8 @@
 <nodetype name="Camera" category="Scene" color="109, 158, 255" plugin="camera.dll">
   <parameters>
     <parameters name="Transformation">
-      <parameter name="Position" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" defaultValue="0, 0, 0" stepSize="0.25" pin="in" selfEvaluating="true"/>
-      <parameter name="úseRadians" type="Bool" defaultValue="false"/>
+      <parameter name="Position" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-10000" maxValue="10000" defaultValue="0, 0, 0" stepSize="0.01" pin="in" selfEvaluating="true"/>
+      <parameter name="useRadians" type="Bool" defaultValue="false"/>
       <parameter name="Orientation" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-360" maxValue="360" defaultValue="0, 0, 0" pin="in" selfEvaluating="true"/>
     </parameters>
     <parameters name="Render Resolution">
@@ -58,11 +58,11 @@
       <parameter name="Aspect Ratio" type="TextInfo"/>
     </parameters>
     <parameters name="Frustum">
-      <parameter name="Focal Length" type="Float" defaultValue="24.0"/>
-      <parameter name="Field of View" type="Float" defaultValue="66.0" minValue="0" maxValue="179,99"/>
+      <parameter name="Focal Length" type="Float" defaultValue="24.0" minValue="0" maxValue="2000"/>
+      <parameter name="Field of View" type="Float" defaultValue="66.0" minValue="0" maxValue="179,99" stepSize="0.001" pin="in" selfEvaluating="true"/>
       <parameter name="Horizontal Aperture" type="Float" defaultValue="20.0"/>
       <parameter name="Near Clipping Plane" type="Float" defaultValue="0.1" minValue="0.001" maxValue="100.0" stepSize="0.01"/>
-	  <parameter name="Far Clipping Plane" type="Float" defaultValue="100.0" minValue="1.0" maxValue="1000.0" stepSize="0.1" pin="out"/>
+	  <parameter name="Far Clipping Plane" type="Float" defaultValue="10000.0" minValue="1.0" maxValue="10000.0" stepSize="0.1" pin="out"/>
 	</parameters>
 	<parameter name="Screen Space Projection Matix(4x4)" type="Float" size="16" defaultValue="1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0" visible="false" pin="out" />
   <parameter name="World Matix(4x4)" type="Float" size="16" defaultValue="1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0" visible="false" pin="out" />
