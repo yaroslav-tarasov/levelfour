@@ -185,12 +185,13 @@ void AnimationClipNode::processAnimationParameter()
                 time = 0.0;
             if (time > 100000.0)
                 time = 100000.0;
-            time = (float) time / 100.0 * length;
+			double start = 0.0; 
+		    start = getDoubleValue("start");	           
+			time = (float) time / 25.0;
         } else {
             time = m_progress * length;
         }
-
-        double weight = getDoubleValue("weight", true);
+		double weight = getDoubleValue("weight", true);
 
         if (subParameterMap.size() == 6) {
             QMap<QString, double>::iterator subIter = subParameterMap.begin();
@@ -208,7 +209,7 @@ void AnimationClipNode::processAnimationParameter()
                         Ogre::TransformKeyFrame interpKeyFrame(NULL, time);
                         Ogre::TimeIndex timeIndex(time);
                         track->getInterpolatedKeyFrame(timeIndex, &interpKeyFrame);
-                        progress = interpKeyFrame.getScale().x * weight;
+						progress = interpKeyFrame.getScale().x * weight;
                     }
                 }
                 subParameterList.append(QVariant(progress));
@@ -519,9 +520,23 @@ bool AnimationClipNode::loadAnimationClip ()
         }
         m_animCurves.erase(animCurvesIter);
     }
+	double animClipStart = 0.0;
+    animCurvesIter = m_animCurves.find("Start");
+    if (animCurvesIter != m_animCurves.end()) {
+        AnimCurve *lengthAnimCurve = animCurvesIter.value();
+        if (lengthAnimCurve) {
+            QMap<double, double> keyMap = lengthAnimCurve->keys;
+            QMap<double, double>::iterator keyMapIterator = keyMap.begin();
+            if (keyMapIterator != keyMap.end()) {
+                animClipStart = keyMapIterator.key();
+            }
+        }
+        m_animCurves.erase(animCurvesIter);
+    }
 
     setValue("length", animClipLength);
-    createAnimationCurves("AnimationClip", animClipLength);
+	setValue("start", animClipStart);
+    createAnimationCurves("AnimationClip", animClipStart + animClipLength);
 
     Log::info(QString("Animation clip file \"%1\" loaded.").arg(filename), "AnimationClipNode::loadAnimationClip");
     return true;

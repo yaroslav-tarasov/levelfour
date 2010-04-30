@@ -98,6 +98,16 @@ void SimpleBlendNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialP
                     setShaderParameter(fpParams, "op", (Ogre::Real) 3.0);
 				else if (value == "Stencil")
                     setShaderParameter(fpParams, "op", (Ogre::Real) 4.0);
+				else if (value == "MultiplyWithAlpha")
+                    setShaderParameter(fpParams, "op", (Ogre::Real) 5.0);
+				else if (value == "BlendWithAlpha")
+                    setShaderParameter(fpParams, "op", (Ogre::Real) 6.0);
+				else if (value == "ShowAlpha")
+                    setShaderParameter(fpParams, "op", (Ogre::Real) 7.0);
+				else if (value == "InvertAlpha")
+                    setShaderParameter(fpParams, "op", (Ogre::Real) 8.0);
+				else if (value == "ClipBlack")
+                    setShaderParameter(fpParams, "op", (Ogre::Real) 9.0);
             }
         }
 

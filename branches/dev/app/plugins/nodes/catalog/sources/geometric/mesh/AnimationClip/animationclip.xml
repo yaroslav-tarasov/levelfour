@@ -14,6 +14,7 @@
   <parameters>
     <parameter name="Animation Clip File" type="Filename" filter="Animation Files (*.anim)"/>
     <parameter name="length" type="Float" defaultValue="1.0" minValue="0.0" maxValue="100.0"/>
+    <parameter name="start" type="Float" defaultValue="1.0" minValue="0.0" maxValue="100.0"/>
     <parameter name="externallyControlled" type="Bool" defaultValue="false"/>
     <parameter name="splineAnimation" type="Bool" defaultValue="true"/>
     <parameter name="play" type="Bool" defaultValue="false" multiplicity="1" pin="in"/>

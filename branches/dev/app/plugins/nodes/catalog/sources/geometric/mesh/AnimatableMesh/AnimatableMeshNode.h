@@ -196,6 +196,11 @@ private slots: //
     //!
     void setMaterialParameter ();
 
+	//!
+    //! Texture Reload Function. 
+    //!
+    void reloadTexture ();
+
     //!
     //! Check existing material for BRDF shader and set the loaded light textures.
     //! 
