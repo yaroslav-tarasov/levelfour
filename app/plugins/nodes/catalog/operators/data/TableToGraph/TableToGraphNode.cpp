@@ -1,50 +1,10 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of Acuity4D
-research.animationsinstitut.de
-sourceforge.net/projects/frapper
-
-Copyright (c) 2008-2009 Filmakademie Baden-Wuerttemberg, Institute of Animation 
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU Lesser General Public License as published by the Free Software
-Foundation; version 2.1 of the License.
-
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License along with
-this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-Place - Suite 330, Boston, MA 02111-1307, USA, or go to
-http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
------------------------------------------------------------------------------
-*/
-
-/*
------------------------------------------------------------------------------
 file "TableToGraphNode.cpp"
 brief Implementation file for TableToGraphNode class.
 
 version    1.0
 date       18.05.2009 (last updated)
-
-Description
------------
-
-
-Parameters
-----------
-      
-Returns
--------
-
-    
-Notes
------
-
-Reference
----------
 
 -----------------------------------------------------------------------------
 */
@@ -55,6 +15,7 @@ Reference
 #include "VTKTreeParameter.h"
 #include "TableToGraphNode.h"
 #include "vtkTableToGraph.h"
+#include "vtkMutableDirectedGraph.h"
 #include "vtkGraph.h"
 #include "vtkTree.h"
 #include "vtkVertexListIterator.h"
@@ -193,7 +154,6 @@ void TableToGraphNode::processOutputVTKGraph ()
 void TableToGraphNode::processOutputVTKTree ()
 {
 	/* 
-	
 	To construct a tree, use vtkMutableDirectedGraph, 
 	with directed edges which point from the parent to the child, 
 	then use CheckedShallowCopy to set the structure to a vtkTree.
@@ -204,7 +164,10 @@ void TableToGraphNode::processOutputVTKTree ()
 	an incompatible structure, the function returns false. This allows you to 
 	programmatically check structure compatibility without causing error messages.
 
+	This is the basic code...
 	*/
+	m_graph = vtkMutableDirectedGraph::New();
+	m_tree->ShallowCopy(m_graph);
 
 }
 
