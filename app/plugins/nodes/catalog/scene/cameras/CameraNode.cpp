@@ -96,7 +96,7 @@ CameraNode::CameraNode ( const QString &name, ParameterGroup *parameterRoot ) :
     outputCameraParameter->addAffectingParameter(getParameter("Render Width"));
     outputCameraParameter->addAffectingParameter(getParameter("Render Height"));
     outputCameraParameter->addAffectingParameter(getParameter("Focal Length"));
-    outputCameraParameter->addAffectingParameter(getParameter("Field of View"));
+    //outputCameraParameter->addAffectingParameter(getParameter("Field of View"));
     outputCameraParameter->addAffectingParameter(getParameter("Horizontal Aperture"));
     outputCameraParameter->addAffectingParameter(getParameter("Near Clipping Plane"));
     outputCameraParameter->addAffectingParameter(getParameter("Far Clipping Plane"));
