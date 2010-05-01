@@ -24,6 +24,7 @@ set( CubeSource_src ${CubeSource_src}
 
 set( CubeSource_res ${CubeSource_res}	
 			CubeSource.xml
+			Cube.mesh
 			)
 
 # Create moc files		   

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="Plane" category="Primitives" color="40, 40, 40" plugin="PlaneSource.dll">
+  <parameters>
+    <parameters name="Plane Parameters">
+      <parameter name="Translate" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-100" maxValue="100" stepSize="0.05"/>
+      <parameter name="Rotate" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-360" maxValue="360" stepSize="0.01"/>
+      <parameter name="Scale" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="-10" maxValue="10" stepSize="0.01" defaultValue="1, 1, 1"/>
+    </parameters>
+    <!-- input parameters -->
+    <!-- output parameters -->
+    <parameter name="Primitive" type="Geometry" pin="out" visible="false"/>
+  </parameters>
+</nodetype>

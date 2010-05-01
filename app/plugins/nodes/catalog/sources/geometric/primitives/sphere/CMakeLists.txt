@@ -24,6 +24,7 @@ set( SphereSource_src ${SphereSource_src}
 
 set( SphereSource_res ${SphereSource_res}	
 			SphereSource.xml
+			Sphere.mesh
 			)
 
 # Create moc files		   
