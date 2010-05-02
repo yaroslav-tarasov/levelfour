@@ -1,0 +1,11 @@
+project(primitives)
+
+add_subdirectory(cone)
+add_subdirectory(cube)
+#add_subdirectory(cylinder)
+#add_subdirectory(disc)
+#add_subdirectory(plane)
+#add_subdirectory(pyramid)
+#add_subdirectory(ring)
+#add_subdirectory(sphere)
+#add_subdirectory(spindle)
