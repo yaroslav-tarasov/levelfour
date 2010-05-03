@@ -48,20 +48,14 @@ VTKGraphLayoutNode::VTKGraphLayoutNode ( const QString &name, ParameterGroup *pa
     inputVTKGraphParameter->setPinType(Parameter::PT_Input);
     inputVTKGraphParameter->setSelfEvaluating(true);
     parameterRoot->addParameter(inputVTKGraphParameter);
-	connect(inputVTKGraphParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTable()));
+	connect(inputVTKGraphParameter, SIGNAL(dirtied()), SLOT(processParameters()));
 
     // create the mandatory vtk table output parameter 
 	VTKTableParameter * outputVTKTableParameter = new VTKTableParameter(m_ouputVTKTableParameterName);
     outputVTKTableParameter->setPinType(Parameter::PT_Output);
     parameterRoot->addParameter(outputVTKTableParameter);
 
-	// link the input parameter to the output processing
-    if (outputVTKTableParameter) 
-	{
-		outputVTKTableParameter->setProcessingFunction(SLOT(processOutputVTKTable()));
-        outputVTKTableParameter->addAffectingParameter(inputVTKGraphParameter);
-	}
-    INC_INSTANCE_COUNTER
+	INC_INSTANCE_COUNTER
 }
 
 
@@ -82,17 +76,20 @@ VTKGraphLayoutNode::~VTKGraphLayoutNode ()
 //!
 //! Processes the node's input data to generate the node's output table.
 //!
-void VTKGraphLayoutNode::processOutputVTKTable()
+void VTKGraphLayoutNode::refreshOutput()
 {
-	if (updateInputGraph() != 0)
+	if (!m_inGraph)
+	{
+	    Log::info(QString("No graph defined."), "VTKGraphLayoutNode::~refreshOutput");
 		return;
+	}
 
 	vtkGraphLayout *layout = vtkGraphLayout::New();
 	layout->SetInput( m_inGraph );
 
 	if (!m_layoutInstance)
 	{
-	    Log::info(QString("No layout strategy defined."), "VTKGraphLayoutNode::~processOutputVTKTable");
+	    Log::info(QString("No layout strategy defined."), "VTKGraphLayoutNode::~refreshOutput");
 		return;
 	}
 
@@ -104,8 +101,11 @@ void VTKGraphLayoutNode::processOutputVTKTable()
 	// process the output vtk table
 	VTKTableParameter * outputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_ouputVTKTableParameterName));
 
-	if (outputParameter) 
+	if (outputParameter && outputParameter->getVTKTable() != m_outputTable) 
+	{
 		outputParameter->setVTKTable(m_outputTable);
+		outputParameter->propagateDirty(0);
+	}
 }
 
 vtkTable * VTKGraphLayoutNode::createTableFromGraph(vtkGraph *graph)
@@ -153,12 +153,12 @@ vtkTable * VTKGraphLayoutNode::createTableFromGraph(vtkGraph *graph)
 //!
 //! Update the input graph
 //!
-int VTKGraphLayoutNode::updateInputGraph()
+bool VTKGraphLayoutNode::updateInputGraph()
 {
 	// load the input vtk parameter 
 	VTKGraphParameter * inputParameter = dynamic_cast<VTKGraphParameter*>(getParameter(m_inputVTKGraphName));
 	if (!inputParameter->isConnected())
-		return 1;
+		return false;
 
 	// get the source parameter (output of source node) connected to the input parameter
 	VTKGraphParameter * sourceParameter = dynamic_cast<VTKGraphParameter*>(inputParameter->getConnectedParameter());
@@ -167,5 +167,5 @@ int VTKGraphLayoutNode::updateInputGraph()
 	m_inGraph = sourceParameter->getVTKGraph();
 	inputParameter->setVTKGraph(m_inGraph);
 
-	return (m_inGraph == 0);
+	return (m_inGraph != 0);
 }
