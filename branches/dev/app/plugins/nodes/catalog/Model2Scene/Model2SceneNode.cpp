@@ -156,7 +156,8 @@ void Model2SceneNode::processScene()
 
 	vtkTable * xyzTable = inputParameter->getVTKTable();
 
-	if (!m_sceneNode && !createSceneNode())
+	if (!m_sceneNode)
+		createSceneNode();
 
 
 	if (!m_entity || !xyzTable || !m_sceneNode)
