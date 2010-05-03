@@ -49,14 +49,20 @@ protected slots: //
 
     //!
     //! Processes the node's input data to generate the node's output table.
+	//! This is layout implementation dependent.
     //!
-    void processOutputVTKTable();
+	virtual void processParameters() { refreshOutput();}
 
     //!
-    //! Update the input graph (called for example when input parameters have been dirtied)
-    //! return It returns 0 if it succeeds, otherwise 1
+    //! Create the updated output
     //!
-    int updateInputGraph ();
+    void refreshOutput();
+
+	//!
+    //! Update the input graph (called for example when input parameters have been dirtied)
+    //! return True if it succeeds, otherwise 1
+    //!
+    bool updateInputGraph ();
 
 protected: // functions
 
