@@ -12,11 +12,40 @@
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
 <nodetype name="MaterialMapper" category="Mappers" color="40, 40, 40" plugin="materialMapper.dll">
   <parameters>
-    <parameter name="Description" type="TextInfo" defaultValue="The closeness centrality of a vertex measures how easily other vertices 
- can be reached from it (or the other way: how easily it can be reached 
- from the other vertices)."/>
-    <parameters name="Material Mapper Settings">
-      <parameter name="Set Select Material" type="TextInfo" defaultValue="."/>
+    <parameter name="Description" type="TextInfo" defaultValue="..."/>
+    <parameters name="Attributes">
+      <parameter name="LOD Strategy" type="TextInfo" defaultValue="."/>
+	<parameter name="LOD Values" type="TextInfo" defaultValue="."/>
+	<parameter name="Receive Shadows" type="TextInfo" defaultValue="."/>
+	<parameter name="Transparency Casts Shadows" type="TextInfo" defaultValue="."/>
+    </parameters>
+    <parameters name="Techniques">
+      <parameter name="Scheme" type="TextInfo" defaultValue="."/>
+	<parameter name="LOD Index" type="TextInfo" defaultValue="."/>
+	<parameter name="Shadow Caster Material" type="TextInfo" defaultValue="."/>
+	<parameter name="Shadow Receiver Material" type="TextInfo" defaultValue="."/>
+	<parameter name="GPU Vendor Rule" type="TextInfo" defaultValue="."/>
+	<parameter name="GPU Device Rule" type="TextInfo" defaultValue="."/>
+    </parameters>
+    <parameters name="Passes">
+      <parameter name="Ambient" type="TextInfo" defaultValue="."/>
+	<parameter name="Diffuse" type="TextInfo" defaultValue="."/>
+	<parameter name="Specular" type="TextInfo" defaultValue="."/>
+	<parameter name="Emissive" type="TextInfo" defaultValue="."/>
+    </parameters>
+    <parameters name="Texture Units">
+      <parameter name="Texture" type="TextInfo" defaultValue="."/>
+	<parameter name="Animation Texture" type="TextInfo" defaultValue="."/>
+	<parameter name="Cubic Texture" type="TextInfo" defaultValue="."/>
+	<parameter name="Binding Type" type="TextInfo" defaultValue="."/>
+	<parameter name="Content Type" type="TextInfo" defaultValue="."/>
+	<parameter name="Texture Address Mode" type="TextInfo" defaultValue="."/>
+	<parameter name="Texture Border Color" type="TextInfo" defaultValue="."/>
+	<parameter name="Filtering" type="TextInfo" defaultValue="."/>
+	<parameter name="Color Operation" type="TextInfo" defaultValue="."/>
+	<parameter name="Environment Map" type="TextInfo" defaultValue="."/>
+	<parameter name="Rotate" type="TextInfo" defaultValue="."/>
+	<parameter name="Scale" type="TextInfo" defaultValue="."/>
     </parameters>
     <!-- input parameters -->
     <parameter name="Table" type="VTKTable" pin="in" visible="false"/>
