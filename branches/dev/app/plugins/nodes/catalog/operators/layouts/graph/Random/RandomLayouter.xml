@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="RandomLayouter" category="Graph" color="40, 40, 40" plugin="RandomLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+Assigns points to the vertices of a 
+graph randomly within a bounded range."/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+None."/>
+    <parameters name="Random Layouter Parameters">
+      <parameter name="SetRandomSeed" type="Int"/>
+      <parameter name="SetThreeDimensionalLayout" type="Int"/>
+    </parameters>
+    <!-- input parameters -->
+    <!-- output parameters -->
+  </parameters>
+</nodetype>

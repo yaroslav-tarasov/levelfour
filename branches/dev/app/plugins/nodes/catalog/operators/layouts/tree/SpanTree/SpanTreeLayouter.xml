@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="SpanTreeLayouter" category="Tree" color="40, 40, 40" plugin="SpanTreeLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+SpanTreeLayout is a strategy for drawing directed graphs
+that works by first extracting a spanning tree 
+(more accurately, a spanning forest), and using 
+this both to position graph vertices and to plan 
+the placement of non-tree edges."/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+SpanTreeLayout is based on an approach to 3D graph 
+layout first developed as part of the tulip tool by
+Dr. David Auber at LaBRI, U.Bordeaux."/>
+    <parameters name="Span Tree Layouter Parameters">
+      <parameter name="Depth First Spanning Tree" type="TextInfo" defaultValue="
+If set, base the layout on a depth-first spanning tree, 
+rather than the default breadth-first spanning tree. 
+Switching between DFT and BFT may significantly change
+the layout, and choice must be made on a per-graph basis.
+"/>
+      <parameter name="Set Depth First Spanning Tree" type="Bool"/>
+    </parameters>
+    <!-- input parameters -->
+    <!-- output parameters -->
+  </parameters>
+</nodetype>

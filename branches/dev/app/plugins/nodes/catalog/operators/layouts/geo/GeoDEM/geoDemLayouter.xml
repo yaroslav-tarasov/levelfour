@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="GeoDEM Layouter" category="Geo" color="40, 40, 40" plugin="geoDemLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+This group contains parameters that have no additional 
+attributes, just a name and a type."/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+This group contains parameters that have no additional 
+attributes, just a name and a type."/>
+    <parameters name="Geo DEM Layouter Parameters">
+      <parameter name="Enumeration" type="Enumeration"/>
+    <!-- input parameters -->
+    <!-- output parameters -->
+  </parameters>
+</nodetype>
