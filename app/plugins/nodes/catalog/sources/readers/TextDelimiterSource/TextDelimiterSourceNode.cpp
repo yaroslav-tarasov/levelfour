@@ -111,7 +111,7 @@ bool TextDelimiterSourceNode::loadFile()
 
 	// create and load new file
 	m_dtxt = vtkDelimitedTextReader::New();
-	m_dtxt->SetFileName(filename.toLatin1().constData());
+	m_dtxt->SetFileName(filename.toLatin1());
 	m_dtxt->Update();
 	updateTable();
 

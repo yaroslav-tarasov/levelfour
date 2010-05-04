@@ -12,7 +12,7 @@
 #include "VTKTableParameter.h"
 #include "vtkVariantArray.h"
 #include "vtkDoubleArray.h"
-#include "vtkStringArray.h"
+#include "vtkIdTypeArray.h"
 
 INIT_INSTANCE_COUNTER(Model2SceneNode)
 
@@ -164,7 +164,7 @@ void Model2SceneNode::processScene()
 		return;
 
 	//Get columns named "NodeID", "X", "Y" and "Z"
-	vtkStringArray *colNodeId = dynamic_cast<vtkStringArray*>(xyzTable->GetColumnByName("NodeId"));
+	vtkIdTypeArray *colNodeId = dynamic_cast<vtkIdTypeArray*>(xyzTable->GetColumnByName("NodeId"));
 	vtkDoubleArray *colX = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName("X"));
 	vtkDoubleArray *colY = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName("Y"));
 	vtkDoubleArray *colZ = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName("Z"));
@@ -172,12 +172,14 @@ void Model2SceneNode::processScene()
 	destroyAllAttachedMovableObjects(m_sceneNode);
 	destroyAllChildren(m_sceneNode);
 
+	Ogre::String idPrefix(QString(m_name + ":").toStdString());
+
 	Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 
 	for (int i=0; i<xyzTable->GetNumberOfRows(); i++)
 	{
-		vtkStdString colIDValue(colNodeId->GetValue(i));
-		Ogre::String nodeID(QString(m_name + ":" + colIDValue.c_str()).toStdString());
+		int colIDValue = colNodeId->GetValue(i);
+		Ogre::String nodeID(idPrefix + Ogre::StringConverter::toString(colIDValue));
 
 		// create new scene node for each item
 		Ogre::SceneNode *sceneItem = sceneManager->createSceneNode(nodeID);

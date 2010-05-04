@@ -16,6 +16,16 @@
 #include "vtkTable.h"
 #include <QString>
 
+#define LAYOUT_TYPE(className) \
+	typedef className GraphLayout;
+
+//!
+//! Macro definition that force the dynamic cast of the specific layout 
+//! to the instance of the graph layout algorithm 
+//!
+#define M_LAYOUT \
+	dynamic_cast<GraphLayout*>(m_layoutInstance)
+
 //!
 //! Class for a VTKTreeLayoutNode
 //!
