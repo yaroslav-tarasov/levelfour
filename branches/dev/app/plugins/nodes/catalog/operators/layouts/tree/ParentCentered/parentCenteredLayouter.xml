@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="ParentCenteredLayouter" category="Layouts" color="40, 40, 40" plugin="parentCenteredLayouter.dll">
+  <parameters>
+    <parameter name="Description:" type="TextInfo" defaultValue="
+A static layout algorithm that produces drawings of graphs 
+where the root’s children are evenly spaced on a circle centered 
+at the focus node and the children of nonroot nodes are evenly 
+spaced on a semicircle emanating from their parent.  From an 
+algorithmic perspective, each node’s position depends only on 
+its parent and siblings, not on its entire generation in 
+contrast to the radial tree approach.
+"/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+Andrew Pavlo and Christopher Homan and Jonathan Schull, 
+A parent-centered radial layout algorithm for 
+interactive graph visualization and animation, 
+Technical Report, http://arxiv.org/abs/cs/0606007, 
+arXiv.org, June 2006.
+"/>
+    <parameters name="Parent Centered Layouter Parameters">
+      <parameter name="Temp" type="TextInfo"/>
+    </parameters>
+    <!-- input parameters -->
+    <parameter name="Tree" type="Enumeration" pin="in" visible="false"/>
+    <!-- output parameters -->
+    <parameter name="Table" type="Enumeration" pin="out" visible="false"/>
+  </parameters>
+</nodetype>
