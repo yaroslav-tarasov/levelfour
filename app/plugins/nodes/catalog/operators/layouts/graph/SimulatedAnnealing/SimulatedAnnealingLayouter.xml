@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         test.xml
+  Description:  Contains the XML description of Test nodes.
+  Author:       Stefan Habel <stefan.habel@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="SimulatedAnnealingLayouter" category="Layouts" color="40, 40, 40" plugin="SimulatedAnnealingLayouter.dll">
+  <parameters>
+    <parameter name="Description" type="TextInfo" defaultValue="
+Lays out a graph in 2D or 3D using a force-directed algorithm. 
+The user may specify whether to layout the graph randomly initially, 
+the bounds, the number of dimensions (2 or 3), and the cool-down rate."/>
+    <parameter name="Reference" type="TextInfo" defaultValue="
+Ron Davidson, David Harel: 
+Drawing Graphs Nicely Using Simulated Annealing. 
+ACM Transactions on Graphics 15(4), pp. 301-331, 1996. 
+"/>
+    <parameters name="Simulated Annealing Layouter Parameters">
+      <parameter name="SetRandomSeed" type="Float"/>
+      <parameter name="SetMaxNumberOfIterations" type="Int"/>
+      <parameter name="SetIterationsPerLayout" type="Int"/>
+      <parameter name="SetInitialTemperature" type="Float"/>
+      <parameter name="SetCoolDownRate" type="Int"/>
+      <parameter name="SetThreeDimensionalLayout" type="Int"/>
+      <parameter name="SetRandomInitialPoints" type="Int"/>
+    </parameters>
+    <!-- input parameters inline -->
+    <!-- output parameters inline -->
+  </parameters>
+</nodetype>
