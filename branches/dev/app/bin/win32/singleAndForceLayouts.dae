@@ -4,18 +4,31 @@
 		<contributor>
 			<authoring_tool>Filmakademie Application Framework</authoring_tool>
 		</contributor>
-		<created>2010-05-03T11:29:14Z</created>
-		<modified>2010-05-03T11:29:14Z</modified>
+		<created>2010-05-04T16:53:25Z</created>
+		<modified>2010-05-04T16:53:25Z</modified>
 		<unit meter="0.01"/>
 		<up_axis>Y_UP</up_axis>
 	</asset>
 	<library_visual_scenes>
 		<visual_scene id="RootNode" name="RootNode">
+			<node id="clusteringLayouter">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="ClusteringLayouter" position="-66 69">
+							<frapper_parameters>
+								<frapper_group name="Clustering Layouter Parameters"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
 			<node id="forceDirectedLayouter">
 				<extra>
 					<technique profile="frapper">
 						<frapper_node type="ForceDirectedLayouter" position="49 40">
-							<frapper_parameters/>
+							<frapper_parameters>
+								<frapper_group name="ForceDirected Layouter Parameters"/>
+							</frapper_parameters>
 						</frapper_node>
 					</technique>
 				</extra>
@@ -26,6 +39,7 @@
 						<frapper_node type="Model2Scene" position="175 -83" stageIndex="2" isViewed="1">
 							<frapper_parameters>
 								<frapper_parameter name="Geometry File" value="C:/L4/FP/app/bin/win32/scenes/cube2.mesh" state="true"/>
+								<frapper_parameter name="Size" value="0.0999999999999997" state="true"/>
 							</frapper_parameters>
 						</frapper_node>
 					</technique>
@@ -34,9 +48,22 @@
 			<node id="model2Scene2">
 				<extra>
 					<technique profile="frapper">
-						<frapper_node type="Model2Scene" position="262 -11" stageIndex="1" isViewed="1">
+						<frapper_node type="Model2Scene" position="262 -11" stageIndex="1" isViewed="0">
 							<frapper_parameters>
 								<frapper_parameter name="Geometry File" value="C:/L4/FP/app/bin/win32/scenes/cube.mesh" state="true"/>
+								<frapper_parameter name="Size" value="0.01" state="true"/>
+							</frapper_parameters>
+						</frapper_node>
+					</technique>
+				</extra>
+			</node>
+			<node id="model2Scene3">
+				<extra>
+					<technique profile="frapper">
+						<frapper_node type="Model2Scene" position="215 65" stageIndex="1" isViewed="1">
+							<frapper_parameters>
+								<frapper_parameter name="Geometry File" value="C:/L4/Acuity4D/bin/win32/scenes/cube2.mesh" state="true"/>
+								<frapper_parameter name="Size" value="0.7" state="true"/>
 							</frapper_parameters>
 						</frapper_node>
 					</technique>
@@ -56,7 +83,7 @@
 					<technique profile="frapper">
 						<frapper_node type="tableToGraph" position="-100 -50">
 							<frapper_parameters>
-								<frapper_group name="Attribute selection"/>
+								<frapper_group name="Table To Graph Parameters"/>
 								<frapper_parameter name="To" value="3" state="true"/>
 							</frapper_parameters>
 						</frapper_node>
@@ -82,6 +109,8 @@
 					<frapper_connection sourceNode="single-Cycle" sourceParameter="VTKTableOutput" targetNode="model2Scene"/>
 					<frapper_connection sourceNode="tableToGraph" sourceParameter="VTKGraphOutput" targetNode="forceDirectedLayouter" targetParameter="VTKGraphInput"/>
 					<frapper_connection sourceNode="forceDirectedLayouter" sourceParameter="VTKTableOutput" targetNode="model2Scene2"/>
+					<frapper_connection sourceNode="tableToGraph" sourceParameter="VTKGraphOutput" targetNode="clusteringLayouter" targetParameter="VTKGraphInput"/>
+					<frapper_connection sourceNode="clusteringLayouter" sourceParameter="VTKTableOutput" targetNode="model2Scene3"/>
 				</technique>
 			</extra>
 		</visual_scene>

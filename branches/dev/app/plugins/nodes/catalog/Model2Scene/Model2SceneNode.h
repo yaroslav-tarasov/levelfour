@@ -101,6 +101,11 @@ private: // functions
     //!
 	bool createSceneNode();
 
+	//!
+    //! Resize nodes.
+    //!
+	void resizeNodes(Ogre::SceneNode* i_pSceneNode);
+	
 private slots: //
 
     //!
@@ -108,6 +113,11 @@ private slots: //
     //!
     void geometryFileChanged ();
 
+    //!
+    //! Change size scale of the entity.
+    //!
+    void sizeChanged();
+	
 private: // data
 
     //!
@@ -134,6 +144,11 @@ private: // data
     //! The name of the input vtk table parameter.
     //!
     QString m_inputVTKTableParameterName;
+
+    //!
+    //! The size scale of the entity.
+    //!
+	Ogre::Vector3 m_size;
 };
 
 
