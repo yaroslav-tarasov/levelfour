@@ -61,6 +61,14 @@ ClusteringLayouterNode::~ClusteringLayouterNode ()
     Log::info(QString("ClusteringLayouterNode destroyed."), "ClusteringLayouterNode::~ClusteringLayouterNode");
 }
 
+void ClusteringLayouterNode::processParameters()
+{
+	if (!updateInputGraph())
+		return;
+	
+	refreshOutput();
+}
+
 //!
 //! Set the layout properties
 //!

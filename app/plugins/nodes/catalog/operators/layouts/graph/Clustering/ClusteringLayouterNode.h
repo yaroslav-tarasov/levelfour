@@ -41,6 +41,9 @@ public: // constructors and destructors
     //!
     virtual ~ClusteringLayouterNode ();
 
+protected slots: //
+	virtual void processParameters();
+
 private slots: //
 
     //!
