@@ -50,20 +50,10 @@ private slots: //
     //!
     void processOutputVTKGraph ();
 
-	//!
-    //! Processes the node's input data to generate the node's output table.
-    //!
-    void processOutputVTKTree ();
-
     //!
     //! Update the graph (called for example when parameters change)
     //!
     void updateGraph ();
-
-	//!
-    //! Update the graph (called for example when parameters change)
-    //!
-    void updateTree ();
 
     //!
     //! Update the input table 
@@ -82,11 +72,6 @@ private:
     //!
     QString m_outputVTKGraphName;
 
-	   //!
-    //! The name of the output vtk Tree parameter.
-    //!
-    QString m_outputVTKTreeName;
-
     //!
     //! The parameters that defines the edgeFrom/To and vertices for the graph.
     //!
@@ -101,12 +86,6 @@ private:
     //! The resulting graph
     //!
 	vtkGraph * m_graph;
-
-	//!
-    //! The tree output in cases of Directed Graph and compatible structure
-    //!
-	vtkTree * m_tree;
-	
 };
 
 
