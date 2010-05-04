@@ -36,9 +36,7 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
 	Node(name, parameterRoot),
 	m_inputVTKTableParameterName("VTKTableInput"),
 	m_outputVTKGraphName("VTKGraphOutput"),
-	m_outputVTKTreeName("VTKTreeOutput"),
 	m_inputTable(0),
-	m_tree(0),
 	m_graph(0)
 {
     // create the mandatory vtk table input parameter - multiplicity *
@@ -53,25 +51,6 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
     outputVTKGraphParameter->setPinType(Parameter::PT_Output);
     parameterRoot->addParameter(outputVTKGraphParameter);
 
-	// create the optional vtk graph output parameter
-	// A tree is created in cases where the graph is Directed with shallowcopy; see vtkGraph documentation
-	VTKTreeParameter * outputVTKTreeParameter = new VTKTreeParameter(m_outputVTKTreeName);
-    outputVTKTreeParameter->setPinType(Parameter::PT_Output);
-    parameterRoot->addParameter(outputVTKTreeParameter);
-
-	// link the input parameter to the output processing
-    if (outputVTKGraphParameter) 
-	{
-		outputVTKGraphParameter->setProcessingFunction(SLOT(processOutputVTKGraph()));
-        outputVTKGraphParameter->addAffectingParameter(inputVTKTableParameter);
-	}
-
-	if (outputVTKTreeParameter) 
-	{
-		outputVTKTreeParameter->setProcessingFunction(SLOT(processOutputVTKTree()));
-        outputVTKTreeParameter->addAffectingParameter(inputVTKTableParameter);
-	}
-
     // create the enumeration parameter with the list of columns representing the edgeFrom
 	edgesFromParameter = new EnumerationParameter("From", Parameter::getDefaultValue(Parameter::T_Enumeration));
 	parameterRoot->addParameter(edgesFromParameter);
@@ -85,7 +64,6 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
     parameterRoot->addParameter(vertexIDParameter);
 
     connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processOutputVTKGraph()));
-	connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTree()));
 	connect(edgesFromParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
 	connect(edgesToParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
 	connect(vertexIDParameter, SIGNAL(dirtied()), this, SLOT(updateGraph()));
@@ -149,31 +127,6 @@ void TableToGraphNode::processOutputVTKGraph ()
 
 	if (outputParameter) 
 		outputParameter->setVTKGraph(m_graph);
-}
-
-void TableToGraphNode::processOutputVTKTree ()
-{
-	/* 
-	To construct a tree, use vtkMutableDirectedGraph, 
-	with directed edges which point from the parent to the child, 
-	then use CheckedShallowCopy to set the structure to a vtkTree.
-
-	When the outcome of a conversion is unknown (i.e. setting a graph to a tree), 
-	CheckedShallowCopy()  and CheckedDeepCopy()  exist which are identical to 
-	ShallowCopy()  and DeepCopy(), except that instead of emitting an error for 
-	an incompatible structure, the function returns false. This allows you to 
-	programmatically check structure compatibility without causing error messages.
-
-	This is the basic code...
-	*/
-	m_graph = vtkMutableDirectedGraph::New();
-	m_tree->ShallowCopy(m_graph);
-
-}
-
-void TableToGraphNode::updateTree ()
-{
-
 }
 
 //!
