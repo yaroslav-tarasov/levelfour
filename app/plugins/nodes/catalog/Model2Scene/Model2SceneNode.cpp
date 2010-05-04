@@ -33,7 +33,8 @@ Model2SceneNode::Model2SceneNode ( const QString &name, ParameterGroup *paramete
 	m_sceneNode(0),
 	m_entity(0), 
     m_entityContainer(0),
-    m_oldResourceGroupName("")
+    m_oldResourceGroupName(""),
+	m_size(1.0,1.0,1.0)
 {
     // create the mandatory vtk table input parameter - multiplicity ONE OR MORE
 	VTKTableParameter * inputVTKTableParameter = new VTKTableParameter(m_inputVTKTableParameterName);
@@ -48,6 +49,10 @@ Model2SceneNode::Model2SceneNode ( const QString &name, ParameterGroup *paramete
     setChangeFunction("Geometry File", SLOT(geometryFileChanged()));
     setCommandFunction("Geometry File", SLOT(geometryFileChanged()));
     connect(this, SIGNAL(frameChanged(int)), SLOT(updateAll()));
+
+	// set affections and functions
+    setChangeFunction("Size", SLOT(sizeChanged()));
+    setCommandFunction("Size", SLOT(sizeChanged()));
 
 	createSceneNode();
 
@@ -140,6 +145,17 @@ void Model2SceneNode::geometryFileChanged ()
 }
 
 //!
+//! Change size scale of the entity.
+//!
+void Model2SceneNode::sizeChanged()
+{
+	m_size.x = m_size.y = m_size.z = getDoubleValue("Size");
+
+	if (m_sceneNode)
+		resizeNodes(m_sceneNode);
+}
+
+//!
 //! Processes the node's input data to generate the node's output table.
 //!
 void Model2SceneNode::processScene()
@@ -192,7 +208,7 @@ void Model2SceneNode::processScene()
 		double x = colX->GetValue(i);
 		double y = colY->GetValue(i);
 		double z = colZ->GetValue(i);
-		sceneItem->setPosition(Ogre::Real(x) * 10, Ogre::Real(y) * 10, Ogre::Real(z) * 10);
+		sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
 		m_sceneNode->addChild(sceneItem);
 		
 	}
@@ -351,5 +367,31 @@ void Model2SceneNode::destroyAllChildren( Ogre::SceneNode* i_pSceneNode )
 	  Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 	  if (pChildNode != m_sceneNode)
 		  sceneManager->destroySceneNode( pChildNode->getName() );
+   }
+}
+
+//!
+//! Remove and destroy this scene children.
+//! \param The scenenode to be destroyed
+//!
+void Model2SceneNode::resizeNodes( Ogre::SceneNode* i_pSceneNode )
+{
+	if ( !i_pSceneNode || i_pSceneNode->numChildren() == 0 )
+      return;
+
+   // Destroy all the attached objects
+   Ogre::SceneNode::ObjectIterator itObject = i_pSceneNode->getAttachedObjectIterator();
+
+   // Recurse to child SceneNodes
+   Ogre::SceneNode::ChildNodeIterator itChild = i_pSceneNode->getChildIterator();
+
+   while ( itChild.hasMoreElements() )
+   {
+      Ogre::SceneNode* pChildNode = static_cast<Ogre::SceneNode*>(itChild.getNext());
+
+	  // obtain the OGRE scene manager
+	  Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
+	  if (pChildNode != m_sceneNode)
+		  pChildNode->setScale(m_size);
    }
 }
