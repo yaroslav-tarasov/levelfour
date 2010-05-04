@@ -14,7 +14,7 @@ date       21.04.2010 (last updated)
 #include "vtkTable.h"
 #include "vtkGraph.h"
 #include "vtkVertexListIterator.h"
-#include "vtkStringArray.h"
+#include "vtkIdTypeArray.h"
 #include "vtkDoubleArray.h"
 #include "vtkVariant.h"
 
@@ -96,7 +96,7 @@ void VTKGraphLayoutNode::refreshOutput()
 	layout->SetLayoutStrategy(m_layoutInstance);
 	layout->Update();
 
-	m_outputTable = createTableFromGraph(layout->GetOutput());
+	m_outputTable = createTableFromGraph(layout->GetOutput(0));
 
 	// process the output vtk table
 	VTKTableParameter * outputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_ouputVTKTableParameterName));
@@ -112,7 +112,7 @@ vtkTable * VTKGraphLayoutNode::createTableFromGraph(vtkGraph *graph)
 {
 	vtkTable *myTable = vtkTable::New();
 	//Create a column named "NodeId"
-	vtkStringArray *colNodeId = vtkStringArray::New();
+	vtkIdTypeArray *colNodeId = vtkIdTypeArray::New();
 	colNodeId->SetName("NodeId");
 	myTable->AddColumn(colNodeId);
 	//Create columns named "X", "Y" and "Z"
@@ -132,9 +132,7 @@ vtkTable * VTKGraphLayoutNode::createTableFromGraph(vtkGraph *graph)
 	{
 		vertices->Next();
 		//Add the vertex ID to the "NodeId" column
-		char vertexId[10];
-		sprintf(vertexId, "%d",i); //Convert the vertex ID to a string
-		colNodeId->InsertNextValue( vertexId );
+		colNodeId->InsertNextValue( i );
 		//Add the position values to columns "X", "Y" and "Z"
 		graph->GetPoint(i, position);
 		colX->InsertNextValue( position[0] );

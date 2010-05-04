@@ -16,6 +16,19 @@
 #include "vtkTable.h"
 #include <QString>
 
+//!
+//! Macro definition that defines the type of the instance of the graph layout algorithm 
+//! to be used (circular, radial, etc)
+//!
+#define LAYOUT_TYPE(className) \
+	typedef className GraphLayout;
+
+//!
+//! Macro definition that force the dynamic cast of the specific layout 
+//! to the instance of the graph layout algorithm 
+//!
+#define M_LAYOUT \
+	dynamic_cast<GraphLayout*>(m_layoutInstance)
 
 //!
 //! Class for a VTKGraphLayoutNode
@@ -71,16 +84,13 @@ protected: // functions
     //!
 	vtkTable * createTableFromGraph(vtkGraph *graph);
 
-
 protected: // data 
 	//!
     //! The graph layout algorithm to be used (circular, radial, etc)
     //!
 	vtkGraphLayoutStrategy * m_layoutInstance;
 
-protected: // data
-
-    //!
+	//!
     //! The name of the input vtk graph parameter.
     //!
     QString m_inputVTKGraphName;
