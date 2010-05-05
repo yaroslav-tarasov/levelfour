@@ -4,8 +4,8 @@
 		<contributor>
 			<authoring_tool>Filmakademie Application Framework</authoring_tool>
 		</contributor>
-		<created>2010-05-04T16:53:25Z</created>
-		<modified>2010-05-04T16:53:25Z</modified>
+		<created>2010-05-05T10:16:16Z</created>
+		<modified>2010-05-05T10:16:16Z</modified>
 		<unit meter="0.01"/>
 		<up_axis>Y_UP</up_axis>
 	</asset>
@@ -17,6 +17,12 @@
 						<frapper_node type="ClusteringLayouter" position="-66 69">
 							<frapper_parameters>
 								<frapper_group name="Clustering Layouter Parameters"/>
+								<frapper_parameter name="Set Random Seed" value="6" state="true"/>
+								<frapper_parameter name="Set Max Number Of Iterations" value="5" state="true"/>
+								<frapper_parameter name="Set Iterations Per Layout" value="5" state="true"/>
+								<frapper_parameter name="Set Initial Temperature" value="15" state="true"/>
+								<frapper_parameter name="Set Cool Down Rate" value="10" state="true"/>
+								<frapper_parameter name="Set Rest Distance" value="4" state="true"/>
 							</frapper_parameters>
 						</frapper_node>
 					</technique>
@@ -36,9 +42,9 @@
 			<node id="model2Scene">
 				<extra>
 					<technique profile="frapper">
-						<frapper_node type="Model2Scene" position="175 -83" stageIndex="2" isViewed="1">
+						<frapper_node type="Model2Scene" position="136 -110" stageIndex="2" isViewed="0">
 							<frapper_parameters>
-								<frapper_parameter name="Geometry File" value="C:/L4/FP/app/bin/win32/scenes/cube2.mesh" state="true"/>
+								<frapper_parameter name="Geometry File" value="C:/L4/Acuity4D/bin/win32/scenes/cube2.mesh" state="true"/>
 								<frapper_parameter name="Size" value="0.0999999999999997" state="true"/>
 							</frapper_parameters>
 						</frapper_node>
@@ -50,7 +56,7 @@
 					<technique profile="frapper">
 						<frapper_node type="Model2Scene" position="262 -11" stageIndex="1" isViewed="0">
 							<frapper_parameters>
-								<frapper_parameter name="Geometry File" value="C:/L4/FP/app/bin/win32/scenes/cube.mesh" state="true"/>
+								<frapper_parameter name="Geometry File" value="C:/L4/Acuity4D/bin/win32/scenes/cube.mesh" state="true"/>
 								<frapper_parameter name="Size" value="0.01" state="true"/>
 							</frapper_parameters>
 						</frapper_node>
@@ -63,7 +69,7 @@
 						<frapper_node type="Model2Scene" position="215 65" stageIndex="1" isViewed="1">
 							<frapper_parameters>
 								<frapper_parameter name="Geometry File" value="C:/L4/Acuity4D/bin/win32/scenes/cube2.mesh" state="true"/>
-								<frapper_parameter name="Size" value="0.7" state="true"/>
+								<frapper_parameter name="Size" value="0.55" state="true"/>
 							</frapper_parameters>
 						</frapper_node>
 					</technique>
@@ -95,7 +101,7 @@
 					<technique profile="frapper">
 						<frapper_node type="TextDelimiterSource" position="-244 -58">
 							<frapper_parameters>
-								<frapper_parameter name="Source File" value="C:/L4/FP/app/bin/win32/authors.csv" state="true"/>
+								<frapper_parameter name="Source File" value="C:/vtk/data/Data/authors.csv" state="true"/>
 								<frapper_parameter name="Have Header" value="true" state="true"/>
 							</frapper_parameters>
 						</frapper_node>
