@@ -12,7 +12,6 @@
 #include "Node.h"
 #include "vtkGraph.h"
 #include "vtkGraphLayoutStrategy.h"
-#include "vtkTree.h"
 #include "vtkTable.h"
 #include <QString>
 
@@ -100,6 +99,11 @@ protected: // data
     //!
     QString m_ouputVTKTableParameterName;
 	
+    //!
+    //! The name of the Z range parameter.
+    //!
+    QString m_zRangeParameterName;
+
 	//!
     //! The output Table
     //!

@@ -32,19 +32,18 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef TableToTreeNODE_H
 #define TableToTreeNODE_H
 
-#include "Node.h"
 #include "vtkTree.h"
-#include "vtkTable.h"
-
+#include "TableToGraphNode.h"
 
 //!
 //! Class for a Degree Centrality Measure
 //!
-class TableToTreeNode : public Node
+class TableToTreeNode : public TableToGraphNode
 {
 
     Q_OBJECT
     ADD_INSTANCE_COUNTER
+	GRAPH_TYPE(vtkTree)
 
 public: // constructors and destructors
 
@@ -65,50 +64,17 @@ public: // constructors and destructors
     //!
     virtual ~TableToTreeNode ();
 
-private slots: //
+protected slots: //
 
     //!
     //! Processes the node's input data to generate the node's output table.
     //!
-    void processOutputVTKTree ();
+    virtual void processOutputVTKGraph ();
 
     //!
     //! Update the graph (called for example when parameters change)
     //!
-    void updateTree ();
-
-    //!
-    //! Update the input table 
-    //! return It returns 0 if it succeeds, otherwise 1
-    //!
-    int updateTable ();
-
-private: 
-    //!
-    //! The name of the input vtk table parameter.
-    //!
-    QString m_inputVTKTableParameterName;
-
-    //!
-    //! The name of the output vtk Graph parameter.
-    //!
-    QString m_outputVTKTreeName;
-
-    //!
-    //! The parameters that defines the edgeFrom/To and vertices for the graph.
-    //!
-	// EnumerationParameter * edgesFromParameter, * edgesToParameter, * vertexIDParameter;
-	
-    //!
-    //! The input table 
-    //!
-	vtkTable * m_inputTable;
-
-	//!
-    //! The resulting graph
-    //!
-	vtkTree * m_Tree;
-	
+    virtual void updateGraph ();
 };
 
 

@@ -56,4 +56,6 @@ target_link_libraries(TableToGraph
 
 # Install files
 install( FILES ${TableToGraph_res} DESTINATION ${NODE_PLUGIN_INSTALL} )
-install( TARGETS TableToGraph RUNTIME DESTINATION ${NODE_PLUGIN_INSTALL} )
+install( TARGETS TableToGraph 
+	RUNTIME DESTINATION ${NODE_PLUGIN_INSTALL} 
+)
