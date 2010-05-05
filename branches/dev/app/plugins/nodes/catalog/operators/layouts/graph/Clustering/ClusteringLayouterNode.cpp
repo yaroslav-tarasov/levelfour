@@ -72,6 +72,7 @@ void ClusteringLayouterNode::processParameters()
 	setInitialTemperature();
 	setCoolDownRate();
 	setRestDistance();
+
 	refreshOutput();
 }
 

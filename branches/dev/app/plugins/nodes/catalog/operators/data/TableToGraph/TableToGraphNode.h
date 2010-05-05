@@ -12,8 +12,20 @@
 #include "Node.h"
 #include "vtkGraph.h"
 #include "vtkTable.h"
-#include "vtkTree.h"
 
+//!
+//! Macro definition that defines the type of the instance of the graph 
+//! to be used (tree, etc)
+//!
+#define GRAPH_TYPE(className) \
+	typedef className GraphType;
+
+//!
+//! Macro definition that force the dynamic cast of the specific graph type 
+//! to the instance of the graph 
+//!
+#define M_GRAPH \
+	dynamic_cast<GraphType*>(m_graph)
 
 //!
 //! Class for a Degree Centrality Measure
@@ -43,17 +55,17 @@ public: // constructors and destructors
     //!
     virtual ~TableToGraphNode ();
 
-private slots: //
+protected slots: //
 
     //!
     //! Processes the node's input data to generate the node's output table.
     //!
-    void processOutputVTKGraph ();
+    virtual void processOutputVTKGraph ();
 
     //!
     //! Update the graph (called for example when parameters change)
     //!
-    void updateGraph ();
+    virtual void updateGraph ();
 
     //!
     //! Update the input table 
@@ -61,7 +73,7 @@ private slots: //
     //!
     bool updateTable ();
 
-private: 
+protected: 
     //!
     //! The name of the input vtk table parameter.
     //!

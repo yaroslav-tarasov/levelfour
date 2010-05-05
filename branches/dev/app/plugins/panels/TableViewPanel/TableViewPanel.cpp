@@ -211,8 +211,7 @@ void TableViewPanel::showTable(Node * node)
     QObject::connect(m_currentTableNode, SIGNAL(tableChanged(vtkTable *)), this, SLOT(updateTable()));
     QObject::connect(m_currentTableNode, SIGNAL(destroyed()), this, SLOT(disconnect()));
 
-	vtkQtTableModelAdapter * adapter = new vtkQtTableModelAdapter;
-	adapter->SetVTKDataObject(m_currentTableNode->getTable());
+	vtkQtTableModelAdapter * adapter = new vtkQtTableModelAdapter(m_currentTableNode->getTable());
 	tableView->setModel(adapter);
 }
 

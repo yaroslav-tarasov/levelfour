@@ -36,6 +36,7 @@ VTKGraphLayoutNode::VTKGraphLayoutNode ( const QString &name, ParameterGroup *pa
     Node(name, parameterRoot),
 	m_ouputVTKTableParameterName("VTKTableOutput"),
 	m_inputVTKGraphName("VTKGraphInput"),
+	m_zRangeParameterName("ZRange"),
 	m_layoutInstance(0),
 	m_outputTable(0),
 	m_inGraph(0)
@@ -54,6 +55,11 @@ VTKGraphLayoutNode::VTKGraphLayoutNode ( const QString &name, ParameterGroup *pa
 	VTKTableParameter * outputVTKTableParameter = new VTKTableParameter(m_ouputVTKTableParameterName);
     outputVTKTableParameter->setPinType(Parameter::PT_Output);
     parameterRoot->addParameter(outputVTKTableParameter);
+
+    // create the mandatory SetZRange parameter 
+	NumberParameter * zRangeParameter = new NumberParameter(m_zRangeParameterName, Parameter::T_Float, QVariant::fromValue<double>(0));
+    parameterRoot->addParameter(zRangeParameter);
+	connect(zRangeParameter, SIGNAL(dirtied()), SLOT(processParameters()));
 
 	INC_INSTANCE_COUNTER
 }
@@ -85,6 +91,8 @@ void VTKGraphLayoutNode::refreshOutput()
 	}
 
 	vtkGraphLayout *layout = vtkGraphLayout::New();
+	int zRange = getDoubleValue(m_zRangeParameterName);
+	layout->SetZRange(zRange);
 	layout->SetInput( m_inGraph );
 
 	if (!m_layoutInstance)

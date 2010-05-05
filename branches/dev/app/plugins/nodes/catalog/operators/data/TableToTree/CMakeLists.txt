@@ -6,20 +6,27 @@ include_directories(
 			${CMAKE_CURRENT_SOURCE_DIR}
 			)
 
+link_directories(
+			${TableToGraph_BINARY_DIR}
+			)
+
 # TableToTree
 set( TableToTree_h ${TableToTree_h}
 			TableToTreeNode.h
 			TableToTreeNodePlugin.h
+			${CMAKE_CURRENT_SOURCE_DIR}/../TableToGraph/TableToGraphNode.h
 			)
 
 set( TableToTree_moc ${TableToTree_moc}	
 			TableToTreeNode.h
 			TableToTreeNodePlugin.h
+			${CMAKE_CURRENT_SOURCE_DIR}/../TableToGraph/TableToGraphNode.h
 			)
 
 set( TableToTree_src ${TableToTree_src}	
 			TableToTreeNode.cpp
 			TableToTreeNodePlugin.cpp
+			${CMAKE_CURRENT_SOURCE_DIR}/../TableToGraph/TableToGraphNode.cpp
 			)
 
 set( TableToTree_res ${TableToTree_res}	
@@ -52,8 +59,11 @@ target_link_libraries(TableToTree
 			optimized vtkFiltering debug vtkFiltering
 			optimized vtkInfovis debug vtkInfovis
 			optimized vtkCommon debug vtkCommon
+			optimized tableToGraph debug TableToGraph_d.lib
 			)
 
 # Install files
 install( FILES ${TableToTree_res} DESTINATION ${NODE_PLUGIN_INSTALL} )
-install( TARGETS TableToTree RUNTIME DESTINATION ${NODE_PLUGIN_INSTALL} )
+install( TARGETS TableToTree 
+	RUNTIME DESTINATION ${NODE_PLUGIN_INSTALL} 
+)
