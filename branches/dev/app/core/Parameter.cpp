@@ -90,6 +90,7 @@ static const char *ParameterTypeNames[Parameter::T_NumTypes] = {
     "Image",
     "Group",
 	"PlugIn",
+	"Generic",
 	"VTKTable",
 	"VTKGraph",
 	"VTKTree"
@@ -100,22 +101,23 @@ static const char *ParameterTypeNames[Parameter::T_NumTypes] = {
 //! List of colors of parameter types.
 //!
 static const QColor ParameterTypeColors[Parameter::T_NumTypes] = {
-    QColor(20, 20, 20),			// Bool
+    QColor(158, 109, 158),      // Bool
     QColor(109, 255, 109),      // Int
     QColor(158, 255, 158),      // UnsignedInt
     QColor(109, 173, 158),      // Float
     QColor(109, 255, 255),      // String
     QColor(173, 173, 255),      // Filename
-    QColor(230, 45, 137),       // Color
-    QColor(0, 172, 236),        // Enumeration
+    QColor(255, 109, 255),      // Color
+    QColor(173, 158, 173),      // Enumeration
     QColor(174, 174, 174),      // TextInfo
     QColor( 40,  40, 140),      // Command
-    QColor(255, 0, 0),          // Geometry
-    QColor(255, 255, 0),        // Light
-    QColor(255, 103, 0),        // Camera
+    QColor(255, 192, 171),      // Geometry
+    QColor(255, 255, 109),      // Light
+    QColor(109, 158, 255),      // Camera
     QColor(173, 255, 173),      // Image
     QColor(100, 100, 100),      // Group
-	QColor(0, 255, 0),			// Plugin
+	QColor(  0, 255,   0),      // Plugin
+	QColor(255, 255, 255),		// Generic
     QColor(125, 43, 139),       // VTKTable
     QColor(230, 45, 137),		// VTKGraph
 	QColor(0, 195, 136)			// VTKTree
@@ -136,6 +138,7 @@ static const QColor ParameterTypeColors[Parameter::T_NumTypes] = {
 //! List of parameter types that support multiplicity values bigger than 1.
 //!
 static const QList<Parameter::Type> ParameterMultiplicityTypes = QList<Parameter::Type>()
+	<< Parameter::T_Bool
     << Parameter::T_Int
     << Parameter::T_UnsignedInt
     << Parameter::T_Float
@@ -169,6 +172,7 @@ static const QVariantList ParameterDefaultValues = QVariantList()
     << QVariant::fromValue<Ogre::TexturePtr>(Ogre::TexturePtr(0))   // Image
     << QVariant::fromValue<ParameterGroup *>(0)                     // Group
 	<< QVariant()				// PlugIn
+	<< QVariant()				// Generic
 	<< QVariant::fromValue<vtkTable *>(0)                     // VTKTable
 	<< QVariant::fromValue<vtkGraph *>(0)                     // VTKGraph
 	<< QVariant::fromValue<vtkTree *>(0)                     // VTKTree
