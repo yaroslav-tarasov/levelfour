@@ -21,21 +21,10 @@ Q_DECLARE_METATYPE(vtkTree *)
 //! \param name The name of the parameter.
 //!
 VTKTreeParameter::VTKTreeParameter ( const QString &name ) :
-	Parameter(name, Parameter::T_VTKTree, QVariant::fromValue<vtkTree *>(0)),
-	m_Tree(0)
+	VTKGraphParameter(name, Parameter::T_VTKTree, QVariant::fromValue<vtkTree *>(0))
 {
 }
 
-//!
-//! Copy constructor of the VTKTreeParameter class.
-//!
-//! \param parameter The parameter to copy.
-//!
-VTKTreeParameter::VTKTreeParameter ( const VTKTreeParameter &parameter ) :
-    Parameter(parameter)
-{
-	m_Tree = parameter.m_Tree;
-}
 
 //!
 //! Destructor of the VTKTreeParameter class.
@@ -44,38 +33,20 @@ VTKTreeParameter::~VTKTreeParameter ()
 {
 }
 
-
-///
-/// Public Functions
-///
-
-
 //!
-//! Creates an exact copy of the parameter.
+//! Sets the vtk tree.
 //!
-//! \return An exact copy of the parameter.
+//! \param values The vtk tree.
 //!
-AbstractParameter * VTKTreeParameter::clone ()
+void VTKTreeParameter::setVTKGraph ( vtkTree * tree )
 {
-    return new VTKTreeParameter(*this);
+	m_tree = tree;
 }
 
 //!
-//! Returns the vtk Tree.
+//! Get the vtk tree.
 //!
-//! \return The vtk Tree.
-//!
-vtkTree * VTKTreeParameter::getVTKTree() const
+vtkTree * VTKTreeParameter::getVTKGraph () const
 {
-    return m_Tree;
-}
-
-//!
-//! Sets the vtk Tree.
-//!
-//! \param values The vtk Tree.
-//!
-void VTKTreeParameter::setVTKTree ( vtkTree * Tree )
-{
-    m_Tree = Tree;
+	return m_tree;
 }

@@ -55,7 +55,6 @@ Reference
 #include "TableToTreeNode.h"
 #include "vtkTableToTreeFilter.h"
 #include "vtkTree.h"
-#include "vtkVertexListIterator.h"
 
 INIT_INSTANCE_COUNTER(TableToTreeNode)
 
@@ -70,43 +69,28 @@ INIT_INSTANCE_COUNTER(TableToTreeNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 TableToTreeNode::TableToTreeNode ( const QString &name, ParameterGroup *parameterRoot ) :
-	TableToGraphNode(name, parameterRoot)
+	Node(name, parameterRoot),
+	m_inputVTKTableParameterName("VTKTableInput"),
+	m_outputVTKTreeName("VTKTreeOutput"),
+	m_inputTable(0),
+	tableToTree(0),
+	m_tree(0)
 {
-    // create the mandatory vtk table input parameter - multiplicity *
+	setTypeName("TableToTreeNode");
+
+	// create the mandatory vtk table input parameter - multiplicity *
 	VTKTableParameter * inputVTKTableParameter = new VTKTableParameter(m_inputVTKTableParameterName);
 	inputVTKTableParameter->setMultiplicity(1);
     inputVTKTableParameter->setPinType(Parameter::PT_Input);
     inputVTKTableParameter->setSelfEvaluating(true);
     parameterRoot->addParameter(inputVTKTableParameter);
-    connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processOutputVTKGraph()));
 
-    // create the mandatory vtk Tree output parameter 
-	VTKTreeParameter * outputVTKTreeParameter = new VTKTreeParameter(m_outputVTKGraphName);
-    outputVTKTreeParameter->setPinType(Parameter::PT_Output);
+    // create the mandatory vtk graph output parameter 
+	VTKTreeParameter * outputVTKTreeParameter = new VTKTreeParameter(m_outputVTKTreeName);
+	outputVTKTreeParameter->setPinType(Parameter::PT_Output);
     parameterRoot->addParameter(outputVTKTreeParameter);
 
-	// link the input parameter to the output processing
-    if (outputVTKTreeParameter) 
-	{
-		outputVTKTreeParameter->setProcessingFunction(SLOT(processOutputVTKTree()));
-        outputVTKTreeParameter->addAffectingParameter(inputVTKTableParameter);
-	}
-
-    // create the enumeration parameter with the list of columns representing the edgeFrom
-	// edgesFromParameter = new EnumerationParameter("From", Parameter::getDefaultValue(Parameter::T_Enumeration));
-	// parameterRoot->addParameter(edgesFromParameter);
-	
-    // create the enumeration parameter with the list of columns representing the edgeTo
-	// edgesToParameter = new EnumerationParameter("To", Parameter::getDefaultValue(Parameter::T_Enumeration));
-    // parameterRoot->addParameter(edgesToParameter);
-
-    // create the enumeration parameter with the list of fields representing the vertexID
-	// vertexIDParameter = new EnumerationParameter("VertexID", Parameter::getDefaultValue(Parameter::T_Enumeration));
-    // parameterRoot->addParameter(vertexIDParameter);
-
-	// connect(edgesFromParameter, SIGNAL(dirtied()), this, SLOT(updateTree()));
-	// connect(edgesToParameter, SIGNAL(dirtied()), this, SLOT(updateTree()));
-	// connect(vertexIDParameter, SIGNAL(dirtied()), this, SLOT(updateTree()));
+    connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processOutputVTKTree()));
 
 	INC_INSTANCE_COUNTER
 }
@@ -122,64 +106,68 @@ TableToTreeNode::TableToTreeNode ( const QString &name, ParameterGroup *paramete
 TableToTreeNode::~TableToTreeNode ()
 {
 	emit destroyed();
-    Log::info(QString("TableToTreeNode destroyed."), "TableToTreeNode::~TableToTreeNode");
+
+	if (tableToTree)
+		tableToTree->Delete();
+
+	Log::info(QString("TableToTreeNode destroyed."), "TableToTreeNode::~TableToTreeNode");
     DEC_INSTANCE_COUNTER
 }
-
 
 //!
 //! Processes the node's input data to generate the node's output table.
 //!
-void TableToTreeNode::processOutputVTKGraph ()
+void TableToTreeNode::processOutputVTKTree ()
 {
-	if (updateTable() != 0)
+	if (!updateTable())
 		return;
 
-	// recreate the From/To and vertices parameter with the list of the input table attributes
-	QStringList literals;
-	for (int i = 0; i < m_inputTable->GetNumberOfColumns(); i++)
-		literals << m_inputTable->GetColumnName(i);
+	updateTree();
+}
 
-	// edgesFromParameter->setLiterals(literals);
-	// edgesFromParameter->setValues(literals);
+//!
+//! Update the input table 
+//!
+bool TableToTreeNode::updateTable ()
+{
+	// load the input vtk parameter 
+	VTKTableParameter * inputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_inputVTKTableParameterName));
+	if (!inputParameter->isConnected())
+		return false;
 
-	// edgesToParameter->setLiterals(literals);
-	// edgesToParameter->setValues(literals);
+	// get the source parameter (output of source node) connected to the input parameter
+	VTKTableParameter * sourceParameter = dynamic_cast<VTKTableParameter*>(inputParameter->getConnectedParameter());
 
-	// vertexIDParameter->setLiterals(literals);
-	// vertexIDParameter->setValues(literals);
+	// get the vtk table that comes with the source parameter and set it into the input parameter of this node
+	m_inputTable = sourceParameter->getVTKTable();
+	inputParameter->setVTKTable(m_inputTable);
 
+	return (m_inputTable != 0);
 }
 
 //!
 //! Update the Tree (called for example when parameters change)
 //!
-void TableToTreeNode::updateGraph ()
+void TableToTreeNode::updateTree ()
 {
-	if (updateTable() != 0)
+	if (!m_inputTable)
 		return;
 
-	vtkTableToTreeFilter * tableToTree = vtkTableToTreeFilter::New();
+	if (!tableToTree)
+		tableToTree = vtkTableToTreeFilter::New();
+
 	tableToTree->SetInput(m_inputTable);
-	// QString vertexID = vertexIDParameter->getCurrentLiteral();
-	// QString edgeFrom = edgesFromParameter->getCurrentLiteral();
-	// QString edgeTo = edgesToParameter->getCurrentLiteral();
-	// tableToTree->AddLinkVertex(vertexID.toLatin1());
-	// tableToTree->AddLinkEdge(edgeFrom.toLatin1(), edgeTo.toLatin1());
 
-	m_graph = tableToTree->GetOutput();
+	tableToTree->Update();
+	m_tree = tableToTree->GetOutput();
 
-	// vtkVertexListIterator *vertices = vtkVertexListIterator::New();
-	// m_Tree->GetVertices(vertices);
+	int i = m_tree->GetNumberOfVertices();
 
-	// process the output vtk Tree 
-	VTKTreeParameter * outputParameter = dynamic_cast<VTKTreeParameter*>(getParameter(m_outputVTKGraphName));
+	VTKTreeParameter * outputParameter = dynamic_cast<VTKTreeParameter*>(getParameter(m_outputVTKTreeName));
 
 	if (outputParameter) 
 	{
-		outputParameter->setVTKTree(M_GRAPH);
+		outputParameter->setVTKGraph(m_tree);
 		outputParameter->propagateDirty(0);
 	}
-
-	tableToTree->Delete();
 }

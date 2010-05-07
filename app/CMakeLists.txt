@@ -16,7 +16,6 @@ include(${QT_USE_FILE})
 include_directories(  
 			${frappercore_SOURCE_DIR} 
 			${frappergui_SOURCE_DIR}
-			${TableToGraph_SOURCE_DIR}
 			${frappercore_BINARY_DIR}
 			${frappergui_BINARY_DIR}
 			$ENV{VTK_INC}
@@ -29,7 +28,6 @@ include_directories(
 link_directories(
 			${frappercore_BINARY_DIR}
 			${frappergui_BINARY_DIR}
-			${TableToGraph_BINARY_DIR}
 			${QT_LIBRARY_DIR}
 			$ENV{VTK_LIB}
 			$ENV{OGRE_HOME}/lib
