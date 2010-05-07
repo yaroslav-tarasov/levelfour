@@ -27,6 +27,19 @@ VTKGraphParameter::VTKGraphParameter ( const QString &name ) :
 }
 
 //!
+//! Constructor of the VTKGraphParameter class.
+//!
+//! \param name The name of the parameter.
+//! \param type The type of the parameter's value(s).
+//! \param value The parameter's value.
+//!
+VTKGraphParameter::VTKGraphParameter ( const QString &name, Type type = Parameter::T_VTKGraph, const QVariant &value = QVariant::fromValue<vtkGraph *>(0) ) :
+	Parameter(name, type, value),
+	m_graph(0)
+{
+}
+
+//!
 //! Copy constructor of the VTKGraphParameter class.
 //!
 //! \param parameter The parameter to copy.

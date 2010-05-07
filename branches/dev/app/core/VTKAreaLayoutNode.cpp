@@ -141,8 +141,8 @@ int VTKAreaLayoutNode::updateInputTree()
 	VTKTreeParameter * sourceParameter = dynamic_cast<VTKTreeParameter*>(inputParameter->getConnectedParameter());
 
 	// get the vtk graph that comes with the source parameter and set it into the input parameter of this node
-	m_inputVTKTree = sourceParameter->getVTKTree();
-	inputParameter->setVTKTree(m_inputVTKTree);
+//	m_inputVTKTree = sourceParameter->getVTKGraph();
+	inputParameter->setVTKGraph(m_inputVTKTree);
 
 	return (m_inputVTKTree == 0);
 }

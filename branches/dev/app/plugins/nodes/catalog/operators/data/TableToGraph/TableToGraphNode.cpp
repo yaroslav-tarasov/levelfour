@@ -32,14 +32,17 @@ INIT_INSTANCE_COUNTER(TableToGraphNode)
 //! \param name The name for the new node.
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
-TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parameterRoot ) :
+TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parameterRoot) :
 	Node(name, parameterRoot),
 	m_inputVTKTableParameterName("VTKTableInput"),
 	m_outputVTKGraphName("VTKGraphOutput"),
 	m_inputTable(0),
+	tableToGraph(0),
 	m_graph(0)
 {
-    // create the mandatory vtk table input parameter - multiplicity *
+	setTypeName("TableToTreeNode");
+
+	// create the mandatory vtk table input parameter - multiplicity *
 	VTKTableParameter * inputVTKTableParameter = new VTKTableParameter(m_inputVTKTableParameterName);
 	inputVTKTableParameter->setMultiplicity(1);
     inputVTKTableParameter->setPinType(Parameter::PT_Input);
@@ -48,7 +51,7 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
 
     // create the mandatory vtk graph output parameter 
 	VTKGraphParameter * outputVTKGraphParameter = new VTKGraphParameter(m_outputVTKGraphName);
-    outputVTKGraphParameter->setPinType(Parameter::PT_Output);
+	outputVTKGraphParameter->setPinType(Parameter::PT_Output);
     parameterRoot->addParameter(outputVTKGraphParameter);
 
     // create the enumeration parameter with the list of columns representing the edgeFrom
@@ -82,7 +85,11 @@ TableToGraphNode::TableToGraphNode ( const QString &name, ParameterGroup *parame
 TableToGraphNode::~TableToGraphNode ()
 {
 	emit destroyed();
-    Log::info(QString("TableToGraphNode destroyed."), "TableToGraphNode::~TableToGraphNode");
+
+	if (tableToGraph)
+		tableToGraph->Delete();
+
+	Log::info(QString("TableToGraphNode destroyed."), "TableToGraphNode::~TableToGraphNode");
     DEC_INSTANCE_COUNTER
 }
 
@@ -119,9 +126,6 @@ void TableToGraphNode::processOutputVTKGraph ()
 
 	m_graph = tableToGraph->GetOutput();
 
-	vtkVertexListIterator *vertices = vtkVertexListIterator::New();
-	m_graph->GetVertices(vertices);
-
 	// process the output vtk graph 
 	VTKGraphParameter * outputParameter = dynamic_cast<VTKGraphParameter*>(getParameter(m_outputVTKGraphName));
 
@@ -136,6 +140,9 @@ void TableToGraphNode::updateGraph ()
 {
 	if (!m_inputTable)
 		return;
+
+	if (!tableToGraph)
+		tableToGraph = vtkTableToGraph::New();
 
 	vtkTableToGraph * tableToGraph = vtkTableToGraph::New();
 	tableToGraph->SetInput(m_inputTable);

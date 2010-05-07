@@ -50,11 +50,12 @@ set( frappercore_h ${frappercore_h}
 			ViewNode.h
 			VTKGraphLayoutNode.h
 			VTKGraphParameter.h
-			VTKTableParameter.h
+			VTKLayoutNode.h
 			VTKTableNode.h
-			VTKTreeParameter.h
+			VTKTableParameter.h
 			VTKTreeNode.h
 			VTKTreeLayoutNode.h
+			VTKTreeParameter.h
 			VTKAreaLayoutNode.h
 			VTKAxisLayoutNode.h
 			VTKGeoLayoutNode.h
@@ -85,6 +86,7 @@ set( frappercore_moc ${frappercore_moc}
 			 ViewFlagGraphicsItem.h
 			 ViewNode.h
 			 VTKGraphLayoutNode.h
+			 VTKLayoutNode.h
 			 VTKTableNode.h
 			 VTKTreeNode.h
 			 VTKTreeLayoutNode.h
@@ -132,11 +134,12 @@ set( frappercore_src ${frappercore_src}
 			ViewNode.cpp
 			VTKGraphLayoutNode.cpp
 			VTKGraphParameter.cpp
+			VTKLayoutNode.cpp
 			VTKTableParameter.cpp
 			VTKTableNode.cpp
-			VTKTreeParameter.cpp
 			VTKTreeNode.cpp
 			VTKTreeLayoutNode.cpp
+			VTKTreeParameter.cpp
 			VTKAreaLayoutNode.cpp
 			VTKAxisLayoutNode.cpp
 			VTKGeoLayoutNode.cpp

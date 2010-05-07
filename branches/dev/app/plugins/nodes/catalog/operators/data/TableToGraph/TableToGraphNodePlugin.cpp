@@ -49,7 +49,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 Node * TableToGraphNodePlugin::createNode ( const QString &name, ParameterGroup *parameterRoot )
 {
-    return new TableToGraphNode(name, parameterRoot);
+	return new TableToGraphNode(name, parameterRoot );
 }
 
 

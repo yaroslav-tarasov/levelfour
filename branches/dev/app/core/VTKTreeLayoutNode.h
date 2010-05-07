@@ -9,27 +9,14 @@
 #ifndef VTKTreeLayoutNode_H
 #define VTKTreeLayoutNode_H
 
-#include "Node.h"
-#include "vtkGraph.h"
-#include "vtkGraphLayoutStrategy.h"
+#include "VTKLayoutNode.h"
 #include "vtkTree.h"
-#include "vtkTable.h"
 #include <QString>
-
-#define LAYOUT_TYPE(className) \
-	typedef className GraphLayout;
-
-//!
-//! Macro definition that force the dynamic cast of the specific layout 
-//! to the instance of the graph layout algorithm 
-//!
-#define M_LAYOUT \
-	dynamic_cast<GraphLayout*>(m_layoutInstance)
 
 //!
 //! Class for a VTKTreeLayoutNode
 //!
-class FRAPPER_CORE_EXPORT VTKTreeLayoutNode : public Node
+class FRAPPER_CORE_EXPORT VTKTreeLayoutNode : public VTKLayoutNode
 {
 
     Q_OBJECT
@@ -58,8 +45,14 @@ protected slots: //
 
     //!
     //! Processes the node's input data to generate the node's output table.
+	//! This is layout implementation dependent.
     //!
-    void processOutputVTKTable();
+	virtual void processParameters() { refreshOutput();}
+
+    //!
+    //! Create the updated output
+    //!
+    virtual void refreshOutput();
 
     //!
     //! Update the input graph (called for example when input parameters have been dirtied)
@@ -67,37 +60,13 @@ protected slots: //
     //!
     int updateInputTree ();
 
-protected: // functions
-
-    //!
-    //! Create a vtkTable with ID, x, y, z from an vtk graph 
-    //!
-	vtkTable * createTableFromGraph(vtkGraph *graph);
-
-
-protected: // data 
-	//!
-    //! The graph layout algorithm to be used (circular, radial, etc)
-    //!
-	vtkGraphLayoutStrategy * m_layoutInstance;
-
 protected: // data
 
     //!
     //! The name of the input vtk graph parameter.
     //!
     QString m_inputVTKTreeName;
-
-    //!
-    //! The name of the output vtk table parameter.
-    //!
-    QString m_ouputVTKTableParameterName;
 	
-	//!
-    //! The output Table
-    //!
-    vtkTable * m_outputTable;
-
 	//!
     //! The input Tree
     //!

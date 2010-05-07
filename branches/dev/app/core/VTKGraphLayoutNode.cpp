@@ -33,12 +33,9 @@ INIT_INSTANCE_COUNTER(VTKGraphLayoutNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 VTKGraphLayoutNode::VTKGraphLayoutNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot),
-	m_ouputVTKTableParameterName("VTKTableOutput"),
+    VTKLayoutNode(name, parameterRoot),
 	m_inputVTKGraphName("VTKGraphInput"),
 	m_zRangeParameterName("ZRange"),
-	m_layoutInstance(0),
-	m_outputTable(0),
 	m_inGraph(0)
 {
 	setTypeName("VTKGraphLayoutNode");
@@ -50,11 +47,6 @@ VTKGraphLayoutNode::VTKGraphLayoutNode ( const QString &name, ParameterGroup *pa
     inputVTKGraphParameter->setSelfEvaluating(true);
     parameterRoot->addParameter(inputVTKGraphParameter);
 	connect(inputVTKGraphParameter, SIGNAL(dirtied()), SLOT(processParameters()));
-
-    // create the mandatory vtk table output parameter 
-	VTKTableParameter * outputVTKTableParameter = new VTKTableParameter(m_ouputVTKTableParameterName);
-    outputVTKTableParameter->setPinType(Parameter::PT_Output);
-    parameterRoot->addParameter(outputVTKTableParameter);
 
     // create the mandatory SetZRange parameter 
 	NumberParameter * zRangeParameter = new NumberParameter(m_zRangeParameterName, Parameter::T_Float, QVariant::fromValue<double>(0));
@@ -114,46 +106,6 @@ void VTKGraphLayoutNode::refreshOutput()
 		outputParameter->setVTKTable(m_outputTable);
 		outputParameter->propagateDirty(0);
 	}
-}
-
-vtkTable * VTKGraphLayoutNode::createTableFromGraph(vtkGraph *graph)
-{
-	vtkTable *myTable = vtkTable::New();
-	//Create a column named "NodeId"
-	vtkIdTypeArray *colNodeId = vtkIdTypeArray::New();
-	colNodeId->SetName("NodeId");
-	myTable->AddColumn(colNodeId);
-	//Create columns named "X", "Y" and "Z"
-	vtkDoubleArray *colX = vtkDoubleArray::New();
-	colX->SetName("X");
-	vtkDoubleArray *colY = vtkDoubleArray::New();
-	colY->SetName("Y");
-	vtkDoubleArray *colZ = vtkDoubleArray::New();
-	colZ->SetName("Z");
-
-	//Fill the table with data from the graph vertices
-	vtkVertexListIterator *vertices = vtkVertexListIterator::New();
-	graph->GetVertices(vertices);
-	double position[3] = {0.0, 0.0, 0.0};
-	vtkIdType i = 0;
-	while (vertices->HasNext())
-	{
-		vertices->Next();
-		//Add the vertex ID to the "NodeId" column
-		colNodeId->InsertNextValue( i );
-		//Add the position values to columns "X", "Y" and "Z"
-		graph->GetPoint(i, position);
-		colX->InsertNextValue( position[0] );
-		colY->InsertNextValue( position[1] );
-		colZ->InsertNextValue( position[2] );
-		++i;
-	}
-	myTable->AddColumn(colX);
-	myTable->AddColumn(colY);
-	myTable->AddColumn(colZ);
-	Log::info(QString("Number rows \"%1\" created: ").arg(myTable->GetNumberOfRows()), "VTKGraphLayoutNode::createTableFromGraph");
-	Log::info(QString("Number columns \"%1\" created: ").arg(myTable->GetNumberOfColumns()), "VTKGraphLayoutNode::createTableFromGraph");
-	return myTable;
 }
 
 //!
