@@ -33,7 +33,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef StackedTreeLayouterNode_H
 #define StackedTreeLayouterNode_H
 
-#include "Node.h"
+#include "VTKTreeLayoutNode.h"
 
 // OGRE
 #include <Ogre.h>
@@ -45,11 +45,12 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class for a node that is used for debugging purposes.
 //!
-class StackedTreeLayouterNode : public Node
+class StackedTreeLayouterNode : public VTKTreeLayoutNode
 {
 
     Q_OBJECT
     ADD_INSTANCE_COUNTER
+//	LAYOUT_TYPE(vtkStackedTreeLayoutStrategy)
 
 public: // constructors and destructors
 

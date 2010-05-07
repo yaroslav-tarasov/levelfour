@@ -19,7 +19,7 @@ INIT_INSTANCE_COUNTER(HierarchicalTreeLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 HierarchicalTreeLayouterNode::HierarchicalTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    VTKTreeLayoutNode(name, parameterRoot)
+	VTKTreeLayoutNode(name, parameterRoot)
 {
 	setTypeName("HierarchicalTreeLayouterNode");
 

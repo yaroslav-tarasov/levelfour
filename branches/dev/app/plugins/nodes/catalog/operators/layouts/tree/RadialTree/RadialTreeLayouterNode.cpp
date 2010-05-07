@@ -19,7 +19,7 @@ INIT_INSTANCE_COUNTER(RadialTreeLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 RadialTreeLayouterNode::RadialTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    VTKTreeLayoutNode(name, parameterRoot)
+	VTKTreeLayoutNode(name, parameterRoot)
 {
 	setTypeName("RadialTreeLayouterNode");
 

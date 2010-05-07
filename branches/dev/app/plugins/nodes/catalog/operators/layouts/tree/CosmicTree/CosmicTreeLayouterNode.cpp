@@ -20,7 +20,7 @@ INIT_INSTANCE_COUNTER(CosmicTreeLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 CosmicTreeLayouterNode::CosmicTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    VTKTreeLayoutNode(name, parameterRoot)
+	VTKTreeLayoutNode(name, parameterRoot)
 {
 	setTypeName("CosmicTreeLayouterNode");
 

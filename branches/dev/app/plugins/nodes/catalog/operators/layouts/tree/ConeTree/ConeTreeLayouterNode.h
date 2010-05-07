@@ -41,6 +41,10 @@ public: // constructors and destructors
     //!
     virtual ~ConeTreeLayouterNode ();
 
+protected slots: //
+	virtual void processParameters();
+
+
 private slots: //
 
     void setCompactness ();
