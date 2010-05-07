@@ -49,6 +49,13 @@ ConeTreeLayouterNode::~ConeTreeLayouterNode ()
     Log::info(QString("ConeTreeLayouterNode destroyed."), "ConeTreeLayouterNode::~ConeTreeLayouterNode");
 }
 
+void ConeTreeLayouterNode::processParameters()
+{
+	if (!updateInputTree())
+		return;
+	
+	refreshOutput();
+}
 //!
 //! Set the various parameters from property editor
 //!

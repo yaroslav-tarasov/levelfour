@@ -15,7 +15,7 @@ INIT_INSTANCE_COUNTER(SpanTreeLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 SpanTreeLayouterNode::SpanTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    VTKTreeLayoutNode(name, parameterRoot)
+	VTKTreeLayoutNode(name, parameterRoot)
 {
 	setTypeName("SpanTreeLayouterNode");
 

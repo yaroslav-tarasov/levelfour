@@ -19,7 +19,7 @@ INIT_INSTANCE_COUNTER(ClusteringLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 ClusteringLayouterNode::ClusteringLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    VTKGraphLayoutNode(name, parameterRoot)
+	VTKGraphLayoutNode(name, parameterRoot)
 {
 	setTypeName("ClusteringLayouterNode");
 
