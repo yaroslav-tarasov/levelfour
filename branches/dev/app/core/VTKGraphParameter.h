@@ -14,6 +14,20 @@
 #include "vtkGraph.h"
 
 //!
+//! Macro definition that defines the type of the instance of the graph 
+//! to be used (tree, etc)
+//!
+#define GRAPH_TYPE(className) \
+	typedef className GraphType;
+
+//!
+//! Macro definition that force the dynamic cast of the specific graph type 
+//! to the instance of the graph 
+//!
+#define M_GRAPH \
+	dynamic_cast<GraphType*>(m_graph)
+
+//!
 //! Class representing parameters for vtk table values.
 //!
 class FRAPPER_CORE_EXPORT VTKGraphParameter : public Parameter
@@ -34,6 +48,16 @@ public: // constructors and destructors
     //! \param parameter The parameter to copy.
     //!
     VTKGraphParameter ( const VTKGraphParameter &parameter );
+
+    //!
+    //! Constructor of the VTKGraphParameter class.
+    //!
+    //! \param name The name of the parameter.
+    //! \param type The type of the parameter's value(s).
+    //! \param value The parameter's value.
+    //!
+    VTKGraphParameter ( const QString &name, Type type, const QVariant &value );
+
 
 	//!
     //! Destructor of the VTKGraphParameter class.
@@ -63,7 +87,7 @@ public: // functions
     //!
     void setVTKGraph ( vtkGraph * graph );
 
-private: // data
+protected: // data
 
     //!
     //! The vtk graph.

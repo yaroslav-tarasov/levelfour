@@ -151,7 +151,7 @@ void XmlTreeReaderNode::updateTree()
 	m_Tree = m_xmltree->GetOutput();
 
 	VTKTreeParameter * outParameter = dynamic_cast<VTKTreeParameter*>(getParameter(m_outputVTKTreeName));
-	outParameter->setVTKTree(m_Tree);
+	outParameter->setVTKGraph(m_Tree);
 	outParameter->propagateDirty(0);
 //	setValue(m_outputVTKTableName, QVariant::fromValue<vtkTable *>(m_Tree), true);
 

@@ -209,6 +209,7 @@ void Model2SceneNode::processScene()
 		double y = colY->GetValue(i);
 		double z = colZ->GetValue(i);
 		sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
+		sceneItem->setScale(m_size);
 		m_sceneNode->addChild(sceneItem);
 		
 	}
