@@ -45,7 +45,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 StackedTreeLayouterNode::StackedTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+    VTKTreeLayoutNode(name, parameterRoot)
 {
 }
 

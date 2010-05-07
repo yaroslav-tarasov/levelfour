@@ -15,7 +15,7 @@ INIT_INSTANCE_COUNTER(TreeOrbitLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 TreeOrbitLayouterNode::TreeOrbitLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    VTKTreeLayoutNode(name, parameterRoot)
+	VTKTreeLayoutNode(name, parameterRoot)
 {
 	setTypeName("TreeOrbitLayouterNode");
 
