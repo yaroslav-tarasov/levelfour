@@ -41,6 +41,10 @@ public slots: //
     //!
     void processScene();
 
+    //!
+    //! Processes the node's parameters.
+    //!
+    void processParameters();
 
 private: // functions
 
