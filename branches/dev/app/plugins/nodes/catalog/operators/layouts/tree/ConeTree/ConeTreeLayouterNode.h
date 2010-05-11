@@ -54,8 +54,13 @@ private slots: //
 private: // data
 
 	float m_Compactness;
+	QString m_CompactnessNameParameter;
+
 	int m_Compression;
+	QString m_CompressionNameParameter;
+
 	float m_Spacing;
+	QString m_SpacingNameParameter;
 };
 
 

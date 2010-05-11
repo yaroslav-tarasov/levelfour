@@ -12,7 +12,7 @@
 #include "VTKTableParameter.h"
 #include "vtkVariantArray.h"
 #include "vtkDoubleArray.h"
-#include "vtkStringArray.h"
+#include "vtkIdTypeArray.h"
 
 INIT_INSTANCE_COUNTER(PositionMapperNode)
 
@@ -33,6 +33,7 @@ PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *pa
 	m_sceneNode(0),
 	m_entity(0), 
     m_entityContainer(0),
+	m_inputVTKTableParameterName("VTKTableInput"),
 	m_oldResourceGroupName("")
 {
     // create the vtk table input parameter - multiplicity ONE OR MORE
@@ -52,30 +53,30 @@ PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *pa
     connect(inputGeometryParameter, SIGNAL(dirtied()), SLOT(geometryFileChanged()));
 	
 	// set affections and functions
-    // addAffection("Geometry File", m_outputGeometryName);
-    // setChangeFunction("Geometry File", SLOT(geometryFileChanged()));
-    // setCommandFunction("Geometry File", SLOT(geometryFileChanged()));
-    // connect(this, SIGNAL(frameChanged(int)), SLOT(updateAll()));
+    addAffection("Geometry File", m_outputGeometryName);
+    setChangeFunction("Geometry File", SLOT(geometryFileChanged()));
+    setCommandFunction("Geometry File", SLOT(geometryFileChanged()));
+    connect(this, SIGNAL(frameChanged(int)), SLOT(updateAll()));
 
 	// create the enumeration parameter representing the ID Field of table
 	idFieldParameter = new EnumerationParameter("SetIdField", Parameter::getDefaultValue(Parameter::T_Enumeration));
 	parameterRoot->addParameter(idFieldParameter);
-	connect(idFieldParameter, SIGNAL(dirtied()), this, SLOT(updateAll()));
+	connect(idFieldParameter, SIGNAL(dirtied()), this, SLOT(processScene()));
 	
     // create the enumeration parameter representing the X Field of table
 	xFieldParameter = new EnumerationParameter("SetXField", Parameter::getDefaultValue(Parameter::T_Enumeration));
     parameterRoot->addParameter(xFieldParameter);
-	connect(xFieldParameter, SIGNAL(dirtied()), this, SLOT(updateAll()));
+	connect(xFieldParameter, SIGNAL(dirtied()), this, SLOT(processScene()));
 
     // create the enumeration parameter representing the Y Field of table
 	yFieldParameter = new EnumerationParameter("SetYField", Parameter::getDefaultValue(Parameter::T_Enumeration));
     parameterRoot->addParameter(yFieldParameter);
-	connect(yFieldParameter, SIGNAL(dirtied()), this, SLOT(updateAll()));
+	connect(yFieldParameter, SIGNAL(dirtied()), this, SLOT(processScene()));
 
 	// create the enumeration parameter representing the Z Field of table
 	zFieldParameter = new EnumerationParameter("SetZField", Parameter::getDefaultValue(Parameter::T_Enumeration));
     parameterRoot->addParameter(zFieldParameter);
-	connect(zFieldParameter, SIGNAL(dirtied()), this, SLOT(updateAll()));
+	connect(zFieldParameter, SIGNAL(dirtied()), this, SLOT(processScene()));
 
 	createSceneNode();
 
@@ -172,61 +173,58 @@ void PositionMapperNode::geometryFileChanged ()
 //!
 void PositionMapperNode::processScene()
 {
-	// load the input vtk parameter 
-	VTKTableParameter * inputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_inputVTKTableParameterName));
-	if (!inputParameter || !inputParameter->isConnected())
+	if (!updateTable())
 		return;
 
-	// get the source parameter (output of source node) connected to the input parameter
-	VTKTableParameter * sourceParameter = dynamic_cast<VTKTableParameter*>(inputParameter->getConnectedParameter());
+	if (!m_sceneNode)
+		createSceneNode();
 
-	inputParameter->setVTKTable(sourceParameter->getVTKTable());
-
-	vtkTable * xyzTable = inputParameter->getVTKTable();
-
-	if (!m_sceneNode && !createSceneNode())
-
-
-	if (!m_entity || !xyzTable || !m_sceneNode)
+	if (!m_entity || !m_sceneNode)
 		return;
 
+	int numColumns = m_inputTable->GetNumberOfColumns();
 	// Get field assignments for id, x, y. z
 	QStringList literals;
-	for (int i = 0; i < xyzTable->GetNumberOfColumns(); i++)
-		literals << xyzTable->GetColumnName(i);
+	for (int i = 0; i < numColumns; i++)
+		literals << m_inputTable->GetColumnName(i);
 
-		idFieldParameter->setLiterals(literals);
-		idFieldParameter->setValues(literals);
+	idFieldParameter->setLiterals(literals);
+	idFieldParameter->setValues(literals);
 
-		xFieldParameter->setLiterals(literals);
-		xFieldParameter->setValues(literals);
+	xFieldParameter->setLiterals(literals);
+	xFieldParameter->setValues(literals);
 
-		yFieldParameter->setLiterals(literals);
-		yFieldParameter->setValues(literals);
+	yFieldParameter->setLiterals(literals);
+	yFieldParameter->setValues(literals);
 
-		yFieldParameter->setLiterals(literals);
-		yFieldParameter->setValues(literals);
+	yFieldParameter->setLiterals(literals);
+	yFieldParameter->setValues(literals);
 
-		QString setIdField = idFieldParameter->getCurrentLiteral();
-		QString setXField = xFieldParameter->getCurrentLiteral();
-		QString setYField = yFieldParameter->getCurrentLiteral();
-		QString setZField = zFieldParameter->getCurrentLiteral();
+	QString setIdField = idFieldParameter->getCurrentValue();
+	QString setXField = xFieldParameter->getCurrentValue();
+	QString setYField = yFieldParameter->getCurrentValue();
+	QString setZField = zFieldParameter->getCurrentValue();
 
 	//Get columns specified from assignments
-	vtkStringArray *colNodeId = dynamic_cast<vtkStringArray*>(xyzTable->GetColumnByName(setIdField.toLatin1()));
-	vtkDoubleArray *colX = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName(setXField.toLatin1()));
-	vtkDoubleArray *colY = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName(setYField.toLatin1()));
-	vtkDoubleArray *colZ = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName(setZField.toLatin1()));
+	vtkIdTypeArray *colNodeId = dynamic_cast<vtkIdTypeArray*>(m_inputTable->GetColumnByName(setIdField.toLatin1()));
+	vtkDoubleArray *colX = dynamic_cast<vtkDoubleArray*>(m_inputTable->GetColumnByName(setXField.toLatin1()));
+	vtkDoubleArray *colY = dynamic_cast<vtkDoubleArray*>(m_inputTable->GetColumnByName(setYField.toLatin1()));
+	vtkDoubleArray *colZ = dynamic_cast<vtkDoubleArray*>(m_inputTable->GetColumnByName(setZField.toLatin1()));
 
 	destroyAllAttachedMovableObjects(m_sceneNode);
 	destroyAllChildren(m_sceneNode);
 
+	if (!colNodeId || !colX || !colY || !colZ)
+		return;
+
+	Ogre::String idPrefix(QString(m_name + ":").toStdString());
+
 	Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 
-	for (int i=0; i<xyzTable->GetNumberOfRows(); i++)
+	for (int i=0; i<m_inputTable->GetNumberOfRows(); i++)
 	{
-		vtkStdString colIDValue(colNodeId->GetValue(i));
-		Ogre::String nodeID(QString(m_name + ":" + colIDValue.c_str()).toStdString());
+		int colIDValue = colNodeId->GetValue(i);
+		Ogre::String nodeID(idPrefix + Ogre::StringConverter::toString(colIDValue));
 
 		// create new scene node for each item
 		Ogre::SceneNode *sceneItem = sceneManager->createSceneNode(nodeID);
@@ -239,7 +237,7 @@ void PositionMapperNode::processScene()
 		double x = colX->GetValue(i);
 		double y = colY->GetValue(i);
 		double z = colZ->GetValue(i);
-		sceneItem->setPosition(Ogre::Real(x) * 10, Ogre::Real(y) * 10, Ogre::Real(z) * 10);
+		sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
 		m_sceneNode->addChild(sceneItem);
 		
 	}
@@ -399,4 +397,24 @@ void PositionMapperNode::destroyAllChildren( Ogre::SceneNode* i_pSceneNode )
 	  if (pChildNode != m_sceneNode)
 		  sceneManager->destroySceneNode( pChildNode->getName() );
    }
+}
+
+//!
+//! Update the input table 
+//!
+bool PositionMapperNode::updateTable ()
+{
+	// load the input vtk parameter 
+	VTKTableParameter * inputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_inputVTKTableParameterName));
+	if (!inputParameter->isConnected())
+		return false;
+
+	// get the source parameter (output of source node) connected to the input parameter
+	VTKTableParameter * sourceParameter = dynamic_cast<VTKTableParameter*>(inputParameter->getConnectedParameter());
+
+	// get the vtk table that comes with the source parameter and set it into the input parameter of this node
+	m_inputTable = sourceParameter->getVTKTable();
+	inputParameter->setVTKTable(m_inputTable);
+
+	return (m_inputTable != 0);
 }
