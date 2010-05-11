@@ -14,6 +14,7 @@
   <parameters>
     <parameter name="Description" type="TextInfo" defaultValue="Position Mapper"/>
     <parameters name="Position Mapper Parameters">
+      <parameter name="Geometry File" type="Filename" filter="Geometry Files (*.mesh)"/>
       <parameter name="Assign Variables" type="TextInfo" defaultValue="Assign position variables from table fields."/>
    </parameters>
     <!-- input parameters -->

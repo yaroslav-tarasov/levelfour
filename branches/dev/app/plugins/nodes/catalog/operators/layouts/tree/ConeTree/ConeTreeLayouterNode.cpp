@@ -22,14 +22,14 @@ ConeTreeLayouterNode::ConeTreeLayouterNode ( const QString &name, ParameterGroup
 
 	m_layoutInstance = vtkConeLayoutStrategy::New();
 
-	setChangeFunction("Set Compactness", SLOT(setCompactness()));
-    setCommandFunction("Set Compactness", SLOT(setCompactness()));
+	setChangeFunction("Set Compactness", SLOT(processParameters()));
+    setCommandFunction("Set Compactness", SLOT(processParameters()));
 
-	setChangeFunction("Set Compression", SLOT(setCompression()));
-    setCommandFunction("Set Compression", SLOT(setCompression()));
+	setChangeFunction("Set Compression", SLOT(processParameters()));
+    setCommandFunction("Set Compression", SLOT(processParameters()));
 
-	setChangeFunction("Set Spacing", SLOT(setSpacing()));
-    setCommandFunction("Set Spacing", SLOT(setSpacing()));
+	setChangeFunction("Set Spacing", SLOT(processParameters()));
+    setCommandFunction("Set Spacing", SLOT(processParameters()));
 
 	INC_INSTANCE_COUNTER
 }
@@ -61,16 +61,34 @@ void ConeTreeLayouterNode::processParameters()
 //!
 void ConeTreeLayouterNode::setCompactness ()
 {
+	double compactness = getDoubleValue(m_CompactnessNameParameter);
+	if (m_Compactness == compactness)
+		return;
+
+	m_Compactness = compactness;
+
 	M_LAYOUT->SetCompactness(m_Compactness);
 }
 
 void ConeTreeLayouterNode::setCompression ()
 {
+	double compression = getIntValue(m_CompressionNameParameter);
+	if (m_Compression == compression)
+		return;
+
+	m_Compression = compression;
+
 	M_LAYOUT->SetCompression(m_Compression);
 }
 
 void ConeTreeLayouterNode::setSpacing ()
 {
+	double spacing = getDoubleValue(m_SpacingNameParameter);
+	if (m_Spacing == spacing)
+		return;
+
+	m_Spacing = spacing;
+
 	M_LAYOUT->SetSpacing(m_Spacing);
 }
 
