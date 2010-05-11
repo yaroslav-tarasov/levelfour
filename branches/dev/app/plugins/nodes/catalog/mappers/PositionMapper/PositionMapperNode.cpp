@@ -42,7 +42,7 @@ PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *pa
     inputVTKTableParameter->setPinType(Parameter::PT_Input);
     inputVTKTableParameter->setSelfEvaluating(true);
     parameterRoot->addParameter(inputVTKTableParameter);
-    connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processScene()));
+    connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processParameters()));
 
 	// create the geometry input parameter (shape mapper)
 	GeometryParameter *inputGeometryParameter = new GeometryParameter("Geometry");
@@ -171,6 +171,37 @@ void PositionMapperNode::geometryFileChanged ()
 //!
 //! Processes the node's input data to generate the node's output table.
 //!
+void PositionMapperNode::processParameters()
+{
+	if (!updateTable())
+		return;
+
+	int numColumns = m_inputTable->GetNumberOfColumns();
+	// Get field assignments for id, x, y. z
+	QStringList literals;
+	QString name;
+	for (int i = 0; i < numColumns; i++)
+	{
+		name = QString(m_inputTable->GetColumnName(i));
+		literals << name;
+	}
+	idFieldParameter->setLiterals(literals);
+	idFieldParameter->setValues(literals);
+
+	xFieldParameter->setLiterals(literals);
+	xFieldParameter->setValues(literals);
+
+	yFieldParameter->setLiterals(literals);
+	yFieldParameter->setValues(literals);
+
+	zFieldParameter->setLiterals(literals);
+	zFieldParameter->setValues(literals);
+}
+
+
+//!
+//! Processes the node's input data to generate the node's output table.
+//!
 void PositionMapperNode::processScene()
 {
 	if (!updateTable())
@@ -181,24 +212,6 @@ void PositionMapperNode::processScene()
 
 	if (!m_entity || !m_sceneNode)
 		return;
-
-	int numColumns = m_inputTable->GetNumberOfColumns();
-	// Get field assignments for id, x, y. z
-	QStringList literals;
-	for (int i = 0; i < numColumns; i++)
-		literals << m_inputTable->GetColumnName(i);
-
-	idFieldParameter->setLiterals(literals);
-	idFieldParameter->setValues(literals);
-
-	xFieldParameter->setLiterals(literals);
-	xFieldParameter->setValues(literals);
-
-	yFieldParameter->setLiterals(literals);
-	yFieldParameter->setValues(literals);
-
-	yFieldParameter->setLiterals(literals);
-	yFieldParameter->setValues(literals);
 
 	QString setIdField = idFieldParameter->getCurrentValue();
 	QString setXField = xFieldParameter->getCurrentValue();
