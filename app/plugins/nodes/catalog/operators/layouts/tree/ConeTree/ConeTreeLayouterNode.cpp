@@ -16,7 +16,11 @@ INIT_INSTANCE_COUNTER(ConeTreeLayouterNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 ConeTreeLayouterNode::ConeTreeLayouterNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    VTKTreeLayoutNode(name, parameterRoot)
+    VTKTreeLayoutNode(name, parameterRoot),
+	m_CompactnessNameParameter("Set Compactness"),
+	m_CompressionNameParameter("Set Compression"),
+	m_SpacingNameParameter("Set Spacing")
+
 {
 	setTypeName("ConeTreeLayouterNode");
 
