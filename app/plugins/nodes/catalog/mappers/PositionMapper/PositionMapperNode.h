@@ -5,6 +5,7 @@
 #include "OgreContainer.h"
 #include "Ogre.h"
 #include "OgreTools.h"
+#include "vtkTable.h"
 
 
 //!
@@ -108,6 +109,11 @@ private slots: //
     //!
     void geometryFileChanged ();
 
+	//!
+    //! Update the input table 
+    //! \return True if it succeeds, otherwise false
+    //!
+    bool updateTable ();
 private: // data
 
     //!
@@ -134,6 +140,11 @@ private: // data
     //! The name of the input vtk table parameter.
     //!
     QString m_inputVTKTableParameterName;
+
+    //!
+    //! The input table 
+    //!
+	vtkTable * m_inputTable;
 
 	//!
     //! The name of the input geometry parameter.
