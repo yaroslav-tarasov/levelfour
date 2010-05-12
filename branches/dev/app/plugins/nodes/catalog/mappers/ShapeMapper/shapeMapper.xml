@@ -14,6 +14,7 @@
   <parameters>
     <parameter name="Description" type="TextInfo" defaultValue="Shape Mapper is..."/>
     <parameters name="Shape Mapper Parameters">
+      <parameter name="Geometry File" type="Filename" filter="Geometry Files (*.mesh)"/>
       <parameter name="Labels" type="TextInfo" defaultValue="Shape by Value is..."/>
       <parameter name="SetLabels" type="Bool" />
       <parameter name="Select Label Field" type="Enumeration" defaultValue="" />
