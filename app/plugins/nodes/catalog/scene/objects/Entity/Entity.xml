@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="Model2Scene" category="Geometric" color="120,70,150" plugin="Model2Scene.dll">
+  <parameters>
+    <parameter name="Geometry File" type="Filename" filter="Geometry Files (*.mesh)"/>
+    <parameter name="Size" type="Float" size="1" minValue="0" maxValue="1" defaultValue="1" stepSize="0.05" />
+  </parameters>
+</nodetype>
