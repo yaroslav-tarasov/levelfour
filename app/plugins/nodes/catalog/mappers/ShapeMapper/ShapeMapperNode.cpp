@@ -75,7 +75,8 @@ INIT_INSTANCE_COUNTER(ShapeMapperNode)
 //!
 ShapeMapperNode::ShapeMapperNode ( const QString &name, ParameterGroup *parameterRoot ) :
     Node(name, parameterRoot),
-	m_outputGeometryParameterName("GeometryOutput")
+	m_outputGeometryParameterName("GeometryOutput"),
+	m_entity(0)
 {
 	// create the geometry output parameter (shape mapper)
 	m_outputGeometryParameter = new EntityParameter(m_outputGeometryParameterName);
