@@ -40,7 +40,5 @@
     <parameter name="ColorIn" type="Color" pin="in" visible="false"/>
     <parameter name="MaterialIn" type="Image" pin="in" visible="false"/>
     <parameter name="SizeIn" type="Float" pin="in" visible="false"/>
-    <!-- output parameters -->
-    <parameter name="MeshOut" type="Geometry" pin="out" visible="false"/>
   </parameters>
 </nodetype>
