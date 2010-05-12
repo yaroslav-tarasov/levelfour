@@ -13,6 +13,7 @@
 #include "vtkVariantArray.h"
 #include "vtkDoubleArray.h"
 #include "vtkIdTypeArray.h"
+#include "EntityParameter.h"
 
 INIT_INSTANCE_COUNTER(PositionMapperNode)
 
@@ -34,6 +35,7 @@ PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *pa
 	m_entity(0), 
     m_entityContainer(0),
 	m_inputVTKTableParameterName("VTKTableInput"),
+	m_inputGeometryParameterName("Geometry"),
 	m_oldResourceGroupName("")
 {
     // create the vtk table input parameter - multiplicity ONE OR MORE
@@ -45,12 +47,12 @@ PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *pa
     connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processParameters()));
 
 	// create the geometry input parameter (shape mapper)
-	GeometryParameter *inputGeometryParameter = new GeometryParameter("Geometry");
+	EntityParameter *inputGeometryParameter = new EntityParameter(m_inputGeometryParameterName);
 	inputGeometryParameter->setMultiplicity(1);
 	inputGeometryParameter->setPinType(Parameter::PT_Input);
 	inputGeometryParameter->setSelfEvaluating(true);
 	parameterRoot->addParameter(inputGeometryParameter);
-    connect(inputGeometryParameter, SIGNAL(dirtied()), SLOT(geometryFileChanged()));
+    connect(inputGeometryParameter, SIGNAL(dirtied()), SLOT(setGeometry()));
 	
 	// set affections and functions
     addAffection("Geometry File", m_outputGeometryName);
@@ -207,10 +209,7 @@ void PositionMapperNode::processScene()
 	if (!updateTable())
 		return;
 
-	if (!m_sceneNode)
-		createSceneNode();
-
-	if (!m_entity || !m_sceneNode)
+	if (!m_sceneNode || !m_entity)
 		return;
 
 	QString setIdField = idFieldParameter->getCurrentValue();
@@ -430,4 +429,24 @@ bool PositionMapperNode::updateTable ()
 	inputParameter->setVTKTable(m_inputTable);
 
 	return (m_inputTable != 0);
+}
+
+
+//!
+//! Update the input table 
+//!
+void PositionMapperNode::setGeometry()
+{
+	// load the input vtk parameter 
+	EntityParameter * inputParameter = dynamic_cast<EntityParameter*>(getParameter(m_inputGeometryParameterName));
+	if (!inputParameter->isConnected())
+		return;
+
+	// get the source parameter (output of source node) connected to the input parameter
+	EntityParameter * sourceParameter = dynamic_cast<EntityParameter*>(inputParameter->getConnectedParameter());
+
+	// get the vtk table that comes with the source parameter and set it into the input parameter of this node
+	m_entity = sourceParameter->getEntity();
+
+	processScene();
 }
