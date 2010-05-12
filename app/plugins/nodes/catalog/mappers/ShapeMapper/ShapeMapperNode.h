@@ -33,6 +33,9 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #define ShapeMapperNODE_H
 
 #include "Node.h"
+#include "Ogre.h"
+#include "OgreTools.h"
+#include "EntityParameter.h"
 
 // OGRE
 #include <Ogre.h>
@@ -69,9 +72,43 @@ public: // constructors and destructors
     //!
     virtual ~ShapeMapperNode ();
 
+private slots: //
+
+    //!
+    //! Change function for the Geometry File parameter.
+    //!
+    bool geometryFileChanged ();
+
+private: // functions
+    //!
+    //! Removes the OGRE entity containing the mesh geometry from the scene and
+    //! destroys it along with the OGRE scene node.
+    //!
+    void destroyEntity ();
+
+    //!
+    //! Create new scene.
+    //! \return True if the scene was successfully created, otherwise False.
+    //!
+	bool createEntity(QString name, QString fileName);
+
+
 private: //data
 
 	QString m_outputGeometryParameterName;
+
+	//!
+    //! OGRE entity.
+    //!
+    Ogre::Entity *m_entity;
+
+    //!
+    //! Old resource group name.
+    //!
+    QString m_oldResourceGroupName;
+
+	EntityParameter * m_outputGeometryParameter;
+
 };
 
 
