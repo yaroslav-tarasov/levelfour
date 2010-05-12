@@ -14,6 +14,7 @@ set( frappercore_h ${frappercore_h}
 			Connection.h
 			ConnectionGraphicsItem.h
 			CurveEditorDataNode.h
+			EntityParameter.h
 			EnumerationParameter.h
 			FilenameParameter.h
 			FlagGraphicsItem.h
@@ -102,6 +103,7 @@ set( frappercore_src ${frappercore_src}
 			Connection.cpp
 			ConnectionGraphicsItem.cpp
 			CurveEditorDataNode.cpp
+			EntityParameter.cpp
 			EnumerationParameter.cpp
 			FilenameParameter.cpp
 			FlagGraphicsItem.cpp
