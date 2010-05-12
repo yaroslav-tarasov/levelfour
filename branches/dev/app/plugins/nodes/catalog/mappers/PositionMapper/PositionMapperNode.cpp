@@ -198,6 +198,8 @@ void PositionMapperNode::processParameters()
 
 	zFieldParameter->setLiterals(literals);
 	zFieldParameter->setValues(literals);
+
+	processScene();
 }
 
 
