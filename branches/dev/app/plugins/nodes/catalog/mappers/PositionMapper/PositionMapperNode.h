@@ -114,6 +114,11 @@ private slots: //
     void geometryFileChanged ();
 
 	//!
+    //! Set the Geometry input.
+    //!
+    void setGeometry();
+
+	//!
     //! Update the input table 
     //! \return True if it succeeds, otherwise false
     //!

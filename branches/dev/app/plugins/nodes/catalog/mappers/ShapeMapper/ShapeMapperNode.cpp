@@ -65,6 +65,11 @@ Reference
 ShapeMapperNode::ShapeMapperNode ( const QString &name, ParameterGroup *parameterRoot ) :
     Node(name, parameterRoot)
 {
+	// create the geometry output parameter (shape mapper)
+	EntityParameter *outputGeometryParameter = new EntityParameter(m_outputGeometryParameterName);
+	outputGeometryParameter->setPinType(Parameter::PT_Output);
+	parameterRoot->addParameter(outputGeometryParameter);
+
 }
 
 
