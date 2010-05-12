@@ -69,6 +69,9 @@ public: // constructors and destructors
     //!
     virtual ~ShapeMapperNode ();
 
+private: //data
+
+	QString m_outputGeometryParameterName;
 };
 
 

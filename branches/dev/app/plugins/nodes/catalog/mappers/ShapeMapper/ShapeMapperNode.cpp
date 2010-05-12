@@ -51,6 +51,7 @@ Reference
 
 
 #include "ShapeMapperNode.h"
+#include "EntityParameter.h"
 
 ///
 /// Constructors and Destructors
@@ -63,7 +64,8 @@ Reference
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 ShapeMapperNode::ShapeMapperNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    Node(name, parameterRoot)
+    Node(name, parameterRoot),
+	m_outputGeometryParameterName("GeometryOutput")
 {
 	// create the geometry output parameter (shape mapper)
 	EntityParameter *outputGeometryParameter = new EntityParameter(m_outputGeometryParameterName);
