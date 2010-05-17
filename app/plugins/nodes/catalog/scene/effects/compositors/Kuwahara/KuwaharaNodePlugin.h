@@ -1,12 +1,6 @@
-/*
------------------------------------------------------------------------------
-
------------------------------------------------------------------------------
-*/
-
 //!
-//! \file "NightVisionNodePlugin.h"
-//! \brief Header file for NightVisionNodePlugin class.
+//! \file "KuwaharaNodePlugin.h"
+//! \brief Header file for KuwaharaNodePlugin class.
 //!
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
 //! \author     Stefan Habel <stefan.habel@filmakademie.de>
@@ -14,16 +8,16 @@
 //! \date       11.02.2009 (last updated)
 //!
 
-#ifndef NightVisionNODEPLUGIN_H
-#define NightVisionNODEPLUGIN_H
+#ifndef KuwaharaNODEPLUGIN_H
+#define KuwaharaNODEPLUGIN_H
 
 #include "NodeTypeInterface.h"
 
 
 //!
-//! Plugin class for creating NightVisionNode objects.
+//! Plugin class for creating KuwaharaNode objects.
 //!
-class NightVisionNodePlugin : public QObject, public NodeTypeInterface
+class KuwaharaNodePlugin : public QObject, public NodeTypeInterface
 {
 
     Q_OBJECT
