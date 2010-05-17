@@ -1,32 +1,38 @@
 /*
+-----------------------------------------------------------------------------
 
+-----------------------------------------------------------------------------
 */
 
 //!
-//! \file "NightVisionNode.cpp"
-//! \brief Implementation file for NightVisionNode class.
+//! \file "ScratchedFilmNode.cpp"
+//! \brief Implementation file for ScratchedFilmNode class.
 //!
 
-#include "NightVisionNode.h"
-#include "ImageNode.h"
+#include "ScratchedFilmNode.h"
+#include "CompositorNode.h"
 #include "Parameter.h"
 #include "OgreTools.h"
 #include "OgreManager.h"
 
+///
+/// Constructors and Destructors
+///
+
 
 //!
-//! Constructor of the NightVisionNode class.
+//! Constructor of the ScratchedFilmNode class.
 //!
 //! \param name The name for the new node.
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //! \param outputImageName The name of the geometry output parameter.
 //!
-NightVisionNode::NightVisionNode ( const QString &name, ParameterGroup *parameterRoot ) :
+ScratchedFilmNode::ScratchedFilmNode ( const QString &name, ParameterGroup *parameterRoot ) :
     CompositorNode(name, parameterRoot)
 {
     // create compositor
     if (m_viewport)
-        m_compositor = Ogre::CompositorManager::getSingleton().addCompositor(m_viewport, "Night Vision", 0);
+        m_compositor = Ogre::CompositorManager::getSingleton().addCompositor(m_viewport, "ScratchedFilmCompositor", 0);
     
     // add listener
     if (m_compositor) {
@@ -35,19 +41,23 @@ NightVisionNode::NightVisionNode ( const QString &name, ParameterGroup *paramete
 
     addAffection("Input Map", m_outputImageName);
     setProcessingFunction(m_outputImageName, SLOT(processOutputImage()));
-    setChangeFunction("Lum", SIGNAL(triggerRedraw()));
-
+    
+	setChangeFunction("Speed1", SIGNAL(triggerRedraw()));
+	setChangeFunction("Speed2", SIGNAL(triggerRedraw()));
+	setChangeFunction("ScratchIntensity", SIGNAL(triggerRedraw()));
+	setChangeFunction("IS", SIGNAL(triggerRedraw()));
+	
 }
 
 
 //!
-//! Destructor of the NightVisionNode class.
+//! Destructor of the ScratchedFilmNode class.
 //!
 //! Defined virtual to guarantee that the destructor of a derived class
 //! will be called if the instance of the derived class is saved in a
 //! variable of its parent class type.
 //!
-NightVisionNode::~NightVisionNode ()
+ScratchedFilmNode::~ScratchedFilmNode ()
 {
 }
 
@@ -62,19 +72,24 @@ NightVisionNode::~NightVisionNode ()
 //! \param pass_id Id to identifiy current compositor pass.
 //! \param mat Material this pass is currently using.
 //!
-void NightVisionNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialPtr &mat)
+void ScratchedFilmNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialPtr &mat)
 {
     Ogre::TexturePtr inputTexture = getTextureValue("Input Map");
     if (inputTexture.isNull())
         return;
-    
-	// single pass
+
+    // watercolor pass
     if (pass_id == 0000) {
         // set shader parameters
         Ogre::GpuProgramParametersSharedPtr fpParams = getShaderParameters(mat);
         if (!fpParams.isNull()) {
-            // setShaderParameter(fpParams, "lum", (Ogre::Real)(getDoubleValue("Lum") / 20.0 + 1.0));
-			setShaderParameter(fpParams, "Lum", Ogre::Vector4(0.30, 0.59, 0.11, 0.0));
+            
+			setShaderParameter(fpParams, "speed1", (Ogre::Real)(getDoubleValue("Speed1") / 100.0));
+			setShaderParameter(fpParams, "speed2", (Ogre::Real)(getDoubleValue("Speed2") / 100.0));
+			setShaderParameter(fpParams, "speed1", (Ogre::Real)(getDoubleValue("Speed1") / 100.0));
+			setShaderParameter(fpParams, "scratchIntensity", (Ogre::Real)(getDoubleValue("ScratchIntensity") / 100.0));
+			setShaderParameter(fpParams, "is", (Ogre::Real)(getDoubleValue("IS") / 100.0));
+			
         }
 
         // set texture name
@@ -90,9 +105,9 @@ void NightVisionNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialP
 //!
 //! Processes the node's input data to generate the node's output image.
 //!
-void NightVisionNode::processOutputImage ()
+void ScratchedFilmNode::processOutputImage ()
 {
-     // obtain input image
+    // obtain input image
     Ogre::TexturePtr inputTexture = getTextureValue("Input Map");
     if (inputTexture.isNull()) {
         //disable compositor (now that the input texture name was set)
@@ -102,7 +117,7 @@ void NightVisionNode::processOutputImage ()
         //render and set output
         m_renderTexture->getBuffer()->getRenderTarget()->update();
         setValue("Image", m_defaultTexture);
-        Log::warning("No input image connected.", "NightVisionNode::processOutputImage");
+        Log::warning("No input image connected.", "ScratchedFilmNode::processOutputImage");
     }
     else if (!m_renderTexture.isNull()) {
         //resize render texture
@@ -119,11 +134,4 @@ void NightVisionNode::processOutputImage ()
     }
 }
 
-//!
-//! Marks the cache as being invalid so that it is cleared the next time
-//! the output image is processed.
-//!
-void NightVisionNode::invalidateCache ()
-{
-    m_cacheInvalid = true;
-}
+
