@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         DropShadow.xml
+  Description:  Contains the XML description of DropShadow nodes.
+  Author:       Thomas Luft <thomas.luft@web.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="DropShadow" category="Compositors" color="7, 45, 87" plugin="DropShadow.dll">
+  <parameters>
+    <parameter name="Input Map" type="Image" pin="in" selfEvaluating="true"/>
+    <parameter name="Resource Group Name" type="String" defaultValue="0.001" visible="false"/>
+    <parameter name="Reload" type="Command" />
+    <parameter name="XOffset" type="Float" inputMethod="SliderPlusSpinBox" minValue="-0.1" maxValue="0.1" defaultValue="-0.015" unit=""/>
+    <parameter name="YOffset" type="Float" inputMethod="SliderPlusSpinBox" minValue="-0.1" maxValue="0.1" defaultValue="-0.01" unit=""/>
+    <parameter name="Density" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.62" unit=""/>
+    
+  </parameters>
+</nodetype>
+
