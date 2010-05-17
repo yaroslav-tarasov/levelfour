@@ -1,9 +1,3 @@
-/*
------------------------------------------------------------------------------
-
------------------------------------------------------------------------------
-*/
-
 //!
 //! \file "AqtRenderNodePlugin.cpp"
 //! \brief Implementation file for AqtRenderNodePlugin class.
@@ -14,8 +8,8 @@
 //! \date       11.02.2009 (last updated)
 //!
 
-#include "NightVisionNodePlugin.h"
-#include "NightVisionNode.h"
+#include "KuwaharaNodePlugin.h"
+#include "KuwaharaNode.h"
 #include <QtCore/QtPlugin>
 
 
@@ -31,10 +25,10 @@
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //! \return A pointer to the new node.
 //!
-Node * NightVisionNodePlugin::createNode ( const QString &name, ParameterGroup *parameterRoot )
+Node * KuwaharaNodePlugin::createNode ( const QString &name, ParameterGroup *parameterRoot )
 {
-    return new NightVisionNode(name, parameterRoot);
+    return new KuwaharaNode(name, parameterRoot);
 }
 
 
-Q_EXPORT_PLUGIN2(NightVisionNodePlugin, NightVisionNodePlugin)
+Q_EXPORT_PLUGIN2(KuwaharaNodeplugin, KuwaharaNodePlugin)
