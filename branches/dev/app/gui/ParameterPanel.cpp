@@ -1673,6 +1673,7 @@ QLayout * ParameterPanel::createFloatingPointLayout ( NumberParameter *numberPar
         doubleSpinBox->setMinimum(minValue);
         doubleSpinBox->setMaximum(maxValue);
         doubleSpinBox->setSingleStep(stepSize);
+		doubleSpinBox->setDecimals(4);
         doubleSpinBox->setValue(value);
         doubleSpinBox->setMinimumWidth(66);
         if (!unit.isEmpty())
