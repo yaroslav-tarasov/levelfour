@@ -1,0 +1,47 @@
+void view_spaceVS(
+
+	float4 pos		: POSITION,
+    float4 colorIN	: COLOR0,
+    float3 normalIN	: NORMAL, // expected to be normalized
+    float2 txcoord	: TEXCOORD0,
+    float3 tangentIN	: TANGENT0, // pre-normalized
+    float3 binormalIN	: BINORMAL0, // pre-normalized
+	
+	out float4 hpos		: POSITION,
+	out float3 vpos		: TEXCOORD1,
+	out float4 lightpos	: TEXCOORD5,
+	out float3 tangent	: TEXCOORD2,
+	out float3 binormal	: TEXCOORD3,
+	out float3 normal	: TEXCOORD4,
+	out float4 color	: COLOR0,
+	out float2 UV		: TEXCOORD0,
+	
+    uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+    uniform float4x4 ViewXf,
+    uniform float4x4 WorldViewXf,
+    uniform float TileCount,
+    uniform float3 LampPos
+) {
+    // isolate WorldViewXf rotation-only part
+    float3x3 modelViewRotXf;
+    modelViewRotXf[0] = WorldViewXf[0].xyz;
+    modelViewRotXf[1] = WorldViewXf[1].xyz;
+    modelViewRotXf[2] = WorldViewXf[2].xyz;
+    float4 Po = float4(pos.xyz,1.0);
+    hpos = mul(WvpXf,Po);
+    // vertex position in view space (with model transformations)
+    vpos = mul(WorldViewXf,Po).xyz;
+    // light position in view space
+    float4 Lw = float4(LampPos.xyz,1); // this point in world space
+    lightpos = mul(ViewXf,Lw); // this point in view space
+    // tangent space vectors in view space (with model transformations)
+    tangent = mul(modelViewRotXf,tangentIN);
+    binormal = mul(modelViewRotXf,binormalIN);
+    normal = mul(modelViewRotXf,normalIN);
+    // copy color and texture coordinates
+    color = colorIN; // currently ignored by all techniques
+    UV = TileCount * txcoord.xy;
+}

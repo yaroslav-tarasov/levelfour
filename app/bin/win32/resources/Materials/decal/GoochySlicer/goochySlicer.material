@@ -1,0 +1,53 @@
+vertex_program goochySlicer_vs cg {
+	source vs_GoochySlicer.cg
+	entry_point goochySlicerVS
+	profiles vp40 arbvp1
+	
+	default_params {
+		param_named_auto LampPos   light_position_object_space 0
+		param_named_auto SlicerXf  spotlight_viewproj_matrix
+		// param_named SlicerXf float4x4 1 0 0 0  0 1 0 0  0 0 1 0  0 0 0 0
+		param_named_auto WorldITXf inverse_transpose_world_matrix
+		param_named_auto WorldXf   world_matrix
+		param_named_auto ViewIXf   inverse_view_matrix
+		param_named_auto WvpXf     worldviewproj_matrix
+	}
+}
+
+fragment_program goochySlicer_ps cg {
+	source ps_GoochySlicer.cg
+	entry_point goochySlicerPS
+	profiles fp40 arbfp1
+	
+	default_params {
+		param_named LiteColor float3  0.8 0.5 0.1
+		param_named DarkColor float3  0.0 0.0 0.0
+		param_named WarmColor float3  0.5 0.4 0.05
+		param_named CoolColor float3  0.05 0.05 0.6
+		param_named SpecColor float3  0.7 0.7 1.0
+		param_named SpecExpon float   30.0
+	}
+}
+
+// Goochy_Slicer_Default
+material Default {
+	technique {
+		pass {
+			// scene_blend src_alpha one_minus_src_alpha
+			// depth_check on
+			// depth_func less_equal
+			lighting off
+			
+			vertex_program_ref goochySlicer_vs {
+				
+			}
+			
+			fragment_program_ref goochySlicer_ps {
+				
+			}
+
+		}
+		
+		
+	}
+}

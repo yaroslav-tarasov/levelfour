@@ -1,0 +1,27 @@
+//////////////////////////////////////////////////////
+/////////////////////////////////// pixel shader /////
+//////////////////////////////////////////////////////
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+
+QUAD_REAL4 sepiaPS(
+
+			QUAD_REAL4 Position	: POSITION,
+			QUAD_REAL2 UV	: TEXCOORD0,
+	
+		    uniform sampler2D SceneSampler,
+		    uniform float Desat,
+		    uniform float Toned,
+		    uniform float3 LightColor,
+		    uniform float3 DarkColor
+) : COLOR {   
+    QUAD_REAL3 scnColor = LightColor * tex2D(SceneSampler, UV).xyz;
+    QUAD_REAL3 grayXfer = QUAD_REAL3(0.3,0.59,0.11);
+    QUAD_REAL gray = dot(grayXfer,scnColor);
+    QUAD_REAL3 muted = lerp(scnColor,gray.xxx,Desat);
+    QUAD_REAL3 sepia = lerp(DarkColor,LightColor,gray);
+    QUAD_REAL3 result = lerp(muted,sepia,Toned);
+    return QUAD_REAL4(result,1);
+}

@@ -1,0 +1,68 @@
+///////// PIXEL SHADING //////////////////////
+
+// Utility function for gooch shading
+
+float glossy_drop(
+	
+	float v,
+	
+	uniform float top,
+	uniform float bot,
+	uniform float drop)
+{
+    return (drop+smoothstep(bot,top,v)*(1.0-drop));
+}
+
+float4 goochBumpPS(
+
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldTangent	: TEXCOORD3,
+		float3 WorldBinormal : TEXCOORD4,
+		float3 WorldView	: TEXCOORD5,
+	
+		uniform float3 LampColor,
+		uniform float3 SurfaceColor,
+		// insert shadow bits here - KB
+		uniform float3 AmbiColor,
+		uniform float3 WarmColor,
+		uniform float3 CoolColor,
+		uniform float Ks,
+		uniform float SpecExpon,
+		uniform float Bump, // bump strength
+		uniform sampler2D NormalSampler : register(s0), // normal map
+		uniform float Kr, // true strength
+		uniform samplerCUBE EnvSampler : register(s1), // true cube map
+		uniform float GlossTop,
+		uniform float GlossDrop,
+		uniform float GlossEdge
+) : COLOR {
+    // "standard" normalized vectors....
+    float3 Ln = normalize(LightVec);
+    float3 Vn = normalize(WorldView);
+    float3 Nn = normalize(WorldNormal);
+    float3 Tn = normalize(WorldTangent);
+    float3 Bn = normalize(WorldBinormal);
+    float3 bump = Bump * (tex2D(NormalSampler,UV).rgb - float3(0.5,0.5,0.5));
+    Nn = Nn + bump.x*Tn + bump.y*Bn;
+    Nn = normalize(Nn);
+    float3 Hn = normalize(Vn + Ln);
+    float ldn = dot(Ln,Nn);
+    float hdn = dot(Hn,Nn);
+    float4 litV = lit(ldn,hdn,SpecExpon);
+    float goochFactor = (1.0 + ldn) / 2.0;
+    float3 toneColor = lerp(CoolColor,WarmColor,goochFactor);
+    float3 diffContrib = toneColor;
+    // now to add glossiness...
+    float spec = litV.y * litV.z;
+    spec *= glossy_drop(spec,GlossTop,(GlossTop-GlossEdge),GlossDrop);
+    float3 specContrib = spec * Ks * LampColor;
+    float3 diffuseColor = SurfaceColor;
+    float3 result = specContrib+(diffuseColor*(diffContrib+AmbiColor));
+    float3 R = reflect(Vn,Nn);
+    float3 reflColor = Kr * texCUBE(EnvSampler,R.xyz).rgb;
+    result += diffuseColor*reflColor;
+    return float4(result,1);
+}

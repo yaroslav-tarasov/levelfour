@@ -1,0 +1,62 @@
+vertex_program glowBalloon_vs cg {
+	source vs_glowBalloon.cg
+	entry_point balloonVS
+	profiles arbvp1
+	
+	default_params {
+		param_named 	 Inflate   float 0.06
+		param_named_auto WorldITXf inverse_transpose_world_matrix
+		param_named_auto WorldXf   world_matrix
+		param_named_auto ViewIXf   inverse_view_matrix
+		param_named_auto WvpXf     worldviewproj_matrix
+	}
+}
+
+fragment_program glowBalloon_ps cg {
+	source ps_glowBalloon.cg
+	entry_point balloonPS
+	profiles arbfp1
+	
+	default_params {
+		param_named GlowColor float3 1.0 1.0 1.0
+		param_named GlowExpon float  1.3
+	}
+}
+
+material Glow_Balloon_Default {
+	technique {
+	
+		pass 1 {
+			scene_blend src_alpha one_minus_src_alpha
+			lighting off
+			
+			// not working
+			texture_unit {
+			
+				texture test.png
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			
+		}
+		pass 0 {
+			
+			depth_check on
+			depth_func less_equal
+			lighting off
+			
+			vertex_program_ref glowBalloon_vs {
+				param_named Inflate float 0.1
+			}
+			
+			fragment_program_ref glowBalloon_ps {
+				param_named GlowColor float3 0.0 1.0 0.0
+				param_named GlowExpon float  1.3
+			}
+
+		}
+		
+		
+	}
+}

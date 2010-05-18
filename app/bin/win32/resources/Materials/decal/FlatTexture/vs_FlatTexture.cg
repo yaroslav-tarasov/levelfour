@@ -1,0 +1,29 @@
+
+///////////// vertex shader ///
+
+void flatTextureVS(
+
+	float3 Position	: POSITION,
+    float4 UVIN		: TEXCOORD0,
+    float4 Normal	: NORMAL,
+    float4 Tangent	: TANGENT0,
+    float4 Binormal	: BINORMAL0,
+	
+	out float4 HPosition	: POSITION,
+    out float2 UV		: TEXCOORD0,
+    out float3 LightVec	: TEXCOORD1,
+    out float3 WorldNormal	: TEXCOORD2,
+    out float3 WorldTangent	: TEXCOORD3,
+    out float3 WorldBinormal : TEXCOORD4,
+    out float3 WorldView	: TEXCOORD5,
+	
+    uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf
+) {
+    float4 Po = float4(Position.xyz,1);
+    float3 Pw = mul(WorldXf,Po).xyz;
+    UV = UVIN.xy;
+    HPosition = mul(WvpXf,Po);
+}

@@ -1,0 +1,63 @@
+vertex_program reflections_vs cg {
+	source vs_reflections.cg
+	entry_point reflectionsVS
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto WorldITXf 	world_matrix
+		param_named_auto WorldXf 	inverse_transpose_world_matrix
+		param_named_auto ViewIXf 	inverse_view_matrix
+		param_named_auto WvpXf 		worldviewproj_matrix
+		param_named LampPos 		float3	-0.5 2.0 1.25
+	}
+}
+
+fragment_program reflections_ps cg {
+	source ps_reflections.cg
+	entry_point metalPS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named SurfaceColor	float3	0.3 0.4 0.5
+		param_named Kd 				float 	0.1
+		param_named SpecExpon 		float 	80.0
+		param_named Kr 				float 	0.8
+		param_named	LampColor 		float3	1.0 1.0 1.0 
+		param_named AmbiColor 		float3 	0.07 0.07 0.07
+		
+	}
+}
+
+// Reflections_Default
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref reflections_vs {
+			
+			
+			}
+			
+			fragment_program_ref reflections_ps {
+				
+			}
+			
+			texture_unit {
+			
+				cubic_texture Default_reflection.dds combinedUVW
+				tex_coord_set 0
+				// tex_address_mode clamp
+				// filtering linear linear linear
+			
+			}
+
+		}
+		
+		
+	}
+}

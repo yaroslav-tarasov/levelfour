@@ -1,0 +1,106 @@
+/*********************************************************************NVMH3****
+$Id: //sw/devtools/ShaderLibrary/main/CgFX/goochyDir.cgfx#1 $
+
+Copyright NVIDIA Corporation 2002-2007
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS)
+ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+
+% Gooch style diffuse shading, calculated per-vertex against a
+% directional light source.  See "goochy_gloss" for a pixel-shaded
+% alternative.  Gooch shading ranges from a warm tone near the
+% light direction to a cool tone on the opposite side of a model.
+% While non-photorealistic, this approach is useful for revealing
+% overall shape of a form, especially when modelling.
+
+keywords: classic material 
+
+******************************************************************************/
+
+float4x4 WorldITXf : WorldInverseTranspose;
+float4x4 WorldViewProjXf : WorldViewProjection;
+float4x4 WorldXf : World;
+
+//////////////////////////////////////////////
+
+float3 LiteColor : Diffuse <
+	string UIName =  "Bright Surface Color";
+	string UIWidget = "Color";
+> = {0.8f, 0.5f, 0.1f};
+
+float3 DarkColor : Diffuse <
+	string UIName =  "Dark Surface Color";
+	string UIWidget = "Color";
+> = {0.0f, 0.0f, 0.0f};
+
+float3 WarmColor : Diffuse <
+	string UIName =  "Gooch warm tone";
+	string UIWidget = "Color";
+> = {0.5f, 0.4f, 0.05f};
+
+float3 CoolColor : Diffuse <
+	string UIName =  "Gooch cool tone";
+	string UIWidget = "Color";
+> = {0.05f, 0.05f, 0.6f};
+
+float4 LightDir : Direction <
+	string Object = "DirectionalLight";
+	string UIName = "Lamp Direction";
+	string Space = "World";
+> = {0.7f, -0.7f, 0.7f, 0.0f};
+
+//////////////////////////////////////////////
+
+struct appdata {
+	float3 Position	: POSITION;
+	float4 Normal	: NORMAL;
+};
+
+struct vertexOutput {
+	float4 HPosition	: POSITION;
+	float4 diffCol		: COLOR0;
+};
+
+//////////////////////////////////////////////
+
+vertexOutput goochVS(appdata IN)
+{
+	vertexOutput OUT;
+	float3 Nn = normalize(mul(WorldITXf, IN.Normal).xyz);
+	float4 Po = float4(IN.Position.xyz,1);
+	//compute worldspace position
+	float3 Pw = mul(WorldXf, Po).xyz;
+	float3 Ln = normalize(-LightDir).xyz;
+	float mixer = 0.5 * (dot(Ln,Nn) + 1.0);
+	float3 surfColor = lerp(DarkColor,LiteColor,mixer);
+	float3 toneColor = lerp(CoolColor,WarmColor,mixer);
+	float3 mixColor = surfColor + toneColor;
+	OUT.diffCol = float4(mixColor.xyz,1.0f);
+	OUT.HPosition = mul(WorldViewProjXf ,Po);
+	return OUT;
+}
+
+float4 passThruFS(vertexOutput IN) : COLOR { return IN.diffCol; }
+
+//////////////////////////////////////////////
+
+technique main {
+	pass {
+		VertexProgram = compile arbvp1 goochVS();
+		FragmentProgram = compile arbfp1 passThruFS();
+		DepthFunc = LEqual;
+		DepthTestEnable = true;
+		CullFace = back;
+   }
+}
+
+//////////////////////////////////////////////
+////////////////////////////////////// eof ///
+//////////////////////////////////////////////

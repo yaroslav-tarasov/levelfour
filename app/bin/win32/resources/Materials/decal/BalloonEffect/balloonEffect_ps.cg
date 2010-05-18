@@ -1,0 +1,26 @@
+/********* pixel shaders ********/
+
+float4 balloonPS(
+			// Pixel Inputs
+			float3 LightVec : TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldView	: TEXCOORD5,
+			
+			// Model Level Inputs
+		    uniform float3 SurfaceColor,
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float SpecExpon,
+		    uniform float3 LampColor,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 Ln = normalize(LightVec);
+    float3 Nn = normalize(WorldNormal);
+    float3 Vn = normalize(WorldView);
+    float3 Hn = normalize(Vn + Ln);
+    float4 litV = lit(dot(Ln,Nn),dot(Hn,Nn),SpecExpon);
+    float3 diffContrib = litV.y * Kd * LampColor + AmbiColor;
+    float3 specContrib = litV.z * Ks * LampColor;
+    float3 result = specContrib + (SurfaceColor * diffContrib);
+    return float4(result,1);
+}

@@ -1,0 +1,169 @@
+
+
+/******************** pixel shader *********************/
+
+half4 brixPS(
+
+	half4 HPosition    : POSITION,
+    half3 WorldNormal    : TEXCOORD1,
+    half3 WorldEyeVec    : TEXCOORD2,
+    half4 ObjPos    : TEXCOORD3,
+    float4 DCol : COLOR0,
+    
+	uniform float4 SurfColor1,
+    uniform float4 SurfColor2,
+    uniform float4 GroutColor,
+    uniform float GBalance,
+    uniform sampler2D StripeSampler : register(s0)
+) : COLOR {
+    float grout = (1.0-GBalance);
+    half v = ((half4)tex2D(StripeSampler,half2(ObjPos.x,0.5))).x;
+    half4 dColor1 = lerp(SurfColor1,SurfColor2,v);
+    v = ((half4)tex2D(StripeSampler,half2(ObjPos.x*2,grout))).x;
+    dColor1 = lerp(GroutColor,dColor1,v);
+    v = ((half4)tex2D(StripeSampler,half2(ObjPos.x+0.25,0.5))).x;
+    half4 dColor2 = lerp(SurfColor1,SurfColor2,v);
+    v = ((half4)tex2D(StripeSampler,half2((ObjPos.x+0.25)*2,grout))).x;
+    dColor2 = lerp(GroutColor,dColor2,v);
+    v = ((half4)tex2D(StripeSampler,half2(ObjPos.y,0.5))).x;
+    half4 brix = lerp(dColor1,dColor2,v);
+    v = ((half4)tex2D(StripeSampler,half2(ObjPos.y*2,grout))).x;
+    brix = lerp(GroutColor,brix,v);
+    float4 diff = DCol;
+	return diff * brix;
+}
+
+////////////////////////////////////////////
+// Utility Functions ///////////////////////
+////////////////////////////////////////////
+
+#define _SS uniform sampler2D StripeSampler
+
+// base function: "Balance" is in W term
+float stripe(float4 XYZW,_SS) { return tex2D(StripeSampler,XYZW.xw).x; }
+
+float stripe(float4 XYZW,float Balance,_SS) {
+    return stripe(float4(XYZW.xyz,Balance),StripeSampler); }
+
+float stripe(float3 XYZ,float Balance,_SS) {
+    return stripe(float4(XYZ.xyz,Balance),StripeSampler); }
+
+float stripe(float2 XY,float Balance,_SS) {
+    return stripe(float4(XY.xyy,Balance),StripeSampler); }
+
+float stripe(float X,float Balance,_SS) {
+    return stripe(float4(X.xxx,Balance),StripeSampler); }
+
+// use default balance (can't do float4 version, would interfere): //
+
+float stripe(float3 XYZ,_SS) {
+    return stripe(float4(XYZ.xyz,DEFAULT_BALANCE),StripeSampler); }
+
+float stripe(float2 XY,_SS) {
+    return stripe(float4(XY.xyy,DEFAULT_BALANCE),StripeSampler); }
+
+float stripe(float X,_SS) {
+    return stripe(float4(X.xxx,DEFAULT_BALANCE),StripeSampler); }
+
+///////////////////////////////////
+// texture-free alternative ///////
+///////////////////////////////////
+
+float numeric_stripe(
+	    float Value,
+	    float Balance,
+	    float Oversample,
+	    float PatternScale
+) {
+    float width = abs(ddx(Value)) + abs(ddy(Value));
+    float w = width*Oversample;
+    float x0 = Value/PatternScale - (w/2.0);
+    float x1 = x0 + w;
+    float i0 = (1.0-Balance)*floor(x0) + max(0.0, frac(x0)-Balance);
+    float i1 = (1.0-Balance)*floor(x1) + max(0.0, frac(x1)-Balance);
+    float stripe = (i1 - i0)/w;
+    stripe = min(1.0,max(0.0,stripe)); 
+    return stripe;
+}
+
+///////////////////////////////////
+// 2D checkerboard ////////////////
+///////////////////////////////////
+
+float checker2D(float4 XYZW,_SS)
+{
+    float stripex = tex2D(StripeSampler,XYZW.xw).x;
+    float stripey = tex2D(StripeSampler,XYZW.yw).x;
+    return abs(stripex - stripey);
+}
+
+// overloads of the above
+
+float checker2D(float4 XYZW,float Balance,_SS) {
+    return checker2D(float4(XYZW.xyz,Balance),StripeSampler); }
+
+float checker2D(float3 XYZ,float Balance,_SS) {
+    return checker2D(float4(XYZ.xyz,Balance),StripeSampler); }
+
+float checker2D(float2 XY,float Balance,_SS) {
+    return checker2D(float4(XY.xyy,Balance),StripeSampler); }
+
+// use default balance ////////////////////////
+
+float checker2D(float3 XYZ,_SS) {
+    return checker2D(float4(XYZ.xyz,DEFAULT_BALANCE),StripeSampler); }
+
+float checker2D(float2 XY,_SS) {
+    return checker2D(float4(XY.xyy,DEFAULT_BALANCE),StripeSampler); }
+
+float checker2D(float X,_SS) {
+    return checker2D(float4(X.xxx,DEFAULT_BALANCE),StripeSampler); }
+
+///////////////////////////////////
+// 3D checkerboard ////////////////
+///////////////////////////////////
+
+float checker3D(float4 XYZW,_SS)
+{
+    float stripex = tex2D(StripeSampler,XYZW.xw).x;
+    float stripey = tex2D(StripeSampler,XYZW.yw).x;
+    float stripez = tex2D(StripeSampler,XYZW.zw).x;
+    float check = abs(abs(stripex - stripey) - stripez);
+    return check;
+}
+
+// overloads of the above
+
+float checker3D(float3 XYZ,float Balance,_SS) {
+    return checker3D(float4(XYZ.xyz,Balance),StripeSampler); }
+
+float checker3D(float4 XYZW,float Balance,_SS) {
+    return checker3D(float4(XYZW.xyz,Balance),StripeSampler); }
+
+// use default balance ////////////////////////
+
+float checker3D(float3 XYZ,_SS) {
+    return checker3D(float4(XYZ.xyz,DEFAULT_BALANCE),StripeSampler); }
+
+float checker3D(float2 XY,_SS) {
+    return checker3D(float4(XY.xyy,DEFAULT_BALANCE),StripeSampler); }
+
+float checker3D(float X,_SS) {
+    return checker3D(float4(X.xxx,DEFAULT_BALANCE),StripeSampler); }
+
+/////////////
+
+float3 checker3Drgb(float4 XYZW,_SS)
+{
+    float3 result;
+    result.x = tex2D(StripeSampler,XYZW.xw).x;
+    result.y = tex2D(StripeSampler,XYZW.yw).x;
+    result.z = tex2D(StripeSampler,XYZW.zw).x;
+    return result;
+}
+
+float3 checker3Drgb(float3 XYZ,float Balance,_SS) {
+    return checker3Drgb(float4(XYZ.xyz,Balance),StripeSampler); }
+
+float3 checker3Drgb(float3 XYZ,_SS) {
+    return checker3Drgb(float4(XYZ.xyz,DEFAULT_BALANCE),StripeSampler); }

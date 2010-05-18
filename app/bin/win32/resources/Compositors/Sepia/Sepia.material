@@ -1,0 +1,56 @@
+vertex_program Sepia_vs cg
+{
+	source vs_Sepia.cg
+	profiles arbvp1
+    entry_point sepiaVS
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program Sepia_ps cg
+{
+    source ps_Sepia.cg
+    entry_point sepiaPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 		int 	0
+		param_named Desat 				float	0.5
+		param_named Toned 				float	1.0
+		param_named LightColor 			float3	1 0.9 0.5
+		param_named DarkColor 			float3	0.2 0.05 0
+	}
+}
+
+
+material Sepia
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Sepia_vs
+			{
+			}
+
+			fragment_program_ref Sepia_ps
+			{
+			}
+			
+			texture_unit	// (scene)
+			 {
+				texture SceneSampler 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			 }
+			
+		}
+	}
+}

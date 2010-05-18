@@ -1,0 +1,32 @@
+void dispersionPS(
+					// Vertex Inputs
+					float  reflectionFactor : COLOR,
+                    float3 R                : TEXCOORD0,
+                    float3 TRed             : TEXCOORD1,
+                    float3 TGreen           : TEXCOORD2,
+                    float3 TBlue            : TEXCOORD3,
+
+					// Outputs
+					out float4 color : COLOR,
+
+					// Model Level Inputs
+					uniform samplerCUBE environmentMap0 : register(s0),
+					uniform samplerCUBE environmentMap1 : register(s1),
+					uniform samplerCUBE environmentMap2 : register(s2),
+					uniform samplerCUBE environmentMap3 : register(s3))
+{
+  // Fetch the reflected environment color
+  float4 reflectedColor = texCUBE(environmentMap0, R);
+
+  // Compute the refracted environment color
+  float4 refractedColor;
+  refractedColor.x = texCUBE(environmentMap1, TRed).x;
+  refractedColor.y = texCUBE(environmentMap2, TGreen).y;
+  refractedColor.z = texCUBE(environmentMap3, TBlue).z;
+  refractedColor.w = 1;
+
+  // Compute the final color
+  color = lerp(refractedColor, 
+               reflectedColor, 
+               reflectionFactor);
+}

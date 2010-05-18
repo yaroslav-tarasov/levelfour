@@ -1,0 +1,92 @@
+#include "lUtils.cg"
+
+    void ambient_vs
+    (
+       float4 iPosition   : POSITION,
+       float2 iUV      : TEXCOORD0,
+       
+       uniform float3 iAmbient,
+       uniform float4 iFogParams,
+       uniform float4x4 iWorldViewProj,
+
+       out float2 oUV      : TEXCOORD0,
+       out float3 oAmbient   : TEXCOORD1,
+       out float oFog      : TEXCOORD2,
+       out float4 oPosition   : POSITION
+    )
+    {
+       oPosition = mul(iWorldViewProj, iPosition);
+       oAmbient = iAmbient;
+       oUV = iUV;
+
+       oFog = 1;
+       if(iFogParams.x==0)
+       {
+          if(iFogParams.w>0)
+             oFog = smoothstep(iFogParams.y, iFogParams.z, iFogParams.z-oPosition.z);
+       }
+       else
+          oFog = exp2(-iFogParams.x*oPosition.z);
+    }
+	
+	    void diffuse_vs
+    (
+       float4 iPosition   : POSITION,
+       float4 iNormal   : NORMAL,
+       float2 iUV      : TEXCOORD0,
+
+       uniform float4x4 iWorld,
+            uniform float4x4 iWorldIT,
+       uniform float4x4 iWorldViewProj,
+       uniform float4 iFogParams,
+
+    #ifdef _SPOTLIGHT
+       uniform float4 iSpotDir,
+       out float3 oSpotDir   : TEXCOORD3,
+    #endif
+
+    #ifdef _NORMAL
+       out float3 oTangent   : TEXCOORD4,
+       out float3 oBinormal   : TEXCOORD5,
+    #endif
+
+    #ifdef _SHADOWS
+       uniform float4x4 iTextViewProj,
+       out float4 oShadowUV   : TEXCOORD6,
+    #endif
+
+       out float2 oUV      : TEXCOORD0,
+       out float4 oWorldPos   : TEXCOORD1,
+       out float3 oNormal   : TEXCOORD2,
+       out float oFog      : TEXCOORD7,
+       out float4 oPosition   : POSITION
+    )
+    {
+       oWorldPos = mul(iWorld,iPosition);
+       oPosition = mul(iWorldViewProj,iPosition);
+       oNormal = normalize(mul(iWorldIT, iNormal).xyz);
+       oUV = iUV;
+
+    #ifdef _SPOTLIGHT
+       oSpotDir = mul(iWorld, iSpotDir).xyz;
+    #endif
+
+    #ifdef _NORMAL
+       oTangent = normalize(-float3(abs(iNormal.y) + abs(iNormal.z), abs(iNormal.x), 0));
+       oBinormal = normalize(cross(oTangent,oNormal));
+    #endif
+
+    #ifdef _SHADOWS
+       oShadowUV = mul(iTextViewProj, oWorldPos);
+       oShadowUV = oShadowUV / oShadowUV.w;
+    #endif
+
+       oFog = 1;
+       if(iFogParams.x==0)
+       {
+          if(iFogParams.w>0)
+             oFog = smoothstep(iFogParams.y, iFogParams.z, iFogParams.z-oPosition.z);
+       }
+       else
+          oFog = exp2(-iFogParams.x*oPosition.z);
+    }

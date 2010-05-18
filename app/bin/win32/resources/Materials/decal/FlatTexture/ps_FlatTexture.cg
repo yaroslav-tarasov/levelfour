@@ -1,0 +1,54 @@
+
+////////////////// pixel shaders ////
+
+float4 colorPS(
+		
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldTangent	: TEXCOORD3,
+		float3 WorldBinormal : TEXCOORD4,
+		float3 WorldView	: TEXCOORD5,
+		
+		uniform float3 SurfaceColor,
+		uniform sampler2D ColorSampler : register(s0)
+)	: COLOR
+{
+    float3 map = tex2D(ColorSampler,UV).rgb;
+    return float4((map.rgb*SurfaceColor),1);
+}
+
+float4 alphaPS(
+
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldTangent	: TEXCOORD3,
+		float3 WorldBinormal : TEXCOORD4,
+		float3 WorldView	: TEXCOORD5,
+		
+		uniform float3 SurfaceColor,
+		uniform sampler2D ColorSampler : register(s0)
+) : COLOR {
+    float mapA = tex2D(ColorSampler,UV).w;
+    return float4((mapA.xxx*SurfaceColor.rgb),1);
+}
+
+float4 flatPS(
+
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldTangent	: TEXCOORD3,
+		float3 WorldBinormal : TEXCOORD4,
+		float3 WorldView	: TEXCOORD5,
+		
+		uniform float3 SurfaceColor
+) : COLOR {
+
+    return float4(SurfaceColor,1);
+
+	}

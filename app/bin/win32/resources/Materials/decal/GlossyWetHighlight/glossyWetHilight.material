@@ -1,0 +1,111 @@
+/*
+A wet-glossy surface, a little smoke & mirrors to make things ultra-shiny. 
+Glossiness is controlled not only by the usual power function, but also by 
+applying a set of gloss controls that cause a sharp falloff across a 
+specified range. The falloff will occur in the highlight range 
+[glossBot-glossTop] and the amount of falloff is specified by 
+"glossDrop." Setting "glossDrop" to 1.0 nullifies the effect. 
+(2 technique/s)
+*/
+
+vertex_program glossyWetHilight_vs cg {
+	source vs_glossyWetHilight.cg
+	entry_point gwh_VS
+	profiles arbvp1
+	
+	default_params {
+		param_named 	 	LampPos    float3 	-0.5 2.0 1.25
+		param_named_auto 	WorldITXf           inverse_transpose_world_matrix
+		param_named_auto 	WorldXf             world_matrix
+		param_named_auto 	ViewIXf     		inverse_view_matrix
+		param_named_auto	WvpXf				worldviewproj_matrix
+	}
+}
+
+fragment_program glossyWetHilight_ps cg {
+	source ps_glossyWetHilight.cg
+	entry_point gwh_PS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor 	float3 		1.0 1.0 1.0
+		param_named  Ks 			float 		0.5
+		param_named  SpecExpon 		float 		6.0
+		param_named  SpecColor 		float3 		0.7 0.7 1.0
+		param_named  GlossTopUI 	float 		0.46
+		param_named  GlossBotUI 	float 		0.41
+		param_named  GlossDrop 		float 		0.25
+		param_named  AmbiColor 		float3 		0.07 0.07 0.07
+		
+	}
+}
+
+fragment_program glossyWetHilight_ps_t cg {
+	source ps_glossyWetHilight.cg
+	entry_point gwh_PS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor 	float3 		1.0 1.0 1.0
+		param_named  Ks 			float 		0.5
+		param_named  SpecExpon 		float 		6.0
+		param_named  SpecColor 		float3 		0.7 0.7 1.0
+		param_named  GlossTopUI 	float 		0.46
+		param_named  GlossBotUI 	float 		0.41
+		param_named  GlossDrop 		float 		0.25
+		param_named  AmbiColor 		float3 		0.07 0.07 0.07
+		// param_named  ColorSampler	sampler2D
+		
+	}
+}
+
+// GlossyWetHilight_Default
+material GlossyWetHilight_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref glossyWetHilight_vs {
+							
+			}
+			
+			fragment_program_ref glossyWetHilight_ps {
+				
+			}
+		}
+	}
+}
+// GlossyWetHilight_Texture
+material GlossyWetHilight_Texture {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref glossyWetHilight_vs {
+							
+			}
+			
+			fragment_program_ref glossyWetHilight_ps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture gwh_default_color.dds
+				tex_coord_set 0
+			}
+
+
+		}
+		
+		
+	}
+}

@@ -1,0 +1,29 @@
+vertex_program Fog_vs cg
+{
+   source vs_Fog.cg
+   entry_point fogVS
+   profiles arbvp1
+   
+   default_params
+   {
+	  param_named_auto worldViewProj worldviewproj_matrix
+	  param_named_auto fogColour fog_colour
+	  param_named_auto fogParams fog_params
+	  param_named_auto camPos camera_position_object_space
+   }
+}
+
+// Fog
+material Default {
+	technique {
+		pass
+        {
+          scene_blend alpha_blend
+          vertex_program_ref Fog_vs
+          {
+		  
+          }
+        }
+
+	}
+}

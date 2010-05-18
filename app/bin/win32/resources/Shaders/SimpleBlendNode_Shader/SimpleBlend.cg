@@ -1,0 +1,128 @@
+/**************************************************************************************
+**                                                                                   **
+**                                    sb_Quad_vs                                   **
+**                                                                                   **
+***************************************************************************************/
+
+void sb_quad_vs( in  float4 iPosition : POSITION,
+				   //in  float2 iTexCoord : TEXCOORD0,
+                   out float4 oPosition : POSITION,
+				   out float2 oTexCoord : TEXCOORD0,
+			       uniform float4x4 worldViewProj)
+{
+    // Use standardise transform, so work accord with render system specific (RS depth, requires texture flipping, etc)
+    oPosition = mul(worldViewProj, iPosition);
+
+    // The input positions adjusted by texel offsets, so clean up inaccuracies
+    iPosition.xy = sign(iPosition.xy);
+	
+    // Convert to image-space
+    oTexCoord = (float2(iPosition.x, -iPosition.y) + 1.0f) * 0.5f; //iTexCoord; <- is also possible
+}
+
+
+/**************************************************************************************
+**                                                                                   **
+**                                      TEX2DLOD                                     **
+**             For ps_3_0, we want to use tex2Dlod because it's faster               **
+***************************************************************************************/
+
+ps_3_0 float4 TEX2DLOD(sampler2D map, float2 uv)
+{
+    return tex2Dlod(map, float4(uv.xy, 0, 0));
+}
+
+float4 TEX2DLOD(sampler2D map, float2 uv)
+{
+    return tex2D(map, uv);
+}
+
+
+/**************************************************************************************
+**                                                                                   **
+**                                       sb_ps                                      **
+**                                                                                   **
+***************************************************************************************/
+
+void sb_ps( in  float2 texCoord : TEXCOORD0,
+			  out float4 color    : COLOR,
+			  uniform float op,
+			  uniform float blendFactor,
+			  uniform sampler2D inputMap0 : TEXUNIT0,
+			  uniform sampler2D inputMap1 : TEXUNIT1)
+{
+	float4 colorSample0 = TEX2DLOD(inputMap0, texCoord);
+	float4 colorSample1 = TEX2DLOD(inputMap1, texCoord);
+	float newBlendFactor = blendFactor / 100;
+	
+	color = float4(1.0);
+	float3 white = (1.0,1.0,1.0);
+	
+	if (op == 1.0) {
+		//Add
+		color.rgb = lerp(colorSample0.rgb, colorSample1.rgb, newBlendFactor);
+	}
+	else if (op == 2.0) {
+		//Mul
+		float3 color1 = colorSample0.rgb;
+		float3 color2 = colorSample0.rgb * colorSample1.rgb;
+		color.rgb = lerp(color1, color2, newBlendFactor);
+		color.a = 1.0;
+	}
+	else if (op == 3.0) {
+		//Blend Over
+		float3 color1 = colorSample0.rgb;
+		float3 color2 = colorSample1.rgb;
+		float alpha1 = colorSample0.a;
+		float alpha2 = colorSample1.a;
+		if (color2 == 0.0)
+			alpha2 = 0.0;
+		color.rgb =  color2 * (newBlendFactor * alpha2) +  color1 * (1.0 - (alpha2 * newBlendFactor));
+		color.a = 1.0;
+	}
+	else if (op == 4.0) {
+		//Stencil
+		float3 color2 = colorSample1.rgb;
+		float alpha1 = colorSample0.a;
+		color.rgb =  color2 * alpha1;
+		color.a = alpha1;
+	}
+	else if (op == 5.0) {
+		//MultiplyWithAlpha
+		float3 color1 = colorSample0.rgb;
+		float alpha1 = colorSample0.a;
+		color.rgb =  color1 * alpha1;
+		color.a = 1.0;
+	}
+	else if (op == 6.0) {
+		//BlendWithAlpha
+		float3 color1 = colorSample0.rgb;
+		float alpha1 = colorSample0.a;
+		color.rgb =  color1 + color1 * (alpha1-1.0) * newBlendFactor;
+		color.a = 1.0;
+	}	
+	else if (op == 7.0) {
+		//Show alpha
+		float3 color1 = colorSample0.rgb;
+		float alpha1 = colorSample0.a;
+		color.rgb =  white * alpha1;
+		color.a = 1.0;
+	}
+	else if (op == 8.0) {
+		//Invert alpha
+		float3 color1 = colorSample0.rgb;
+		float alpha1 = colorSample0.a;
+		color.rgb =  color1;
+		color.a = 1.0-alpha1;
+	}
+	else if (op == 9.0) {
+		//ClipBlack
+		float3 color1 = colorSample0.rgb;
+		float alpha1 = colorSample0.a;
+		if(color1 == 0.0)
+			alpha1 = 0;
+		color.rgb =  color1;
+		color.a = alpha1;
+	}
+	
+}

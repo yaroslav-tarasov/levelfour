@@ -1,0 +1,26 @@
+    void shadow_vsm_caster_vs
+    (
+       float4 iPosition   : POSITION,
+       float2 iUV      : TEXCOORD0,
+
+
+       uniform float4x4 iWorldView,
+       uniform float4x4 iWorldViewProj,
+
+       out float4 oPosition   : POSITION,
+       out float2 oUV      : TEXCOORD0,
+       out float4 oDepth   : TEXCOORD1,
+       out float4 oDepthDir   : TEXCOORD2
+
+    )
+
+    {
+
+       oDepth = mul(iWorldView, iPosition);
+       oDepthDir = mul(iWorldViewProj, iPosition);
+
+       oPosition = oDepthDir;
+
+       oUV = iUV;
+
+    }

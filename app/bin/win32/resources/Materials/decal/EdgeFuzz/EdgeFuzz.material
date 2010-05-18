@@ -1,0 +1,59 @@
+vertex_program edgeFuzz_vs cg {
+	source vs_EdgeFuzz.cg
+	entry_point edgeFuzzVS
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LampPos		float3 	-0.5 2.0 1.25
+		
+	}
+}
+
+fragment_program edgeFuzz_ps cg {
+	source ps_EdgeFuzz.cg
+	entry_point edgeFuzzPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1 1 1
+		param_named  EdgeColor 		float3 		0.2 1.0 0.2
+		param_named  EdgeExpon 		float 		0.6
+		param_named  EdgeFade 		float 		0.5
+		param_named  EdgeFadeL 		float 		-.0
+		param_named  Ks 			float 		0.5
+		param_named  SpecExpon 		float 		30.0
+		param_named  LampColor 		float3 		1.0 1.0 1.0
+		param_named  AmbiColor 		float3 		0.07 0.07 0.07
+		
+		
+		
+	}
+}
+
+// edgeFuzz_Default
+material Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref edgeFuzz_vs {
+							
+			}
+			
+			fragment_program_ref edgeFuzz_ps {
+				
+			}
+			
+			
+		}
+		
+	}
+}

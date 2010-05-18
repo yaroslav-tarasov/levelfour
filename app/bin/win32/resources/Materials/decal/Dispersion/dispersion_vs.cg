@@ -1,0 +1,43 @@
+void dispersionVS(
+				// Vertex Inputs
+				float4 position : POSITION,
+                float3 normal   : NORMAL,
+				
+				// Outputs
+                out float4 oPosition        : POSITION,
+                out float  reflectionFactor : COLOR,
+                out float3 R                : TEXCOORD0,
+                out float3 TRed             : TEXCOORD1,
+                out float3 TGreen           : TEXCOORD2,
+                out float3 TBlue            : TEXCOORD3,
+
+				// Model Level Inputs
+				uniform float fresnelBias,
+				uniform float fresnelScale,
+				uniform float fresnelPower,
+				uniform float3 etaRatio,
+				uniform float3 eyePositionW,
+				uniform float4x4 modelViewProj, 
+				uniform float4x4 modelToWorld)
+{
+  // Calculate output position
+  oPosition = mul(modelViewProj, position);
+
+  // Compute position and normal in world space
+  float3 positionW = mul(modelToWorld, position).xyz;
+  float3 N = mul((float3x3)modelToWorld, normal);
+  N = normalize(N);
+  
+  // Compute the incident, reflected, and refracted vectors
+  float3 I = positionW - eyePositionW;
+  R = reflect(I, N);  
+  I = normalize(I);
+  TRed   = refract(I, N, etaRatio.x);
+  TGreen = refract(I, N, etaRatio.y);
+  TBlue  = refract(I, N, etaRatio.z);
+
+  // Compute the reflection factor
+  reflectionFactor = fresnelBias + 
+                     fresnelScale * pow(1 + dot(I, N), 
+                                        fresnelPower );
+}

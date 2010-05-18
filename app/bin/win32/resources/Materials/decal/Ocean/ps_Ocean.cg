@@ -1,0 +1,55 @@
+// Pixel Shaders
+
+float4 OceanPS(
+
+		float4 HPosition  : POSITION,  // in clip space
+		float2 UV  : TEXCOORD0,
+		float3 T2WXf1 : TEXCOORD1, // first row of the 3x3 transform from tangent to cube space
+		float3 T2WXf2 : TEXCOORD2, // second row of the 3x3 transform from tangent to cube space
+		float3 T2WXf3 : TEXCOORD3, // third row of the 3x3 transform from tangent to cube space
+		float2 bumpUV0 : TEXCOORD4,
+		float2 bumpUV1 : TEXCOORD5,
+		float2 bumpUV2 : TEXCOORD6,
+		float3 WorldView  : TEXCOORD7,
+		
+		uniform sampler2D NormalSampler : register(s0),
+		uniform samplerCUBE EnvSampler : register(s1),
+		uniform float Kr,
+		uniform float KWater,
+		uniform float FresnelExp,
+		uniform float FresnelBias,
+		uniform float HDRMultiplier,
+		uniform float3 DeepColor,
+		uniform float3 ShallowColor,
+		uniform float3 ReflTint
+) : COLOR
+{
+    // sum normal maps
+    float4 t0 = tex2D(NormalSampler, bumpUV0)*2.0-1.0;
+    float4 t1 = tex2D(NormalSampler, bumpUV1)*2.0-1.0;
+    float4 t2 = tex2D(NormalSampler, bumpUV2)*2.0-1.0;
+    float3 Nt = t0.xyz + t1.xyz + t2.xyz;
+    //    float3 Nt = t1.xyz;
+
+    float3x3 m; // tangent to world matrix
+    m[0] = T2WXf1;
+    m[1] = T2WXf2;
+    m[2] = T2WXf3;
+    float3 Nw = mul(Nt,m);
+    float3 Nn = normalize(Nw);
+
+	// reflection
+    float3 Vn = normalize(WorldView);
+    float3 R = reflect(-Vn, Nn);
+
+    float4 reflection = texCUBE(EnvSampler, R);
+    // hdr effect (multiplier in alpha channel)
+    reflection.rgb *= (1.0 + reflection.a*HDRMultiplier);
+
+    float facing = 1.0 - max(dot(Vn, Nn), 0);
+    float fres = Kr*(FresnelBias+(1.0-FresnelBias)*pow(facing,FresnelExp));
+
+    float3 waterColor = KWater * lerp(DeepColor, ShallowColor, facing);
+    float3 result = waterColor + (fres * reflection.rgb * ReflTint);
+    return float4(result.rgb,1.0);
+}

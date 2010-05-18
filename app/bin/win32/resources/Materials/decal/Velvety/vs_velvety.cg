@@ -1,0 +1,80 @@
+/*********** vertex shader ******/
+
+void velvetVS(
+	// Vertex Inputs
+	float4 Normal	: NORMAL,
+	float3 Position	: POSITION,
+	float4 UVIN		: TEXCOORD0,
+	
+	// Outputs
+	out float4 HPosition	: POSITION,
+	out float2 UV		: TEXCOORD0,
+	out float4 diffCol	: COLOR0,
+	out float4 specCol	: COLOR1,
+	
+	// Model Level Inputs
+	uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+    uniform float3 SurfaceColor,
+    uniform float3 FuzzySpecColor,
+    uniform float3 SubColor,
+    uniform float RollOff,
+    uniform float3 LampPos
+) {
+    float3 Nn = normalize(mul(WorldITXf,Normal).xyz);
+    float4 Po = float4(Position.xyz,1);
+    HPosition = mul(WvpXf,Po);
+    float3 Pw = mul(WorldXf,Po).xyz;
+    float3 Ln = normalize(LampPos - Pw);
+    float ldn = dot(Ln,Nn);
+    float diffComp = max(0,ldn);
+    float3 diffContrib = diffComp * SurfaceColor;
+    float subLamb = smoothstep(-RollOff,1.0,ldn) - smoothstep(0.0,1.0,ldn);
+    subLamb = max(0.0,subLamb);
+    float3 subContrib = subLamb * SubColor;
+    UV = UVIN.xy;
+    float3 Vn = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw);
+    float vdn = 1.0-dot(Vn,Nn);
+    float3 vecColor = vdn.xxx;
+    diffCol = float4((subContrib+diffContrib).xyz,1);
+    specCol = float4((vecColor*FuzzySpecColor).xyz,1);
+}
+
+/*********** Generic Vertex Shader ******/
+
+void std_VS(
+	// Vertex Inputs
+	float4 Normal	: NORMAL,
+	float4 Tangent	: TANGENT0,
+	float4 Binormal	: BINORMAL0,
+	float3 Position	: POSITION,
+	float4 UVIN		: TEXCOORD0,
+	
+	// Outputs
+	out float3 WorldNormal	: TEXCOORD2,
+	out float3 WorldTangent	: TEXCOORD3,
+	out float3 WorldBinormal : TEXCOORD4,
+	out float3 LightVec	: TEXCOORD1,
+	out float2 UV		: TEXCOORD0,
+	out float3 WorldView	: TEXCOORD5,
+	out float4 HPosition	: POSITION,
+	
+	// Model Level Inputs
+	uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+	uniform float3 LampPos) 
+{
+    WorldNormal = mul(WorldITXf,Normal).xyz;
+    WorldTangent = mul(WorldITXf,Tangent).xyz;
+    WorldBinormal = mul(WorldITXf,Binormal).xyz;
+    float4 Po = float4(Position.xyz,1); // homogeneous location
+    float4 Pw = mul(WorldXf,Po);	// convert to "world" space
+    LightVec = (LampPos - Pw.xyz);
+    UV = UVIN.xy;
+    WorldView = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw.xyz);
+    HPosition = mul(WvpXf,Po);
+}

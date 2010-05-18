@@ -1,0 +1,49 @@
+void geom_vs(
+    in float4 p : POSITION,
+	in float3 n : NORMAL,
+    out float4 cp : POSITION,
+    out float3 vp : TEXCOORD0, // view-space position
+    out float3 vn : TEXCOORD1,
+    uniform float4x4 wvpMat, 
+	uniform float4x4 wvMat)
+{
+    cp = mul(wvpMat, p);
+    vp = mul(wvMat, p).xyz;
+    vn = normalize(mul(wvMat, float4(n, 0.0))).xyz;
+}
+
+void geom3d_vs(
+    in float4 p : POSITION,
+	out float4 cp : POSITION,
+	out float3 dp : TEXCOORD0, // depth position
+	uniform float3 camp, 
+    uniform float4x4 wvpMat, 
+	uniform float4x4 vMat,
+	uniform float4x4 wMat)
+{
+	float4 wp = mul(wMat, p);
+    cp = mul(wvpMat, p);
+	dp = mul((float3x3)vMat, normalize(wp.xyz - camp) * 10.0);
+}
+
+void geom_ps(in float3 vp : TEXCOORD0,
+             in float3 vn : TEXCOORD1, 
+			 uniform float  far,
+		     out float3 c : COLOR0)
+{
+    c = vn;
+}
+
+void depth_ps(in float3 vp : TEXCOORD0,
+              uniform float  far,
+		      out float c : COLOR0)
+{
+	c = length(vp / far);
+}
+
+void depth3d_ps(in float3 dp : TEXCOORD0,
+			  //uniform float  far,
+		      out float3 c : COLOR0)
+{
+	c = dp;
+}

@@ -1,0 +1,7 @@
+
+float4 depthColorPS(
+
+		float4 DepthColor : TEXCOORD0) : COLOR {
+    
+	return float4(DepthColor.rgb,1.0);
+}

@@ -1,0 +1,62 @@
+/*
+
+% Gooch style diffuse shading, calculated per-vertex against a
+% directional light source.  See "goochy_gloss" for a pixel-shaded
+% alternative.  Gooch shading ranges from a warm tone near the
+% light direction to a cool tone on the opposite side of a model.
+% While non-photorealistic, this approach is useful for revealing
+% overall shape of a form, especially when modelling.
+
+*/
+
+vertex_program goochyDir_vs cg {
+	source vs_GoochyDir.cg
+	entry_point goochyDirVS
+	profiles arbvp1
+	
+	default_params {
+				
+		param_named_auto WorldITXf 					inverse_transpose_world_matrix
+		param_named_auto WorldXf 					world_matrix
+		param_named_auto WvpXf			 			worldviewproj_matrix
+		param_named		 LightDir	float4			0.7 -0.7 0.7 0.0
+		param_named 	 LiteColor   	float3 0.8 0.5 0.1
+		param_named 	 DarkColor   	float3 0.0 0.0 0.0
+		param_named 	 WarmColor   	float3 0.5 0.4 0.05
+		param_named 	 CoolColor   	float3 0.05 0.05 0.6
+	
+	}
+}
+
+fragment_program goochyDir_ps cg {
+	source ps_GoochyDir.cg
+	entry_point goochyDirPS
+	profiles arbfp1
+	
+	default_params {
+	
+	}
+}
+
+// goochyDir_Default
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref goochyDir_vs {
+							
+			}
+			
+			fragment_program_ref goochyDir_ps {
+				
+			}
+
+		}
+		
+		
+	}
+}

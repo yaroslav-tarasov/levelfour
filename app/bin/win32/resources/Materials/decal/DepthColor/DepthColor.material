@@ -1,0 +1,57 @@
+/*
+
+% Depth as color - the values Hither' and 'Yon' (Near and Far)
+% must be set explicitly. The result will be an image where
+% the depth will be coded as a blend between foreground and
+% background colors. The "rolloff" parameter can be used to
+% bias values toward the front or back.
+
+*/
+
+vertex_program DepthColor_vs cg {
+	source vs_DepthColor.cg
+	entry_point depthColorVS
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named NearColor 	float4 	1.0 1.0 1.0 1.0
+		param_named FarColor 	float4  0.0 0.0 0.0 1.0
+		param_named Hither 		float  	5.0
+		param_named Yon 		float	7.0
+		param_named Gamma 		float	1.0
+	}
+}
+
+fragment_program DepthColor_ps cg {
+	source ps_DepthColor.cg
+	entry_point depthColorPS
+	profiles arbfp1
+	
+	default_params {
+			
+	}
+}
+
+// DepthColor_Default
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref DepthColor_vs {
+
+			}
+			
+			fragment_program_ref DepthColor_ps {
+				
+			}
+
+		}
+		
+		
+	}
+}
