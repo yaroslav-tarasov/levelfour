@@ -1,0 +1,74 @@
+vertex_program BlinnBump_vs cg {
+	source vs_BlinnBump.cg
+	entry_point blinnBumpVS
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LampDirPos		float4 	-0.5 2.0 1.25 1.0
+		
+	}
+}
+
+fragment_program BlinnBump_ps cg {
+	source ps_BlinnBump.cg
+	entry_point blinnBumpPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named	LampColor	float3	1.0 1.0 1.0
+		param_named Bump		float	1.0
+		param_named Kr			float	0.5
+		param_named AmbiColor	float3	0.07 0.07 0.07
+		param_named Ks			float	0.4
+		param_named Eccentricity	float	0.3
+		
+	}
+}
+
+// BlinnBump
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref BlinnBump_vs 
+			{
+
+			}
+			
+			fragment_program_ref BlinnBump_ps
+			{
+							
+			}
+			
+			texture_unit // Color Texture
+			{
+				texture blinnbump_default_color.dds
+				tex_coord_set 0
+				tex_address_mode clamp
+			}
+			
+			texture_unit // Normal Texture
+			{
+				texture blinnbump_default_bump_normal.dds
+				tex_coord_set 1
+				tex_address_mode clamp
+			}
+			
+			texture_unit // Environment
+			{
+				cubic_texture blinnbump_default_reflection.dds combinedUVW
+				tex_coord_set 2
+				env_map spherical
+			}
+		}
+	}
+}

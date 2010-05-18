@@ -1,0 +1,124 @@
+/*
+
+Improved Perceptually-correct soft shadows, based on a three-step process:
+
+1. Find relevant blockers
+2. Estimate penumbra sizes
+3. Perform variable-sized percentage-closer filtering
+
+% Perceptually-correct soft shadows.
+% For more information, please see the 
+% "Percentage-Closer Soft Shadows" talk from GDC 2005.
+% The talk is available at 
+% http://developer.nvidia.com/object/gdc_2005_presentations.html
+
+*/
+
+vertex_program shadowPCSS_vs cg {
+	source vs_shadowPCSS.cg
+	entry_point shadVS
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto WorldITXf 		world_matrix
+		param_named_auto WorldXf 		inverse_transpose_world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named_auto ShadowViewProjXf		spotlight_viewproj_matrix 0
+	}
+}
+
+fragment_program shadowPCSS_ps cg {
+	source ps_shadowPCSS.cg
+	entry_point shadPS
+	profiles arbfp1
+	
+	default_params {
+				
+	}
+}
+
+vertex_program shadowPCSS_vs_p2 cg {
+	source vs_shadowPCSS.cg
+	entry_point mainCamVS
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto WorldITXf 		world_matrix
+		param_named_auto WorldXf 		inverse_transpose_world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named_auto ShadowViewProjXf		spotlight_viewproj_matrix 0
+		param_named SpotLightPos float3	-0.5 2.0 1.25
+		param_named ShadBias	float	0.01
+	}
+}
+
+fragment_program shadowPCSS_ps_p2 cg {
+	source ps_shadowPCSS.cg
+	entry_point useShadowPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SpotLightColor 	float3		1.0 1.0 1.0
+		param_named  LightSize 			float		0.05
+		param_named  SceneScale 		float		1.0
+		param_named  ShadBias 			float		0.01
+		param_named  Kd 				float		0.9
+		param_named  SurfColor 			float3		1.0 1.0 1.0
+		// param_named  ShadSampler 		sampler2D : register(s0)
+		// param_named  FloorSampler 		sampler2D : register(s1)
+		
+		
+	}
+}
+
+// shadowPCSS_Default
+material Default {
+	technique {
+		pass MakeShadow {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref shadowPCSS_vs {
+							
+			}
+			
+			fragment_program_ref shadowPCSS_ps {
+				
+			}
+			
+			
+		}
+		
+		pass UseShadow {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref shadowPCSS_vs_p2 {
+							
+			}
+			
+			fragment_program_ref shadowPCSS_ps_p2 {
+				
+			}
+			
+			texture_unit
+			{
+				texture water.jpg
+				tex_coord_set 0
+			}
+			
+			texture_unit
+			{
+				texture default_color.dds
+				tex_coord_set 1
+			}
+		}
+	}
+}

@@ -1,0 +1,44 @@
+
+
+/*********************************************************/
+/*********** vertex shader *******************************/
+/*********************************************************/
+
+void grisVS(
+
+	float3 Position	: POSITION,
+    float4 UVIN		: TEXCOORD0,
+    float4 Normal	: NORMAL,
+	
+	out float4 HPosition	: POSITION,
+    out float2 UV		: TEXCOORD0,
+    out float3 WNormalS	: TEXCOORD1,
+    out float3 WView	: TEXCOORD2,
+    out float4 DiffCol 	: COLOR0,
+	
+    uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+    uniform float4x4 ViewTXf,
+    uniform float4x4 WorldViewITXf,
+    uniform float DFlatness,
+    uniform float SFlatness,
+    uniform float3 LightDir
+)
+{
+    UV = UVIN.xy;
+    float3 Ne = normalize(mul(WorldViewITXf,Normal).xyz); // view coords
+    float4 Ned = normalize(float4(Ne.xy,Ne.z*DFlatness,0));
+    float4 Nes = normalize(float4(Ne.xy,Ne.z*SFlatness,0));
+    float3 Nnd = normalize(mul(ViewTXf,Ned).xyz); // world coords
+    float3 Nns = normalize(mul(ViewTXf,Nes).xyz); // world coords
+    float4 Po = float4(Position.xyz,1);	// obj coords
+    WView = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Po.xyz);	// obj coords
+    WNormalS = Nns; 	// screen clipspace coords
+    float3 Ln = -normalize(LightDir);
+    float d = dot(Ln,Nnd);
+    DiffCol = float4(max(0,d).xxx,1.0);
+    float4 Ph = mul(WvpXf,Po);
+    HPosition = Ph;
+}

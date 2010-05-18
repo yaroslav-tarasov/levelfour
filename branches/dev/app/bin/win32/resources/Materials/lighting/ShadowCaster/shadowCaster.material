@@ -1,0 +1,48 @@
+
+// Shadow Caster __________________________________________________
+
+
+vertex_program ShadowCasterVP cg
+{
+    source varianceshadowcastervp.cg
+    entry_point main
+    profiles arbvp1
+
+    default_params
+    {
+        param_named_auto uModelViewProjection worldviewproj_matrix
+    }
+}
+
+fragment_program ShadowCasterFP cg
+{
+    source varianceshadowcasterfp.cg
+    entry_point main
+    profiles arbfp1
+
+    default_params
+    {
+        param_named      uDepthOffset float       1.0
+        param_named_auto uProjection              projection_matrix
+    }
+}
+
+material ShadowCaster
+{
+    technique default
+    {
+        // Z-write only pass
+        pass Z-write
+        {
+            //Instead of using depth_bias, we'll be implementing it manually
+
+            vertex_program_ref ShadowCasterVP
+            {
+            }
+            fragment_program_ref ShadowCasterFP
+            {
+            }
+        }
+    }
+}
+

@@ -1,0 +1,25 @@
+void main(float3 Position : POSITION,
+		    float4 Normal : NORMAL,
+			uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+			uniform float4x4 WorldViewProjXf,
+			uniform float4x4 WorldXf,
+			uniform float3 LiteColor,
+			uniform float3 DarkColor,
+			uniform float3 WarmColor,
+			uniform float3 CoolColor,
+			uniform float4 LightPos,
+			out float4 diffCol : COLOR0,
+			out float4 HPosition : POSITION
+) {
+	float3 Nn = normalize(mul(WorldITXf, Normal).xyz);
+	float4 Po = float4(Position.xyz,1);
+	//compute worldspace position
+	float3 Pw = mul(WorldXf, Po).xyz;
+	float3 Ln = normalize(LightPos - Pw).xyz;
+	float mixer = 0.5 * (dot(Ln,Nn) + 1.0);
+	float3 surfColor = lerp(DarkColor,LiteColor,mixer);
+	float3 toneColor = lerp(CoolColor,WarmColor,mixer);
+	float3 mixColor = surfColor + toneColor;
+	diffCol = float4(mixColor.xyz,1.0f);
+	HPosition = mul(WorldViewProjXf ,Po);
+}

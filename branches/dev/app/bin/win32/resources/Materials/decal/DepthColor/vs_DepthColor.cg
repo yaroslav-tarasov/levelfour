@@ -1,0 +1,24 @@
+/*********** vertex shader ******/
+
+void depthColorVS(
+    float4 Position : POSITION,
+    
+	out float4 DepthColor : TEXCOORD0,
+	out float4 HPosition : POSITION,
+	
+	uniform float4x4 WvpXf,
+    uniform float4 NearColor,
+    uniform float4 FarColor,
+    uniform float Hither,
+    uniform float Yon,
+    uniform float Gamma)
+{
+    float4 Po = float4(Position.xyz,1.0);
+    float4 hpos = mul(WvpXf,Po);
+    float dl = (hpos.z-Hither)/(Yon-Hither);
+    dl = min(dl,1.0);
+    dl = max(dl,0.0);
+    dl = pow(dl,Gamma);
+    DepthColor = lerp(NearColor,FarColor,dl);
+    HPosition = hpos;
+}

@@ -1,0 +1,108 @@
+
+
+vertex_program goochy_vs cg {
+	source vs_Goochy.cg
+	entry_point goochyVS
+	profiles arbvp1
+	
+	default_params {
+				
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named		 LampPos 		float3 -0.5 2.0 1.25	
+	}
+}
+
+fragment_program goochy_ps cg {
+	source ps_Goochy.cg
+	entry_point goochyPS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 	 LiteColor   	float3 0.8 0.5 0.1
+		param_named 	 DarkColor   	float3 0.0 0.0 0.0
+		param_named 	 WarmColor   	float3 0.5 0.4 0.05
+		param_named 	 CoolColor   	float3 0.05 0.05 0.6
+		param_named 	 SpecColor   	float3 0.7 0.7 1.0		
+		param_named 	 GlossTop    	float 0.7
+		param_named 	 GlossBot    	float 0.5
+		param_named 	 GlossDrop    	float 0.2
+		param_named 	 SpecExpon    	float 30.0
+	}
+}
+
+fragment_program goochy_t_ps cg {
+	source ps_Goochy.cg
+	entry_point goochyT_PS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 	 LiteColor   	float3 0.8 0.5 0.1
+		param_named 	 DarkColor   	float3 0.0 0.0 0.0
+		param_named 	 WarmColor   	float3 0.5 0.4 0.05
+		param_named 	 CoolColor   	float3 0.05 0.05 0.6
+		param_named 	 SpecColor   	float3 0.7 0.7 1.0		
+		param_named 	 GlossTop    	float 0.7
+		param_named 	 GlossBot    	float 0.5
+		param_named 	 GlossDrop    	float 0.2
+		param_named 	 SpecExpon    	float 30.0
+		// ColorSampler (0)
+		
+	}
+}
+
+// goochy_Default
+material Goochy_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref goochy_vs {
+							
+			}
+			
+			fragment_program_ref goochy_ps {
+				
+			}
+
+		}
+		
+		
+	}
+}
+
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref goochy_vs {
+							
+			}
+			
+			fragment_program_ref goochy_t_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture goochy_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+
+		}
+		
+		
+	}
+}

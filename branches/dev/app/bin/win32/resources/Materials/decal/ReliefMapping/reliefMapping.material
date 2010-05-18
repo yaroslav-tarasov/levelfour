@@ -1,0 +1,223 @@
+
+
+
+vertex_program reliefMapping_vs cg {
+	source vs_reliefMapping.cg
+	entry_point view_spaceVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto 	WorldITXf 		world_matrix
+		param_named_auto 	WorldXf 		inverse_transpose_world_matrix
+		param_named_auto 	ViewIXf 		inverse_view_matrix
+		param_named_auto 	WvpXf 			worldviewproj_matrix
+		param_named_auto	ViewXf			view_matrix 
+		param_named_auto	WorldViewXf		worldview_matrix
+		param_named 		TileCount		float 	8
+		param_named 		LampPos			float3 	-0.5 2.0 1.25
+	}
+}
+
+fragment_program reliefMapping_Normal_ps cg {
+	source ps_reliefMapping.cg
+	entry_point normal_mapPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  PhongExp	 	float 		128.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		// uniform sampler2D ColorSampler : register(s0),
+		// uniform sampler2D ReliefSampler : register(s1),
+
+	}
+}
+
+fragment_program reliefMapping_Parallax_ps cg {
+	source ps_reliefMapping.cg
+	entry_point parallax_mapPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  PhongExp	 	float 		128.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		
+	}
+}
+
+fragment_program reliefMapping_ps_qps cg {
+	source ps_reliefMapping.cg
+	entry_point relief_mapPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  Depth			float 		0.05
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  PhongExp	 	float 		128.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		
+	}
+}
+
+fragment_program reliefMapping_Shadow_ps cg {
+	source ps_reliefMapping.cg
+	entry_point relief_map_shadowsPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  Depth			float 		0.05
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  PhongExp	 	float 		128.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		
+	}
+}
+
+// normal_mapping
+material p_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref reliefMapping_vs {
+							
+			}
+			
+			fragment_program_ref reliefMapping_Normal_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture rockwall.jpg
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit
+			{
+				texture rockwall.tga
+				tex_coord_set 1
+				tex_address_mode wrap
+			}
+			
+		}
+		
+	}
+}
+// parallax_mapping
+material reliefMapping_Texture {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref reliefMapping_vs {
+							
+			}
+			
+			fragment_program_ref reliefMapping_Parallax_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture rockwall.jpg
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit
+			{
+				texture rockwall.tga
+				tex_coord_set 1
+				tex_address_mode wrap
+			}
+		}
+		
+	}
+}
+// relief_mapping
+material reliefMapping_Quadratic_Falloff {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref reliefMapping_vs {
+							
+			}
+			
+			fragment_program_ref reliefMapping_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture rockwall.jpg
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit
+			{
+				texture rockwall.tga
+				tex_coord_set 1
+				tex_address_mode wrap
+			}
+			
+		}
+		
+	}
+}
+// relief_mapping_shadows
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref reliefMapping_vs {
+							
+			}
+			
+			fragment_program_ref reliefMapping_Shadow_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture rockwall.jpg
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit
+			{
+				texture rockwall.tga
+				tex_coord_set 1
+				tex_address_mode wrap
+			}
+		}
+		
+	}
+}

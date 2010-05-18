@@ -1,0 +1,97 @@
+///////// PIXEL SHADING //////////////////////
+
+void shared_lighting_calculations(
+		// Pixel Inputs
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldView	: TEXCOORD5,
+		
+		// Model Level Inputs
+		uniform float Kd,
+		uniform float SpecExpon,
+		uniform float Kr,
+		uniform samplerCUBE EnvSampler,
+		uniform float3 LampColor,
+		uniform float3 AmbiColor,
+		
+		// Outputs
+		out float3 DiffuseContrib,
+		out float3 SpecularContrib,
+		out float3 ReflectionContrib)
+{
+    float3 Ln = normalize(LightVec.xyz);
+    float3 Nn = normalize(WorldNormal);
+    float3 Vn = normalize(WorldView);
+    float3 Hn = normalize(Vn + Ln);
+    float4 litV = lit(dot(Ln,Nn),dot(Hn,Nn),SpecExpon);
+    DiffuseContrib = litV.y * Kd * LampColor + AmbiColor;
+    SpecularContrib = litV.z * LampColor;
+    float3 reflVect = -reflect(Vn,Nn);
+    ReflectionContrib = Kr * texCUBE(EnvSampler,reflVect).xyz;
+}
+
+float4 metalPS(
+		// Pixel Inputs
+		float3 WorldNormal	: TEXCOORD2,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldView	: TEXCOORD5,
+				
+		// Outputs
+		
+		// Model Level Inputs
+		uniform float3 SurfaceColor,
+		uniform float Kd,
+		uniform float SpecExpon,
+		uniform float Kr,
+		uniform samplerCUBE EnvSampler : register(s0),
+		uniform float3 LampColor,
+		uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+    float3 reflContrib;
+	shared_lighting_calculations(LightVec,WorldNormal,WorldView,
+				Kd,SpecExpon,Kr,
+				EnvSampler,LampColor,AmbiColor,
+				diffContrib,specContrib,reflContrib);
+    float3 result = diffContrib +
+			    (SurfaceColor * (specContrib + reflContrib));
+    return float4(result,1);
+}
+
+float4 plasticPS(
+		// Pixel Inputs
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldView	: TEXCOORD5,
+		
+		// Outputs
+		
+		// Model Level Inputs
+		uniform float3 SurfaceColor,
+		uniform float Kd,
+		uniform float SpecExpon,
+		uniform float Kr,
+		uniform float FresnelMin,
+		uniform float FresnelExp,
+		uniform samplerCUBE EnvSampler : register(s0),
+		uniform float3 LampColor,
+		uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+    float3 reflContrib;
+    float3 Nn = normalize(WorldNormal);
+    float3 Vn = normalize(WorldView);
+    float KrMin = (Kr * FresnelMin);
+    float InvFrExp = (1.0/FresnelExp);
+    float fresnel = lerp(Kr,KrMin,pow(abs(dot(Nn,Vn)),InvFrExp));
+	shared_lighting_calculations(LightVec,WorldNormal,WorldView,
+				Kd,SpecExpon,Kr,
+				EnvSampler,LampColor,AmbiColor,
+				diffContrib,specContrib,reflContrib);
+    float3 result = (diffContrib * SurfaceColor) +
+			specContrib +
+			(fresnel*reflContrib);
+    return float4(result,1);
+}

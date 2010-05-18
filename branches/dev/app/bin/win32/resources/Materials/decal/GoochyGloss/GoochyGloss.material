@@ -1,0 +1,121 @@
+/*
+
+% Gooch style diffuse shading, calculated PER-PIXEL against a
+% directional light source, and with optional texture-mapping.
+% This version also contains a glossy hilight with threshholding to
+% create a strong impression of surface smoothness.  Gooch shading
+% ranges from a warm tone near the light direction to a cool tone
+% on the opposite side of a model. While non-photorealistic, this
+% approach is useful for revealing overall shape of a form,
+% especially when modelling.
+
+*/
+
+
+
+vertex_program goochyGloss_vs cg {
+	source vs_GoochyGloss.cg
+	entry_point goochyGlossVS
+	profiles arbvp1
+	
+	default_params {
+				
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named		 LightDir 		float4 0.7 -0.7 0.7 0.0	
+	}
+}
+
+fragment_program goochyGloss_ps cg {
+	source ps_GoochyGloss.cg
+	entry_point goochyGlossPS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 	 LiteColor   	float3 0.8 0.5 0.1
+		param_named 	 DarkColor   	float3 0.0 0.0 0.0
+		param_named 	 WarmColor   	float3 0.5 0.4 0.05
+		param_named 	 CoolColor   	float3 0.05 0.05 0.6
+		param_named 	 SpecColor   	float3 0.7 0.7 1.0		
+		param_named 	 GlossTop    	float 0.7
+		param_named 	 GlossBot    	float 0.5
+		param_named 	 GlossDrop    	float 0.2
+		param_named 	 SpecExpon    	float 20.0
+	}
+}
+
+fragment_program goochyGloss_t_ps cg {
+	source ps_goochyGloss.cg
+	entry_point goochyGlossT_PS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 	 LiteColor   	float3 0.8 0.5 0.1
+		param_named 	 DarkColor   	float3 0.0 0.0 0.0
+		param_named 	 WarmColor   	float3 0.5 0.4 0.05
+		param_named 	 CoolColor   	float3 0.05 0.05 0.6
+		param_named 	 SpecColor   	float3 0.7 0.7 1.0		
+		param_named 	 GlossTop    	float 0.7
+		param_named 	 GlossBot    	float 0.5
+		param_named 	 GlossDrop    	float 0.2
+		param_named 	 SpecExpon    	float 20.0
+		// ColorSampler (0)
+		
+	}
+}
+
+// goochyGloss_Default
+material goochyGloss_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref goochyGloss_vs {
+							
+			}
+			
+			fragment_program_ref goochyGloss_ps {
+				
+			}
+
+		}
+		
+		
+	}
+}
+
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref goochyGloss_vs {
+							
+			}
+			
+			fragment_program_ref goochyGloss_t_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture goochyGloss_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+
+		}
+		
+		
+	}
+}

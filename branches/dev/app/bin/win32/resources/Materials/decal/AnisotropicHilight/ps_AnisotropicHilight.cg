@@ -1,0 +1,18 @@
+float4 main(float3 WorldNormal : TEXCOORD1,
+			float3 WorldView : TEXCOORD2,
+			float3 LightVec : TEXCOORD3,
+			float2 TexCoord0 : TEXCOORD0,
+			uniform sampler2D AnisoSampler : register(s0)
+			) : COLOR 
+{
+#ifdef VERTEX_SHADED
+    return tex2D(AnisoSampler,TexCoord0.xy);
+#else /* ! VERTEX_SHADED */
+    float3 Nn = normalize(WorldNormal);
+    float3 Vn = normalize(WorldView);
+    float3 Ln = normalize(LightVec);
+    float3 Hn = normalize(Vn + Ln);
+    float2 uv = float2(dot(Ln, Nn), dot(Hn, Nn));
+    return tex2D(AnisoSampler,uv);
+#endif /* ! VERTEX_SHADED */
+}

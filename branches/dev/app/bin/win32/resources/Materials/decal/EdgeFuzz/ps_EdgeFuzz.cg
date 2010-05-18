@@ -1,0 +1,42 @@
+
+/********* pixel shader ********/
+
+float4 edgeFuzzPS(
+
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldTangent	: TEXCOORD3,
+		float3 WorldBinormal : TEXCOORD4,
+		float3 WorldView	: TEXCOORD5,
+	    
+		uniform float3 SurfaceColor,
+	    uniform float3 EdgeColor,
+	    uniform float EdgeExpon,
+	    uniform float EdgeFade,
+	    uniform float EdgeFadeL,
+	    uniform float Ks,
+	    uniform float SpecExpon,
+	    uniform float3 LampColor,
+	    uniform float3 AmbiColor
+) : COLOR {
+    float3 Ln = normalize(LightVec.xyz);
+    float3 Vn = normalize(WorldView);
+    float3 Nn = normalize(WorldNormal);
+    float3 Hn = normalize(Vn + Ln);
+    float ldn = dot(Ln,Nn);
+    float4 lv = lit(ldn,dot(Hn,Nn),SpecExpon);
+    float subd = abs(dot(Nn,Vn));
+    subd = pow(subd,EdgeExpon);
+    float3 EdgedColor = lerp(EdgeColor,SurfaceColor,subd);
+    EdgedColor = lerp(SurfaceColor,EdgedColor,EdgeFade);
+    ldn = max(ldn,0);
+    ldn = pow(ldn,EdgeExpon);
+    float3 IncidentColor = lerp(EdgeColor,LampColor,ldn);
+    IncidentColor = lerp(LampColor,IncidentColor,EdgeFadeL);
+    float3 diffContrib = EdgedColor * (lv.y*IncidentColor + AmbiColor);
+    float3 specContrib = Ks * lv.y * lv.z * IncidentColor;
+    //return EdgedColor;
+    return float4((diffContrib+specContrib).rgb,1);
+}

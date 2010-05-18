@@ -1,0 +1,41 @@
+
+
+/********* pixel shader ********/
+
+float4 subcutaneousPS(
+
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldTangent	: TEXCOORD3,
+			float3 WorldBinormal : TEXCOORD4,
+			float3 WorldView	: TEXCOORD5,
+		    
+			uniform float3 SurfaceColor,
+		    uniform sampler2D ColorSampler : register(s0),
+		    uniform sampler2D SubSampler : register(s1),
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float SpecExpon,
+		    uniform float SubExpon,
+		    uniform float Transp,
+		    uniform float3 LampColor,
+		    uniform float3 AmbiColor
+):COLOR {
+    float3 Ln = normalize(LightVec.xyz);
+    float3 Vn = normalize(WorldView);
+    float3 Nn = normalize(WorldNormal);
+    float3 Hn = normalize(Vn + Ln);
+    float ldn = dot(Ln,Nn);
+    float4 lv = lit(ldn,dot(Hn,Nn),SpecExpon);
+    float subd = abs(dot(Nn,Vn));
+    subd = Transp * pow(subd,SubExpon);
+    float3 colT = SurfaceColor * tex2D(ColorSampler,UV).rgb;
+    float3 subT = tex2D(SubSampler,UV).rgb;
+    subT = subT * max(0,ldn);
+    float3 blendCol = lerp(colT,subT,subd);
+    float3 diffContrib = blendCol * (lv.y*LampColor + AmbiColor);
+    float3 specContrib = Ks * lv.z * LampColor;
+    return float4((diffContrib + specContrib).rgb, 1.0);
+}

@@ -1,0 +1,37 @@
+
+
+/*********** vertex shader ******/
+
+void brixVS(
+
+	half3 Position    : POSITION,
+    half4 UV        : TEXCOORD0,
+    half4 Normal    : NORMAL,
+	
+	out half4 HPosition    : POSITION,
+    out half3 WorldNormal    : TEXCOORD1,
+    out half3 WorldEyeVec    : TEXCOORD2,
+    out half4 ObjPos    : TEXCOORD3,
+    out float4 DCol : COLOR0,
+    
+	uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+    uniform float3 LightDir,
+    uniform float3 AmbiColor,
+    uniform float BrickWidth,
+    uniform float BrickHeight
+) {
+    float3 Nw = normalize(mul(WorldITXf,Normal).xyz);
+    WorldNormal = Nw;
+    float lamb = saturate(dot(Nw,-LightDir));
+    DCol = float4((lamb.xxx + AmbiColor).rgb,1);
+    half4 Po = half4(Position.xyz,1);
+    half3 Pw = mul(WorldXf,Po).xyz;
+    WorldEyeVec = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw);
+    half4 hpos = mul(WvpXf,Po);
+    //OUT.ObjPos = half4(Po.x/BrickWidth,Po.y/BrickHeight,Po.zw);
+    ObjPos = half4(UV.y/BrickWidth,UV.x/BrickHeight,Po.zw);
+    HPosition = hpos;
+}

@@ -1,0 +1,26 @@
+
+void projectiveTexturingVS(
+
+				float4 position        : POSITION,
+                float3 normal          : NORMAL,
+       
+                out float4 oPosition        : POSITION,
+                out float4 texCoordProj     : TEXCOORD0,
+				out float4  diffuseLighting : TEXCOORD1,
+       
+                uniform float Kd,
+                uniform float4x4 modelViewProj,
+                uniform float3   lightPosition, 
+                uniform float4x4 textureMatrix)
+{
+  oPosition = mul(modelViewProj, position);
+
+  // Compute texture coordinates for 
+  // querying the projective texture
+  texCoordProj = mul(textureMatrix, position);
+  
+  // Compute diffuse lighting
+  float3 N = normalize(normal);
+  float3 L = normalize(lightPosition - position.xyz);
+  diffuseLighting = Kd * max(dot(L, N), 0);
+}

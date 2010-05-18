@@ -1,0 +1,40 @@
+/*********** Generic Vertex Shader ******/
+
+void plasticVS(
+
+	float4 Normal	: NORMAL,
+	float4 Tangent	: TANGENT0,
+	float4 Binormal	: BINORMAL0,
+	float3 Position	: POSITION,
+	float4 UVIN		: TEXCOORD0,
+	
+	out float3 WorldNormal	: TEXCOORD2,
+	out float3 WorldTangent	: TEXCOORD3,
+	out float3 WorldBinormal : TEXCOORD4,
+	out float3 LightVec	: TEXCOORD1,
+	out float2 UV		: TEXCOORD0,
+	out float3 WorldView	: TEXCOORD5,
+	out float4 HPosition	: POSITION,
+	
+	uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+	uniform float4 LampDirPos
+) {
+    WorldNormal = mul(WorldITXf,Normal).xyz;
+    WorldTangent = mul(WorldITXf,Tangent).xyz;
+    WorldBinormal = mul(WorldITXf,Binormal).xyz;
+    float4 Po = float4(Position.xyz,1);
+    float4 Pw = mul(WorldXf,Po);	// convert to "world" space
+    float4 Lw = LampDirPos;
+    if (Lw.w == 0) {
+	LightVec = -normalize(Lw.xyz);
+    } else {
+	// we are still passing a (non-normalized) vector
+	LightVec = Lw.xyz - Pw.xyz;
+    }
+    UV = UVIN.xy;
+    WorldView = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw.xyz);
+    HPosition = mul(WvpXf,Po);
+}

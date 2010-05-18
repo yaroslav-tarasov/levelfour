@@ -1,0 +1,19 @@
+/*********** vertex shader ******/
+
+void cageVS(
+
+		float3 Position    : POSITION,
+		
+		uniform float4x4 WvpXf,
+		uniform float4x4 WorldXf,
+		uniform float Scale,
+		
+		out float4 HPosition    : POSITION,
+		out float4 TexCoord    : TEXCOORD0
+) {
+    float4 Po = float4(Position.xyz,1.0); 
+    float4 hpos  = mul(WvpXf,Po);
+    HPosition  = hpos;
+    float4 Pw = mul(WorldXf,Po);
+    TexCoord = Pw * Scale;
+}

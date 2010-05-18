@@ -1,0 +1,54 @@
+//////////////////////////////////////////////////////////////////////////
+// VERTEX SHADER /////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+// Function to Index this texture - use in vertex or pixel shaders ///////
+//////////////////////////////////////////////////////////////////////////
+float calc_view_depth(float NDotV,float Thickness)
+{
+    // return (1.0 / NDotV) * Thickness;
+    return (Thickness / NDotV);
+}
+
+void ThinFilmVS(
+
+	// Vertex Inputs
+	float4 Normal   : NORMAL,
+	float4 Position : POSITION,
+	
+    // Vertex Outputs
+	out float4 HPOS      : POSITION,
+	float3 diffCol   : COLOR0,
+	float3 specCol   : COLOR1,
+	float2 filmDepth : TEXCOORD0,
+	
+	// Model Level Inputs
+	uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+    uniform float FilmDepth,
+    uniform float SpecExpon,
+    uniform float3 LampPos)
+{
+    float3 Nn = mul(WorldITXf,Normal).xyz;
+    float4 Po = float4(Position.xyz,1.0);
+    float3 Pw = mul(WorldXf,Po).xyz;
+    HPOS = mul(WvpXf,Po);
+    float3 Ln = normalize(LampPos - Pw);
+    float3 Vn = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw);
+    float3 Hn = normalize(Ln + Vn);
+    float ldn = dot(Ln,Nn);
+    float hdn = dot(Hn,Nn);
+    float vdn = dot(Vn,Nn);
+    float4 litV = lit(ldn,hdn,SpecExpon);
+    diffCol = litV.yyy;
+    specCol = pow(hdn,SpecExpon).xxx;
+    // compute the view depth for the thin film
+    float viewdepth = calc_view_depth(vdn,FilmDepth.x);
+    filmDepth = viewdepth.xx;
+}
+
+
+

@@ -1,0 +1,80 @@
+//----------------------------
+// Distortion effects
+//----------------------------
+
+vertex_program FresnelRefractReflect_vs cg
+{
+	source vs_FresnelRefractReflect.cg
+	entry_point fresnelRefractReflectVS
+	profiles arbvp1
+	
+	default_params
+    {
+		param_named_auto worldViewProjMatrix worldviewproj_matrix
+		param_named_auto eyePosition camera_position_object_space
+		param_named_auto timeVal time 0.05
+		param_named scroll 	float 1  
+		param_named scale 	float 1 
+		param_named noise 	float 1 
+		// scroll and noisePos will need updating per frame
+	
+	}
+}
+
+fragment_program FresnelRefractReflect_ps cg
+{
+	source ps_FresnelRefractReflect.cg
+	entry_point fresnelRefractReflectPS
+	profiles arbfp1
+	
+	default_params
+    {
+		param_named fresnelBias 	float 	-0.1 
+		param_named fresnelScale 	float 	1.8 
+		param_named fresnelPower 	float 	8  
+		param_named tintColour 		float4 	0 0.05 0.05 1
+		param_named noiseScale 		float 	0.05 
+	}
+}
+
+material Default
+{
+	technique
+	{
+		pass 
+		{
+			
+			vertex_program_ref FresnelRefractReflect_vs
+			{
+				
+			}
+			fragment_program_ref FresnelRefractReflect_ps
+			{
+				
+			}
+			// Noise
+			texture_unit
+			{
+				// Perlin noise volume
+				texture waves2.dds
+				// min / mag filtering, no mip
+				filtering linear linear none
+			}
+			// Reflection
+			texture_unit
+			{
+				// Will be filled in at runtime
+				texture reflection
+				tex_address_mode clamp
+			}
+			// Refraction
+			texture_unit
+			{
+				// Will be filled in at runtime
+				texture refraction
+				tex_address_mode clamp
+			}
+		}
+		
+			
+	}

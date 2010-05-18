@@ -1,0 +1,68 @@
+/*
+
+The Parallel Split Shadow Maps (PSSM) proposed by Zhang et al. go some way to 
+alleviating this issue by splitting the view frustum into parallel chunks along the z axis. 
+
+*/
+
+
+material caster
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref Ogre/shadow/caster/depth/vp
+			{
+			}
+			fragment_program_ref Ogre/shadow/caster/depth/fp
+			{
+			}
+		}
+	}
+}
+
+
+material pssm
+{
+    technique
+	{
+		// link to caster material
+		shadow_caster_material caster
+		
+		pass
+		{
+			vertex_program_ref Ogre/shadow/receiver/depth/pssm3/vp
+			{
+			}
+			fragment_program_ref Ogre/shadow/receiver/depth/pssm3/fp
+			{
+				// you must specify pssmSplitPoints when you instantiate!
+			}
+			
+			texture_unit diffuse
+			{
+				// nothing specified for now, derivers can override
+			}
+			
+			texture_unit shadow0
+			{
+				content_type shadow
+				tex_address_mode border
+				tex_border_colour 1 1 1 1
+			}
+			texture_unit shadow1
+			{
+				content_type shadow
+				tex_address_mode border
+				tex_border_colour 1 1 1 1
+			}
+			texture_unit shadow2
+			{
+				content_type shadow
+				tex_address_mode border
+				tex_border_colour 1 1 1 1
+			}
+		}
+	}
+}

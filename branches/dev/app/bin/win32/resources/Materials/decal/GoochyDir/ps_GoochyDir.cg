@@ -1,0 +1,9 @@
+
+float4 goochyDirPS(
+
+		float4 HPosition	: POSITION,
+		float4 diffCol		: COLOR0) : COLOR
+	
+{ return diffCol; }
+
+//////////////////////////////////////////////

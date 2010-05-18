@@ -1,0 +1,15 @@
+
+void projectiveTexturingPS(
+
+			float4 texCoordProj    : TEXCOORD0,
+			float4 diffuseLighting : TEXCOORD1,
+
+            out float4 color : COLOR,
+
+            uniform sampler2D projectiveMap : register(s0))
+{
+  // Fetch color from the projective texture
+  float4 projColor = tex2Dproj(projectiveMap, texCoordProj);
+
+  color = projColor * diffuseLighting;
+}

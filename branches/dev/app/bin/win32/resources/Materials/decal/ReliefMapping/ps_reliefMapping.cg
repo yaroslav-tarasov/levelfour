@@ -1,0 +1,244 @@
+/************ FRAGMENT SHADERS ******************/
+
+float4 normal_mapPS(
+
+			float2 UV		: TEXCOORD0,
+			float3 tangent	: TEXCOORD2,
+			float3 binormal	: TEXCOORD3,
+			float3 normal	: TEXCOORD4,
+			float3 vpos		: TEXCOORD1,
+			float4 lightpos	: TEXCOORD5,
+			
+		    uniform float3 SurfaceColor,
+		    uniform sampler2D ColorSampler : register(s0),
+		    uniform sampler2D ReliefSampler : register(s1),
+		    uniform float PhongExp,
+		    uniform float3 SpecColor,
+		    uniform float3 AmbiColor
+) : COLOR
+{
+    float3 tNorm = tex2D(ReliefSampler,UV).xyz - float3(0.5,0.5,0.5);
+    // transform tNorm to world space
+    tNorm = normalize(tNorm.x*tangent -
+		      tNorm.y*binormal + 
+		      tNorm.z*normal);
+    float3 texCol = tex2D(ColorSampler,UV).xyz;
+    // view and light directions
+    float3 Vn = normalize(vpos);
+    float3 Ln = normalize(lightpos.xyz-vpos);
+    // compute diffuse and specular terms
+    float att = saturate(dot(Ln,normal));
+    float diff = saturate(dot(Ln,tNorm));
+    float spec = saturate(dot(normalize(Ln-Vn),tNorm));
+    spec = pow(spec,PhongExp);
+    // compute final color
+    float3 finalcolor = AmbiColor*texCol +
+	    att*(texCol*SurfaceColor.xyz*diff+SpecColor*spec);
+    return float4(finalcolor.rgb,1.0);
+}
+
+float4 parallax_mapPS(
+
+			float2 UV		: TEXCOORD0,
+			float3 tangent	: TEXCOORD2,
+			float3 binormal	: TEXCOORD3,
+			float3 normal	: TEXCOORD4,
+			float3 vpos		: TEXCOORD1,
+			float4 lightpos	: TEXCOORD5,
+			
+			uniform float3 SurfaceColor,
+			uniform sampler2D ColorSampler : register(s0),
+			uniform sampler2D ReliefSampler : register(s1),
+			uniform float PhongExp,
+			uniform float3 SpecColor,
+			uniform float3 AmbiColor
+) : COLOR
+{
+    // view and light directions
+    float3 Vn = normalize(vpos);
+    float3 Ln = normalize(lightpos.xyz-vpos);
+    float2 uv = UV;
+    // parallax code
+    float3x3 tbnXf = float3x3(tangent,binormal,normal);
+    float4 reliefTex = tex2D(ReliefSampler,uv);
+    float height = reliefTex.w * 0.06 - 0.03;
+    uv += height * mul(Vn,tbnXf).xy;
+    // normal map
+    float3 tNorm = reliefTex.xyz - float3(0.5,0.5,0.5);
+    // transform tNorm to world space
+    tNorm = normalize(tNorm.x*tangent -
+		      tNorm.y*binormal + 
+		      tNorm.z*normal);
+    float3 texCol = tex2D(ColorSampler,uv).xyz;
+    // compute diffuse and specular terms
+    float att = saturate(dot(Ln,normal));
+    float diff = saturate(dot(Ln,tNorm));
+    float spec = saturate(dot(normalize(Ln-Vn),tNorm));
+    spec = pow(spec,PhongExp);
+    // compute final color
+    float3 finalcolor = AmbiColor*texCol +
+	    att*(texCol*SurfaceColor.xyz*diff+SpecColor*spec);
+    return float4(finalcolor.rgb,1.0);
+}
+
+//// ray-intersect functions for relief mapping //////////
+
+float ray_intersect_rm(			// use linear and binary search
+      in sampler2D reliefmap,
+      in float2 dp, 
+      in float2 ds)
+{
+   const int linear_search_steps=15;
+   
+   // current size of search window
+   float size = 1.0/linear_search_steps;
+   // current depth position
+   float depth = 0.0;
+   // search front to back for first point inside object
+   for( int i=0;i<linear_search_steps-1;i++ ) {
+	float4 t = tex2D(reliefmap,dp+ds*depth);
+	if (depth<t.w)
+	    depth += size;
+   }
+   const int binary_search_steps=5;
+   // recurse around first point (depth) for closest match
+   for( int ii=0;ii<binary_search_steps;ii++ ) {
+	size*=0.5;
+	float4 t = tex2D(reliefmap,dp+ds*depth);
+	if (depth<t.w)
+	    depth += (2*size);
+	depth -= size;
+   }
+   return depth;
+}
+
+float ray_intersect_rm_lin(	// only linear search for shadows
+      in sampler2D reliefmap,
+      in float2 dp, 
+      in float2 ds)
+{
+   const int linear_search_steps=15;
+   // current size of search window
+   float size = 1.0/linear_search_steps;
+   // current depth position
+   float depth = 0.0;
+   // search front to back for first point inside object
+   for( int i=0;i<linear_search_steps-1;i++ ) {
+	float4 t = tex2D(reliefmap,dp+ds*depth);
+	if (depth<t.w)
+	    depth += size;
+   }
+   return depth;
+}
+
+////// relief mapping fragment shaders ////////
+
+float4 relief_map_shadowsPS(
+
+				float4 hpos		: POSITION,
+				float2 UV		: TEXCOORD0,
+				float3 vpos		: TEXCOORD1,
+				float3 tangent	: TEXCOORD2,
+				float3 binormal	: TEXCOORD3,
+				float3 normal	: TEXCOORD4,
+				float4 lightpos	: TEXCOORD5,
+				float4 color	: COLOR0,
+			    uniform float Depth,
+			    uniform float3 SurfaceColor,
+			    uniform sampler2D ColorSampler : register(s0),
+			    uniform sampler2D ReliefSampler : register(s1),
+			    uniform float PhongExp,
+			    uniform float3 SpecColor,
+			    uniform float3 AmbiColor
+) : COLOR
+{
+    // ray intersect in view direction
+    float3 p = vpos;
+    float3 Vn = normalize(p);
+    float a = dot(normal,-Vn);
+    float3 s = float3(dot(Vn,tangent.xyz), dot(Vn,binormal.xyz), a);
+    s  *= Depth/a;
+    float2 ds = s.xy;
+    float2 dp = UV;
+    float d  = ray_intersect_rm(ReliefSampler,dp,ds);
+    // get rm and color texture points
+    float2 uv = dp+ds*d;
+    float3 texCol = tex2D(ColorSampler,uv).xyz;
+    float3 tNorm = tex2D(ReliefSampler,uv).xyz - float3(0.5,0.5,0.5);
+    tNorm = normalize(tNorm.x*tangent -
+		    tNorm.y*binormal + 
+		    tNorm.z*normal);
+    // compute light direction
+    p += Vn*d/(a*Depth);
+    float3 Ln = normalize(p-lightpos.xyz);
+    // compute diffuse and specular terms
+    float att = saturate(dot(-Ln,normal));
+    float diff = saturate(dot(-Ln,tNorm));
+    float spec = saturate(dot(normalize(-Ln-Vn),tNorm));
+    // ray intersect in light direction
+    dp+= ds*d;
+    a  = dot(normal,-Ln);
+    s  = float3(dot(Ln,tangent.xyz),dot(Ln,binormal.xyz),a);
+    s *= Depth/a;
+    ds = s.xy;
+    dp -= ds*d;
+    float dl = ray_intersect_rm_lin(ReliefSampler,dp,s.xy);
+    if (dl<d-0.05) {		// if pixel in shadow
+      diff *= dot(AmbiColor.xyz,float3(1.0,1.0,1.0))*0.333333;
+      spec = 0;
+    }
+    spec = pow(spec,PhongExp);
+    // compute final color
+    float3 finalcolor = AmbiColor*texCol + 
+	    att*(texCol*SurfaceColor*diff+SpecColor*spec);
+    return float4(finalcolor.rgb,1.0);
+}
+
+float4 relief_mapPS(
+
+			float4 hpos		: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 vpos		: TEXCOORD1,
+			float3 tangent	: TEXCOORD2,
+			float3 binormal	: TEXCOORD3,
+			float3 normal	: TEXCOORD4,
+			float4 lightpos	: TEXCOORD5,
+			float4 color	: COLOR0,
+		    uniform float Depth,
+		    uniform float3 SurfaceColor,
+		    uniform sampler2D ColorSampler : register(s0),
+		    uniform sampler2D ReliefSampler : register(s1),
+		    uniform float PhongExp,
+		    uniform float3 SpecColor,
+		    uniform float3 AmbiColor
+) : COLOR
+{
+    // ray intersect in view direction
+    float3 p = vpos;
+    float3 Vn = normalize(p);
+    float a = dot(normal,-Vn);
+    float3 s  = float3(dot(Vn,tangent.xyz), dot(Vn,binormal.xyz), a);
+    s  *= Depth/a;
+    float2 ds = s.xy;
+    float2 dp = UV;
+    float d  = ray_intersect_rm(ReliefSampler,dp,ds);
+    // get rm and color texture points
+    float2 uv = dp+ds*d;
+    float3 texCol = tex2D(ColorSampler,uv).xyz;
+    float3 tNorm = tex2D(ReliefSampler,uv).xyz - float3(0.5,0.5,0.5);
+    tNorm = normalize(tNorm.x*tangent -
+		  tNorm.y*binormal + 
+		  tNorm.z*normal);
+    // compute light direction
+    p += Vn*d/(a*Depth);
+    float3 Ln = normalize(p-lightpos.xyz);
+    // compute diffuse and specular terms
+    float att = saturate(dot(-Ln,normal));
+    float diff = saturate(dot(-Ln,tNorm));
+    float spec = saturate(dot(normalize(-Ln-Vn),tNorm));
+    spec = pow(spec,PhongExp);
+    // compute final color
+    float3 finalcolor = AmbiColor*texCol + 
+	    att*(texCol*SurfaceColor*diff+SpecColor*spec);
+    return float4(finalcolor.rgb,1.0);
+}

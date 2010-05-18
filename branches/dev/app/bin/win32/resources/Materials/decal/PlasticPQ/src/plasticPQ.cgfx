@@ -1,0 +1,233 @@
+/*********************************************************************NVMH3****
+$Id: //sw/devtools/ShaderLibrary/main/CgFX/plasticPQ.cgfx#1 $
+
+Copyright NVIDIA Corporation 2002-2007
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS)
+ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+% Simple Point-lit Plastic using the (Phong) "lit()" function and
+% with quadratic light falloff.  This shader can be used for most
+% any clean, simple, NON-METALLIC surface.  Three techniques are
+% shown: Two pixel-shaded versions, with or without a texture, or a
+% lower-quality vertex-shaded version with a texture.
+
+keywords: classic material 
+
+******************************************************************************/
+
+// TO-DO KB: add SAS header for techniques(?)
+
+
+//
+// Some very common declarations such as camera transforms and trivial vertex shaders are declared in
+//		"simple_surface.cgh" to save on typing, since they tend to be identical across many different shader files.
+//		All the vertex shader functions used by teh current shader are in this .cgh file.
+//
+// define this flag to get the right code from "simple_surface.cgh"
+#define QUADRATIC_FALLOFF
+#include "simple_surface.cgh"
+
+///////////////////
+// These values are globals, though we're passing them as formal paramters to
+//		the shader functions -- this choice, in this effect, makes it easier if we
+//		want to add additional lights later
+///////////////////
+
+// we used "float4" instead of "float3" here because some modeling apps
+//		use only float4's for light positions
+float4 LightPosition : Position <
+    string UIName =  "Lamp Position";
+    string Object = "PointLight";
+    string Space = "World";
+> = {-7.0f, 7.0f, 7.0f, 1.0f};
+
+float3 LightColor : Diffuse <
+    string UIName =  "Lamp";
+    string UIWidget = "Color";
+    string Object = "PointLight";
+> = {1.0f, 1.0f, 1.0f};
+
+float LightIntensity <
+    string UIName =  "Light Intensity";
+    // string UIWidget = "Slider";
+    // float UIMin = 1.0;
+    // float UIMax = 128.0;
+    // float UIStep = 1.0;
+> = 100.0;
+
+/////////////////
+
+float3 AmbientLightColor : Ambient <
+    string UIName =  "Ambient Light";
+    string UIWidget = "Color";
+> = {0.07f, 0.07f, 0.07f};
+
+float3 SurfaceColor : Diffuse <
+    string UIName =  "Surface";
+    string UIWidget = "Color";
+> = {1.0f, 1.0f, 1.0f};
+
+float SpecularExpon : SpecularPower <
+    string UIName =  "Specular Power";
+    string UIWidget = "Slider";
+    float UIMin = 1.0;
+    float UIMax = 128.0;
+    float UIStep = 1.0;
+> = 25.0;
+
+float Kd <
+    string UIName =  "Diffuse Strength";
+    string UIWidget = "Slider";
+    float UIMin = 0.0;
+    float UIMax = 1.0;
+    float UIStep = 0.05;
+> = 0.7;
+
+float Ks <
+    string UIName =  "Specular Strength";
+    string UIWidget = "Slider";
+    float UIMin = 0.0;
+    float UIMax = 1.0;
+    float UIStep = 0.05;
+> = 0.4;
+
+//////////////////////////
+
+texture ColorTexture : Diffuse <
+    string ResourceName = "default_color.dds";
+    string ResourceType = "2D";
+    string UIName =  "Surface Texture (if used)";
+>;
+
+sampler2D ColorSampler = sampler_state {
+    Texture = <ColorTexture>;
+    MinFilter = LinearMipMapLinear;
+    MagFilter = Linear;
+};
+
+//////////////////////////////////////////////////
+// FRAGMENT (PIXEL) SHADER FUNCTIONS /////////////
+//////////////////////////////////////////////////
+
+// FOR VERTEX LIGHTING:
+// If we do vertex lighting, the light intensities are already in the interpolator inputs,
+//		so all we need do here is grab the surface texture to the diffuse and then add the colors
+//			together for the complete (but lower-quality) lighting solution.
+//
+float4 vertShadedPS(ColoredVertexOutput IN) : COLOR {
+    return (IN.diffCol * tex2D(ColorSampler,IN.UV) + IN.specCol);
+}
+
+//////////////////// PER_PIXEL LIGHTING: ///////////
+
+//
+// The basic core of plastic shading (or shading for most any clean, non-metallic material) is here,
+//   separated into a single function so that the basic surface color can be chosen either as a
+//   fixed color or from a texture (see functions immediately following this one).
+//
+// Returns two values: both a diffuse and specular portion. This differs from typical metallic reflection,
+//    where the basic color for BOTH would be the color of the material itself, valrying only in relative
+//    intensities
+//
+// Ambient-light color is included in the diffuse term -- if you create multi-pass variations of this shader, be
+//	sure to only apply ambient light to ONE pass!
+//
+void plastic_shared(SimpleVertexOutput IN,
+			uniform float3 LampColor,	// for optional quadratic falloff, factor intensity into color!
+			uniform float LampIntensity,
+			out float3 DiffuseContrib,	// diffuse color returned here
+			out float3 SpecularContrib)	// specular color here
+{
+    // we assume all inputs need normalization -- in some cases this may not
+    //		be true! In which case the shader could be more efficient. A common
+    //		example is directional light, where the "Ln" term can be uniform for
+    //		the entire frame.
+    float dSq = dot(IN.LightVec,IN.LightVec);
+    float3 Ln = IN.LightVec/dSq;
+	float falloff = LampIntensity/dSq;
+    float3 Nn = normalize(IN.WorldNormal);	// surface normal
+    float3 Vn = normalize(IN.WorldView);	// view direction
+	Nn = faceforward(Nn,-Vn,Nn);
+    float3 Hn = normalize(Vn + Ln);			// 'half angle' - halfway between the view and normal directions
+    float4 litV = lit(dot(Ln,Nn),dot(Hn,Nn),SpecularExpon);
+    DiffuseContrib = falloff * litV.y * Kd * LampColor + AmbientLightColor;
+    SpecularContrib = falloff * Ks * litV.z * LampColor;
+}
+
+//
+// Pixel (Fragment) shader using a uniform fixed color for the material
+//
+float4 plasticPS(SimpleVertexOutput IN,uniform float3 LampColor,uniform float LampIntensity) : COLOR 
+{
+    float3 diffContrib;
+    float3 specContrib;
+    plastic_shared(IN,LampColor,LampIntensity,diffContrib,specContrib);
+    float3 result = (diffContrib * SurfaceColor) + specContrib;
+    return float4(result,1);
+}
+
+//
+// Pixel (Fragment) shader using a texture to modulate color for the material
+//		Note that the base surface color IS still applied as well. For pure texture
+//			color set the "SurfaceColor" to white.
+//
+float4 plasticPS_t(SimpleVertexOutput IN,uniform float3 LampColor,uniform float LampIntensity) : COLOR 
+{
+    float3 diffContrib;
+    float3 specContrib;
+    plastic_shared(IN,LampColor,LampIntensity,diffContrib,specContrib);
+    float3 map = tex2D(ColorSampler,IN.UV).xyz;
+    float3 result = (diffContrib * SurfaceColor * map) + specContrib;
+    return float4(result,1);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// TECHNIQUES ////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+// fragment shaded and textured
+technique PerPixelTextured < string Script = "Pass=p0;"; > {
+    pass p0 < string Script = "Draw=geometry;"; > {
+		VertexProgram = compile arbvp1 simple_surf_pt_vs(LightPosition.xyz);
+		DepthTestEnable = true;
+		DepthMask = true;
+		CullFaceEnable = false;
+		DepthFunc = LEqual;
+		FragmentProgram = compile arbfp1 plasticPS_t(LightColor,LightIntensity);
+    }
+}
+
+// fragment shaded without texture
+technique PerPixelUntextured < string Script = "Pass=p0;"; > {
+    pass p0 < string Script = "Draw=geometry;"; > {
+		VertexProgram = compile arbvp1 simple_surf_pt_vs(LightPosition.xyz);
+		DepthTestEnable = true;
+		DepthMask = true;
+		CullFaceEnable = false;
+		DepthFunc = LEqual;
+		FragmentProgram = compile arbfp1 plasticPS(LightColor,LightIntensity);
+    }
+}
+
+// vertex shaded
+technique VertexLitTextured < string Script = "Pass=p0;"; > {
+    pass p0 < string Script = "Draw=geometry;"; > {
+		VertexProgram = compile arbvp1 vertex_lit_pt_vs(LightPosition.xyz,LightColor,AmbientLightColor,SurfaceColor.rgb,Kd,Ks,SpecularExpon);
+		DepthTestEnable = true;
+		DepthMask = true;
+		CullFaceEnable = false;
+		DepthFunc = LEqual;
+		FragmentProgram = compile arbfp1 vertShadedPS();
+    }
+}
+
+//////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////// eof ///
+//////////////////////////////////////////////////////////////////

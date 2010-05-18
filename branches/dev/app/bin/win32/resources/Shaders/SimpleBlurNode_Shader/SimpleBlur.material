@@ -1,0 +1,52 @@
+vertex_program Compositor/QuadVP cg
+{
+	source SimpleBlur.cg
+	profiles vs_1_1 arbvp1
+    entry_point sb_quad_vs
+	default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+
+fragment_program Compositor/SimpleBlurFP cg
+{
+    source SimpleBlur.cg
+    entry_point sb_ps
+    // will run on anything with pixel shader 2.b and up
+    profiles ps_2_x arbfp1
+	default_params
+	{
+		param_named blurringFactor float 1.0	
+		param_named_auto invTexSize inverse_texture_size 0
+		param_named inputMap0 int 0
+	}
+}
+
+
+material SimpleBlurMaterial
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref Compositor/SimpleBlurFP
+			{
+			}
+			
+			vertex_program_ref Compositor/QuadVP
+			{
+			}	
+			
+			texture_unit	//(inputMap1)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering bilinear
+			}				
+		}
+	}
+}

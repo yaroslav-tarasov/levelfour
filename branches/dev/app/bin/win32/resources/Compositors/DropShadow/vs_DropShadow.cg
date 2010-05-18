@@ -1,0 +1,82 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4
+#define BLUR_STRIDE 1.0
+
+QUAD_REAL2 QuadScreenSize : VIEWPORTPIXELSIZE;
+
+// vertex shader to align blur samples horizontally
+void horiz9BlurVS(
+
+	out QUAD_REAL4 Position : POSITION,
+    out QUAD_REAL2 UV  : TEXCOORD0,
+    out QUAD_REAL4 UV1 : TEXCOORD1, // these contain xy and zw pairs
+    out QUAD_REAL4 UV2 : TEXCOORD2,
+    out QUAD_REAL4 UV3 : TEXCOORD3,
+    out QUAD_REAL4 UV4 : TEXCOORD4,
+	
+    QUAD_REAL3 PositionIN	: POSITION,
+    QUAD_REAL3 TexCoord	: TEXCOORD0
+) {
+    Position = QUAD_REAL4(PositionIN, 1);
+    QUAD_REAL TexelIncrement = BLUR_STRIDE/QuadScreenSize.x;
+    QUAD_REAL2 Coord = TexCoord.xy;
+    UV = Coord;
+    UV1 = QUAD_REAL4(Coord.x + TexelIncrement, Coord.y,
+			 Coord.x - TexelIncrement, Coord.y);
+    UV2 = QUAD_REAL4(Coord.x + TexelIncrement*2, Coord.y,
+			 Coord.x - TexelIncrement*2, Coord.y);
+    UV3 = QUAD_REAL4(Coord.x + TexelIncrement*3, Coord.y,
+			 Coord.x - TexelIncrement*3, Coord.y);
+    UV4 = QUAD_REAL4(Coord.x + TexelIncrement*4, Coord.y,
+			 Coord.x - TexelIncrement*4, Coord.y);
+
+}
+
+// vertex shader to align blur samples vertically
+void vert9BlurVS(
+	
+	out QUAD_REAL4 Position : POSITION,
+    out QUAD_REAL2 UV  : TEXCOORD0,
+    out QUAD_REAL4 UV1 : TEXCOORD1, // these contain xy and zw pairs
+    out QUAD_REAL4 UV2 : TEXCOORD2,
+    out QUAD_REAL4 UV3 : TEXCOORD3,
+    out QUAD_REAL4 UV4 : TEXCOORD4,
+
+    QUAD_REAL3 PositionIN	: POSITION,
+    QUAD_REAL3 TexCoord	: TEXCOORD0
+) {
+    Position = QUAD_REAL4(PositionIN, 1);
+    QUAD_REAL TexelIncrement = BLUR_STRIDE/QuadScreenSize.y;
+    QUAD_REAL2 Coord = TexCoord.xy;
+    UV = Coord;
+    UV1 = QUAD_REAL4(Coord.x, Coord.y + TexelIncrement,
+			 Coord.x, Coord.y - TexelIncrement);
+    UV2 = QUAD_REAL4(Coord.x, Coord.y + TexelIncrement*2,
+			 Coord.x, Coord.y - TexelIncrement*2);
+    UV3 = QUAD_REAL4(Coord.x, Coord.y + TexelIncrement*3,
+			 Coord.x, Coord.y - TexelIncrement*3);
+    UV4 = QUAD_REAL4(Coord.x, Coord.y + TexelIncrement*4,
+			 Coord.x, Coord.y - TexelIncrement*4);
+}
+
+void dropShadowVS(
+    
+	QUAD_REAL3 PositionIN : POSITION, 
+    QUAD_REAL3 TexCoord : TEXCOORD0,
+	
+	out QUAD_REAL4 Position	: POSITION,
+    out QUAD_REAL2 UV	: TEXCOORD0,
+	
+    uniform QUAD_REAL2 TexelOffsets
+) {
+    Position = QUAD_REAL4(PositionIN, 1);
+    UV = QUAD_REAL2(TexCoord.xy /* TexelOffsets ignored for OpenGL */); 
+    
+}

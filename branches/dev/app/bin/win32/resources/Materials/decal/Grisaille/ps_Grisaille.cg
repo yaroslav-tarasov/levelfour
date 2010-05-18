@@ -1,0 +1,59 @@
+
+
+/*********************************************************/
+/*********** pixel shader ********************************/
+/*********************************************************/
+
+float4 grisTPS(
+
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float3 WNormalS	: TEXCOORD1,
+		float3 WView	: TEXCOORD2,
+		float4 DiffCol 	: COLOR0,
+	
+	    uniform float3 SurfaceColor,
+	    uniform sampler2D ColorSampler : register(s0),
+	    uniform float Ks,
+	    uniform float SpecExpon,
+	    uniform float3 LampDir,
+	    uniform float3 AmbiColor
+) : COLOR
+{
+    float3 Nns = normalize(WNormalS);
+    float3 Vn = normalize(WView);
+    float3 Ln = -LampDir;
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = Ks * pow(dot(Hn,Nns),SpecExpon);
+    float ldn = max(dot(Ln,Nns),0);
+    float3 sc = hdn.xxx;
+    float4 tc = tex2D(ColorSampler,UV);
+    float3 dc = tc.rgb * SurfaceColor * (ldn.xxx + AmbiColor);
+    return float4((dc+sc).rgb,tc.a);
+}
+
+float4 grisPS(
+
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float3 WNormalS	: TEXCOORD1,
+		float3 WView	: TEXCOORD2,
+		float4 DiffCol 	: COLOR0,
+		
+		uniform float3 SurfaceColor,
+	    uniform float Ks,
+	    uniform float SpecExpon,
+	    uniform float3 LampDir,
+	    uniform float3 AmbiColor
+) : COLOR
+{
+    float3 Nns = normalize(WNormalS);
+    float3 Vn = normalize(WView);
+    float3 Ln = -LampDir;
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = Ks * pow(dot(Hn,Nns),SpecExpon);
+    float ldn = max(dot(Ln,Nns),0);
+    float3 sc = hdn.xxx;
+    float3 dc = SurfaceColor * (ldn.xxx + AmbiColor);
+    return float4((dc+sc).rgb,1.0);
+}

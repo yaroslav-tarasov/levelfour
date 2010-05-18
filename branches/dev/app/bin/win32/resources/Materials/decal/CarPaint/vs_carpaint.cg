@@ -1,0 +1,44 @@
+/*********** vertex shader ******/
+
+void carPaintVS(
+	// Vertex Input
+	float3 Position	: POSITION,
+	float4 Normal	: NORMAL,
+	float4 UVIN		: TEXCOORD0,
+	
+	// Outputs
+	out float3 WorldNormal : TEXCOORD3,
+	out float3 LightVec : TEXCOORD5,
+	out float3 WorldView : TEXCOORD4,
+	out float2 BrdfTerms	: TEXCOORD0,
+	out float4 HPosition	: POSITION,
+	out float2 UV	: TEXCOORD2,
+	
+	// Model Level Inputs
+	uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+	uniform float3 LampPos
+) {
+    float4 Po = float4(Position.xyz,1);
+    float3 Pw = mul(WorldXf,Po).xyz;
+    float3 Lw = (LampPos - Pw);
+    float3 Ln = normalize(Lw);
+    float3 EyePos = float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w);
+    float3 Vw = (EyePos - Pw);
+    float3 Vn = normalize(Vw);
+    float3 Nn = normalize(mul(WorldITXf,Normal).xyz);
+    Nn = faceforward(Nn,-Vn,Nn);
+    float ldn = dot(Ln,Nn);
+    float3 Hn = normalize(Vn + Ln);
+    float aldn = abs(dot(Ln,Nn));
+    float ahdn = 1.0-abs(dot(Hn,Nn));
+    WorldNormal = Nn;
+    LightVec = Lw;
+    WorldView = Vw;
+    //OUT.BrdfTerms = float2(aldn,ahdn);
+    BrdfTerms = float2(aldn,1.0-ahdn);
+    HPosition = mul(WvpXf,Po);
+    UV = UVIN.xy;
+}

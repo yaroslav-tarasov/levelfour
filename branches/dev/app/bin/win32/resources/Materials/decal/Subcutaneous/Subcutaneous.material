@@ -1,0 +1,78 @@
+/*
+
+% Makes a texture appear as if its "beheath" the surface.
+% Useful for kinds of ceramic glazing
+
+*/
+
+vertex_program Subcutaneous_vs cg {
+	source vs_Subcutaneous.cg
+	entry_point subcutaneousVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto 	WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto 	WorldXf 		world_matrix
+		param_named_auto 	ViewIXf 		inverse_view_matrix
+		param_named_auto 	WvpXf 			worldviewproj_matrix
+		param_named 		LampDirPos		float4 	-0.5 2.0 1.25 1.0
+	}
+}
+
+fragment_program Subcutaneous_ps cg {
+	source ps_Subcutaneous.cg
+	entry_point subcutaneousPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  Kd	 			float 		0.9
+		param_named  Ks	 			float 		0.4
+		param_named  SpecExpon	 	float 		30.0
+		param_named  SubExpon	 	float 		4.0
+		param_named  Transp	 		float 		1.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		// uniform sampler2D ColorSampler : register(s0),
+		// uniform sampler2D SubSampler : register(s1),
+
+	}
+}
+
+// Subcutaneous
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref Subcutaneous_vs {
+							
+			}
+			
+			fragment_program_ref Subcutaneous_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture subcutaneous_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit
+			{
+				texture checker.png
+				tex_coord_set 1
+				tex_address_mode wrap
+			}
+			
+		}
+		
+	}
+}

@@ -1,0 +1,219 @@
+/*
+% This surface is DULL.
+% A matte, metal surface lit from either
+% a point or directional source (You can attach either a point
+% light OR a directional source to it).
+% Four techniques are provided: permutations
+% of textured/untextured and quadratic-falloff/constant lighting
+*/
+
+vertex_program metal_vs cg {
+	source vs_metal.cg
+	entry_point metalVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		world_matrix
+		param_named_auto WorldXf 		inverse_transpose_world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LampDirPos		float4 	-0.5 2.0 1.25 1.0		
+	}
+}
+
+fragment_program metal_ps cg {
+	source ps_metal.cg
+	entry_point metalPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		param_named  Kd	 			float 		0.1
+		param_named  SpecExpon	 	float 		12.0
+		param_named  Kr	 			float 		0.2
+		
+	}
+}
+
+fragment_program metal_ps_t cg {
+	source ps_metal.cg
+	entry_point metalPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		param_named  Kd	 			float 		0.1
+		param_named  SpecExpon	 	float 		12.0
+		param_named  Kr	 			float 		0.2
+		
+	}
+}
+
+fragment_program metal_ps_qps cg {
+	source ps_metal.cg
+	entry_point metalQPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		param_named  Kd	 			float 		0.1
+		param_named  SpecExpon	 	float 		12.0
+		param_named  Kr	 			float 		0.2
+		param_named	 LampIntensity	float		1.0
+		
+	}
+}
+
+fragment_program metal_ps_qps_t cg {
+	source ps_metal.cg
+	entry_point metalQPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		param_named  Kd	 			float 		0.1
+		param_named  SpecExpon	 	float 		12.0
+		param_named  Kr	 			float 		0.2
+		param_named	 LampIntensity	float		1.0
+		
+	}
+}
+
+// metal_Default
+material metal_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metal_vs {
+							
+			}
+			
+			fragment_program_ref metal_ps {
+				
+			}
+			
+			texture_unit
+			{
+				cubic_texture metal_default_reflection.dds combinedUVW
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+		}
+		
+	}
+}
+
+material metal_Texture {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metal_vs {
+							
+			}
+			
+			fragment_program_ref metal_ps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture metal_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit
+			{
+				cubic_texture metal_default_reflection.dds combinedUVW
+				tex_coord_set 1
+				tex_address_mode wrap
+				env_map cubic_normal
+			}
+		}
+		
+	}
+}
+material metal_Quadratic_Falloff {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metal_vs {
+							
+			}
+			
+			fragment_program_ref metal_ps_qps {
+				
+			}
+			
+			texture_unit
+			{
+				cubic_texture metal_default_reflection.dds combinedUVW
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+		}
+		
+	}
+}
+// metal_Quadratic_Falloff_Texture
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metal_vs {
+							
+			}
+			
+			fragment_program_ref metal_ps_qps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture metal_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit
+			{
+				cubic_texture metal_default_reflection.dds combinedUVW
+				tex_coord_set 1
+				tex_address_mode wrap
+				env_map cubic_normal
+			}
+		}
+		
+	}
+}

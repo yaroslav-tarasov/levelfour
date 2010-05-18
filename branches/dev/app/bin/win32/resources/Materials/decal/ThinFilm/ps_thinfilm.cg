@@ -1,0 +1,20 @@
+///////// /////////////////////////////////////////////////////////////////
+// PIXEL SHADER //////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+float4 ThinFilmPS(
+			// Pixel Input
+			float2 filmDepth : TEXCOORD0,
+			float3 specCol   : COLOR1,
+			float3 diffCol   : COLOR0,
+		    
+			uniform float3 SurfaceColor,
+		    uniform sampler2D FringeMapSampler : register(s0)
+) : COLOR {
+    // lookup fringe value based on view depth
+    float3 fringeCol = (float3)tex2D(FringeMapSampler, filmDepth);
+    // modulate specular lighting by fringe color, combine with regular lighting
+    float3 rgb = fringeCol*specCol + diffCol*SurfaceColor;
+    return float4(rgb,1);
+}
+

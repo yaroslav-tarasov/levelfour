@@ -1,0 +1,124 @@
+vertex_program flatTexture_vs cg {
+	source vs_FlatTexture.cg
+	entry_point flatTextureVS
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+	}
+}
+
+fragment_program flatTexture_color_ps cg {
+	source ps_FlatTexture.cg
+	entry_point colorPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	 	float3 		1 1 1
+		// sampler2d
+	}
+}
+
+fragment_program flatTexture_alpha_ps cg {
+	source ps_FlatTexture.cg
+	entry_point alphaPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	 	float3 		1 1 1
+		// sampler2d
+	}
+}
+
+fragment_program flatTexture_flat_ps cg {
+	source ps_FlatTexture.cg
+	entry_point flatPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	 	float3 		1 1 1
+		
+	}
+}
+
+// flatTexture_Default
+material Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref flatTexture_vs {
+							
+			}
+			
+			fragment_program_ref flatTexture_color_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture fTexture_default_color.dds
+				tex_coord_set 0
+			}
+		}
+		
+	}
+}
+
+// flatTexture_Default
+material Alpha_Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref flatTexture_vs {
+							
+			}
+			
+			fragment_program_ref flatTexture_alpha_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture fTexture_default_color.dds
+				tex_coord_set 0
+			}
+		}
+		
+	}
+}
+
+// flatTexture_Default
+material Flat_Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref flatTexture_vs {
+							
+			}
+			
+			fragment_program_ref flatTexture_flat_ps {
+				
+			}
+			
+		}
+		
+	}
+}

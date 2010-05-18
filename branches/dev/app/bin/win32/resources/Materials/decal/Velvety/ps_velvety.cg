@@ -1,0 +1,105 @@
+/** pixel shader  **/
+
+void velvet_shared(
+			// Vertex Inputs
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldView	: TEXCOORD5,
+			
+			// Model Level Outputs
+			float3 SurfaceColor,
+			uniform float3 FuzzySpecColor,
+			uniform float3 SubColor,
+			uniform float RollOff,
+			
+			// Outputs
+			out float3 DiffuseContrib,
+			out float3 SpecularContrib)
+{
+    float3 Ln = normalize(LightVec.xyz);
+    float3 Nn = normalize(WorldNormal);
+    float3 Vn = normalize(WorldView);
+    float3 Hn = normalize(Vn + Ln);
+    float ldn = dot(Ln,Nn);
+    float diffComp = max(0,ldn);
+    float vdn = 1.0-dot(Vn,Nn);
+    float3 diffContrib = diffComp * SurfaceColor;
+    float subLamb = smoothstep(-RollOff,1.0,ldn) - smoothstep(0.0,1.0,ldn);
+    subLamb = max(0.0,subLamb);
+    float3 subContrib = subLamb * SubColor;
+    float3 vecColor = vdn.xxx;
+    DiffuseContrib = (subContrib+diffContrib).xyz;
+    SpecularContrib = (vecColor*FuzzySpecColor).xyz;
+}
+
+float4 velvetPS(
+		// Pixel Inputs
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldView	: TEXCOORD5,
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float4 diffCol	: COLOR0,
+		float4 specCol	: COLOR1,
+		
+		// Model Level Inputs
+		uniform float3 SurfaceColor,
+		uniform float3 FuzzySpecColor,
+		uniform float3 SubColor,
+		uniform float RollOff
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+	velvet_shared(LightVec,WorldNormal,WorldView,
+			SurfaceColor,FuzzySpecColor,SubColor,RollOff,
+			diffContrib,specContrib);
+    float3 result = diffContrib + specContrib;
+    return float4(result,1);
+}
+
+float4 velvetPS_t(
+			// Pixel Inputs
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldView	: TEXCOORD5,
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float4 diffCol	: COLOR0,
+			float4 specCol	: COLOR1,
+		    
+			// Model Level Inputs
+			uniform float3 SurfaceColor,
+		    uniform sampler2D ColorSampler : register(s0),
+		    uniform float3 FuzzySpecColor,
+		    uniform float3 SubColor,
+		    uniform float RollOff
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+	velvet_shared(LightVec,WorldNormal,WorldView,
+			SurfaceColor,FuzzySpecColor,SubColor,RollOff,
+			diffContrib,specContrib);
+    float3 map = tex2D(ColorSampler,UV.xy).xyz;
+    float3 result = specContrib + (map * diffContrib);
+    return float4(result,1);
+}
+
+float4 velvetPS_pass(
+
+	float4 diffCol	: COLOR0,
+	float4 specCol	: COLOR1	
+	) : COLOR {
+    float4 result = diffCol + specCol;
+    return float4(result.xyz,1);
+}
+
+float4 velvetPS_pass_t(
+			float4 UV		: TEXCOORD0,
+			float4 diffCol	: COLOR0,
+			float4 specCol	: COLOR1,
+		    uniform sampler2D ColorSampler : register(s0)
+) : COLOR {
+    float4 map = tex2D(ColorSampler,UV.xy);
+    float4 result = specCol + (map * diffCol);
+    return float4(result.xyz,1);
+}

@@ -1,0 +1,87 @@
+vertex_program carpaint_vs cg {
+	source vs_carpaint.cg
+	entry_point carPaintVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		world_matrix
+		param_named_auto WorldXf 		inverse_transpose_world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LampPos			float3 	-0.5 2.0 1.25
+		
+	}
+}
+
+fragment_program carpaint_ps cg {
+	source ps_carpaint.cg
+	entry_point litPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SpecExpon	 	float 		55.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		
+	}
+}
+
+fragment_program carpaint_ps_co cg {
+	source ps_carpaint.cg
+	entry_point colorOnlyPS
+	profiles arbfp1
+	
+	default_params {
+		
+	}
+}
+
+// carpaint_Default
+material Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref carpaint_vs {
+							
+			}
+			
+			fragment_program_ref carpaint_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture carpaint_nocomp_contrast.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+		}
+		
+	}
+}
+
+material Color_Only_Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref carpaint_vs {
+							
+			}
+			
+			fragment_program_ref carpaint_ps_co {
+				
+			}
+		}
+		
+	}
+}

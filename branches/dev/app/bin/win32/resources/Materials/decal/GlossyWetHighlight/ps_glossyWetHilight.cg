@@ -1,0 +1,123 @@
+/*********************************************************************NVMH3****
+*******************************************************************************
+$Revision: #4 $
+
+Copyright NVIDIA Corporation 2008
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY
+LOSS) ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF
+NVIDIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+% A wet-glossy surface, a little smoke & mirrors to make things ultra-shiny.
+% Glossiness is controlled not only by the usual power function, but also
+% by applying a set of gloss controls that cause a sharp falloff across
+% a specified range.
+%     The falloff will occur in the highlight range [glossBot-glossTop] and the
+% amount of falloff is specified by "glossDrop." Setting "glossDrop"
+% to 1.0 nullifies the effect.
+
+*******************************************************************************
+******************************************************************************/
+
+/********* pixel shader ********/
+
+//////// core of the gloss-hilight function ///////////
+
+float glossy_drop(float v,
+		    uniform float top,
+		    uniform float bot,
+		    uniform float drop)
+{
+    return (drop+smoothstep(bot,top,v)*(1.0-drop));
+}
+
+void gloss_shared(
+		// Pixel Inputs
+		float3 LightVec	: TEXCOORD1,
+	    float3 WorldNormal	: TEXCOORD2,
+		float3 WorldView	: TEXCOORD5,
+		
+		// Model Level Inputs
+		uniform float3 SurfaceColor,
+	    uniform float Ks,
+	    uniform float SpecExpon,
+	    uniform float3 SpecColor,
+	    uniform float GlossTopUI,
+	    uniform float GlossBotUI,
+	    uniform float GlossDrop,
+	    uniform float3 AmbiColor,
+		
+		// Outputs
+	    out float3 DiffuseContrib,
+	    out float3 SpecularContrib)
+{
+    float3 Ln = normalize(LightVec.xyz);
+    float3 Nn = normalize(WorldNormal);
+    float3 Vn = normalize(WorldView);
+    float3 Hn = normalize(Vn + Ln);
+    float4 litV = lit(dot(Ln,Nn),dot(Hn,Nn),SpecExpon);
+    float spec = litV.y * litV.z;
+    float GlossTop = max(GlossTopUI,GlossBotUI);
+    float GlossBot = min(GlossTopUI,GlossBotUI);
+    spec *= (Ks * glossy_drop(spec,GlossTop,GlossBot,GlossDrop));
+    SpecularContrib = spec * SpecColor;
+    DiffuseContrib = litV.y * SurfaceColor + AmbiColor;
+}
+
+float4 gwh_PS(
+		// Pixel Inputs
+		float3 WorldNormal	: TEXCOORD2,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldView	: TEXCOORD5,
+		// Model Level Inputs
+		uniform float3 SurfaceColor,
+		uniform float Ks,
+		uniform float SpecExpon,
+		uniform float3 SpecColor,
+		uniform float GlossTopUI,
+		uniform float GlossBotUI,
+		uniform float GlossDrop,
+		uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+	gloss_shared(WorldNormal,LightVec,WorldView,
+			SurfaceColor,Ks,SpecExpon,SpecColor,
+			GlossTopUI,GlossBotUI,GlossDrop,
+			AmbiColor,diffContrib,specContrib);
+    float3 result = diffContrib + specContrib;
+    return float4(result,1);
+}
+
+float4 gwh_PS_t(
+		// Pixel Inputs
+		float3 WorldNormal	: TEXCOORD2,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldView	: TEXCOORD5,
+		float4 UV		: TEXCOORD0,
+		// Model Level Inputs
+		uniform float3 SurfaceColor,
+		uniform sampler2D ColorSampler : register(s0),
+		uniform float Ks,
+		uniform float SpecExpon,
+		uniform float3 SpecColor,
+		uniform float GlossTopUI,
+		uniform float GlossBotUI,
+		uniform float GlossDrop,
+		uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+	gloss_shared(WorldNormal,LightVec,WorldView,
+			SurfaceColor,Ks,SpecExpon,SpecColor,
+			GlossTopUI,GlossBotUI,GlossDrop,
+			AmbiColor,diffContrib,specContrib);
+    float3 map = tex2D(ColorSampler,UV.xy).xyz;
+    float3 result = specContrib + (map * diffContrib);
+    return float4(result,1);
+}

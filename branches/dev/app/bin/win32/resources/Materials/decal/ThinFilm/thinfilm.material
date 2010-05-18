@@ -1,0 +1,57 @@
+vertex_program thinfilm_vs cg {
+	source vs_thinfilm.cg
+	entry_point ThinFilmVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		world_matrix
+		param_named_auto WorldXf 		inverse_transpose_world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LampPos		float3 	-0.5 2.0 1.25
+		param_named 	FilmDepth	float	0.05
+		param_named 	SpecExpon	float	12.0
+		
+	}
+}
+
+fragment_program thinfilm_ps cg {
+	source ps_thinfilm.cg
+	entry_point ThinFilmPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	 	float3 		0.3 0.5 0.2
+		
+	}
+}
+
+// thinfilm_Default
+material Default {
+	technique {
+		pass zero {
+			// scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref thinfilm_vs {
+							
+			}
+			
+			fragment_program_ref thinfilm_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture ThinFilmColorRamp01.png
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+		}
+		
+	}
+}

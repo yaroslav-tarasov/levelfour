@@ -1,0 +1,97 @@
+vertex_program metalD_vs cg {
+	source vs_MetalD.cg
+	entry_point metalDVS
+	profiles arbvp1
+	
+	default_params {
+		param_named 	 LampDir   float3 0.7 -0.7 -0.7
+		param_named_auto WorldITXf inverse_transpose_world_matrix
+		param_named_auto WorldXf   world_matrix
+		param_named_auto ViewIXf   inverse_view_matrix
+		param_named_auto WvpXf     worldviewproj_matrix
+	}
+}
+
+fragment_program metalD_ps cg {
+	source ps_metalD.cg
+	entry_point metalDPS
+	profiles arbfp1
+	
+	default_params {
+		param_named SurfaceColor float3 1.0 1.0 1.0
+		param_named Kd           float  0.1
+		param_named SpecExpon    float  12.0
+		param_named LampColor    float3 1.0 1.0 1.0
+		param_named AmbiColor    float3 0.07 0.07 0.07
+	}
+}
+
+fragment_program metalD_ps_t cg {
+	source ps_metalD.cg
+	entry_point metalDPS_t
+	profiles arbfp1
+	
+	default_params {
+		param_named SurfaceColor float3 1.0 1.0 1.0
+		param_named Kd           float  0.1
+		param_named SpecExpon    float  12.0
+		param_named LampColor    float3 1.0 1.0 1.0
+		param_named AmbiColor    float3 0.07 0.07 0.07
+	}
+}
+
+// Metal_
+material Metal_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metalD_vs 
+			{
+
+			}
+			
+			fragment_program_ref metalD_ps
+			{
+							
+			}
+		}
+	}
+}
+
+// Metal_
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metalD_vs 
+			{
+
+			}
+			
+			fragment_program_ref metalD_ps
+			{
+							
+			}
+			
+			texture_unit {
+			
+				texture metal_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+				filtering linear linear linear
+			
+			}
+
+		}
+		
+		
+	}
+}
