@@ -1,0 +1,76 @@
+/*
+
+% A simple diffuse example that shows some texture positioning capabilities.
+
+*/
+
+vertex_program TexPos_vs cg {
+	source vs_TexturePositioning.cg
+	entry_point texPosVS
+	profiles arbvp1
+	
+	default_params {
+	
+		param_named_auto 	WorldITXf 	inverse_transpose_world_matrix
+		param_named_auto 	WorldXf 	world_matrix
+		param_named_auto 	ViewIXf 	inverse_view_matrix
+		param_named_auto 	WvpXf 		worldviewproj_matrix
+		param_named_auto 	WorldIXf	inverse_world_matrix
+		param_named 		SurfaceColor 	float3  1 1 1
+		param_named 		LampPos 		float3  -0.5 2.0 1.25
+		param_named 		AmbiColor 		float3  0.07 0.07 0.07
+		param_named 		RepeatS 		float  	1.0
+		param_named 		RepeatT 		float  	1.0
+		param_named 		Angle 			float  	0.0
+		param_named 		RotCenterS 		float  	0.5
+		param_named 		RotCenterT 		float  	0.5
+		param_named 		OffsetS 		float  	0.0
+		param_named 		OffsetT 		float  	0.0
+		param_named 		FlipY 			bool  	false
+		param_named 		Lighting 		float  	1.0
+	}
+}
+
+fragment_program TexPos_ps cg {
+	source ps_TexturePositioning.cg
+	entry_point texPosPS
+	profiles arbfp1
+	
+	default_params {
+	
+		// texture		
+	}
+}
+
+// TexPos_Default
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref TexPos_vs {
+						
+			}
+			
+			fragment_program_ref TexPos_ps {
+				
+			}
+			
+			// Diffuse
+			texture_unit {
+			
+				texture texpos_default_color.dds
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			
+			}
+
+		}
+		
+		
+	}
+}

@@ -1,0 +1,47 @@
+/*********************************************************/
+/*********** pixel shader ********************************/
+/*********************************************************/
+
+float4 nightfallPS(
+
+	float4 HPosition	: POSITION,
+    float2 UV		: TEXCOORD0,
+    float3 LightVec	: TEXCOORD1,
+    float3 WorldNormal	: TEXCOORD2,
+    float3 WorldTangent	: TEXCOORD3,
+    float3 WorldBinormal : TEXCOORD4,
+    float3 WorldView	: TEXCOORD5,
+	
+	uniform float Kd,
+	uniform float Ks,
+	uniform float SpecExpon,
+	uniform float Bumpy,
+	uniform float3 LampColor,
+	uniform float3 AmbiColor,
+	uniform sampler2D DaySampler : register(s0),
+	uniform sampler2D NightSampler : register(s1),
+	uniform sampler2D NormalSampler : register(s2),
+	uniform sampler2D GlossSampler : register(s3)
+) : COLOR {
+    float3 Nn = normalize(WorldNormal);
+    float3 Tn = normalize(WorldTangent);
+    float3 Bn = normalize(WorldBinormal);
+    float3 bumps = Bumpy * (tex2D(NormalSampler,UV).xyz-(0.5).xxx);
+    Nn += (bumps.x * Tn + bumps.y * Bn);
+    Nn = normalize(Nn);
+    float3 Vn = normalize(WorldView);
+    float3 Ln = LightVec;
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = dot(Hn,Nn);
+    float ldn = dot(Ln,Nn);
+    float4 litVec = lit(ldn,hdn,SpecExpon);
+    float3 diffContrib = litVec.y * LampColor;
+    float gloss = Ks * tex2D(GlossSampler,UV).x;
+    float3 specContrib = ((litVec.y * litVec.z * gloss) * LampColor);
+    // add, incorporating ambient light term
+    float3 dayTex = tex2D(DaySampler,UV).xyz;
+    float3 nitTex = tex2D(NightSampler,UV).xyz;
+    float3 result = dayTex*(Kd*diffContrib+AmbiColor) + specContrib;
+    result += saturate(4*(-ldn-0.1))*nitTex;
+    return float4(result.xyz,1.0);
+}

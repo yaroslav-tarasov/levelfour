@@ -1,0 +1,7 @@
+/*
+
+% "Toksvig-factor" anti-aliased bump mapping -- eliminate "buzzy" hilights along bump edges.
+% Note use of 16-bit textures (g16r16) for precision with performance
+
+*/
+

@@ -1,0 +1,21 @@
+/*********************************************************/
+/*********** vertex shader *******************************/
+/*********************************************************/
+
+void toksvigVS(
+	
+	appdata IN,
+    uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf
+) {
+    OUT.WorldNormal = normalize(mul(WorldITXf,IN.Normal).xyz);
+    OUT.WorldTangent = normalize(mul(WorldITXf,IN.Tangent).xyz);
+    OUT.WorldBinorm = normalize(mul(WorldITXf,IN.Binormal).xyz);
+    float4 Po = float4(IN.Position.xyz,1.0);	// object coordinates
+    float3 Pw = mul(WorldXf,Po).xyz;		// world coordinates
+    OUT.UV = (float2(URep,VRep) * IN.UV.xy);
+    OUT.WorldView = normalize(ViewIXf[3].xyz - Pw);	// obj coords
+    OUT.HPosition = mul(WvpXf,Po);	// screen clipspace coords
+}

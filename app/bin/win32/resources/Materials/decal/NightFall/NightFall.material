@@ -1,0 +1,101 @@
+/*
+
+% Day/Night Earth Shader -- Apply to a Sphere!
+% This example uses two textures for the same surface and modulates between
+% them for the light/dark lighting transitions, rather than ramping-off to
+% black.
+
+*/
+
+vertex_program NightFall_vs cg {
+	source vs_NightFall.cg
+	entry_point nightfallVS
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto 	WorldITXf 	inverse_transpose_world_matrix
+		param_named_auto 	WorldXf 	world_matrix
+		param_named_auto 	ViewIXf 	inverse_view_matrix
+		param_named_auto 	WvpXf 		worldviewproj_matrix
+		param_named 		LampDir		float3  1.0 0.0 -1.0
+		param_named_auto 	Timer 		time_0_1 1
+		param_named 		Speed 		float  0.2
+	}
+}
+
+fragment_program NightFall_ps cg {
+	source ps_NightFall.cg
+	entry_point nightfallPS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 		Kd 				float  1.0
+		param_named 		Ks 				float  0.85
+		param_named 		SpecExpon 		float  32.0
+		param_named 		Bumpy 			float  1.0
+		param_named 		LampColor 		float3  1.0 1.0 1.0
+		param_named 		AmbiColor 		float3  0.07 0.07 0.07
+		// Day, Night, Normal, Gloss
+		
+	}
+}
+
+// NightFall_Default
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref NightFall_vs {
+						
+			}
+			
+			fragment_program_ref NightFall_ps {
+				
+			}
+			// Day
+			texture_unit {
+			
+				texture EarthDay.dds
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			
+			}
+			// Night
+			texture_unit {
+			
+				texture EarthMoonLit.dds
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering linear linear linear
+			
+			}
+			// Normal
+			texture_unit {
+			
+				texture earth_bump.dds
+				tex_coord_set 2
+				tex_address_mode clamp
+				filtering linear linear linear
+			
+			}
+			// Gloss
+			texture_unit {
+			
+				texture EarthSpec.dds
+				tex_coord_set 3
+				tex_address_mode clamp
+				filtering linear linear linear
+			
+			}
+
+		}
+		
+		
+	}
+}
