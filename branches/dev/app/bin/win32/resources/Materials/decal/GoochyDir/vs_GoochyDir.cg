@@ -1,0 +1,34 @@
+
+//////////////////////////////////////////////
+
+void goochyDirVS(
+		
+		float3 Position	: POSITION,
+		float4 Normal	: NORMAL,
+		
+		out float4 HPosition	: POSITION,
+		out float4 diffCol		: COLOR0,		
+		
+		uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+		uniform float4x4 WorldXf,
+		uniform float4x4 WvpXf,
+		uniform float4 LightDir,
+		uniform float3 LiteColor,
+		uniform float3 DarkColor,
+		uniform float3 WarmColor,
+		uniform float3 CoolColor)
+{
+	float3 Nn = normalize(mul(WorldITXf, Normal).xyz);
+	float4 Po = float4(Position.xyz,1);
+	//compute worldspace position
+	float3 Pw = mul(WorldXf, Po).xyz;
+	float3 Ln = normalize(-LightDir).xyz;
+	float mixer = 0.5 * (dot(Ln,Nn) + 1.0);
+	float3 surfColor = lerp(DarkColor,LiteColor,mixer);
+	float3 toneColor = lerp(CoolColor,WarmColor,mixer);
+	float3 mixColor = surfColor + toneColor;
+	diffCol = float4(mixColor.xyz,1.0f);
+	HPosition = mul(WvpXf ,Po);
+
+}
+

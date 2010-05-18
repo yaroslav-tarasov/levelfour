@@ -1,0 +1,49 @@
+/********* pixel shader ********/
+sampler2D paintSampler;
+
+float4 brdf_texture(
+		float2 BrdfTerms	: TEXCOORD0
+		// uniform sampler2D paintSampler : register(s0)
+		) {
+    return tex2D(paintSampler,BrdfTerms);
+}
+
+float4 colorOnlyPS(
+
+		float3 WorldNormal : TEXCOORD3,
+		float3 LightVec : TEXCOORD5,
+		float3 WorldView : TEXCOORD4,
+		float2 BrdfTerms	: TEXCOORD0,
+		float4 HPosition	: POSITION,
+		float2 UV	: TEXCOORD2) : COLOR 
+{
+    return brdf_texture(BrdfTerms);
+}
+
+float4 litPS(
+		
+		float3 WorldNormal : TEXCOORD3,
+		float3 LightVec : TEXCOORD5,
+		float3 WorldView : TEXCOORD4,
+		float2 BrdfTerms	: TEXCOORD0,
+		float4 HPosition	: POSITION,
+		float2 UV	: TEXCOORD2,
+		
+		uniform sampler2D paintSampler : register(s0),
+		uniform float SpecExpon,
+		uniform float3 LampColor,
+		uniform float3 AmbiColor
+) : COLOR {
+    float3 surfCol = brdf_texture(BrdfTerms).rgb;
+    float3 Ln = normalize(LightVec);
+    float3 Vn = normalize(WorldView);
+    float3 Nn = normalize(WorldNormal);
+    Nn = faceforward(Nn,-Vn,Nn);
+    float ldn = dot(Nn,Ln);
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = dot(Hn,Ln);
+    float4 litV = lit(ldn,hdn,SpecExpon);
+    float3 d = surfCol * (litV.yyy + AmbiColor);
+    float3 s = litV.y * litV.z * LampColor;
+    return float4((d+s).rgb,1.0);
+}

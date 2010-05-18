@@ -1,0 +1,74 @@
+/*
+Toon Shader
+*/
+
+vertex_program toonShading_vs cg {
+	source vs_toonShading.cg
+	entry_point toonShadingVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto modelViewProj worldviewproj_matrix
+        param_named_auto modelToWorld world_matrix
+        param_named_auto eyePositionW camera_position
+		param_named shininess float 8
+	}
+}
+
+fragment_program toonShading_ps cg {
+	source ps_toonShading.cg
+	entry_point toonShadingPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  Kd	 float4		0.6 0.6 0.6 0
+		param_named  Ks	 float4 	0.9 0.9 0.9 0
+		
+	}
+}
+
+// toonShading_Default
+material Default {
+	technique {
+		
+		pass  {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref toonShading_vs {
+							
+			}
+			
+			fragment_program_ref toonShading_ps {
+				
+			}
+			
+			texture_unit // diffuse ramp
+			{
+				texture RampMap0.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit // specular ramp
+			{
+				texture RampMap1.dds
+				tex_coord_set 1
+				tex_address_mode wrap
+			}
+			
+			texture_unit // edge ramp
+			{
+				texture RampMap2.dds
+				tex_coord_set 2
+				tex_address_mode wrap
+			}
+						
+		}
+		
+	}
+}

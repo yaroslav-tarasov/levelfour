@@ -1,0 +1,59 @@
+///////// PIXEL SHADING //////////////////////
+
+float4 blinnBumpPS(
+
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+    	float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldTangent	: TEXCOORD3,
+		float3 WorldBinormal : TEXCOORD4,
+		float3 WorldView	: TEXCOORD5,
+	
+		uniform float3 LampColor,
+		uniform sampler2D ColorSampler : register(s0),
+		uniform float Bump, // bump strength
+		uniform sampler2D NormalSampler : register(s1), // normal map
+		uniform float Kr, // true strength
+		uniform samplerCUBE EnvSampler : register(s2), // true cube map
+	
+		uniform float3 AmbiColor,
+		uniform float Ks,
+		uniform float Eccentricity
+		
+) : COLOR {
+    // "standard" normalized vectors....
+    float3 Ln = normalize(LightVec);
+    float3 Vn = normalize(WorldView);
+    float3 Nn = normalize(WorldNormal);
+    float3 Tn = normalize(WorldTangent);
+    float3 Bn = normalize(WorldBinormal);
+    float3 bump = Bump * (tex2D(NormalSampler,UV).rgb - float3(0.5,0.5,0.5));
+    Nn = Nn + bump.x*Tn + bump.y*Bn;
+    Nn = normalize(Nn);
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = dot(Hn,Nn);
+    float3 Rv = reflect(-Ln,Nn);
+    float rdv = dot(Rv,Vn);
+    rdv = max(rdv,0.001);
+    float ldn=dot(Ln,Nn);
+    ldn = max(ldn,0.0);
+    float ndv = dot(Nn,Vn);
+    float hdv = dot(Hn,Vn);
+    float eSq = Eccentricity*Eccentricity;
+    float distrib = eSq / (rdv * rdv * (eSq - 1.0) + 1.0);
+    distrib = distrib * distrib;
+    float Gb = 2.0 * hdn * ndv / hdv;
+    float Gc = 2.0 * hdn * ldn / hdv;
+    float Ga = min(1.0,min(Gb,Gc));
+    float fresnelHack = 1.0 - pow(ndv,5.0);
+    hdn = distrib * Ga * fresnelHack / ndv;
+    float3 diffContrib = ldn * LampColor;
+    float3 specContrib = hdn * Ks * LampColor;
+    float3 diffuseColor = tex2D(ColorSampler,UV).rgb;
+    float3 result = specContrib+(diffuseColor*(diffContrib+AmbiColor));
+    float3 R = reflect(Vn,Nn);
+    float3 reflColor = Kr * texCUBE(EnvSampler,R.xyz).rgb;
+    result += diffuseColor*reflColor;
+    return float4(result,1);
+}

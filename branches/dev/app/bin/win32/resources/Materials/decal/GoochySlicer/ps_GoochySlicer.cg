@@ -1,0 +1,33 @@
+float4 goochySlicerPS(
+			// Vertex Inputs
+			float3 WorldNormal : TEXCOORD2,
+			float3 WorldView : TEXCOORD4,
+			float3 LightVec : TEXCOORD1,
+			float3 SlicePos	: TEXCOORD5,
+			
+			// Model Level Inputs
+			uniform float3 LiteColor,
+			uniform float3 DarkColor,
+			uniform float3 WarmColor,
+			uniform float3 CoolColor,
+			uniform float3 SpecColor,
+			uniform float SpecExpon
+			) : COLOR
+{
+    float3 Ln = normalize(LightVec);
+    float3 Vn = normalize(WorldView);
+    float3 Nn = normalize(WorldNormal);
+    Nn = faceforward(Nn,-Vn,Nn);
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = pow(max(0,dot(Hn,Nn)),SpecExpon);
+    float4 specContrib = float4((hdn * SpecColor),1);
+    float ldn = dot(Ln,Nn);
+    float mixer = 0.5 * (ldn + 1.0);
+    float diffComp = max(0,ldn);
+    float3 surfColor = lerp(DarkColor,LiteColor,mixer);
+    float3 toneColor = lerp(CoolColor,WarmColor,mixer);
+    float4 diffContrib = float4((surfColor + toneColor),1);
+    float4 result = diffContrib + specContrib;
+	clip(SlicePos.zzzz);
+    return result;
+}

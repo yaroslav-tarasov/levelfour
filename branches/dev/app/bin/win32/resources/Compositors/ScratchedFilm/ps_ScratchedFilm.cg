@@ -1,0 +1,32 @@
+//////////////////////////////////////////////////////
+/////////////////////////////////// pixel shader /////
+//////////////////////////////////////////////////////
+
+#define QUAD_REAL2 float2
+#define QUAD_REAL4 float4
+
+float4 scratchedFilmPS(
+
+		QUAD_REAL4 Position	: POSITION,
+		QUAD_REAL2 UV	: TEXCOORD0,
+	
+		uniform sampler2D SceneSampler,
+		uniform sampler2D Noise2DSamp,
+		uniform float Timer,
+		uniform float Speed1,
+		uniform float Speed2,
+		uniform float ScratchIntensity,
+		uniform float IS
+) : COLOR {
+    float ScanLine = (Timer*Speed1);
+    float Side = (Timer*Speed2);
+    float4 img = tex2D(SceneSampler,UV);
+    float2 s = float2(UV.x+Side,ScanLine);
+    float scratch = tex2D(Noise2DSamp,s).x;
+    scratch = 2.0f*(scratch - ScratchIntensity)/IS;
+    scratch = 1.0-abs(1.0f-scratch);
+    //scratch = scratch * 100.0f;
+    scratch = max(0,scratch);
+    //scratch = min(scratch,1.0f);
+    return img + float4(scratch.xxx,0);
+}

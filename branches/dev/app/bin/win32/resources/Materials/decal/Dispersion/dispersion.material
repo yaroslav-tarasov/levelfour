@@ -1,0 +1,79 @@
+vertex_program vs_dispersion cg {
+	source dispersion_vs.cg
+	entry_point dispersionVS
+	profiles arbvp1
+	
+	default_params {
+		param_named fresnelBias 	float 	0.1
+		param_named fresnelScale 	float 	0.3
+		param_named fresnelPower 	float 	0.2
+		param_named etaRatio 		float3 	1.1 1.12 1.14
+		param_named_auto modelViewProj worldviewproj_matrix
+        param_named_auto modelToWorld world_matrix
+        param_named_auto eyePositionW camera_position
+	}
+}
+
+fragment_program ps_dispersion cg {
+	source dispersion_ps.cg
+	entry_point dispersionPS
+	profiles arbfp1
+	
+	default_params {
+	
+		// none - see environ. maps inline
+		
+	}
+}
+
+// Dispersion_Default
+material Dispersion_Default {
+	technique {
+		pass {
+			
+			// scene_blend src_alpha one_minus_src_alpha
+			// depth_check on
+			// depth_func less_equal
+			lighting on
+			
+			vertex_program_ref vs_dispersion {
+					
+			}
+			
+			fragment_program_ref ps_dispersion {
+				
+			}
+			
+			texture_unit {
+			
+				cubic_texture EnvironmentMap.dds combinedUVW
+				tex_coord_set 0
+			
+			}
+			
+			texture_unit {
+			
+				cubic_texture EnvironmentMap.dds combinedUVW
+				tex_coord_set 1
+			
+			}
+			
+			texture_unit {
+			
+				cubic_texture EnvironmentMap.dds combinedUVW
+				tex_coord_set 2
+			
+			}
+			
+			texture_unit {
+			
+				cubic_texture EnvironmentMap.dds combinedUVW
+				tex_coord_set 3
+			
+			}
+
+		}
+		
+		
+	}
+}

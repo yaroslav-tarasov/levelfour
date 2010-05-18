@@ -1,0 +1,77 @@
+vertex_program Ocean_vs cg {
+	source vs_Ocean.cg
+	entry_point OceanVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		world_matrix
+		param_named_auto WorldXf 		inverse_transpose_world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	Timer			float 	-0.5 2.0 1.25
+		param_named 	WaveAmp			float	0.05
+		param_named 	WaveFreq		float	3.0
+		param_named 	BumpScale		float	1.4
+		param_named 	TexReptX		float	8.0
+		param_named 	TexReptY		float	4.0
+		param_named 	BumpSpeedX		float	-0.05
+		param_named 	BumpSpeedY		float	0.0
+		
+	}
+}
+
+fragment_program Ocean_ps cg {
+	source ps_Ocean.cg
+	entry_point OceanPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named 	Kr				float 	1.0
+		param_named 	KWater			float	1.0
+		param_named 	FresnelExp		float	4.0
+		param_named 	FresnelBias		float	0.1
+		param_named 	HDRMultiplier	float	3.0
+		param_named 	DeepColor		float3	0.0 0.0 0.1
+		param_named 	ShallowColor	float3	0.0 0.5 0.5
+		param_named 	ReflTint		float3	1.0 1.0 1.0
+		
+	}
+}
+
+// Ocean_Default
+material Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref Ocean_vs {
+							
+			}
+			
+			fragment_program_ref Ocean_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture waves2.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit
+			{
+				cubic_texture CloudyHillsCubemap2.dds combinedUVW
+				tex_coord_set 1
+				tex_address_mode wrap
+				env_map planar
+			}
+		}
+		
+	}
+}

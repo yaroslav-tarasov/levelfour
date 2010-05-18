@@ -1,0 +1,35 @@
+// Vertex program for fresnel reflections / refractions
+void fresnelRefractReflectVS(
+		float4 pos			: POSITION,
+		float4 normal		: NORMAL,
+		float2 tex			: TEXCOORD0,
+		
+		out float4 oPos		: POSITION,
+		out float3 noiseCoord : TEXCOORD0,
+		out float4 projectionCoord : TEXCOORD1,
+		out float3 oEyeDir : TEXCOORD2, 
+		out float3 oNormal : TEXCOORD3, 
+
+		uniform float4x4 worldViewProjMatrix,
+		uniform float3 eyePosition, // object space
+		uniform float timeVal,
+		uniform float scale,  // the amount to scale the noise texture by
+		uniform float scroll, // the amount by which to scroll the noise
+		uniform float noise  // the noise perturb as a factor of the  time
+		)
+{
+	oPos = mul(worldViewProjMatrix, pos);
+	// Projective texture coordinates, adjust for mapping
+	float4x4 scalemat = float4x4(0.5,   0,   0, 0.5, 
+	                               0,-0.5,   0, 0.5,
+								   0,   0, 0.5, 0.5,
+								   0,   0,   0,   1);
+	projectionCoord = mul(scalemat, oPos);
+	// Noise map coords
+	noiseCoord.xy = (tex + (timeVal * scroll)) * scale;
+	noiseCoord.z = noise * timeVal;
+
+	oEyeDir = normalize(pos.xyz - eyePosition); 
+	oNormal = normal.rgb; 
+	
+}

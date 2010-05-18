@@ -1,0 +1,59 @@
+////////////////////////////////////////////////////////////////////////////////
+/// Vertex Shaders /////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+void shadVS(
+
+			float3 Position     : POSITION,
+			
+			out float4 LP           : TEXCOORD4,
+			out float4 HPosition    : POSITION,
+			
+			uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+			uniform float4x4 WorldXf,
+			uniform float4x4 ViewIXf,
+			uniform float4x4 WvpXf,
+			uniform float4x4 ShadowViewProjXf
+) {
+   float4 Po = float4(Position.xyz,(float)1.0);     	// object coordinates
+   float4 Pw = mul(WorldXf,Po);                        	// "P" in world coordinates
+   float4 Pl = mul(ShadowViewProjXf,Pw);  				// "P" in light coords
+   LP = Pl;                	// view coords (also lightspace projection coords in this case)
+   HPosition = Pl; // screen clipspace coords
+}
+
+// from scene camera POV
+void mainCamVS(
+
+			float4 Normal       : NORMAL,
+			float3 Position     : POSITION,
+			float4 UVIN           : TEXCOORD0,
+			
+			out float3 WNormal      : TEXCOORD2,
+			out float4 LP           : TEXCOORD4,
+			out float3 WView        : TEXCOORD3,
+			out float4 HPosition    : POSITION,
+			out float2 UV           : TEXCOORD0,
+			out float3 LightVec     : TEXCOORD1,
+			
+			uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+			uniform float4x4 WorldXf,
+			uniform float4x4 ViewIXf,
+			uniform float4x4 WvpXf,
+			uniform float4x4 ShadowViewProjXf,
+			uniform float3 SpotLightPos,
+			uniform float ShadBias
+) {
+   WNormal = mul(WorldITXf,Normal).xyz; // world coords
+   float4 Po = float4(Position.xyz,(float)1.0);     // "P" in object coordinates
+   float4 Pw = mul(WorldXf,Po);                        // "P" in world coordinates
+   float4 Pl = mul(ShadowViewProjXf,Pw);  // "P" in light coords
+   Pl.z -= ShadBias;	// factor in bias here to save pixel shader work
+   LP = Pl;                                                       
+// ...for pixel-shader shadow calcs
+   WView = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw.xyz);     // world coords
+   HPosition = mul(WvpXf,Po);    // screen clipspace coords
+   UV = UVIN.xy;                                                 
+// pass-thru
+   LightVec = SpotLightPos - Pw.xyz;               // world coords
+}

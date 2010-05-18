@@ -1,0 +1,16 @@
+compositor SimpleBlurCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 5531
+				material SimpleBlurMaterial
+            }
+        }
+    }
+}

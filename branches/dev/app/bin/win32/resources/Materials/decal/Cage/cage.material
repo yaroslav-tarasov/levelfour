@@ -1,0 +1,74 @@
+vertex_program cage_vs cg {
+	source vs_cage.cg
+	entry_point cageVS
+	profiles arbvp1
+	
+	default_params {
+		param_named 	 	Scale  float 	5.1
+		param_named_auto 	WorldXf         world_matrix
+		param_named_auto	WvpXf			worldviewproj_matrix
+	}
+}
+
+fragment_program cage_ps cg {
+	source ps_cage.cg
+	entry_point strokeTexPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  WireColor	 	float4 		1.0 0.8 0.0 1.0
+		param_named  EmptyColor 	float4 		0.0 0.0 0.0 0.0
+		param_named  Balance 		float 		0.1
+		// sampler2d
+		
+		
+	}
+}
+
+// cage_Default
+material Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref cage_vs {
+							
+			}
+			
+			fragment_program_ref cage_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture aa_stripe.dds
+				tex_coord_set 0
+			}
+		}
+		
+		pass one {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref cage_vs {
+							
+			}
+			
+			fragment_program_ref cage_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture cage_default_color.dds
+				tex_coord_set 0
+			}
+		}
+	}
+}

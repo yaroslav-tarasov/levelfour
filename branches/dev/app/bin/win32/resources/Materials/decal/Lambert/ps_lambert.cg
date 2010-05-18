@@ -1,0 +1,86 @@
+/********* pixel shaders ********/
+
+void lambert_shared(
+			
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			
+			float3 LightColor,
+			uniform float3 AmbiColor,
+			out float3 DiffuseContrib)
+{
+    float3 Ln = normalize(LightVec);
+    float3 Nn = normalize(WorldNormal);
+    float ldn = dot(Ln,Nn);
+    ldn = max(ldn,0);
+    DiffuseContrib = ldn * LightColor + AmbiColor;
+}
+
+float4 lambertPS(
+
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+		    
+			uniform float3 SurfaceColor,
+		    uniform float3 LampColor,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+	lambert_shared(LightVec,WorldNormal,LampColor,AmbiColor,diffContrib);
+    float3 result = (SurfaceColor * diffContrib);
+    return float4(result,1);
+}
+
+float4 lambertPS_t(
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float2 UV		: TEXCOORD0,
+		    
+			uniform float3 SurfaceColor,
+		    uniform sampler2D ColorSampler,
+		    uniform float3 LampColor,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+	lambert_shared(LightVec,WorldNormal,LampColor,AmbiColor,diffContrib);
+    float3 map = tex2D(ColorSampler,UV).xyz;
+    float3 result = (SurfaceColor * map * diffContrib);
+    return float4(result,1);
+}
+
+// same as above with the addition of quadratic falloff
+
+float4 lambertQPS(
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+		
+		    uniform float3 SurfaceColor,
+		    uniform float3 LampColor,
+		    uniform float LampIntensity,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 Cl = (LampIntensity/dot(LightVec,LightVec)) * LampColor;
+    lambert_shared(LightVec,WorldNormal,Cl,AmbiColor,diffContrib);
+    float3 result = (SurfaceColor * diffContrib);
+    return float4(result,1);
+}
+
+float4 lambertQPS_t(
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float2 UV		: TEXCOORD0,
+			
+		    uniform float3 SurfaceColor,
+		    uniform sampler2D ColorSampler,
+		    uniform float3 LampColor,
+		    uniform float LampIntensity,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 Cl = (LampIntensity/dot(LightVec,LightVec)) * LampColor;
+    lambert_shared(LightVec,WorldNormal,Cl,AmbiColor,diffContrib);
+    float3 map = tex2D(ColorSampler,UV).xyz;
+    float3 result = (SurfaceColor * map * diffContrib);
+    return float4(result,1);
+}

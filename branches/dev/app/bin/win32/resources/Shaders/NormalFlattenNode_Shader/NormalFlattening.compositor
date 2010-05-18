@@ -1,0 +1,16 @@
+compositor NormalFlatteningCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0
+				material NormalFlattening/NormalFlatteningMaterial
+            }
+        }
+    }
+}

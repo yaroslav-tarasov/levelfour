@@ -1,0 +1,66 @@
+vertex_program ScratchedFilm_vs cg
+{
+	source vs_ScratchedFilm.cg
+	profiles arbvp1
+    entry_point scratchedFilmVS
+	default_params
+    {
+        // param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+
+fragment_program ScratchedFilm_ps cg
+{
+    source ps_ScratchedFilm.cg
+    entry_point scratchedFilmPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 		int 	0
+		param_named Noise2DSamp 		int 	1
+		param_named_auto Timer 			time_0_1 1
+		param_named Speed1 				float	0.03
+		param_named Speed2 				float	0.01
+		param_named ScratchIntensity 	float	0.65
+		param_named IS 					float	0.01
+	}
+}
+
+
+material ScratchedFilm
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref ScratchedFilm_vs
+			{
+			}
+
+			fragment_program_ref ScratchedFilm_ps
+			{
+			}
+			
+			texture_unit	// (scene)
+			 {
+				texture SceneSampler 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			 }
+			 
+			 texture_unit	// (noise)
+			 {
+                 texture Noise2D_std.dds
+				 tex_coord_set 0
+				 tex_address_mode wrap
+				 // filtering linear linear linear
+			 }
+			
+		}
+	}
+}

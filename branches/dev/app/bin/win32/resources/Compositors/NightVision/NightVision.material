@@ -1,0 +1,64 @@
+vertex_program NightVision_vs cg
+{
+	source vs_NightVision.cg
+	entry_point nightVisionVS
+	profiles arbvp1
+	
+	default_params
+	{
+		param_named_auto worldViewProj worldviewproj_matrix
+	}
+}
+
+fragment_program NightVision_ps cg
+{
+	source ps_NightVision.cg
+	entry_point nightVisionPS
+	profiles arbfp1
+	
+	default_params
+	{
+		param_named RT 				int 	0
+		param_named noiseVol 		int 	1
+		param_named lum 			float4 0.30 0.59 0.11 0.0
+		param_named_auto 			time time_0_1 1
+	}
+}
+
+material NightVision
+{
+    technique
+    {
+
+		pass
+		{
+			cull_hardware none
+			cull_software none
+			depth_func always_pass
+
+			vertex_program_ref NightVision_vs
+			{
+			}
+
+			fragment_program_ref NightVision_ps
+			{
+			
+			}
+
+			texture_unit RT
+			{
+				texture RT 2d
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering trilinear
+			}
+			
+			texture_unit noise
+			{
+				texture Random3D.dds 3d
+				tex_address_mode wrap
+				tex_coord_set 1
+			}
+		}
+	}
+}

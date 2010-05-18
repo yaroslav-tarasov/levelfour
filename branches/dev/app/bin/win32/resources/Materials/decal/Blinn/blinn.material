@@ -1,0 +1,55 @@
+vertex_program blinn_vs cg {
+	source vs_blinn.cg
+	entry_point blinn_VS
+	profiles arbvp1
+	
+	default_params {
+		param_named 	 	LampDirPos  float4 	-0.5 2.0 1.25 1.0
+		param_named_auto 	WorldITXf           inverse_transpose_world_matrix
+		param_named_auto 	WorldXf             world_matrix
+		param_named_auto 	ViewIXf     		inverse_view_matrix
+		param_named_auto	WvpXf				worldviewproj_matrix
+	}
+}
+
+fragment_program blinn_ps cg {
+	source ps_blinn.cg
+	entry_point blinn_PS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor 		float3 		0.07 0.07 0.07
+		param_named  Ks 			float 		0.4
+		param_named  Eccentricity 	float 		0.3
+		
+		
+	}
+}
+
+// blinn_Default
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref blinn_vs {
+							
+			}
+			
+			fragment_program_ref blinn_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture blinn_default_color.dds
+				tex_coord_set 0
+			}
+		}
+	}
+}

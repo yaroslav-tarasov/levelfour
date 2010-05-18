@@ -1,0 +1,178 @@
+/*
+% This surface is DULL.
+% A matte, lambert surface lit from either
+% a point or directional source (You can attach either a point
+% light OR a directional source to it).
+% Four techniques are provided: permutations
+% of textured/untextured and quadratic-falloff/constant lighting
+*/
+
+vertex_program lambert_vs cg {
+	source vs_lambert.cg
+	entry_point lambertVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		world_matrix
+		param_named_auto WorldXf 		inverse_transpose_world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LampDirPos		float4 	-0.5 2.0 1.25 1.0		
+	}
+}
+
+fragment_program lambert_ps cg {
+	source ps_lambert.cg
+	entry_point lambertPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 	1.0 1.0 1.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		
+	}
+}
+
+fragment_program lambert_ps_t cg {
+	source ps_lambert.cg
+	entry_point lambertPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 	1.0 1.0 1.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		
+	}
+}
+
+fragment_program lambert_ps_qps cg {
+	source ps_lambert.cg
+	entry_point lambertQPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 	1.0 1.0 1.0
+		param_named  LampColor	 	float3 	1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 	0.07 0.07 0.07
+		param_named	 LampIntensity 	float	1.0
+		
+	}
+}
+
+fragment_program lambert_ps_qps_t cg {
+	source ps_lambert.cg
+	entry_point lambertQPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 	1.0 1.0 1.0
+		param_named  LampColor	 	float3 	1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 	0.07 0.07 0.07
+		param_named	 LampIntensity 	float	1.0
+		
+	}
+}
+
+// lambert_Default
+material Lambert_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref lambert_vs {
+							
+			}
+			
+			fragment_program_ref lambert_ps {
+				
+			}
+			
+			
+		}
+		
+	}
+}
+
+material Lambert_Texture {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref lambert_vs {
+							
+			}
+			
+			fragment_program_ref lambert_ps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture lambert_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+		}
+		
+	}
+}
+material Lambert_Quadratic_Falloff {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref lambert_vs {
+							
+			}
+			
+			fragment_program_ref lambert_ps_qps {
+				
+			}
+			
+		}
+		
+	}
+}
+// Lambert_Quadratic_Falloff_Texture
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref lambert_vs {
+							
+			}
+			
+			fragment_program_ref lambert_ps_qps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture lambert_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+		}
+		
+	}
+}

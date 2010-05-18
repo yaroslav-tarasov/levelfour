@@ -1,0 +1,75 @@
+
+
+// -------------------------------
+// Cel Shading Section
+// -------------------------------
+vertex_program CelShadingVS cg
+{
+	source vs_CelShading.cg
+	entry_point celShadingVS
+	profiles arbvp1
+
+	default_params
+	{
+		param_named_auto lightPosition 	light_position_object_space 0
+		param_named_auto eyePosition 	camera_position_object_space
+		param_named_auto worldViewProj 	worldviewproj_matrix
+		param_named shininess float 10 
+	}
+}
+
+fragment_program CelShadingPS cg
+{
+	source ps_CelShading.cg
+	entry_point celShadingPS
+	profiles arbfp1
+	
+	default_params
+	{
+		param_named diffuse 	float4 1 1 1 1
+		param_named specular 	float4 1 1 1 1
+		
+	}
+}
+
+// CelShading
+material Default
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref CelShadingVS
+			{
+				// map shininess from custom renderable param 1
+				param_named_auto shininess custom 1
+			}
+			fragment_program_ref CelShadingPS
+			{
+				// map diffuse from custom renderable param 2
+				param_named_auto diffuse custom 2
+				// map specular from custom renderable param 2
+				param_named_auto specular custom 3
+			}
+			texture_unit
+			{
+				texture cel_shading_diffuse.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
+			texture_unit
+			{
+				texture cel_shading_specular.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
+			texture_unit
+			{
+				texture cel_shading_edge.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+	
+}

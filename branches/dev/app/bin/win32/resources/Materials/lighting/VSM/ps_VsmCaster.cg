@@ -1,0 +1,23 @@
+void shadow_vsm_caster_ps
+    (
+       float2 iUV      : TEXCOORD0,
+       float4 iDepth      : TEXCOORD1,
+       float4 iDepthDir   : TEXCOORD2,
+
+       uniform sampler2D dTex   : TEXUNIT0,
+
+       uniform float4 iDepthRange,
+       uniform float iAlphaReject,
+
+       out float4 oColour   : COLOR
+    )
+
+    {
+       if(tex2D(dTex,iUV).a < iAlphaReject)
+          discard;   
+
+       float d = (length(iDepth.xyz) - iDepthRange.x) * iDepthRange.w;
+
+       oColour = float4(d, d * d, iDepthDir.z, iDepthDir.z*iDepthDir.z);
+
+    }

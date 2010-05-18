@@ -1,0 +1,22 @@
+void toonShadingPS(
+
+				float diffuseLight  : TEXCOORD0,  
+                float specularLight : TEXCOORD1,  
+                float edge          : TEXCOORD2,
+
+                out float4 color : COLOR,
+               
+               uniform float4 Kd,
+               uniform float4 Ks,
+               uniform sampler1D diffuseRamp : register(s0),
+               uniform sampler1D specularRamp : register(s1),
+               uniform sampler1D edgeRamp : register(s2))
+{
+  // Apply step functions
+  diffuseLight = tex1D(diffuseRamp, diffuseLight).x;
+  specularLight = tex1D(specularRamp, specularLight).x;
+  edge = tex1D(edgeRamp, edge).x;
+
+  // Compute the final color
+  color = edge *  (Kd * diffuseLight + Ks * specularLight);
+}

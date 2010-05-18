@@ -1,0 +1,49 @@
+vertex_program goochyPt_vs cg {
+	source vs_GoochyPt.cg
+	entry_point main
+	profiles arbvp1
+	
+	default_params {
+		param_named 	 LiteColor   float3 0.8 0.5 0.1
+		param_named 	 DarkColor   float3 0.0 0.0 0.0
+		param_named 	 WarmColor   float3 0.5 0.4 0.05
+		param_named 	 CoolColor   float3 0.05 0.05 0.6
+		param_named 	 LightPos    float4 100.0 100.0 100.0 0.0
+		param_named_auto WorldITXf           inverse_transpose_world_matrix
+		param_named_auto WorldXf             world_matrix
+		param_named_auto WorldViewProjXf     worldviewproj_matrix
+	}
+}
+
+fragment_program goochyPt_ps cg {
+	source ps_GoochyPt.cg
+	entry_point main
+	profiles arbfp1
+	
+	default_params {
+		
+	}
+}
+
+// GoochyPt_Default
+material GoochyPt_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref goochyPt_vs {
+				
+			}
+			
+			fragment_program_ref goochyPt_ps {
+				
+			}
+
+		}
+		
+		
+	}
+}

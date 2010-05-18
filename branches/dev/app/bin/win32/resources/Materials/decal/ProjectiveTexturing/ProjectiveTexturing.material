@@ -1,0 +1,54 @@
+
+
+vertex_program ProjectiveTexturing_vs cg {
+	source vs_ProjectiveTexturing.cg
+	entry_point projectiveTexturingVS
+	profiles arbvp1
+	
+	default_params {
+		param_named 	 Kd   float 1.0
+		param_named_auto lightPosition   	light_position_object_space
+		param_named_auto modelViewProj 		worldviewproj_matrix
+		param_named_auto textureMatrix   	texture_viewproj_matrix 0   // texture_worldviewproj_matrix 0
+		
+	}
+}
+
+fragment_program ProjectiveTexturing_ps cg {
+	source ps_ProjectiveTexturing.cg
+	entry_point projectiveTexturingPS
+	profiles arbfp1
+	
+	default_params {
+		
+	}
+}
+
+// ProjectiveTexturing
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref ProjectiveTexturing_vs 
+			{
+
+			}
+			
+			fragment_program_ref ProjectiveTexturing_ps
+			{
+							
+			}
+			
+			texture_unit
+			{
+				texture Demon.dds
+				tex_coord_set 0
+				tex_address_mode clamp
+			}
+		}
+	}
+}

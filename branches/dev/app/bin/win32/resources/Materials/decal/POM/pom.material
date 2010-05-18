@@ -1,0 +1,13 @@
+/*
+
+Parallax occlusion mapping (POM) is an enhancement of the parallax mapping technique. 
+Parallax occlusion mapping is used to procedurally create 3D definition in textured 
+surfaces, using a displacement map (similar to a topography map) instead of through 
+the generation of new geometry.[1]  This allows developers of 3D rendering 
+applications to add 3D complexity in textures, which correctly change 
+relative to perspective and with self occlusion  in real time 
+(Self-shadowing is additionally possible), without sacrificing 
+the processor cycles required to create the same effect with 
+geometry calculations.[
+
+*/

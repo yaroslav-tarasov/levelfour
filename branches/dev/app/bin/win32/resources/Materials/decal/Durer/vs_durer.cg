@@ -1,0 +1,47 @@
+/*********** vertex shader ******/
+
+void durerVS(
+	// Vertex Inputs
+	float4 Position  : POSITION,
+	float4 Normal    : NORMAL,
+	float4 UVIN      : TEXCOORD0,
+	
+	// Outputs
+	out float3 WorldNormal  : TEXCOORD1,
+	out float3 LightVec  : TEXCOORD3,
+	out float3 WorldView  : TEXCOORD2,
+	out float4 HPosition    : POSITION,
+	out float4 ScreenCoord    : TEXCOORD0,
+	
+	// Model Level Inputs
+	uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+	uniform float4x4 WorldViewXf,
+	uniform float3 SpotlampPos,
+	uniform float StripeScale,
+	uniform float SpecScale,
+	uniform float RotD,
+	uniform float RotS
+) {
+    float4 Po = float4(Position.xyz,1.0);
+    float3 Pw = mul(WorldXf,Po).xyz;
+    float3 Pv = mul(WorldViewXf,Po).xyz;
+    WorldNormal = normalize(mul(WorldITXf,Normal)).xyz;
+    LightVec = normalize(SpotlampPos - Pw);
+    WorldView = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw);
+    float4 hpos  = mul(WvpXf,Po);
+    HPosition  = hpos;
+    float radD = radians(RotD);
+    float radS = radians(RotS);
+    float cosD = cos(radD);
+    float sinD = sin(radD);
+    float cosS = cos(radS);
+    float sinS = sin(radS);
+    float2 Ps = float2(hpos.x/hpos.w,hpos.y/hpos.w);
+    float2 Pdiff = float2(cosD*Ps.x - sinD*Ps.y,sinD*Ps.x + cosD*Ps.y);
+    float2 Pspec = float2(cosS*Ps.x - sinS*Ps.y,sinS*Ps.x + cosS*Ps.y);
+    float2 uv = UVIN.xy;
+    ScreenCoord = float4(Pdiff.x/StripeScale,Pspec.x/SpecScale,uv.xy);
+}

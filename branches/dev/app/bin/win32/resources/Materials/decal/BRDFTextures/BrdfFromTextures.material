@@ -1,0 +1,144 @@
+/*
+
+% Shading via multitexture. Two textures are interpolated over the
+% surface, and their product results in the final specular BDRF.
+% The initial textures supplied approximate a Cook-Torrance model
+% using one set of possible parameters, but different textures can
+% be used to emulate a wide variety of isotropic BRDF models.
+
+*/
+
+vertex_program BrdfFromTextures_vs cg {
+	source vs_BrdfFromTextures.cg
+	entry_point BrdfFromTexturesVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LampPos			float3 	-0.5 2.0 1.25
+				
+	}
+}
+
+fragment_program BrdfFromTextures_ps cg {
+	source ps_BrdfFromTextures.cg
+	entry_point BrdfFromTexturesPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named 	SurfaceColor	float3 	0.5 0.2 0.1
+		param_named 	LampColor		float3	1.0 1.0 1.0
+		param_named 	AmbiColor		float3	0.07 0.07 0.07
+		// uniform sampler2D hmapSampler : register(s0)
+		// uniform sampler2D nmapSampler register(s1)
+		
+		
+	}
+}
+
+fragment_program BrdfFromTextures_ps_t cg {
+	source ps_BrdfFromTextures.cg
+	entry_point BrdfFromTexturesPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named 	SurfaceColor	float3 	0.5 0.2 0.1
+		param_named 	LampColor		float3	1.0 1.0 1.0
+		param_named 	AmbiColor		float3	0.07 0.07 0.07
+		// uniform sampler2D hmapSampler : register(s0)
+		// uniform sampler2D nmapSampler register(s1)
+		
+		
+	}
+}
+
+// BrdfFromTextures_Default
+material BrdfFromTextures_Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref BrdfFromTextures_vs {
+							
+			}
+			
+			fragment_program_ref BrdfFromTextures_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture ctHalf.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+			texture_unit
+			{
+				texture ctNorm.dds
+				tex_coord_set 1
+				tex_address_mode wrap
+				
+			}
+		}
+		
+	}
+}
+
+// BrdfFromTextures_Default
+material Default {
+	technique {
+		pass zero {
+			// scene_blend src_alpha one_minus_src_alpha
+			// depth_check on
+			// depth_func less_equal
+			lighting on
+			
+			vertex_program_ref BrdfFromTextures_vs {
+							
+			}
+			
+			fragment_program_ref BrdfFromTextures_ps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+				color_op_ex blend_manual src_texture src_current 0.1
+			}
+			
+			texture_unit
+			{
+				texture ctNorm.dds
+				tex_coord_set 1
+				tex_address_mode wrap
+				color_op_ex blend_manual src_texture src_current 0.1
+				env_map spherical
+				
+			}
+			
+			texture_unit
+			{
+				texture ctHalf.dds
+				tex_coord_set 2
+				tex_address_mode wrap
+				color_op_ex blend_manual src_texture src_current 0.1
+				env_map spherical
+				
+			}
+		}
+		
+	}
+}

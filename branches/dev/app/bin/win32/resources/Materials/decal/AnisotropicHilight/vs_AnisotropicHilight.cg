@@ -1,0 +1,25 @@
+void main(float3 Position : POSITION,
+		    float4 Normal : NORMAL,
+			uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+			uniform float4x4 WorldXf,
+			uniform float4x4 ViewIXf,
+			uniform float4x4 WvpXf,
+			uniform float3 LampPos,
+			out float3 WorldNormal : TEXCOORD1,
+			out float3 WorldView	: TEXCOORD2,
+			out float3 LightVec : TEXCOORD3,
+			out float2 TexCoord0	: TEXCOORD0,
+			out float4 HPosition : POSITION
+) {
+    float3 Nn = normalize(mul(WorldITXf,Normal).xyz);
+    float4 Po = float4(Position.xyz,1.0);
+    float3 Pw = mul(WorldXf,Po).xyz;
+    float3 Vn = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw);
+    float3 Ln = normalize(LampPos - Pw);
+    WorldNormal = Nn;
+    WorldView = Vn;
+    LightVec = Ln;
+    float3 Hn = normalize(Vn + Ln);
+    TexCoord0 = float2(dot(Ln, Nn), dot(Hn, Nn));
+    HPosition = mul(WvpXf,Po);
+}

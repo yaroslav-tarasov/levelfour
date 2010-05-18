@@ -1,0 +1,60 @@
+vertex_program brix_vs cg {
+	source vs_Brix.cg
+	entry_point brixVS
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LightDir		float3 	0.7 -0.7 -0.7
+		param_named 	AmbiColor		float3 	0.17 0.17 0.17
+		param_named 	BrickWidth		float 	0.3
+		param_named 	BrickHeight		float 	0.12
+	}
+}
+
+fragment_program brix_ps cg {
+	source ps_Brix.cg
+	entry_point brixPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfColor1	 	float4 		0.9 0.5 0.0 1.0
+		param_named  SurfColor2 	float4 		0.8 0.48 0.15 1.0
+		param_named  GroutColor 	float4 		0.8 0.75 0.75 1.0
+		param_named  GBalance 		float 		0.1
+		// sampler2d
+		
+		
+	}
+}
+
+// brix_Default
+material Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref brix_vs {
+							
+			}
+			
+			fragment_program_ref brix_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture aa_stripe.dds
+				tex_coord_set 0
+			}
+		}
+		
+	}
+}

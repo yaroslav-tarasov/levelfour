@@ -1,0 +1,106 @@
+/*
+
+% "Grisaille" is a style of drawing based on a style of sculture
+% relief where the figures are "flattened" against a larger flat
+% surface. This effect allows the user to tweak the "flatness" of
+% the shading against the surface of the screen, as if the 3D scene
+% were carved in (animating) relief.
+
+*/
+
+vertex_program Grisaille_vs cg {
+	source vs_Grisaille.cg
+	entry_point grisVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 			world_matrix
+		param_named_auto WorldXf 			inverse_transpose_world_matrix
+		param_named_auto ViewIXf 			inverse_view_matrix
+		param_named_auto WvpXf 				worldviewproj_matrix
+		param_named_auto ViewTXf 			transpose_view_matrix 
+		param_named_auto WorldViewITXf 		inverse_transpose_worldview_matrix
+		
+		param_named 		DFlatness		float 	1.75
+		param_named 		SFlatness		float 	2.0
+		param_named_auto 	LightDir		light_position 0
+		
+	}
+}
+
+fragment_program Grisaille_t_ps cg {
+	source ps_Grisaille.cg
+	entry_point grisTPS
+	profiles arbfp1
+	
+	default_params {
+		
+		
+		param_named  SurfaceColor	float3 		1 1 1
+		param_named  Ks	 			float 		0.4
+		param_named  SpecExpon	 	float 		30.0
+		param_named  LampDir	 	float3 		0.7 -0.7 -0.7
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		// ColorSampler
+		
+	}
+}
+
+fragment_program Grisaille_ps_co cg {
+	source ps_Grisaille.cg
+	entry_point grisTPS
+	profiles arbfp1
+	
+	default_params {
+		
+	}
+}
+
+// Grisaille_Default
+material Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref Grisaille_vs {
+							
+			}
+			
+			fragment_program_ref Grisaille_t_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture Grisaille_Default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+		}
+		
+	}
+}
+
+material G_Default {
+	technique {
+		pass zero {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref Grisaille_vs {
+							
+			}
+			
+			fragment_program_ref Grisaille_ps_co {
+				
+			}
+		}
+		
+	}
+}

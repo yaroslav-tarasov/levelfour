@@ -1,0 +1,171 @@
+// BlurGlowBuffer_Horz
+vertex_program DropShadow_Horz_vs cg
+{
+	source vs_DropShadow.cg
+	profiles arbvp1
+    entry_point horiz9BlurVS
+	default_params
+    {
+
+    }
+}
+// BlurGlowBuffer_Vert
+vertex_program DropShadow_Vert_vs cg
+{
+	source vs_DropShadow.cg
+	profiles arbvp1
+    entry_point vert9BlurVS
+	default_params
+    {
+
+    }
+}
+// ShadPass
+vertex_program DropShadow_ShadPass_vs cg
+{
+	source vs_DropShadow.cg
+	profiles arbvp1
+    entry_point dropShadowVS
+	default_params
+    {
+
+    }
+}
+
+// BlurGlowBuffer_Horz
+fragment_program DropShadow_Horz_ps cg
+{
+    source ps_DropShadow.cg
+    entry_point blur9PSa
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SrcSamp 		int 	0
+	}
+}
+// BlurGlowBuffer_Vert
+fragment_program DropShadow_Vert_ps cg
+{
+    source ps_DropShadow.cg
+    entry_point blur9PSb
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SrcSamp 		int 	0
+	}
+}
+// ShadPass
+fragment_program DropShadow_ShadPass_ps cg
+{
+    source ps_DropShadow.cg
+    entry_point PS_DropShad
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SrcSamp		 	int 	0
+		param_named GlowSamp2 		int 	1
+		param_named BgCol 			float3	1.0 0.7 0.4
+		param_named XOffset 		float	-0.015
+		param_named YOffset 		float	-0.01
+		param_named Density 		float	0.62
+	}
+}
+
+material BlurGlowBuffer_Horz
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref DropShadow_Horz_vs
+			{
+			}
+
+			fragment_program_ref DropShadow_Horz_ps
+			{
+			}
+			
+			texture_unit	// (scene)
+			 {
+				// texture SrcSamp 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			 }
+			 
+		}
+		
+	}
+}
+
+material BlurGlowBuffer_Vert
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref DropShadow_Vert_vs
+			{
+			}
+
+			fragment_program_ref DropShadow_Vert_ps
+			{
+			}
+			
+			texture_unit	// (scene)
+			 {
+				// texture SrcSamp 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			 }
+			 
+			 		
+		}
+		
+	}
+}
+
+material DropShadow
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref DropShadow_ShadPass_vs
+			{
+			}
+
+			fragment_program_ref DropShadow_ShadPass_ps
+			{
+			}
+			
+			texture_unit	// (scene)
+			 {
+				// texture SrcSamp 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			 }
+			 
+			 texture_unit	// (noise)
+			 {
+                 // texture GlowSamp2 2d
+				 tex_coord_set 0
+				 tex_address_mode wrap
+				 // filtering linear linear linear
+			 }
+			
+		}
+		
+	}
+}
