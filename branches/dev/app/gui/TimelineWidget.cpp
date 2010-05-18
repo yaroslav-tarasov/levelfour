@@ -545,9 +545,9 @@ void TimelineWidget::paintImage ( const QRect &rectangle )
 
     // define colors
     QColor buttonColor (palette().color(QPalette::Button));
-    QColor midColor (190,190,190);
-    QColor baseColor (50,50,50);
-    QColor windowColor (50,50,50);
+    QColor midColor (58,58,58);
+    QColor baseColor (114,114,114);
+    QColor windowColor (114,114,114);
     QColor buttonTextColor (palette().color(QPalette::ButtonText));
     QColor buttonAlphaColor (buttonColor);
     buttonAlphaColor.setAlpha(200);
