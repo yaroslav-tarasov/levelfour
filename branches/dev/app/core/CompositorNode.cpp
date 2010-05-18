@@ -91,8 +91,8 @@ CompositorNode::~CompositorNode ()
 void CompositorNode::reload ()
 {
     // save the compositor name and destroy compositor
-    if (m_compositor)
-        return;
+    //if (m_compositor)
+    //    return;
     m_compositor->setEnabled(false);
     Ogre::Compositor *compositor = m_compositor->getCompositor();
     Ogre::String compositorName;
@@ -188,8 +188,20 @@ void CompositorNode::resizeRenderTexture(int width, int height)
     //!
     void CompositorNode::setTexture( Ogre::MaterialPtr &material, Ogre::TexturePtr &texture, unsigned int slot )
     {
-        if (!material.isNull() || !texture.isNull())
-            material->getTechnique(0)->getPass(0)->getTextureUnitState(slot)->setTextureName(texture->getName());
+        if (!material.isNull() && !texture.isNull()) {
+            Ogre::Technique *technique = material->getTechnique(0);
+            if (!technique)
+                return;
+            Ogre::Pass *pass = technique->getPass(0);
+            if (!pass)
+                return;
+            unsigned short numPasses = pass->getNumTextureUnitStates();
+            if (slot >= numPasses)
+                return;
+            Ogre::TextureUnitState *textureUnitState = pass->getTextureUnitState(slot);
+            textureUnitState->setTextureName(texture->getName());
+            //material->getTechnique(0)->getPass(0)->getTextureUnitState(slot)->setTextureName(texture->getName());
+        }
     }
 
     //!

@@ -138,11 +138,10 @@ AbstractParameter * NumberParameter::clone ()
 void NumberParameter::setDirty (const bool dirty )
 {
     Parameter::setDirty(dirty);
-
     // check if the parameter is animated and has become dirty
     if (dirty && m_enabled && !m_keys.empty()) {
         // update the value depending on the current time index
-        NumberParameter *timeParameter = dynamic_cast<NumberParameter *>(m_node->getTimeParameter());
+        NumberParameter *timeParameter = static_cast<NumberParameter *>(m_node->getTimeParameter());
 		if ( timeParameter ){
 			setValue(getKeyValueInterpol(timeParameter->getValue()));
 		}
@@ -579,7 +578,7 @@ unsigned int NumberParameter::getKeysSize () const
 QVariant NumberParameter::getKeyValuePos ( const float &time )
 {
     QList<Key *>::iterator iter = findIndex(time);
-
+    
     if ((*iter)->getIndex() == time)
         return (*iter)->getValue();
     else {
@@ -599,16 +598,27 @@ inline QVariant NumberParameter::getKeyValueInterpol ( const QVariant &time )
 {
 	const float pos = time.toDouble() * m_stepSize.toDouble();
     QList<Key *>::iterator iter = findIndex(pos);
-    if ( iter < m_keys.end() -1 ) {
-        register const float inBetween = pos - (*iter)->getIndex();
-        register const float lowerY    = (*iter)->getValue().toDouble();
-        register const float upperY    = (*(iter + 1))->getValue().toDouble();
+    if (pos > 2500)
+        int x = 50;
+
+    if (pos > m_keys.last()->getIndex())
+        return (m_keys.last())->getValue(); 
+    else if ( m_keys.begin() < iter ) {
+        Key *debugKey = (*iter);
+        //register const float inBetween = pos - (*iter)->getIndex();
+        register const float lowerX    = (*(iter-1))->getIndex();
+        register const float upperX    = (*iter)->getIndex();;
+        register const float lowerY    = (*(iter-1))->getValue().toDouble();
+        register const float upperY    = (*iter)->getValue().toDouble();
 
         // linear interpolation
-        return QVariant(lowerY * (1.0f - inBetween) + upperY * inBetween);
+        register const float factor = (pos - lowerX) / (upperX - lowerX);
+        register const float result = lowerY + (upperY - lowerY) * factor;
+        return QVariant(result);
     }
-    else
-        return (m_keys.last())->getValue();
+    else {
+        return (m_keys.first())->getValue();
+    }
 }
 
 
@@ -663,7 +673,7 @@ QVariant NumberParameter::getValue ( bool triggerEvaluation /* = false */ )
 //!
 inline QList<Key *>::iterator NumberParameter::findIndex ( const float &pos )
 {
-    return qLowerBound(m_keys.begin(), m_keys.end(), &Key(pos, 0.0f), lessThan);
+    return qUpperBound(m_keys.begin(), m_keys.end(), &Key(pos, 0.0f), lessThan);
 }
 
 
@@ -675,7 +685,7 @@ inline QList<Key *>::iterator NumberParameter::findIndex ( const float &pos )
 //!
 inline QList<Key *>::iterator NumberParameter::findIndex ( const Key *key )
 {
-    return qLowerBound(m_keys.begin(), m_keys.end(), key, lessThan);
+    return qUpperBound(m_keys.begin(), m_keys.end(), key, lessThan);
 }
 
 
