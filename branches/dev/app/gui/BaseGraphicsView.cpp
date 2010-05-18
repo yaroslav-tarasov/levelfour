@@ -61,7 +61,7 @@ BaseGraphicsView::BaseGraphicsView ( QWidget *parent /* = 0 */ ) :
     setObjectName("BaseGraphicsView");
     setMouseTracking(true);
     // Background Color
-	setBackgroundBrush(QColor(57,57,57));
+	setBackgroundBrush(QColor(52,52,52));
     setResizeAnchor(QGraphicsView::AnchorUnderMouse);
     setDragMode(QGraphicsView::RubberBandDrag);
 	

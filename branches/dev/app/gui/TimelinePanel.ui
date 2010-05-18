@@ -31,7 +31,7 @@
      <item>
       <widget class="QScrollArea" name="ui_scrollArea">
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(50, 50, 50);</string>
+        <string notr="true">background-color: rgb(114, 114, 114);</string>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Plain</enum>

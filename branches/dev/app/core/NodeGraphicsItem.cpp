@@ -171,17 +171,21 @@ void NodeGraphicsItem::setEnabled ( bool enabled )
 //!
 void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /* = 0 */ )
 {
-    static const int CornerRadius = 10;
+    static const int CornerRadius = 5;
 
     // define background color
     QColor backgroundColor;
-	QColor lightBackground = QColor(82,82,82);
-	QColor darkBackground = QColor(50,50,50);
+	QColor lightBackground = QColor(100,100,100);
+	QColor darkBackground = QColor(108,108,108);
+
+	backgroundColor.setAlphaF(0.6);
+	lightBackground.setAlphaF(1);
+	darkBackground.setAlphaF(0.6);
 
     if (widget)
-        backgroundColor = QColor(20,20,20);
+        backgroundColor = QColor(108,108,108);
     else
-        backgroundColor = lightBackground;
+        backgroundColor = darkBackground;
     if (m_hovered) // isUnderMouse() didn't always work here
         // backgroundColor = m_color;
 		backgroundColor = backgroundColor.lighter(145);
@@ -198,20 +202,20 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
     QLinearGradient linearGradient (0, rect().top(), 0, rect().bottom());
     
 	linearGradient.setColorAt(0, lightBackground);
-	linearGradient.setColorAt(0.1, darkBackground);
-	linearGradient.setColorAt(0.9, QColor(35,35,35));
+	linearGradient.setColorAt(0.2, lightBackground);
+	linearGradient.setColorAt(0.9, darkBackground);
 	
     if (m_node && m_node->isEvaluated())
         linearGradient.setColorAt(1, backgroundColor);
     else
-        linearGradient.setColorAt(1, backgroundColor.darker(125));
+        linearGradient.setColorAt(1, backgroundColor.darker(110));
 
     // draw the node's shape
     QBrush gradientBrush (linearGradient);
     if (isEnabled() && m_node && m_node->isEvaluated())
-        painter->setPen(QPen(QColor (20,20,20), 1));
+        painter->setPen(QPen(QColor (163,163,163), 1));
     else
-        painter->setPen(QPen(QColor (145,145,145), 1));
+        painter->setPen(QPen(QColor (175,175,175), 1));
     
 	painter->setBrush(gradientBrush);
     painter->setRenderHint(QPainter::Antialiasing);
@@ -226,7 +230,7 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
 
     // draw the node's name
     if (isEnabled())
-        painter->setPen(QPen(Qt::white, 1));
+        painter->setPen(QPen(Qt::black, 1));
     else
         painter->setPen(QPen(QColor (200,200,200), 1));
     painter->setClipping(true);
