@@ -1,0 +1,114 @@
+///////////////////////////////////////////////
+// Shared "lambskin" diffuse function /////////
+///////////////////////////////////////////////
+
+//
+// vectors are assumed to be normalized as needed
+//
+void lambskin(float3 N,
+	      float3 L,
+	      float3 DiffColor,
+	      float3 SubColor,
+	      uniform float RollOff,
+	      out float3 Diffuse,
+	      out float3 Subsurface
+) {
+    float ldn = dot(L,N);
+    float diffComp = max(0,ldn);
+    Diffuse = diffComp * DiffColor;
+    float subLamb = smoothstep(-RollOff,1.0,ldn) - smoothstep(0.0,1.0,ldn);
+    subLamb = max(0.0,subLamb);
+    Subsurface = subLamb * SubColor;
+}
+
+/********* pixel shader ********/
+
+void lamb_ps_shared(
+
+			
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+			
+		uniform float3 DiffColor,
+		uniform float3 SubColor,
+		uniform float RollOff,
+		    
+		out float3 DiffuseContrib,
+		out float3 SubContrib)
+{
+    float3 Ln = normalize(LightVec.xyz);
+    float3 Nn = normalize(WorldNormal);
+    lambskin(Nn,Ln,
+		DiffColor,SubColor,RollOff,
+		DiffuseContrib,SubContrib);
+}
+
+float4 lambPS(
+
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldTangent	: TEXCOORD3,
+		float3 WorldBinormal : TEXCOORD4,
+		float3 WorldView	: TEXCOORD5,
+			
+		uniform float3 DiffColor,
+		uniform float3 SubColor,
+		uniform float RollOff,
+		uniform float3 AmbiColor
+) : COLOR {
+	float3 diffContrib;
+	float3 subContrib;
+	lamb_ps_shared(LightVec,WorldNormal,DiffColor,SubColor,RollOff,diffContrib,subContrib);
+	float3 litC = diffContrib + AmbiColor + subContrib;
+	return float4(litC.rgb,1);
+}
+
+float4 lambPS_t(
+
+		float4 HPosition	: POSITION,
+		float2 UV		: TEXCOORD0,
+		float3 LightVec	: TEXCOORD1,
+		float3 WorldNormal	: TEXCOORD2,
+		float3 WorldTangent	: TEXCOORD3,
+		float3 WorldBinormal : TEXCOORD4,
+		float3 WorldView	: TEXCOORD5,
+			
+		uniform float3 DiffColor,
+		uniform float3 SubColor,
+		uniform float RollOff,
+		uniform sampler2D ColorSampler : register(s0),
+		uniform float3 AmbiColor
+) : COLOR {
+	float3 diffContrib;
+	float3 subContrib;
+	lamb_ps_shared(LightVec,WorldNormal,DiffColor,SubColor,RollOff,diffContrib,subContrib);
+	float3 litC = diffContrib + AmbiColor + subContrib;
+	float4 T = tex2D(ColorSampler,UV);
+	return float4(litC.rgb*T.rgb,T.a);
+}
+
+// just pass-through vertex shaded values
+
+float4 lambPS_pass(
+
+	float4 HPosition	: POSITION,
+    float2 UV		: TEXCOORD0,
+    float4 diffCol	: COLOR0
+	) : COLOR 
+{
+    return diffCol;
+}
+
+float4 lambPS_pass_t(
+			
+	float4 HPosition	: POSITION,
+    float2 UV		: TEXCOORD0,
+	float4 diffCol	: COLOR0,
+	uniform sampler2D ColorSampler : register(s0)
+) : COLOR 
+{
+    float4 result = diffCol * tex2D(ColorSampler,UV.xy);
+    return float4(result.rgb,1);
+}

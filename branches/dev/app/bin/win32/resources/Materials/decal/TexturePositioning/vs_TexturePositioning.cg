@@ -1,0 +1,54 @@
+
+
+void texPosVS(
+
+	float3 Position	: POSITION,
+    float4 UVIN		: TEXCOORD0,
+    float4 Normal	: NORMAL0,
+	
+	out float4 HPosition	: POSITION,
+    out float2 UV	: TEXCOORD0,
+    out float4 diffCol	: COLOR0,
+    
+	uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+    uniform float4x4 WorldIXf,
+    uniform float3 SurfaceColor,
+    uniform float3 LampPos,
+    uniform float3 AmbiColor,
+    uniform float RepeatS,
+    uniform float RepeatT,
+    uniform float Angle,
+    uniform float RotCenterS,
+    uniform float RotCenterT,
+    uniform float OffsetS,
+    uniform float OffsetT,
+    uniform bool FlipY,
+    uniform float Lighting
+) {
+    float4 Po = float4(Position.xyz,1.0);
+    float4 Pw = mul(WorldXf,Po);
+    float4 LightVec = normalize(float4(LampPos.xyz,1) - Pw);
+    float4 Ln = normalize(mul(WorldIXf,LightVec));
+    float4 Nn = normalize(Normal);
+    float ldn = dot(Ln,Nn);
+    float3 d = (max(0,ldn)) * SurfaceColor + AmbiColor;
+    diffCol.rgb = lerp(float3(1,1,1),d,Lighting);
+    diffCol.a = 1.0;
+    HPosition = mul(WvpXf,Po);
+    float a = radians(Angle);
+    float ca = cos(a);
+    float sa = sin(a);
+    float2 off = float2(RotCenterS,RotCenterT);
+    float2 nuv = UVIN.xy;
+    if (FlipY) {
+    	nuv.y = 1.0 - nuv.y;
+    }
+    nuv = nuv - off;
+    float2 ruv = float2(nuv.x*ca-nuv.y*sa,nuv.x*sa+nuv.y*ca);
+    nuv = ruv + off;
+    UV = float2(max(0.001,RepeatS) * nuv.x + OffsetS,
+		    max(0.001,RepeatT) * nuv.y + OffsetT);
+}

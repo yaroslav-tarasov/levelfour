@@ -1,0 +1,81 @@
+/*********************************************************/
+/*********** pixel shader ********************************/
+/*********************************************************/
+
+float4 toksvigPS(
+
+			vertexOutput IN,
+		    
+			uniform float3 SurfaceColor,
+		    uniform sampler2D NormalSampler : register(s0),
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float3 LightDir,
+		    uniform float3 LampColor,
+		    uniform float3 AmbiColor,
+		    uniform sampler2D SpecSampler : register(s0)
+) : COLOR {
+    float3 Nn = /*normalize*/(IN.WorldNormal);
+    float3 Tn = /*normalize*/(IN.WorldTangent);
+    float3 Bn = /*normalize*/(IN.WorldBinorm);
+    float3 bumps = 2.0 * (tex2D(NormalSampler,IN.UV).xyz-(0.5).xxx);
+    float3 Na = bumps.x * Tn + bumps.y * Bn + bumps.z * Nn;
+    float3 Vn = normalize(IN.WorldView);
+    float3 Ln = /*normalize*/(-LightDir);	// normalize() required? FXComposer should provide pre-norm'd value
+    float3 Hn = normalize(Vn + Ln);
+    float NaH = dot(Hn,Na);
+	float NaNa = dot(Na,Na);
+	//float2 texelAdjust = (0.5/TOX_TABLE_SIZE).xx;
+	//float s = tex2D(SpecSampler,float2(NaH,NaNa)+texelAdjust).x;
+	float s = tex2D(SpecSampler,float2(NaH,NaNa)).x;
+    Nn = normalize(Na);
+    float ldn = dot(Ln,Nn);
+	ldn = max(ldn,0);
+    float3 diffContrib = ldn * LampColor;
+    float3 specContrib = ((s * Ks) * LampColor);
+    // add, incorporating ambient light term
+#ifdef DO_COLORTEX
+    float3 colorTex = SurfaceColor * tex2D(ColorSampler,IN.UV).xyz;
+#define SURF_COLOR colorTex
+#else /* !DO_COLORTEX */
+#define SURF_COLOR SurfaceColor
+#endif /* !DO_COLORTEX */
+    float3 result = SURF_COLOR*(Kd*diffContrib+AmbiColor) + specContrib;
+    return float4(result.xyz,1.0);
+}
+
+float4 nonToksvigPS(
+
+			vertexOutput IN,
+		    uniform float3 SurfaceColor,
+		    uniform sampler2D NormalSampler : register(s0),
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float3 LightDir,
+		    uniform float3 LampColor,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 Nn = normalize(IN.WorldNormal);
+    float3 Tn = normalize(IN.WorldTangent);
+    float3 Bn = normalize(IN.WorldBinorm);
+    float3 bumps = (Bumpy*2.0) * (tex2D(NormalSampler,IN.UV).xyz-(0.5).xxx);
+    Nn = (bumps.x*Tn + bumps.y*Bn + bumps.z*Nn);
+    Nn = normalize(Nn);
+    float3 Vn = normalize(IN.WorldView);
+    float3 Ln = normalize(-LightDir);	// normalize() required?
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = dot(Hn,Nn);
+    float ldn = dot(Ln,Nn);
+    float4 litVec = lit(ldn,hdn,SPEC_EXPON);
+    float3 diffContrib = litVec.y * LampColor;
+    float3 specContrib = ((litVec.z * Ks) * LampColor);
+    // add, incorporating ambient light term
+#ifdef DO_COLORTEX
+    float3 colorTex = SurfaceColor * tex2D(ColorSampler,IN.UV).xyz;
+#define SURF_COLOR colorTex
+#else /* !DO_COLORTEX */
+#define SURF_COLOR SurfaceColor
+#endif /* !DO_COLORTEX */
+    float3 result = SURF_COLOR*(Kd*diffContrib+AmbiColor) + specContrib;
+    return float4(result.xyz,1.0);
+}

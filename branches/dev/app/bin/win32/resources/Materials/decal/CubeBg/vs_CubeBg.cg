@@ -1,0 +1,14 @@
+void CubeVS(
+    float3 PositionIN : POSITION, 
+    float3 TexCoord : TEXCOORD0,
+	
+	out float4 Position	: POSITION,
+    out float3 UVW		: TEXCOORD0,
+	
+    uniform float4x4 WorldViewIXf
+) {
+    Position = float4(PositionIN.xyz, 1);
+    UVW = mul(WorldViewIXf,float4(-PositionIN.xy,1,0)).xyz; 
+    UVW.xy *= -1.0;
+
+}

@@ -1,0 +1,12 @@
+
+float4 CubePS(
+	
+	float4 Position	: POSITION,
+    float3 UVW		: TEXCOORD0,
+    
+	uniform samplerCUBE BgSampler : register(s0),
+	uniform float BgIntensity
+) : COLOR {   
+    float4 texCol = BgIntensity*texCUBE(BgSampler, UVW);
+    return texCol;
+}  

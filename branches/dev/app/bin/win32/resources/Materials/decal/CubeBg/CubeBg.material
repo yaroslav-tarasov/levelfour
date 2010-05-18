@@ -1,0 +1,60 @@
+/*
+
+% Put a 3D texture *behind* the current scene
+
+*/
+
+vertex_program CubeBg_vs cg {
+	source vs_CubeBg.cg
+	entry_point CubeVS
+	profiles arbvp1
+	
+	default_params {
+	
+		param_named_auto 	WorldViewIXf 	inverse_worldview_matrix 
+	}
+}
+
+fragment_program CubeBg_ps cg {
+	source ps_CubeBg.cg
+	entry_point CubePS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 		BgIntensity 	float  	1.0
+		
+	}
+}
+
+// CubeBg_Default
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref CubeBg_vs {
+						
+			}
+			
+			fragment_program_ref CubeBg_ps {
+				
+			}
+			
+			texture_unit {
+			
+				cubic_texture cubebg_default_reflection.dds combinedUVW
+				tex_coord_set 0
+				tex_address_mode clamp
+				env_map spherical
+			
+			}
+
+		}
+		
+		
+	}
+}
