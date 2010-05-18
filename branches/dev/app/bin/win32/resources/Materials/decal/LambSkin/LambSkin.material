@@ -1,0 +1,195 @@
+/*
+
+% A lambertian-like surface with light "bleed-through" -- appropriate
+% for soft translucent materials like skin. The "subColor" represents
+% the tinting acquired by light diffused below the surface.
+% Set the "Rolloff" angle to the cosine of the angle used for
+% additional lighting "wraparound" -- the diffuse effect propogates based
+% on the angle of LightDirection versus SurfaceNormal.
+%     Versions are provided for shading in pixel or vertex shaders,
+% textured or untextured.
+
+*/
+
+vertex_program LambSkin_vs cg {
+	source vs_LambSkin.cg
+	entry_point lambVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LampPos			float3 		-0.5 2.0 1.25
+		param_named  	DiffColor		float3 		0.9 1.0 0.9
+		param_named  	SubColor		float3 		1.0 0.2 0.2
+		param_named  	RollOff			float 		0.2
+		param_named  	AmbiColor		float3 		0.07 0.07 0.07		
+	}
+}
+
+vertex_program LambSkin_std_vs cg {
+	source vs_LambSkin.cg
+	entry_point std_VS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		param_named 	LampPos			float3 	-0.5 2.0 1.25
+	}
+}
+
+fragment_program LambSkin_ps cg {
+	source ps_LambSkin.cg
+	entry_point lambPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  DiffColor	float3 		0.9 1.0 0.9
+		param_named  SubColor	float3 		1.0 0.2 0.2
+		param_named  RollOff	float 		0.2
+		param_named  AmbiColor	float3 		0.07 0.07 0.07
+
+	}
+}
+
+fragment_program LambSkin_ps_t cg {
+	source ps_LambSkin.cg
+	entry_point lambPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  DiffColor	float3 		0.9 1.0 0.9
+		param_named  SubColor	float3 		1.0 0.2 0.2
+		param_named  RollOff	float 		0.2
+		param_named  AmbiColor	float3 		0.07 0.07 0.07
+		
+	}
+}
+
+fragment_program LambSkin_pass_ps cg {
+	source ps_LambSkin.cg
+	entry_point lambPS_pass
+	profiles arbfp1
+	
+	default_params {
+						
+	}
+}
+
+fragment_program LambSkin_pass_t_ps cg {
+	source ps_LambSkin.cg
+	entry_point lambPS_pass_t
+	profiles arbfp1
+	
+	default_params {
+			
+	}
+}
+
+// LambSkin_UntexturedVS
+material LambSkin_UntexturedVS {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref LambSkin_vs {
+							
+			}
+			
+			fragment_program_ref LambSkin_pass_ps {
+				
+			}
+			
+		}
+		
+	}
+}
+// TexturedVS
+material TexturedVS_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref LambSkin_vs {
+							
+			}
+			
+			fragment_program_ref LambSkin_pass_t_ps {
+				
+			}
+			
+			texture_unit
+			{
+				texture lambskin_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+		}
+		
+	}
+}
+// LambSkin_UntexturedPS 
+material LambSkin_UntexturedPS {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref LambSkin_std_vs {
+							
+			}
+			
+			fragment_program_ref LambSkin_ps {
+				
+			}
+			
+		}
+		
+	}
+}
+
+// TexturedPS
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref LambSkin_std_vs {
+							
+			}
+			
+			fragment_program_ref LambSkin_ps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture lambskin_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+		}
+		
+	}
+}

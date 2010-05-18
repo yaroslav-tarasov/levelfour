@@ -13,8 +13,8 @@ vertex_program plastic_vs cg {
 	
 	default_params {
 		
-		param_named_auto WorldITXf 		world_matrix
-		param_named_auto WorldXf 		inverse_transpose_world_matrix
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
 		param_named_auto ViewIXf 		inverse_view_matrix
 		param_named_auto WvpXf 			worldviewproj_matrix
 		param_named 	LampDirPos		float4 	-0.5 2.0 1.25 1.0		
