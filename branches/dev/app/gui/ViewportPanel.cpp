@@ -61,10 +61,10 @@ ViewportPanel::ViewportPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags 
     m_fullscreen(false),
     m_stageActionGroup(0),
     m_cameraComboBox(0),
-    m_cameraCreator(false),
-	m_fogSpinBox(new QDoubleSpinBox(this)),
-	m_fogCheckBox(new QCheckBox(this)),
-    m_fogColorButton(new QPushButton(this)),
+    // m_cameraCreator(false),
+	// m_fogSpinBox(new QDoubleSpinBox(this)),
+	// m_fogCheckBox(new QCheckBox(this)),
+    // m_fogColorButton(new QPushButton(this)),
     m_backgroundColorButton(new QPushButton(this))
 {
     setupUi(this);
@@ -80,17 +80,17 @@ ViewportPanel::ViewportPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags 
     connect(ui_homeAction, SIGNAL(triggered()), m_viewportWidget, SLOT(homeView()));
     connect(ui_wireframeAction, SIGNAL(toggled(bool)), m_viewportWidget, SLOT(setWireframe(bool)));
     connect(ui_backfaceCullingAction, SIGNAL(toggled(bool)), m_viewportWidget, SLOT(setBackfaceCulling(bool)));
-    connect(ui_originAction, SIGNAL(toggled(bool)), m_viewportWidget, SLOT(toggleOrigin()));
-    connect(ui_centerPointAction, SIGNAL(toggled(bool)), m_viewportWidget, SLOT(toggleCenterPoint()));
+    // connect(ui_originAction, SIGNAL(toggled(bool)), m_viewportWidget, SLOT(toggleOrigin()));
+    // connect(ui_centerPointAction, SIGNAL(toggled(bool)), m_viewportWidget, SLOT(toggleCenterPoint()));
     connect(ui_orientationIndicatorAction, SIGNAL(toggled(bool)), m_viewportWidget, SLOT(toggleOrientationIndicator()));
     connect(ui_gridAction, SIGNAL(toggled(bool)), m_viewportWidget, SLOT(toggleGrid()));
 #ifdef USE_STEREO    
     connect(ui_stereoAction, SIGNAL(toggled(bool)), this, SLOT(toggleFullscreen(bool)));
     connect(ui_stereoDialogAction, SIGNAL(triggered()), this, SLOT(showStereoDialog()));
 #endif
-	connect(m_fogSpinBox, SIGNAL(valueChanged(double)), this, SLOT(changeFog(double)));
-	connect(m_fogCheckBox, SIGNAL(stateChanged(int)), this, SLOT(changeFog(int)));
-    connect(m_fogColorButton, SIGNAL(pressed()), this, SLOT(changeFogColor()));
+	// connect(m_fogSpinBox, SIGNAL(valueChanged(double)), this, SLOT(changeFog(double)));
+	// connect(m_fogCheckBox, SIGNAL(stateChanged(int)), this, SLOT(changeFog(int)));
+    // connect(m_fogColorButton, SIGNAL(pressed()), this, SLOT(changeFogColor()));
     connect(m_backgroundColorButton, SIGNAL(pressed()), this, SLOT(changeBackgroundColor()));
 
     // initialize main tool bar actions
@@ -99,8 +99,8 @@ ViewportPanel::ViewportPanel ( QWidget *parent /* = 0 */, Qt::WindowFlags flags 
     ui_gridAction->setChecked(true);
     ui_orientationIndicatorAction->setChecked(true);
     ui_stereoAction->setChecked(false);
-    ui_overlayOnlyAction->setChecked(false);
-    m_parameterMap["overlayOnly"] = "0";
+    // ui_overlayOnlyAction->setChecked(false);
+    // m_parameterMap["overlayOnly"] = "0";
 
 
     // create an action group for the stage actions
@@ -166,8 +166,8 @@ void ViewportPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar
     mainToolBar->addAction(ui_wireframeAction);
     mainToolBar->addAction(ui_backfaceCullingAction);
     mainToolBar->addSeparator();
-    mainToolBar->addAction(ui_originAction);
-    mainToolBar->addAction(ui_centerPointAction);
+    // mainToolBar->addAction(ui_originAction);
+    // mainToolBar->addAction(ui_centerPointAction);
     mainToolBar->addAction(ui_orientationIndicatorAction);
     mainToolBar->addAction(ui_gridAction);
 #ifdef USE_STEREO
@@ -175,36 +175,36 @@ void ViewportPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar
     mainToolBar->addAction(ui_stereoDialogAction);
     mainToolBar->addAction(ui_stereoAction);
 #endif
-    mainToolBar->addSeparator();
-    mainToolBar->addAction(ui_overlayOnlyAction);
-	mainToolBar->addSeparator();
-	QLabel *fogLabel = new QLabel(tr("Fog - on/off: "), this);
-    QLabel *fogDensityLabel = new QLabel(tr("Density: "), this);
-    QLabel *fogColorLabel = new QLabel(tr("Color: "), this);
-    QLabel *fogSpacerLabel = new QLabel(tr(" "), this);
-    fogLabel->setFixedWidth(70);
-    fogDensityLabel->setFixedWidth(40);
-    fogColorLabel->setFixedWidth(30);
-    fogSpacerLabel->setFixedWidth(10);
-    m_fogSpinBox->setDecimals(3);
-    m_fogSpinBox->setSingleStep(0.001);
-	mainToolBar->addWidget(fogLabel);
-    mainToolBar->addWidget(m_fogCheckBox);
-    mainToolBar->addWidget(fogDensityLabel);
-	mainToolBar->addWidget(m_fogSpinBox);
-    if (m_fogColorButton) {
-        const QColor &fogColor = m_viewportWidget->getFogColor();    
-        m_fogColorButton->setStyleSheet(QString("background: rgb(%1, %2, %3);").arg(fogColor.red()).arg(fogColor.green()).arg(fogColor.blue()));
-    }
-    mainToolBar->addWidget(fogSpacerLabel);
-    mainToolBar->addWidget(fogColorLabel);
-    mainToolBar->addWidget(m_fogColorButton);
-    mainToolBar->addSeparator();
+    // mainToolBar->addSeparator();
+    // mainToolBar->addAction(ui_overlayOnlyAction);
+	// mainToolBar->addSeparator();
+	// QLabel *fogLabel = new QLabel(tr("Fog - on/off: "), this);
+    // QLabel *fogDensityLabel = new QLabel(tr("Density: "), this);
+    // QLabel *fogColorLabel = new QLabel(tr("Color: "), this);
+    // QLabel *fogSpacerLabel = new QLabel(tr(" "), this);
+    // fogLabel->setFixedWidth(70);
+    // fogDensityLabel->setFixedWidth(40);
+    // fogColorLabel->setFixedWidth(30);
+    // fogSpacerLabel->setFixedWidth(10);
+    // m_fogSpinBox->setDecimals(3);
+    // m_fogSpinBox->setSingleStep(0.001);
+	// mainToolBar->addWidget(fogLabel);
+    // mainToolBar->addWidget(m_fogCheckBox);
+    // mainToolBar->addWidget(fogDensityLabel);
+	// mainToolBar->addWidget(m_fogSpinBox);
+    // if (m_fogColorButton) {
+    //     const QColor &fogColor = m_viewportWidget->getFogColor();    
+    //     m_fogColorButton->setStyleSheet(QString("background: rgb(%1, %2, %3);").arg(fogColor.red()).arg(fogColor.green()).arg(fogColor.blue()));
+    // }
+    // mainToolBar->addWidget(fogSpacerLabel);
+    // mainToolBar->addWidget(fogColorLabel);
+    // mainToolBar->addWidget(m_fogColorButton);
+    // mainToolBar->addSeparator();
     if (m_backgroundColorButton) {
         const QColor &backgroundColor = m_viewportWidget->getBackgroundColor();    
         m_backgroundColorButton->setStyleSheet(QString("background: rgb(%1, %2, %3);").arg(backgroundColor.red()).arg(backgroundColor.green()).arg(backgroundColor.blue()));
     }
-    QLabel *backgroundColorLabel = new QLabel(tr("Background color: "), this);
+    QLabel *backgroundColorLabel = new QLabel(tr("Background: "), this);
     mainToolBar->addWidget(backgroundColorLabel);
     mainToolBar->addWidget(m_backgroundColorButton);
 
@@ -216,12 +216,12 @@ void ViewportPanel::fillToolBars ( QToolBar *mainToolBar, QToolBar *panelToolBar
     ui_saveViewAction->setEnabled(false);
 
     // fill the panel tool bar with camera actions and the camera selection combo box
-    panelToolBar->addAction(ui_addCameraAction);
+    // panelToolBar->addAction(ui_addCameraAction);
     panelToolBar->addAction(ui_saveViewAction);
     panelToolBar->addWidget(m_cameraComboBox);
     panelToolBar->addAction(ui_linkViewAction);
-    panelToolBar->addAction(ui_selectCameraAction);
-    panelToolBar->addAction(ui_removeCameraAction);
+    // panelToolBar->addAction(ui_selectCameraAction);
+    // panelToolBar->addAction(ui_removeCameraAction);
     panelToolBar->addSeparator();
     panelToolBar->addAction(ui_stagesMenuAction);
 
@@ -255,11 +255,7 @@ void ViewportPanel::setPanelParameters ( const QMap<QString, QString> &parameter
                 //  stageAction->setChecked(false);
             }
         }
-        // set view only overlay
-        else if (parameterName == "overlayOnly") {
-            bool checked = (bool) parameterValue.toUInt();
-            ui_overlayOnlyAction->setChecked((bool) parameterValue.toUInt());
-        }
+        
         // set camera link status
         else if (parameterName == "cameraLinked") {
             bool checked = (bool) parameterValue.toUInt();
@@ -409,9 +405,6 @@ void ViewportPanel::keyPressEvent ( QKeyEvent *event )
         case Qt::Key_B:
             ui_backfaceCullingAction->toggle();
             break;
-        case Qt::Key_C:
-            ui_centerPointAction->toggle();
-            break;
         case Qt::Key_D:
             ui_stereoDialogAction->trigger();
             break;
@@ -429,9 +422,6 @@ void ViewportPanel::keyPressEvent ( QKeyEvent *event )
             break;
         case Qt::Key_L:
             ui_linkViewAction->toggle();
-            break;
-        case Qt::Key_O:
-            ui_originAction->toggle();
             break;
         case Qt::Key_S:
             ui_stereoAction->toggle();
@@ -596,21 +586,6 @@ void ViewportPanel::setStereoParameters ()
 /// Private Slots
 ///
 
-
-//!
-//! Requests the creation of a new camera node with the current viewing
-//! parameters.
-//!
-//! \param checked The action's checked state.
-//!
-void ViewportPanel::on_ui_addCameraAction_triggered ( bool checked /* = false */ )
-{
-    m_cameraCreator = true;
-    emit newCameraRequested(m_viewportWidget->getViewingParameters());
-    m_cameraCreator = false;
-}
-
-
 //!
 //! Requests an update of the currently selected camera if the action is
 //! currently checked.
@@ -647,34 +622,6 @@ void ViewportPanel::on_ui_selectCameraAction_triggered ( bool checked /* = false
 }
 
 
-//!
-//! Requests the deletion of an existing camera node.
-//!
-//! \param checked The action's checked state.
-//!
-void ViewportPanel::on_ui_removeCameraAction_triggered ( bool checked /* = false */ )
-{
-    if (m_cameraComboBox /* && m_cameraComboBox->currentIndex() > 0 */)
-        emit deleteCameraRequested(m_cameraComboBox->currentText());
-}
-
-//!
-//! Sets whether only overlays (no geometry) should be displayed in viewport.
-//!
-//! \param checked The action's checked state.
-//!
-void ViewportPanel::on_ui_overlayOnlyAction_toggled ( bool checked /* = false */ )
-{
-    m_viewportWidget->setOverlayOnly(checked);
-    m_viewportWidget->update();
-    
-    // set parameters for load/save
-    if (checked)
-        m_parameterMap["overlayOnly"] = "1";
-    else
-        m_parameterMap["overlayOnly"] = "0";
-}
-
 
 //!
 //! Selects the camera to use for the viewport.
@@ -687,7 +634,7 @@ void ViewportPanel::selectCamera ( const QString &cameraName )
 
     ui_linkViewAction->setEnabled(!freeCameraSelected);
     ui_selectCameraAction->setEnabled(!freeCameraSelected);
-    ui_removeCameraAction->setEnabled(!freeCameraSelected);
+    // ui_removeCameraAction->setEnabled(!freeCameraSelected);
 
     if (ui_linkViewAction->isChecked()) {
         emit applyCameraRequested(m_cameraComboBox->currentText(), m_viewportWidget->getViewingParameters());
@@ -741,36 +688,6 @@ void ViewportPanel::selectStage ( /*QAction *triggeredAction*/ )
     //    }
     //} else
     //    Log::error("The triggered action could not be found in the list of actions contained in the stage action group.", "ViewportPanel::selectStage");
-}
-
-//!
-//! Sets new fog configuration.
-//!
-void ViewportPanel::changeFog ( double value )
-{
-	m_viewportWidget->setFog(m_fogCheckBox->isChecked(), m_fogSpinBox->value());	
-}
-
-//!
-//! Sets new fog configuration.
-//!
-void ViewportPanel::changeFog ( int value )
-{
-	m_viewportWidget->setFog(m_fogCheckBox->isChecked(), m_fogSpinBox->value());	
-}
-
-//!
-//! Changes fog color.
-//!
-void ViewportPanel::changeFogColor ()
-{
-    const QColor &currentFogColor = m_viewportWidget->getFogColor();
-    const QColor &fogColor = QColorDialog::getColor(currentFogColor);
-    if (fogColor.isValid()) {
-        m_fogColorButton->setStyleSheet(QString("background: rgb(%1, %2, %3);").arg(fogColor.red()).arg(fogColor.green()).arg(fogColor.blue()));
-        m_viewportWidget->setFogColor(fogColor);
-        m_viewportWidget->setFog(m_fogCheckBox->isChecked(), m_fogSpinBox->value());
-    }
 }
 
 //!

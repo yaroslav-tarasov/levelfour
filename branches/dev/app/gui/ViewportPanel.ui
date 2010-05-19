@@ -27,30 +27,12 @@
     <number>1</number>
    </property>
   </layout>
-  <action name="ui_originAction">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../main.qrc">
-     <normaloff>:/originIcon</normaloff>:/originIcon</iconset>
-   </property>
-   <property name="text">
-    <string>Origin</string>
-   </property>
-   <property name="toolTip">
-    <string>Origin [O]</string>
-   </property>
-  </action>
   <action name="ui_wireframeAction">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/wireframeIcon</normaloff>:/wireframeIcon</iconset>
    </property>
    <property name="text">
@@ -62,7 +44,7 @@
   </action>
   <action name="ui_previousViewAction">
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/backwardIcon</normaloff>:/backwardIcon</iconset>
    </property>
    <property name="text">
@@ -71,7 +53,7 @@
   </action>
   <action name="ui_nextViewAction">
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/forwardIcon</normaloff>:/forwardIcon</iconset>
    </property>
    <property name="text">
@@ -80,7 +62,7 @@
   </action>
   <action name="ui_homeAction">
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/homeIcon</normaloff>:/homeIcon</iconset>
    </property>
    <property name="text">
@@ -95,7 +77,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/backfaceCullingIcon</normaloff>:/backfaceCullingIcon</iconset>
    </property>
    <property name="text">
@@ -110,7 +92,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/gridIcon</normaloff>:/gridIcon</iconset>
    </property>
    <property name="text">
@@ -128,7 +110,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/stereoIcon</normaloff>:/stereoIcon</iconset>
    </property>
    <property name="text">
@@ -146,7 +128,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/stereoConfigIcon</normaloff>:/stereoConfigIcon</iconset>
    </property>
    <property name="text">
@@ -159,43 +141,6 @@
     <enum>Qt::WindowShortcut</enum>
    </property>
   </action>
-	 <action name="ui_overlayOnlyAction">
-		 <property name="checkable">
-			 <bool>true</bool>
-		 </property>
-		 <property name="icon">
-			 <iconset resource="../main.qrc">
-				 <normaloff>:/stereoIcon</normaloff>:/stereoIcon
-			 </iconset>
-		 </property>
-		 <property name="text">
-			 <string>Show Overlay Only</string>
-		 </property>
-		 <property name="toolTip">
-			 <string>Show Overlay Only</string>
-		 </property>
-		 <property name="shortcutContext">
-			 <enum>Qt::WindowShortcut</enum>
-		 </property>
-	 </action>
-  <action name="ui_centerPointAction">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../main.qrc">
-     <normaloff>:/centerPointIcon</normaloff>:/centerPointIcon</iconset>
-   </property>
-   <property name="text">
-    <string>Center Point</string>
-   </property>
-   <property name="toolTip">
-    <string>Center Point [C]</string>
-   </property>
-  </action>
   <action name="ui_orientationIndicatorAction">
    <property name="checkable">
     <bool>true</bool>
@@ -204,7 +149,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/orientationIndicatorIcon</normaloff>:/orientationIndicatorIcon</iconset>
    </property>
    <property name="text">
@@ -219,7 +164,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/stage1Icon</normaloff>:/stage1Icon</iconset>
    </property>
    <property name="text">
@@ -235,30 +180,12 @@
     <string>Indicates which stage is displayed in the panel</string>
    </property>
   </action>
-  <action name="ui_addCameraAction">
-   <property name="icon">
-    <iconset resource="../main.qrc">
-     <normaloff>:/addCameraIcon</normaloff>:/addCameraIcon</iconset>
-   </property>
-   <property name="text">
-    <string>Add Camera</string>
-   </property>
-  </action>
-  <action name="ui_removeCameraAction">
-   <property name="icon">
-    <iconset resource="../main.qrc">
-     <normaloff>:/removeCameraIcon</normaloff>:/removeCameraIcon</iconset>
-   </property>
-   <property name="text">
-    <string>Remove Camera</string>
-   </property>
-  </action>
   <action name="ui_linkViewAction">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/cameraLinkIcon</normaloff>:/cameraLinkIcon</iconset>
    </property>
    <property name="text">
@@ -267,7 +194,7 @@
   </action>
   <action name="ui_saveViewAction">
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/saveCameraIcon</normaloff>:/saveCameraIcon</iconset>
    </property>
    <property name="text">
@@ -276,7 +203,7 @@
   </action>
   <action name="ui_selectCameraAction">
    <property name="icon">
-    <iconset resource="../main.qrc">
+    <iconset>
      <normaloff>:/selectCameraIcon</normaloff>:/selectCameraIcon</iconset>
    </property>
    <property name="text">
