@@ -216,7 +216,7 @@ private slots: //
     //!
     //! \param checked The action's checked state.
     //!
-    void on_ui_addCameraAction_triggered ( bool checked = false );
+    // void on_ui_addCameraAction_triggered ( bool checked = false );
 
     //!
     //! Requests an update of the currently selected camera if the action is
@@ -238,14 +238,14 @@ private slots: //
     //!
     //! \param checked The action's checked state.
     //!
-    void on_ui_removeCameraAction_triggered ( bool checked = false );
+    // void on_ui_removeCameraAction_triggered ( bool checked = false );
 
     //!
     //! Sets whether only overlays (no geometry) should be displayed in viewport.
     //!
     //! \param checked The action's checked state.
     //!
-    void on_ui_overlayOnlyAction_toggled ( bool checked = false );
+    // void on_ui_overlayOnlyAction_toggled ( bool checked = false );
 
     //!
     //! Selects the camera to use for the viewport.
@@ -273,17 +273,17 @@ private slots: //
 	//!
     //! Sets new fog configuration.
     //!
-    void changeFog ( double value );
+    // void changeFog ( double value );
 
 	//!
     //! Sets new fog configuration.
     //!
-    void changeFog ( int value );
+    // void changeFog ( int value );
 
     //!
     //! Changes fog color.
     //!
-    void changeFogColor ();
+    // void changeFogColor ();
 
     //!
     //! Changes background color.
@@ -311,17 +311,17 @@ private: // data
 	//!
     //! Line edit value for fog density.
     //!
-    QDoubleSpinBox *m_fogSpinBox;
+    // QDoubleSpinBox *m_fogSpinBox;
 
 	//!
     //! Checkbox which enables/disables for in the associated viewport.
     //!
-    QCheckBox *m_fogCheckBox;
+    // QCheckBox *m_fogCheckBox;
 
     //!
     //! Color button for choosing fog color.
     //!
-    QPushButton *m_fogColorButton;
+    // QPushButton *m_fogColorButton;
 
     //!
     //! Color button for choosing background color.

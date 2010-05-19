@@ -175,15 +175,15 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
 
     // define background color
     QColor backgroundColor;
-	QColor lightBackground = QColor(100,100,100);
-	QColor darkBackground = QColor(108,108,108);
+	QColor lightBackground = QColor(110,110,110);
+	QColor darkBackground = QColor(120,120,120);
 
 	backgroundColor.setAlphaF(0.6);
 	lightBackground.setAlphaF(1);
 	darkBackground.setAlphaF(0.6);
 
     if (widget)
-        backgroundColor = QColor(108,108,108);
+        backgroundColor = QColor(110,110,110);
     else
         backgroundColor = darkBackground;
     if (m_hovered) // isUnderMouse() didn't always work here
@@ -213,9 +213,9 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
     // draw the node's shape
     QBrush gradientBrush (linearGradient);
     if (isEnabled() && m_node && m_node->isEvaluated())
-        painter->setPen(QPen(QColor (163,163,163), 1));
+        painter->setPen(QPen(QColor (190,190,190), 1));
     else
-        painter->setPen(QPen(QColor (175,175,175), 1));
+        painter->setPen(QPen(Qt::white, 1));
     
 	painter->setBrush(gradientBrush);
     painter->setRenderHint(QPainter::Antialiasing);
@@ -232,7 +232,7 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
     if (isEnabled())
         painter->setPen(QPen(Qt::black, 1));
     else
-        painter->setPen(QPen(QColor (200,200,200), 1));
+        painter->setPen(QPen(Qt::white, 1));
     painter->setClipping(true);
     painter->setClipRect(rect().adjusted(2, 2, -2, -2));
     painter->setRenderHint(QPainter::TextAntialiasing);
