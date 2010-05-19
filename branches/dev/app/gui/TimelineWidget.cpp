@@ -66,7 +66,7 @@ TimelineWidget::TimelineWidget ( QWidget *parent /* = 0 */, Qt::WindowFlags flag
     m_endGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_AfterFrame, palette().color(QPalette::Button), this)),
     m_inGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_BeforeFrame, palette().color(QPalette::Mid), this)),
     m_outGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_AfterFrame, palette().color(QPalette::Mid), this)),
-    m_currentGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_OnFrame, QColor(255, 0, 0), this)),
+    m_currentGrabber(new GrabberWidget(DefaultFrameSize, GrabberWidget::P_OnFrame, QColor(40, 40, 40), this)),
     m_movedGrabber(0),
     m_currentFrameEdit(new QLineEdit(this)),
     m_currentFrameValidator(new QIntValidator(this)),
@@ -585,10 +585,10 @@ void TimelineWidget::paintImage ( const QRect &rectangle )
 
     // set the initial pen and highlight colors
     QColor penColor (buttonColor);
-    QColor highlightColor (windowColor.darker(102));
+    QColor highlightColor (windowColor.darker(150));
     if (inFrameX <= horizontalOffset && outFrameX >= horizontalOffset) {
         penColor = midColor;
-        highlightColor = baseColor.darker(104);
+        highlightColor = baseColor.darker(160);
     }
 
     // calculate indices of first and last frame to display in the widget
@@ -602,10 +602,10 @@ void TimelineWidget::paintImage ( const QRect &rectangle )
         // set pen and highlight colors according to frame index
         if (index == inFrame) {
             penColor = midColor;
-            highlightColor = baseColor.darker(104);
+            highlightColor = baseColor.darker(150);
         } else if (index == outFrame + 1) {
             penColor = buttonColor;
-            highlightColor = windowColor.darker(102);
+            highlightColor = windowColor.darker(160);
         }
 
         // highlight every n-th frame rectangle by drawing it filled
@@ -647,9 +647,9 @@ void TimelineWidget::paintImage ( const QRect &rectangle )
 
     // draw the index frame rectangle and text
     painter.setBrush(QBrush(buttonAlphaColor));
-    painter.setPen(midColor);
+    painter.setPen(Qt::black);
     painter.drawRect(indexTextRect);
-    painter.setPen(buttonTextColor);
+    painter.setPen(Qt::black);
     painter.setFont(font);
     painter.drawText(indexTextRect.adjusted(1, 1, 0, 0), Qt::AlignCenter, indexText);
 }
