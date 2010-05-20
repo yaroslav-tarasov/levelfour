@@ -80,7 +80,7 @@ FlagGraphicsItem::~FlagGraphicsItem ()
 //!
 void FlagGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget /* = 0 */ )
 {
-    static QColor penColor (109, 109, 109);
+    static QColor penColor (20, 20, 20);
     qreal penWidth = 0.8;
     QBrush brush;
 

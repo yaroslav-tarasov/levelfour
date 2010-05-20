@@ -137,8 +137,15 @@ PanelFrame::PanelFrame ( Panel::Type panelType, QWidget *parent /* = 0 */, Qt::W
     }
 
     // insert the panel's main tool bar after the spacer behind the panel type combo box
-    ui_hboxLayout->insertWidget(2, m_mainToolBar);
-    ui_hboxLayout->insertWidget(3, m_panelToolBar);
+	// Give a little space to the keyframe widget
+	QWidget *spacerWidget = new QWidget();
+    spacerWidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+	spacerWidget->setMinimumWidth(5);
+	spacerWidget->setMaximumWidth(5);
+	ui_hboxLayout->insertWidget(0, spacerWidget);
+
+    ui_hboxLayout->insertWidget(3, m_mainToolBar);
+    ui_hboxLayout->insertWidget(4, m_panelToolBar);
 
     // fill panel type combo box with panel type names
     ui_panelTypeComboBox->blockSignals(true);
