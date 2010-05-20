@@ -106,7 +106,7 @@ NodeGraphicsItem::NodeGraphicsItem ( Node *node, QPointF position, const QColor 
     connect(m_node, SIGNAL(nodeChanged()), SLOT(refresh()));
 
     // create evaluate flag
-    m_evalFlagItem = new FlagGraphicsItem(this, "Eval", m_node->isEvaluated(), QColor(0, 255, 128), QPointF(4, 22));
+    m_evalFlagItem = new FlagGraphicsItem(this, "Eval", m_node->isEvaluated(), QColor(57, 57, 57), QPointF(4, 22));
     connect(m_evalFlagItem, SIGNAL(toggled(bool)), m_node, SLOT(setEvaluate(bool)));
 
     // create view flag
@@ -175,15 +175,15 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
 
     // define background color
     QColor backgroundColor;
-	QColor lightBackground = QColor(110,110,110);
-	QColor darkBackground = QColor(120,120,120);
+	QColor lightBackground = QColor(166,166,166);
+	QColor darkBackground = QColor(137,137,137);
 
 	backgroundColor.setAlphaF(0.6);
 	lightBackground.setAlphaF(1);
 	darkBackground.setAlphaF(0.6);
 
     if (widget)
-        backgroundColor = QColor(110,110,110);
+        backgroundColor = QColor(90,90,90);
     else
         backgroundColor = darkBackground;
     if (m_hovered) // isUnderMouse() didn't always work here
@@ -202,7 +202,6 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
     QLinearGradient linearGradient (0, rect().top(), 0, rect().bottom());
     
 	linearGradient.setColorAt(0, lightBackground);
-	linearGradient.setColorAt(0.2, lightBackground);
 	linearGradient.setColorAt(0.9, darkBackground);
 	
     if (m_node && m_node->isEvaluated())
@@ -213,9 +212,9 @@ void NodeGraphicsItem::paint ( QPainter *painter, const QStyleOptionGraphicsItem
     // draw the node's shape
     QBrush gradientBrush (linearGradient);
     if (isEnabled() && m_node && m_node->isEvaluated())
-        painter->setPen(QPen(QColor (190,190,190), 1));
+        painter->setPen(QPen(Qt::black, 1));
     else
-        painter->setPen(QPen(Qt::white, 1));
+        painter->setPen(QPen(QColor (255,0,0), 1));
     
 	painter->setBrush(gradientBrush);
     painter->setRenderHint(QPainter::Antialiasing);

@@ -51,7 +51,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //! \param stageIndex The index of the stage that the node that this flag represents is contained in.
 //!
 ViewFlagGraphicsItem::ViewFlagGraphicsItem ( QGraphicsItem *parent, bool state, const QPointF &position, unsigned int stageIndex ) :
-    FlagGraphicsItem(parent, "View", state, QColor(0, 173, 240), position),
+    FlagGraphicsItem(parent, "View", state, QColor(57, 57, 57), position),
     m_stageIndex(stageIndex),
     m_stageActionGroup(0)
 {
