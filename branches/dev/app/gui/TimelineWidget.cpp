@@ -45,7 +45,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! The default size of frame rectangles (should be odd numbers).
 //!
-const QSize TimelineWidget::DefaultFrameSize = QSize(9, 37); 
+const QSize TimelineWidget::DefaultFrameSize = QSize(5, 17); 
 
 
 ///

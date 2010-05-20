@@ -1,0 +1,188 @@
+/*
+
+% A phong-shaded metallic surface lit from a point source.
+% Textured, untextured, quadratic falloff or not
+
+*/
+
+vertex_program metalP_vs cg {
+	source vs_MetalP.cg
+	entry_point metalPVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		// param_named 	LampPos			float3 	-0.5 2.0 1.25		
+		param_named_auto 	LampPos		light_position_object_space 0
+	}
+}
+
+fragment_program metalP_ps cg {
+	source ps_MetalP.cg
+	entry_point metalPPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  Kd	 			float 		0.1
+		param_named  SpecExpon	 	float 		12.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+
+	}
+}
+
+fragment_program metalP_ps_t cg {
+	source ps_MetalP.cg
+	entry_point metalPPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  Kd	 			float 		0.1
+		param_named  SpecExpon	 	float 		12.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		// texture
+		
+	}
+}
+
+fragment_program metalP_ps_qps cg {
+	source ps_MetalP.cg
+	entry_point metalPQPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  Kd	 			float 		0.1
+		param_named  SpecExpon	 	float 		12.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		param_named	 LampIntensity	float		1.0
+		
+	}
+}
+
+fragment_program metalP_ps_qps_t cg {
+	source ps_metalP.cg
+	entry_point metalPQPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  Kd	 			float 		0.1
+		param_named  SpecExpon	 	float 		12.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		param_named	 LampIntensity	float		1.0
+		// texture
+		
+	}
+}
+
+// metalP_Default
+material p_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metalP_vs {
+							
+			}
+			
+			fragment_program_ref metalP_ps {
+				
+			}
+			
+		}
+		
+	}
+}
+// metalP_Texture
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metalP_vs {
+							
+			}
+			
+			fragment_program_ref metalP_ps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture metalP_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+						
+		}
+		
+	}
+}
+material metalP_Quadratic_Falloff {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metalP_vs {
+							
+			}
+			
+			fragment_program_ref metalP_ps_qps {
+				
+			}
+							
+		}
+		
+	}
+}
+// metalP_Quadratic_Falloff_Texture
+material metalP_Quadratic_Falloff_Texture {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref metalP_vs {
+							
+			}
+			
+			fragment_program_ref metalP_ps_qps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture metalP_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+		}
+		
+	}
+}

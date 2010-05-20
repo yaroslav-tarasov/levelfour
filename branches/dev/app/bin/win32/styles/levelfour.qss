@@ -667,12 +667,12 @@ QTreeView
 	background: #727272;
 	paint-alternating-row-colors-for-empty-area: 1;
 	show-decoration-selected: 1;
-	alternate-background-color: #727272;
+	alternate-background-color: #787878;
 }
 
 QTreeView::item 
 {
-	color: #cccccc;
+	color: #1a1a1a;
 	padding-left: 10px;
 }
 
@@ -796,7 +796,7 @@ QToolBar::separator
 QToolButton
 {
 	border: 1px solid #353535;
-	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #a6a6a6, stop:1 #8a8a8a);
+	background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #a6a6a6, stop:0.2 #8a8a8a, stop:0.8 #a6a6a6, stop:1 #555555);
 	color: #e5e5e5;
 	border-radius: 5px;
 	max-height: 18px;
