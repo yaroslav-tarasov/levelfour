@@ -1,0 +1,213 @@
+/*********************************************************************NVMH3****
+$Id: //sw/devtools/ShaderLibrary/main/CgFX/pulse23b.cgfx#1 $
+
+Copyright NVIDIA Corporation 2002-2007
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS)
+ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+
+% Blast from the past (Cg 1 Maya sample shader).
+% Analytic anti-aliasing against an arbitrary function.
+
+keywords: pattern material
+
+******************************************************************************/
+
+// string Category = "Effects\\Cg\\BRDF";
+// string description = "Analytic Anti-aliasing";
+
+/*****************************************/
+/************* UNTWEAKABLES **************/
+/*****************************************/
+
+float4x4 WorldITXf : WorldInverseTranspose <string UIWidget="None;";>;
+float4x4 WvpXf : WorldViewProjection <string UIWidget="None;";>;
+float4x4 WorldXf : World <string UIWidget="None;";>;
+float4x4 ViewInvTransXf : ViewInverseTranspose <string UIWidget="None;";>;
+
+float Timer : TIME <string UIWidget="None;";>;
+
+/*****************************************/
+/************* TWEAKABLES ****************/
+/*****************************************/
+
+float4 LightPos : Position <
+    string Object = "PointLight";
+    string Space = "World";
+> = {-2.0f, 3.0f, 2.0f, 0.0f};
+
+float4 AmbiColor : Ambient <
+    string UIName = "Ambient Light";
+> = {0.17f, 0.17f, 0.17f, 1.0f};
+
+float4 LiteColor <
+    string UIName = "Lamp";
+    string Object = "PointLight";
+    string UIWidget = "Color";
+> = {1.0f, 1.0f, 1.0f, 1.0f};
+
+float Intensity <
+	string UIName = "Lamp Intensity";
+> = 15.0;
+
+float4 SurfColor : Diffuse <
+    string UIName = "Surface Color";
+> = {0.7f, 0.5f, 0.2f, 1.0f};
+
+float Ks <
+    string UIWidget = "slider";
+    float uimin = 0.0;
+    float uimax = 2.0;
+    float uistep = 0.01;
+    string UIName = "Specular";
+> = 1.0;
+
+float SpecExpon : Power <
+    string UIWidget = "slider";
+    float uimin = 1.0;
+    float uimax = 128.0;
+    float uistep = 1.0;
+    string UIName = "Specular Power";
+> = 65.0;
+
+float Oversample <
+    string UIWidget = "slider";
+    float uimin = 0.0;
+    float uimax = 20.0;
+    float uistep = 0.0001;
+    string UIName = "AA Softness";
+ > = 1.0;
+
+float Period <
+    string UIWidget = "slider";
+    float uimin = 0.0;
+    float uimax = 5.0;
+    float uistep = 0.01;
+    string UIName = "Stripe Period";
+> = 0.5;
+
+float Balance <
+    string UIWidget = "slider";
+    float uimin = 0.01;
+    float uimax = 0.99;
+    float uistep = 0.01;
+    string UIName = "Clipping";
+ > = 0.5;
+
+float WaveFreq <
+    string UIWidget = "slider";
+    float uimin = 0.0;
+    float uimax = 20.0;
+    float uistep = 0.01;
+    string UIName = "Wave Period";
+ > = 7.0;
+
+float WaveGain <
+    string UIWidget = "slider";
+    float uimin = 0.0;
+    float uimax = 1.0;
+    float uistep = 0.01;
+    string UIName = "Wobbliness";
+ > = 0.2;
+
+float Speed <
+    string UIWidget = "slider";
+    float uimin = 0.0;
+    float uimax = 10.0;
+    float uistep = 0.01;
+    string UIName = "Wave Speed";
+> = 2.5;
+
+/************* DATA STRUCTS **************/
+
+/* data from application vertex buffer */
+struct appdata {
+    float3 Position	: POSITION;
+    float4 UV		: TEXCOORD0;
+    float4 Normal	: NORMAL;
+    float4 Tangent	: TEXCOORD1;
+    float4 Binormal	: TEXCOORD2;
+};
+
+/* data passed from vertex shader to pixel shader */
+struct vertexOutput {
+    float4 HPosition	: POSITION;
+    float4 TexCoord	: TEXCOORD0;
+    float3 LightVec	: TEXCOORD1;
+    float3 WorldNormal	: TEXCOORD2;
+    float3 WorldPos	: TEXCOORD3; // we will use this coord for texturing
+    float3 WorldView	: TEXCOORD4;
+    float3 WorldTangent	: TEXCOORD5;
+    float3 WorldBinorm	: TEXCOORD6;
+};
+
+/*********** vertex shader ******/
+
+vertexOutput mainVS(appdata IN) {
+    vertexOutput OUT = (vertexOutput)0;
+    OUT.WorldNormal = mul(WorldITXf, IN.Normal).xyz;
+    OUT.WorldTangent = mul(WorldITXf, IN.Tangent).xyz;
+    OUT.WorldBinorm = mul(WorldITXf, IN.Binormal).xyz;
+    float4 Po = float4(IN.Position.xyz,1.0);
+    float3 Pw = mul(WorldXf, Po).xyz;
+    OUT.WorldPos = Pw;
+    OUT.LightVec = LightPos - Pw;
+    OUT.TexCoord = IN.UV;
+    OUT.WorldView = normalize(ViewInvTransXf[3].xyz - Pw);
+    float4 hpos = mul(WvpXf, Po);
+    OUT.HPosition = hpos;
+    return OUT;
+}
+
+/********* pixel shader ********/
+
+// PS with box-filtered step function
+float4 pulsetrainPS(vertexOutput IN) : COLOR {
+    float3 Ln = normalize(IN.LightVec);
+	float falloff = Intensity/dot(IN.LightVec,IN.LightVec);
+    float3 Nn = normalize(IN.WorldNormal);
+    float wavy = WaveGain*sin(IN.WorldPos.z*WaveFreq+(Speed*Timer));
+    float balanced = (wavy + Balance);
+    balanced = min(1.0,max(0.0,balanced));
+    float edge = Period*balanced;
+    float width = abs(ddx(IN.WorldPos.x)) + abs(ddy(IN.WorldPos.x));
+    float w = width*Oversample/Period;
+    float x0 = IN.WorldPos.x/Period - (w/2.0);
+    float x1 = x0 + w;
+    float nedge = edge/Period;
+    float i0 = (1.0-nedge)*floor(x0) + max(0.0, frac(x0)-nedge);
+    float i1 = (1.0-nedge)*floor(x1) + max(0.0, frac(x1)-nedge);
+    float s = (i1 - i0)/w;
+    s = min(1.0,max(0.0,s));
+    float4 dColor = lerp((1.0).xxxx,float4(0.0,0.0,0.0,1.0),s);
+    float3 Vn = normalize(IN.WorldView);
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = pow(max(0,dot(Hn,Nn)),SpecExpon);
+    float ldn = dot(Ln,Nn);
+    float diffComp = falloff * max(0,ldn);
+    float4 diffContrib = dColor * SurfColor * (diffComp*LiteColor + AmbiColor);
+    float4 specContrib = falloff * hdn * LiteColor;
+    float4 result = diffContrib + (s*Ks * specContrib);
+    return result;
+}
+
+/*************/
+
+technique main {
+	pass p0 {		
+		VertexProgram = compile vp30 mainVS();
+		DepthTestEnable = true;
+		DepthMask = true;
+		CullFaceEnable = false;
+		FragmentProgram = compile fp30 pulsetrainPS();
+	}
+}
+
+/***************************** eof ***/

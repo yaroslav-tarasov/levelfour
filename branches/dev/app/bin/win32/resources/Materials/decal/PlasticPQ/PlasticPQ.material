@@ -1,0 +1,167 @@
+/*
+
+% Simple Point-lit Plastic using the (Phong) "lit()" function and
+% with quadratic light falloff.  This shader can be used for most
+% any clean, simple, NON-METALLIC surface.  Three techniques are
+% shown: Two pixel-shaded versions, with or without a texture, or a
+% lower-quality vertex-shaded version with a texture.
+
+*/
+
+vertex_program PlasticPQ_simple_vs cg {
+	source vs_PlasticPQ.cg
+	entry_point simple_surf_pt_vs
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto LampPosition   light_position_object_space 0
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf   		world_matrix
+		param_named_auto ViewIXf   		inverse_view_matrix
+		param_named_auto WvpXf     		worldviewproj_matrix
+	}
+}
+
+vertex_program PlasticPQ_lit_vs cg {
+	source vs_PlasticPQ.cg
+	entry_point vertex_lit_pt_vs
+	profiles arbvp1
+	
+	default_params {
+		param_named_auto LampPosition   light_position_object_space 0
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf   		world_matrix
+		param_named_auto ViewIXf   		inverse_view_matrix
+		param_named_auto WvpXf     		worldviewproj_matrix
+		param_named			LampColor	float3	1.0 1.0 1.0
+		param_named			AmbiColor	float3	0.07 0.07 0.07
+		param_named			SurfColor	float3	1.0 1.0 1.0
+		param_named			Kd			float	0.7
+		param_named			Ks			float	0.4
+		param_named			PhongExp	float	1.0
+	}
+}
+
+fragment_program PlasticPQ_ps cg {
+	source ps_PlasticPQ.cg
+	entry_point PlasticPQPS
+	profiles arbfp1
+	
+	default_params {
+		param_named LampColor 				float3 1.0 1.0 1.0
+		param_named LampIntensity           float  100.0
+		
+	}
+}
+
+fragment_program PlasticPQ_ps_t cg {
+	source ps_PlasticPQ.cg
+	entry_point PlasticPQPS_t
+	profiles arbfp1
+	
+	default_params {
+		param_named LampColor 				float3 1.0 1.0 1.0
+		param_named LampIntensity           float  100.0
+		// ColorSampler
+	}
+}
+
+fragment_program PlasticPQ_vertex_ps cg {
+	source ps_PlasticPQ.cg
+	entry_point vertShadedPS
+	profiles arbfp1
+	
+	default_params {
+		
+		// ColorSampler
+	}
+}
+
+// fragment shaded and textured
+material Plastic_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref PlasticPQ_simple_vs 
+			{
+
+			}
+			
+			fragment_program_ref PlasticPQ_ps_t
+			{
+							
+			}
+			
+			texture_unit {
+			
+				texture PlasticPQ_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+				filtering linear linear linear
+			
+			}
+		}
+	}
+}
+
+// fragment shaded without texture
+material Default_C {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref PlasticPQ_simple_vs 
+			{
+
+			}
+			
+			fragment_program_ref PlasticPQ_ps
+			{
+							
+			}
+			
+		}
+		
+		
+	}
+}
+// vertex shaded
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref PlasticPQ_lit_vs 
+			{
+
+			}
+			
+			fragment_program_ref PlasticPQ_vertex_ps
+			{
+							
+			}
+			
+			texture_unit {
+			
+				texture PlasticPQ_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+				filtering linear linear linear
+			
+			}
+			
+		}
+		
+		
+	}
+}

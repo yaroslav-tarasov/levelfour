@@ -7,7 +7,7 @@ vertex_program ProjectiveTexturing_vs cg {
 	
 	default_params {
 		param_named 	 Kd   float 1.0
-		param_named_auto lightPosition   	light_position_object_space
+		param_named_auto lightPosition   	light_position_object_space 0
 		param_named_auto modelViewProj 		worldviewproj_matrix
 		param_named_auto textureMatrix   	texture_viewproj_matrix 0   // texture_worldviewproj_matrix 0
 		

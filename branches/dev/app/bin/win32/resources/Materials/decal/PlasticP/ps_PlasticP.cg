@@ -1,0 +1,130 @@
+/********* pixel shaders ********/
+
+void plastic_shared(
+
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldView	: TEXCOORD5,
+			
+			uniform float Kd,
+			uniform float Ks,
+			uniform float SpecExpon,
+			float3 LightColor,
+			uniform float3 AmbiColor,
+			out float3 DiffuseContrib,
+			out float3 SpecularContrib)
+{
+    float3 Ln = normalize(LightVec.xyz);
+    float3 Nn = normalize(WorldNormal);
+    float3 Vn = normalize(WorldView);
+    float3 Hn = normalize(Vn + Ln);
+    float4 litV = lit(dot(Ln,Nn),dot(Hn,Nn),SpecExpon);
+    DiffuseContrib = litV.y * Kd * LightColor + AmbiColor;
+    SpecularContrib = litV.z * Ks * LightColor;
+}
+
+float4 plasticPPS(
+
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldTangent	: TEXCOORD3,
+			float3 WorldBinormal : TEXCOORD4,
+			float3 WorldView	: TEXCOORD5,
+	
+		    uniform float3 SurfaceColor,
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float SpecExpon,
+		    uniform float3 LampColor,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+	plastic_shared(LightVec,WorldNormal,WorldView,Kd,Ks,SpecExpon,LampColor,AmbiColor,diffContrib,specContrib);
+    float3 result = specContrib + (SurfaceColor * diffContrib);
+    return float4(result,1);
+}
+
+float4 plasticPPS_t(
+
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldTangent	: TEXCOORD3,
+			float3 WorldBinormal : TEXCOORD4,
+			float3 WorldView	: TEXCOORD5,
+			
+		    uniform float3 SurfaceColor,
+		    uniform sampler2D ColorSampler : register(s0),
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float SpecExpon,
+		    uniform float3 LampColor,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+	plastic_shared(LightVec,WorldNormal,WorldView,Kd,Ks,SpecExpon,LampColor,AmbiColor,diffContrib,specContrib);
+    float3 map = tex2D(ColorSampler,UV).xyz;
+    float3 result = specContrib + (SurfaceColor * map * diffContrib);
+    return float4(result,1);
+}
+
+// same as above with the addition of quadratic falloff
+
+float4 plasticPQPS(
+
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldTangent	: TEXCOORD3,
+			float3 WorldBinormal : TEXCOORD4,
+			float3 WorldView	: TEXCOORD5,
+			
+		    uniform float3 SurfaceColor,
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float SpecExpon,
+		    uniform float3 LampColor,
+		    uniform float LampIntensity,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+    float3 Cl = (LampIntensity/dot(LightVec.xyz,LightVec.xyz)) * LampColor;
+    plastic_shared(LightVec,WorldNormal,WorldView,Kd,Ks,SpecExpon,Cl,AmbiColor,diffContrib,specContrib);
+    float3 result = specContrib + (SurfaceColor * diffContrib);
+    return float4(result,1);
+}
+
+float4 plasticPQPS_t(
+
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldTangent	: TEXCOORD3,
+			float3 WorldBinormal : TEXCOORD4,
+			float3 WorldView	: TEXCOORD5,
+			
+		    uniform float3 SurfaceColor,
+		    uniform sampler2D ColorSampler : register(s0),
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float SpecExpon,
+		    uniform float3 LampColor,
+		    uniform float LampIntensity,
+		    uniform float3 AmbiColor
+) : COLOR {
+    float3 diffContrib;
+    float3 specContrib;
+    float3 Cl = (LampIntensity/dot(LightVec.xyz,LightVec.xyz)) * LampColor;
+    plastic_shared(LightVec,WorldNormal,WorldView,Kd,Ks,SpecExpon,Cl,AmbiColor,diffContrib,specContrib);
+    float3 map = tex2D(ColorSampler,UV).xyz;
+    float3 result = specContrib + (SurfaceColor * map * diffContrib);
+    return float4(result,1);
+}

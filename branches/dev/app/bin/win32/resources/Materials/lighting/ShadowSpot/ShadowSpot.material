@@ -1,0 +1,99 @@
+/*
+
+% Simple shadow map example using HW shadow textures and render ports.
+% Plastic-style shading with quadratic light falloff.
+% Both shadowed full-scene shadow and unshadowed materials provided.
+
+*/
+
+vertex_program ShadowSpot_gen_vs cg {
+	source vs_ShadowSpot.cg
+	entry_point shadowGenVS
+	profiles arbvp1
+	
+	default_params {
+	
+		param_named_auto 	WorldXform 		world_matrix
+		param_named_auto 	WorldITXform 	inverse_transpose_world_matrix
+		param_named_auto 	ShadowVPXform 	texture_viewproj_matrix
+		
+}
+
+vertex_program ShadowSpot_use_vs cg {
+	source vs_ShadowSpot.cg
+	entry_point shadowUseVS
+	profiles arbvp1
+	
+	default_params {
+	
+		param_named_auto 	WorldXform 		world_matrix
+		param_named_auto 	WorldITXform 	inverse_transpose_world_matrix
+		param_named_auto 	ShadowVPXform 	texture_viewproj_matrix
+		param_named_auto 	ViewIXform 		inverse_view_matrix
+		param_named_auto 	WVPXform 		worldviewproj_matrix
+		param_named 		LampPosition 	float3  -0.5 2.0 1.25
+		param_named			Bias			float 1.0
+	}
+}
+
+fragment_program ShadowSpot_use_ps cg {
+	source ps_ShadowSpot.cg
+	entry_point useShadowPS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 		SurfaceColor 	float3  1.0 1.0 1.0
+		param_named 		Kd	 			float  	0.9
+		param_named 		Ks 				float  	0.4
+		param_named 		SpecExpon 		float  	30.0
+		param_named 		LampColor 		float3  1.0 1.0 1.0
+		param_named 		LampIntensity 	float  	20.0
+		param_named 		AmbiColor 		float3  0.07 0.07 0.07
+		
+	}
+}
+
+// ShadowSpot_Default
+material Default {
+	technique {
+		pass MakeShadow {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref ShadowSpot_gen_vs {
+						
+			}
+
+		}
+		
+		pass UseShadow {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref ShadowSpot_use_vs {
+						
+			}
+			
+			fragment_program_ref ShadowSpot_use_ps {
+				
+			}
+			
+			texture_unit {
+			
+				texture Sunlight.tga
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			
+			}
+
+		}
+		
+		
+	}
+}

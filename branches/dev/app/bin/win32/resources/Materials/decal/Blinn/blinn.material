@@ -1,3 +1,10 @@
+/*
+
+% A surface using "blinn" shading, which is especially appropriate for
+% some metal finishes and sometimes even for materials like skin.
+
+*/
+
 vertex_program blinn_vs cg {
 	source vs_blinn.cg
 	entry_point blinn_VS

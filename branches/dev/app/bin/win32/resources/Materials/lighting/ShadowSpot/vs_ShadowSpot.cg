@@ -1,0 +1,73 @@
+/////////////////////////////////////////////////////////
+// Vertex Shaders ///////////////////////////////////////
+/////////////////////////////////////////////////////////
+
+//
+// Use this vertex shader for GENERATING shadows. It needs to know some
+//  transforms from your scene, pass them as uniform arguments.
+// Note that a color is returned because DirectX requires you to render an
+//  RGB value in addition to the depth map. If BLACK_SHADOW_PASS is defined
+//  this will just be black, otherwise COLOR0 will encode the object-space
+//  normal as a color, which can be useful for debugging or other effects.
+//  Either way, no pixel shader is required for the shadow-generation pass.
+//
+void shadowGenVS(
+
+		float3 Position	: POSITION,
+		float4 UV		: TEXCOORD0,	// provided for potential use
+		float4 Normal	: NORMAL,	// ignored if BLACK_SHADOW_PASS
+		
+		out float4 HPosition	: POSITION,
+		out float4 diff : COLOR0,
+		
+		uniform float4x4 WorldXform,
+		uniform float4x4 WorldITXform,
+		uniform float4x4 ShadowVPXform)
+{
+    float4 Po = float4(Position.xyz,(float)1.0);
+    float4 Pw = mul(WorldXform,Po);
+    float4 Pl = mul(ShadowVPXform,Pw);  // "P" in light coords
+    HPosition = Pl; // screen clipspace coords for shadow pass
+    diff = float4(Pl.zzz,1);
+}
+
+//
+// A typical vertex shader for USING shadows. It needs to know some transforms
+//  from your scene, pass them as uniform aguments.
+//
+void shadowUseVS(
+
+		float3 Position	: POSITION,
+		float4 UVIN		: TEXCOORD0,	// provided for potential use
+		float4 Normal	: NORMAL,	// ignored if BLACK_SHADOW_PASS
+		
+		out float4 HPosition	: POSITION,
+		out float2 UV		: TEXCOORD0,
+		out float3 LightVec	: TEXCOORD1,
+		out float3 WNormal	: TEXCOORD2,
+		out float3 WView	: TEXCOORD3,
+		out float4 LProj	: LPROJ_COORD,	// current position in light-projection space
+		
+		uniform float4x4 WorldXform,
+		uniform float4x4 WorldITXform,
+		uniform float4x4 WVPXform,
+		uniform float4x4 ShadowVPXform,
+		uniform float4x4 ViewIXform,
+		uniform float Bias,
+		uniform float3 LightPosition) 
+{
+    WNormal = mul(WorldITXform,Normal).xyz; // world coords
+    float4 Po = float4(Position.xyz,(float)1.0);	// "P" in object coords
+    float4 Pw = mul(WorldXform,Po);		// "P" in world coordinates
+    float4 Pl = mul(ShadowVPXform,Pw);  // "P" in light coords
+    //OUT.LProj = Pl;			// ...for pixel-shader shadow calcs
+    float4x4 BiasXform = make_bias_mat(Bias);
+    LProj = mul(BiasXform,Pl);		// bias to make texcoord
+    //
+    float3 EyePos = float3(ViewIXform[0].w,ViewIXform[1].w,ViewIXform[2].w);
+
+    WView = normalize(EyePos - Pw.xyz);	// world coords
+    HPosition = mul(WVPXform,Po);	// screen clipspace coords
+    UV = UVIN.xy;
+    LightVec = LightPosition - Pw.xyz;		// world coords
+}
