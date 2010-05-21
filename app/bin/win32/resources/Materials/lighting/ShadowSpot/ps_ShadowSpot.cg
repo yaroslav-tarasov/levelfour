@@ -1,0 +1,103 @@
+/*********************************************************/
+/*********** pixel shader ********************************/
+/*********************************************************/
+
+sampler2D ShadDepthSampler;
+#define LPROJ_COORD TEXCOORD4
+
+
+//
+// core of the surface shading, shared by both shadowed and unshadowed versions
+//
+void lightingCalc(
+
+			float3 LightVec	: TEXCOORD1,
+			float3 WNormal	: TEXCOORD2,
+			float3 WView	: TEXCOORD3,
+			float4 LProj	: LPROJ_COORD,
+		    
+			float3 SurfaceColor,
+		    float Kd,
+		    float Ks,
+		    float SpecExpon,
+		    uniform float3 LampColor,
+		    uniform float LampIntensity,
+		    uniform float3 AmbiColor,
+		    out float3 litContrib,
+		    out float3 ambiContrib,
+		uniform sampler2D SpotSamp : register(s0))
+{
+    float3 Nn = normalize(WNormal);
+    float3 Vn = normalize(WView);
+    Nn = faceforward(Nn,-Vn,Nn);
+    float falloff = 1.0 / dot(LightVec,LightVec);
+    float3 Ln = normalize(LightVec);
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = dot(Hn,Nn);
+    float ldn = dot(Ln,Nn);
+    float4 litVec = lit(ldn,hdn,SpecExpon);
+    ldn = litVec.y * LampIntensity;
+    ambiContrib = SurfaceColor * AmbiColor;
+    float3 diffContrib = SurfaceColor*(Kd*ldn * LampColor);
+    float3 specContrib = ((ldn * litVec.z * Ks) * LampColor);
+    float3 result = diffContrib + specContrib;
+    float cone = tex2Dproj(SpotSamp,LProj).x;
+    litContrib =  ((cone*falloff) * result);
+}
+
+float4 useShadowPS(
+
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 LightVec	: TEXCOORD1,
+			float3 WNormal	: TEXCOORD2,
+			float3 WView	: TEXCOORD3,
+			float4 LProj	: LPROJ_COORD,
+			
+		    uniform float3 SurfaceColor,
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float SpecExpon,
+		    uniform float3 LampColor,
+		    uniform float LampIntensity,
+		    uniform float3 AmbiColor,
+			uniform sampler2D SpotSamp : register(s0)
+) : COLOR
+{
+    float3 litPart, ambiPart;
+    lightingCalc(LightVec,WNormal,WView,LProj,SurfaceColor,Kd,Ks,SpecExpon,
+		    LampColor,LampIntensity,
+		    AmbiColor,
+		    litPart,ambiPart,
+			SpotSamp);
+    float4 shadowed = tex2Dproj(ShadDepthSampler,LProj);
+    return float4((shadowed.x*litPart)+ambiPart,1);
+}
+
+float4 unshadowedPS(
+			
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 LightVec	: TEXCOORD1,
+			float3 WNormal	: TEXCOORD2,
+			float3 WView	: TEXCOORD3,
+			float4 LProj	: LPROJ_COORD,
+	
+		    uniform float3 SurfaceColor,
+		    uniform float Kd,
+		    uniform float Ks,
+		    uniform float SpecExpon,
+		    uniform float3 LampColor,
+		    uniform float LampIntensity,
+		    uniform float3 AmbiColor,
+			uniform sampler2D SpotSamp
+) : COLOR
+{
+    float3 litPart, ambiPart;
+    lightingCalc(LightVec,WNormal,WView,LProj,SurfaceColor,Kd,Ks,SpecExpon,
+		    LampColor,LampIntensity,
+		    AmbiColor,
+		    litPart,ambiPart,
+			SpotSamp);
+    return float4(litPart+ambiPart,1);
+}

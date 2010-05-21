@@ -1,3 +1,15 @@
+/*
+
+% Shading via multitexture. In this case, a texture is used to vary the
+% underlying surface color based upon both the view angle and the angle
+% at which ligh strikes the surface. The initial data driving this
+% shading model came from Ford Motor Company, which directly measured
+% "Mystique" and other lustrous car paints in their lab. The associated
+% default texture is a hand-enhanced variant on the original Ford paint --
+% try painting your own! 
+
+*/
+
 vertex_program carpaint_vs cg {
 	source vs_carpaint.cg
 	entry_point carPaintVS

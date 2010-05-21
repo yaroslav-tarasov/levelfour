@@ -1,0 +1,261 @@
+/*********************************************************************NVMH3****
+*******************************************************************************
+$Revision: #3 $
+
+Copyright NVIDIA Corporation 2008
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY
+LOSS) ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF
+NVIDIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+% 3D Checkerboard effect, created by procedural texturing.
+% To see a purely analytic alternative that gives good anti-aliasing
+% at all scales, see "checker3d_math.fx"
+% As an "extra," the check pattern is also applied to the specular
+% value, to make the variation between materials stronger.
+
+keywords: material pattern 
+
+    The checker pattern is aligned to world coordinates in this sample.
+
+    $Date: 2008/06/25 $
+
+
+
+To learn more about shading, shaders, and to bounce ideas off other shader
+    authors and users, visit the NVIDIA Shader Library Forums at:
+
+    http://developer.nvidia.com/forums/
+
+*******************************************************************************
+******************************************************************************/
+
+/*****************************************************************/
+/*** HOST APPLICATION IDENTIFIERS ********************************/
+/*** Potentially predefined by varying host environments *********/
+/*****************************************************************/
+
+// #define _XSI_		/* predefined when running in XSI */
+
+#ifndef FXCOMPOSER_VERSION	/* for very old versions */
+#define FXCOMPOSER_VERSION 180
+#endif /* FXCOMPOSER_VERSION */
+
+// #define FLIP_TEXTURE_Y	/* Different in OpenGL & DirectX */
+
+/*****************************************************************/
+/*** EFFECT-SPECIFIC CODE BEGINS HERE ****************************/
+/*****************************************************************/
+
+/******* Lighting Macros *******/
+/** To use "Object-Space" lighting definitions, change these two macros: **/
+#define LIGHT_COORDS "World"
+// #define OBJECT_SPACE_LIGHTS /* Define if LIGHT_COORDS is "Object" */
+/** Define the macro USE_SHARED_SHADOW to permit the import and use of "shared
+		surface "shadow maps created by COLLADA-FX. **/
+// #define USE_SHARED_SHADOW
+
+float Script : STANDARDSGLOBAL <
+    string UIWidget = "none";
+    string ScriptClass = "object";
+    string ScriptOrder = "standard";
+    string ScriptOutput = "color";
+    string Script = "Technique=Main;";
+> = 0.8;
+
+/**** UNTWEAKABLES: Hidden & Automatically-Tracked Parameters **********/
+
+// transform object vertices to world-space:
+float4x4 gWorldXf : World < string UIWidget="None"; >;
+// transform object normals, tangents, & binormals to world-space:
+float4x4 gWorldITXf : WorldInverseTranspose < string UIWidget="None"; >;
+// transform object vertices to view space and project them in perspective:
+float4x4 gWvpXf : WorldViewProjection < string UIWidget="None"; >;
+// provide tranform from "view" or "eye" coords back to world-space:
+float4x4 gViewIXf : ViewInverse < string UIWidget="None"; >;
+
+#include "include/stripe_tex.cgh"
+
+/******** TWEAKABLES ****************************************/
+
+// apps should expect this to be normalized
+float3 gLamp0Dir : DIRECTION <
+    string Object = "DirectionalLight0";
+    string UIName =  "Lamp 0 Direction";
+    string Space = (LIGHT_COORDS);
+> = {0.7f,-0.7f,-0.7f};
+
+// Ambient Light
+float3 gAmbiColor <
+    string UIName =  "Ambient Light";
+    string UIWidget = "Color";
+> = {0.07f,0.07f,0.07f};
+
+float3 gBrightColor <
+    string UIName = "Light Checker Color";
+> = {1.0f, 0.8f, 0.3f};
+
+float3 gDarkColor <
+    string UIName = "Dark Checker Color";
+> = {0.0f, 0.2f, 0.4f};
+
+float gKs <
+    string UIWidget = "slider";
+    float UIMin = 0.0;
+    float UIMax = 1.0;
+    float UIStep = 0.05;
+    string UIName =  "Specular";
+> = 0.8;
+
+float gSpecExpon <
+    string UIWidget = "slider";
+    float UIMin = 1.0;
+    float UIMax = 128.0;
+    float UIStep = 1.0;
+    string UIName =  "Specular Exponent";
+> = 30.0;
+
+float gBalance <
+    string UIWidget = "slider";
+    float uimin = 0.0;
+    float uimax = 1.0;
+    float uistep = 0.01;
+    string UIName = "Light::Dark Ratio";
+> = 0.31;
+
+float gScale : UNITSSCALE <
+    string units = "inches";
+    string UIWidget = "slider";
+    float uimin = 0.01;
+    float uimax = 5.0;
+    float uistep = 0.01;
+    string UIName = "Checker Size";
+> = 3.4;
+
+#ifdef USE_SHARED_SHADOW
+#define MAX_SHADOW_BIAS 0.01
+#define MIN_SHADOW_BIAS 0.00005
+#include "include/shadowMap.cgh"
+DECLARE_SHADOW_XFORMS("SpotLight0",gLampViewXf,gLampProjXf,gShadowViewProjXf)
+DECLARE_SHADOW_BIAS
+DECLARE_SHADOW_MAPS(ColorShadTarget,ColorShadSampler,DepthShadTarget,DepthShadSampler)
+
+float ShadDens <
+    string UIWidget = "slider";
+    float UIMin = 0.0;
+    float UIMax = 1.0;
+    float UIStep = 0.01;
+    string UIName =  "Shadow Density";
+> = 0.7;
+#endif /* USE_SHARED_SHADOW */
+
+
+/************* DATA STRUCTS **************/
+
+/* data from application vertex buffer */
+struct appdata {
+    float3 Position    : POSITION;
+    float4 UV        : TEXCOORD0;
+    float4 Normal    : NORMAL;
+};
+
+/* data passed from vertex shader to pixel shader */
+struct vertexOutput {
+    float4 HPosition    : POSITION;
+    float4 TexCoord    : TEXCOORD0;
+    float3 WorldNormal : TEXCOORD1;
+    float3 WorldView : TEXCOORD2;
+#ifdef USE_SHARED_SHADOW
+    float4 LProj	: LPROJ_COORD;
+#endif /* USE_SHARED_SHADOW */
+};
+
+/*********** vertex shader ******/
+
+vertexOutput mainVS(appdata IN,
+    uniform float Balance,
+    uniform float Scale,
+    uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf
+) {
+    vertexOutput OUT = (vertexOutput)0;
+    float4 Po = float4(IN.Position.xyz,1.0); 
+    float4 hpos  = mul(WvpXf,Po);
+    OUT.HPosition  = hpos;
+    float4 Pw = mul(WorldXf,Po);
+    OUT.TexCoord = Pw * Scale;
+    OUT.TexCoord.w = 1.0 - Balance;
+    float4 Nn = normalize(IN.Normal);
+    OUT.WorldView = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw.xyz);
+    OUT.WorldNormal = mul(WorldITXf,Nn).xyz;
+#ifdef USE_SHARED_SHADOW
+    float4 Pl = mul(ShadowViewProjXf,float4(Pw.xyz,1.0));  // "P" in light coords
+    float4x4 BiasXf = make_bias_mat(ShadBias);
+    OUT.LProj = mul(BiasXf,Pl);		// bias to make texcoord
+#endif /* USE_SHARED_SHADOW */
+    return OUT;
+}
+
+/******************** pixel shader *********************/
+
+float4 strokeTexPS(vertexOutput IN,
+	    uniform float Ks,
+	    uniform float SpecExpon,
+	    uniform float3 BrightColor,
+	    uniform float3 DarkColor,
+	    uniform float3 LightDir,
+	    uniform float3 AmbiColor,
+	    uniform sampler2D StripeSampler
+) : COLOR {
+    float stripex = tex2D(StripeSampler,float2(IN.TexCoord.xw)).x;
+    float stripey = tex2D(StripeSampler,float2(IN.TexCoord.yw)).x;
+    float stripez = tex2D(StripeSampler,float2(IN.TexCoord.zw)).x;
+    float check = abs(abs(stripex - stripey) - stripez);
+    float3 dColor = lerp(BrightColor,DarkColor,check);
+    float3 Nn = normalize(IN.WorldNormal);
+    float3 Vn = normalize(IN.WorldView);
+    float3 Hn = normalize(Vn - LightDir);
+    float4 litV = lit(dot(-LightDir,Nn),dot(Hn,Nn),SpecExpon);
+#ifdef USE_SHARED_SHADOW
+    float shadowed = tex2Dproj(DepthShadSampler,IN.LProj).x;
+	float faded = 1.0-(ShadDens*(1.0-shadowed));
+	litV.y *= faded;
+	litV.z *= shadowed;
+#endif /* USE_SHARED_SHADOW */
+    float spec = litV.z*check*Ks;
+    float3 result = (dColor * (AmbiColor + litV.yyy)) + spec.xxx;
+    return float4(result.rgb,1.0);
+}
+
+
+///////////////////////////////////////
+/// TECHNIQUES ////////////////////////
+///////////////////////////////////////
+
+technique Main <
+	string Script = "Pass=p0;";
+> {
+    pass p0 <
+	string Script = "Draw=geometry;";
+    > {
+        VertexProgram = compile vp40 mainVS(gBalance,gScale,gWorldITXf,gWorldXf,
+				gViewIXf,gWvpXf);
+		DepthTestEnable = true;
+		DepthMask = true;
+		CullFaceEnable = false;
+		BlendEnable = false;
+		DepthFunc = LEqual;
+        FragmentProgram = compile fp40 strokeTexPS(gKs,gSpecExpon,
+			gBrightColor,gDarkColor,
+			gLamp0Dir,gAmbiColor,gStripeSampler);
+    }
+}
+
+/***************************** eof ***/

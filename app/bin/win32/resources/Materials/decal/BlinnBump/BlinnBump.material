@@ -1,3 +1,10 @@
+/*
+
+% A surface using "blinn" shading, which is especially appropriate for
+% some true finishes and sometimes even for materials like skin.
+
+*/
+
 vertex_program BlinnBump_vs cg {
 	source vs_BlinnBump.cg
 	entry_point blinnBumpVS
@@ -20,11 +27,11 @@ fragment_program BlinnBump_ps cg {
 	
 	default_params {
 		
-		param_named	LampColor	float3	1.0 1.0 1.0
-		param_named Bump		float	1.0
-		param_named Kr			float	0.5
-		param_named AmbiColor	float3	0.07 0.07 0.07
-		param_named Ks			float	0.4
+		param_named	LampColor		float3	1.0 1.0 1.0
+		param_named Bump			float	1.0
+		param_named Kr				float	0.5
+		param_named AmbiColor		float3	0.07 0.07 0.07
+		param_named Ks				float	0.4
 		param_named Eccentricity	float	0.3
 		
 	}

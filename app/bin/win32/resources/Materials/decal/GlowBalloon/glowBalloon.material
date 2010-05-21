@@ -1,6 +1,15 @@
+/*
+
+Create a transparent "envelope" around any existing model. 
+While implemented as a "post process" effect, this effect 
+is just a second pass on the geometry.
+
+
+*/
+
 vertex_program glowBalloon_vs cg {
 	source vs_glowBalloon.cg
-	entry_point balloonVS
+	entry_point glowBalloonVS
 	profiles arbvp1
 	
 	default_params {
@@ -14,7 +23,7 @@ vertex_program glowBalloon_vs cg {
 
 fragment_program glowBalloon_ps cg {
 	source ps_glowBalloon.cg
-	entry_point balloonPS
+	entry_point glowBalloonPS
 	profiles arbfp1
 	
 	default_params {
@@ -23,17 +32,18 @@ fragment_program glowBalloon_ps cg {
 	}
 }
 
-material Glow_Balloon_Default {
+material Default {
 	technique {
 	
 		pass 1 {
 			scene_blend src_alpha one_minus_src_alpha
-			lighting off
-			
+			depth_check on
+			depth_func less_equal
+						
 			// not working
 			texture_unit {
 			
-				texture test.png
+				texture gwh_default_color.dds
 				tex_coord_set 0
 				tex_address_mode wrap
 			}
@@ -41,18 +51,16 @@ material Glow_Balloon_Default {
 			
 		}
 		pass 0 {
-			
+			scene_blend src_alpha one_minus_src_alpha
 			depth_check on
 			depth_func less_equal
-			lighting off
-			
+						
 			vertex_program_ref glowBalloon_vs {
-				param_named Inflate float 0.1
+				
 			}
 			
 			fragment_program_ref glowBalloon_ps {
-				param_named GlowColor float3 0.0 1.0 0.0
-				param_named GlowExpon float  1.3
+				
 			}
 
 		}

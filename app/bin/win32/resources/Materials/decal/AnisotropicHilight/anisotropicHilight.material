@@ -1,3 +1,10 @@
+/*
+
+% Uses a texture map as a high-speed lookup, so that complex anisotropic 
+% highlights can be displayed in real time.
+
+*/
+
 vertex_program anisotropicHilight_vs cg {
 	source vs_AnisotropicHilight.cg
 	entry_point main
@@ -8,7 +15,7 @@ vertex_program anisotropicHilight_vs cg {
 		param_named_auto WorldXf 	world_matrix
 		param_named_auto ViewIXf 	inverse_view_matrix
 		param_named_auto WvpXf 		worldviewproj_matrix
-		param_named LampPos float3  -0.5 2.0 1.25
+		param_named LampPos 		float3  -0.5 2.0 1.25
 	}
 }
 
@@ -18,24 +25,21 @@ fragment_program anisotropicHilight_ps cg {
 	profiles arbfp1
 	
 	default_params {
-	
-		// param_named AnisoTexture texture Aniso2.dds
+			
 		
 	}
 }
 
 // AnisotropicHilight_Default
-material 01-Default {
+material Default {
 	technique {
 		pass {
 			scene_blend src_alpha one_minus_src_alpha
 			depth_check on
 			depth_func less_equal
-			lighting on
-			
+									
 			vertex_program_ref anisotropicHilight_vs {
-			
-				param_named LampPos float3  -0.5 2.0 1.25
+					
 			
 			}
 			
@@ -47,8 +51,8 @@ material 01-Default {
 			
 				texture Aniso2.dds
 				tex_coord_set 0
-				tex_address_mode clamp
-				filtering linear linear linear
+				tex_address_mode mirror
+				filtering anisotropic 
 			
 			}
 

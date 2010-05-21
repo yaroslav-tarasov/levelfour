@@ -5,3 +5,151 @@
 
 */
 
+vertex_program ToksvigNormalMaps_vs cg {
+	source vs_ToksvigNormalMaps.cg
+	entry_point toksvigVS
+	profiles arbvp1
+	
+	default_params {
+	
+		param_named_auto 	WorldITXf 	inverse_transpose_world_matrix
+		param_named_auto 	WorldXf 	world_matrix
+		param_named_auto 	ViewIXf 	inverse_view_matrix
+		param_named_auto 	WvpXf 		worldviewproj_matrix
+		param_named URep 	float		1.0
+		param_named VRep 	float		1.0
+	}
+}
+
+fragment_program ToksvigNormalMaps_ps cg {
+	source ps_ToksvigNormalMaps.cg
+	entry_point toksvigPS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 		SurfaceColor 	float3  1.0 1.0 1.0
+		param_named 		Kd 				float  	0.6
+		param_named 		Ks 				float  	1.0
+		param_named 		LightDir 		float3  0.7 -0.7 -0.7
+		param_named 		LampColor 		float3  1.0 1.0 1.0
+		param_named 		AmbiColor 		float3  0.07 0.07 0.07
+		// NormalSampler, SpecSampler
+		
+		
+	}
+}
+
+fragment_program ToksvigNormalMaps_non_ps cg {
+	source ps_ToksvigNormalMaps.cg
+	entry_point nonToksvigPS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 		SurfaceColor 	float3  1.0 1.0 1.0
+		param_named 		Kd 				float  	0.6
+		param_named 		Ks 				float  	1.0
+		param_named 		LightDir 		float3  0.7 -0.7 -0.7
+		param_named 		LampColor 		float3  1.0 1.0 1.0
+		param_named 		AmbiColor 		float3  0.07 0.07 0.07
+		param_named 		Bumpy 			float  	1.0
+		// NormalSampler
+		
+	}
+}
+
+// ToksvigNormalMaps_Default
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref ToksvigNormalMaps_vs {
+						
+			}
+			
+			fragment_program_ref ToksvigNormalMaps_ps {
+				
+			}
+			
+			// Normal
+			texture_unit {
+			
+				texture default_bump_normal.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+				filtering linear linear linear
+			
+			}
+			
+			// SpecTex
+			texture_unit {
+			
+				texture toksvig_factor_sample.dds
+				tex_coord_set 1
+				tex_address_mode wrap
+				filtering linear linear linear
+			
+			}
+			
+			// color texture
+			texture_unit {
+			
+				texture Default_color.dds
+				tex_coord_set 2
+				tex_address_mode wrap
+				filtering linear linear linear
+			
+			}
+			
+		}
+		
+		
+	}
+}
+
+// ToksvigNormalMaps_Default
+material Non_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref ToksvigNormalMaps_vs {
+						
+			}
+			
+			fragment_program_ref ToksvigNormalMaps_non_ps {
+				
+			}
+			
+			texture_unit {
+			
+				texture default_bump_normal.dds
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			
+			}
+			
+			// color texture
+			texture_unit {
+			
+				texture Default_color.dds
+				tex_coord_set 1
+				tex_address_mode clamp
+				filtering linear linear linear
+			
+			}
+			
+		}
+		
+		
+	}
+}

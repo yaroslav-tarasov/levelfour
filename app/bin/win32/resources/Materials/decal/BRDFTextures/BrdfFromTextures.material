@@ -19,7 +19,7 @@ vertex_program BrdfFromTextures_vs cg {
 		param_named_auto WorldXf 		world_matrix
 		param_named_auto ViewIXf 		inverse_view_matrix
 		param_named_auto WvpXf 			worldviewproj_matrix
-		param_named 	LampPos			float3 	-0.5 2.0 1.25
+		param_named 	LampPos			light_position_object_space 0
 				
 	}
 }
@@ -98,9 +98,9 @@ material BrdfFromTextures_Default {
 material Default {
 	technique {
 		pass zero {
-			// scene_blend src_alpha one_minus_src_alpha
-			// depth_check on
-			// depth_func less_equal
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
 			lighting on
 			
 			vertex_program_ref BrdfFromTextures_vs {
@@ -116,7 +116,7 @@ material Default {
 				texture default_color.dds
 				tex_coord_set 0
 				tex_address_mode wrap
-				color_op_ex blend_manual src_texture src_current 0.1
+				
 			}
 			
 			texture_unit
@@ -124,8 +124,6 @@ material Default {
 				texture ctNorm.dds
 				tex_coord_set 1
 				tex_address_mode wrap
-				color_op_ex blend_manual src_texture src_current 0.1
-				env_map spherical
 				
 			}
 			
@@ -134,8 +132,6 @@ material Default {
 				texture ctHalf.dds
 				tex_coord_set 2
 				tex_address_mode wrap
-				color_op_ex blend_manual src_texture src_current 0.1
-				env_map spherical
 				
 			}
 		}

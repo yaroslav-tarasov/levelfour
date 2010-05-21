@@ -1,17 +1,17 @@
 
 
-void fogVS
+void fogSimpleVS
 (
-	float4      position   : POSITION,
-	float      delta      : BLENDWEIGHT,
+	float4     	position   : POSITION,
+	float      	delta      : BLENDWEIGHT,
 
-	uniform   float4x4   worldViewProj,
-	uniform float4      fogColour,
-	uniform float4      fogParams,
-	uniform float3      camPos,
+	uniform   	float4x4   worldViewProj,
+	uniform		float4      fogColour,
+	uniform 	float4      fogParams,
+	uniform 	float3      camPos,
 
-	out      float4      oPosition   : POSITION,
-	out      float4      oColor      : COLOR
+	out float4      oPosition   : POSITION,
+	out float4      oColor      : COLOR
 )
 {
 	oPosition = mul(worldViewProj, position);
@@ -20,3 +20,28 @@ void fogVS
 	float fogAmount = max((dist - fogParams.y) * fogParams.w, 0);
 	oColor = float4(fogColour.rgb, fogAmount);
 }
+
+void fogVS(
+
+			float4 position    : POSITION,
+            float4 color       : COLOR,
+            float2 decalCoords : TEXCOORD0,
+
+            out float4 oPosition    : POSITION,
+            out float4 oColor       : COLOR,
+            out float2 oDecalCoords : TEXCOORD0,
+            out float  fogExponent  : TEXCOORD1,
+
+			uniform float    fogDensity,  // Based on log2
+			uniform float4x4 modelViewProj,
+			uniform float4x4 modelView)
+{	
+  // Assume non-projective modelview matrix
+  float3 eyePosition = mul(modelView, position).xyz;
+  float fogDistance  = length(eyePosition);
+  fogExponent  = fogDistance * fogDensity;
+  oPosition    = mul(modelViewProj, position);
+  oDecalCoords = decalCoords;
+  oColor       = color;
+}
+

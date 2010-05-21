@@ -2,20 +2,38 @@
 /*********** vertex shader *******************************/
 /*********************************************************/
 
+float URep = 1.0;
+
+float VRep = 1.0;
+
 void toksvigVS(
 	
-	appdata IN,
+	float3 Position	: POSITION,
+    float4 UVIN		: TEXCOORD0,
+    float4 Normal	: NORMAL,
+    float4 Tangent	: TANGENT0,
+    float4 Binormal	: BINORMAL0,
+	
+	out float4 HPosition	: POSITION,
+    out float2 UV		: TEXCOORD0,
+    out float3 WorldNormal	: TEXCOORD1,
+    out float3 WorldView	: TEXCOORD2,
+    out float3 WorldTangent	: TEXCOORD3,
+    out float3 WorldBinorm	: TEXCOORD4,
+	
     uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
 	uniform float4x4 WorldXf,
 	uniform float4x4 ViewIXf,
-	uniform float4x4 WvpXf
+	uniform float4x4 WvpXf,
+	uniform float URep,
+	uniform float VRep
 ) {
-    OUT.WorldNormal = normalize(mul(WorldITXf,IN.Normal).xyz);
-    OUT.WorldTangent = normalize(mul(WorldITXf,IN.Tangent).xyz);
-    OUT.WorldBinorm = normalize(mul(WorldITXf,IN.Binormal).xyz);
-    float4 Po = float4(IN.Position.xyz,1.0);	// object coordinates
+    WorldNormal = normalize(mul(WorldITXf,Normal).xyz);
+    WorldTangent = normalize(mul(WorldITXf,Tangent).xyz);
+    WorldBinorm = normalize(mul(WorldITXf,Binormal).xyz);
+    float4 Po = float4(Position.xyz,1.0);	// object coordinates
     float3 Pw = mul(WorldXf,Po).xyz;		// world coordinates
-    OUT.UV = (float2(URep,VRep) * IN.UV.xy);
-    OUT.WorldView = normalize(ViewIXf[3].xyz - Pw);	// obj coords
-    OUT.HPosition = mul(WvpXf,Po);	// screen clipspace coords
+    UV = (float2(URep,VRep) * UVIN.xy);
+    WorldView = normalize(ViewIXf[3].xyz - Pw);	// obj coords
+    HPosition = mul(WvpXf,Po);	// screen clipspace coords
 }

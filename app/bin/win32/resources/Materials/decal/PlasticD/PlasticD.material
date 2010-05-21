@@ -5,3 +5,104 @@
 
 */
 
+vertex_program PlasticD_vs cg {
+	source vs_PlasticD.cg
+	entry_point plasticDVS
+	profiles arbvp1
+	
+	default_params {
+		param_named			LampDir   float3 0.7 -0.7 -0.7
+		param_named_auto 	WorldITXf inverse_transpose_world_matrix
+		param_named_auto 	WorldXf   world_matrix
+		param_named_auto 	ViewIXf   inverse_view_matrix
+		param_named_auto 	WvpXf     worldviewproj_matrix
+	}
+}
+
+fragment_program PlasticD_ps cg {
+	source ps_PlasticD.cg
+	entry_point plasticDPS
+	profiles arbfp1
+	
+	default_params {
+		param_named SurfaceColor float3 1.0 1.0 1.0
+		param_named Kd           float  0.9
+		param_named Ks           float  0.4
+		param_named SpecExpon    float  30.0
+		param_named LampColor    float3 1.0 1.0 1.0
+		param_named AmbiColor    float3 0.07 0.07 0.07
+	}
+}
+
+fragment_program PlasticD_ps_t cg {
+	source ps_PlasticD.cg
+	entry_point plasticDPS_t
+	profiles arbfp1
+	
+	default_params {
+		param_named SurfaceColor float3 1.0 1.0 1.0
+		param_named Kd           float  0.9
+		param_named Ks           float  0.4
+		param_named SpecExpon    float  30.0
+		param_named LampColor    float3 1.0 1.0 1.0
+		param_named AmbiColor    float3 0.07 0.07 0.07
+		// ColorSampler
+	}
+}
+
+// Plastic_
+material Plastic_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref PlasticD_vs 
+			{
+
+			}
+			
+			fragment_program_ref PlasticD_ps
+			{
+							
+			}
+		}
+	}
+}
+
+// Plastic_Textured
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref PlasticD_vs 
+			{
+
+			}
+			
+			fragment_program_ref PlasticD_ps_t
+			{
+							
+			}
+			
+			texture_unit {
+			
+				texture PlasticD_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+				filtering linear linear linear
+			
+			}
+
+		}
+		
+		
+	}
+}
+

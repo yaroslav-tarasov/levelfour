@@ -1,7 +1,7 @@
-vertex_program Fog_vs cg
+vertex_program Fog_simple_vs cg
 {
    source vs_Fog.cg
-   entry_point fogVS
+   entry_point fogSimpleVS
    profiles arbvp1
    
    default_params
@@ -13,17 +13,71 @@ vertex_program Fog_vs cg
    }
 }
 
+vertex_program Fog_vs cg {
+	source vs_Fog.cg
+	entry_point fogVS
+	profiles arbvp1
+	
+	default_params {
+	
+		param_named_auto modelViewProj	worldviewproj_matrix
+		param_named_auto modelView		worldview_matrix 
+		param_named 	 fogDensity 	float  0.002
+	}
+}
+
+fragment_program Fog_ps cg {
+	source ps_Fog.cg
+	entry_point fogPS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named 		fogColor 	float3  1 1 1.0
+		// decal diffusion map
+		
+	}
+}
+
 // Fog
-material Default {
+material Fog_Simple {
 	technique {
 		pass
         {
           scene_blend alpha_blend
-          vertex_program_ref Fog_vs
+          vertex_program_ref Fog_simple_vs
           {
 		  
           }
         }
 
+	}
+}
+
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref Fog_vs {
+						
+			}
+			
+			fragment_program_ref Fog_ps {
+				
+			}
+			
+			texture_unit {
+			
+				texture Fog_DiffuseMap.dds
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			
+			}
+		}
 	}
 }

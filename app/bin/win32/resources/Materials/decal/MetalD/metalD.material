@@ -76,7 +76,7 @@ material Default {
 
 			}
 			
-			fragment_program_ref metalD_ps
+			fragment_program_ref metalD_ps_t
 			{
 							
 			}
