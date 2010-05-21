@@ -11,7 +11,6 @@ void toonShadingVS(
                uniform float3 lightPosition,          // Light Position (in object space)
                uniform float3 eyePosition,            // Eye Position (in object space)
                uniform float shininess,
-
                uniform float4x4 modelViewProj)
 {
   oPosition = mul(modelViewProj, position);

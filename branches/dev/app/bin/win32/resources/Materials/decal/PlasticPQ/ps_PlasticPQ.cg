@@ -1,0 +1,110 @@
+//////////////////////////////////////////////////
+// FRAGMENT (PIXEL) SHADER FUNCTIONS /////////////
+//////////////////////////////////////////////////
+
+// FOR VERTEX LIGHTING:
+// If we do vertex lighting, the light intensities are already in the interpolator inputs,
+//		so all we need do here is grab the surface texture to the diffuse and then add the colors
+//			together for the complete (but lower-quality) lighting solution.
+//
+
+uniform sampler2D ColorSampler;
+
+float4 vertShadedPS(
+
+			float4 HPosition	: POSITION,
+			float2 UV	: TEXCOORD0,
+			float4 diffCol	: COLOR0,
+			float4 specCol	: COLOR1
+			) : COLOR 
+{
+    return (diffCol * tex2D(ColorSampler,UV) + specCol);
+}
+
+//////////////////// PER_PIXEL LIGHTING: ///////////
+
+//
+// The basic core of plastic shading (or shading for most any clean, plasticlic material) is here,
+//   separated into a single function so that the basic surface color can be chosen either as a
+//   fixed color or from a texture (see functions immediately following this one).
+//
+// Returns unified diffuse and specular portions. This differs from typical plastic reflection,
+//    where the colors differ.
+//
+// Ambient-light color is included -- if you create multi-pass variations of this shader, be
+//	sure to only apply ambient light to ONE pass!
+//
+float3 plastic_shared(
+
+			float3 LightVec	: TEXCOORD1,
+			float3 WorldNormal	: TEXCOORD2,
+			float3 WorldView	: TEXCOORD5,
+			
+			uniform float3 LampColor,	// for optional quadratic falloff, factor intensity into color!
+			uniform float LampIntensity,
+			
+			out float3 DiffuseContrib,	// diffuse color returned here
+			out float3 SpecularContrib)
+{
+    // we assume all inputs need normalization -- in some cases this may not
+    //		be true! In which case the shader could be more efficient. A common
+    //		example is directional light, where the "Ln" term can be uniform for
+    //		the entire frame.
+    float dSq = dot(LightVec,LightVec);
+    float3 Ln = LightVec/dSq;
+	float falloff = LampIntensity/dSq;
+    float3 Nn = normalize(WorldNormal);	// surface normal
+    float3 Vn = normalize(WorldView);	// view direction
+	Nn = faceforward(Nn,-Vn,Nn);
+    float3 Hn = normalize(Vn + Ln);			// 'half angle' - halfway between the view and normal directions
+    float4 litV = lit(dot(Ln,Nn),dot(Hn,Nn),SpecularExpon);
+    DiffuseContrib = falloff * litV.y * Kd * LampColor + AmbientLightColor;
+    SpecularContrib = falloff * Ks * litV.z * LampColor;
+    return (DiffuseContrib, SpecularContrib);
+}
+
+//
+// Pixel (Fragment) shader using a uniform fixed color for the material
+//
+float4 plasticPQPS(
+
+	float4 HPosition	: POSITION,
+    float2 UV	: TEXCOORD0,
+    float3 LightVec	: TEXCOORD1,
+    float3 WorldNormal	: TEXCOORD2,
+    float3 WorldView	: TEXCOORD5,
+	
+	uniform float3 LampColor,
+	uniform float LampIntensity) : COLOR 
+{
+    float3 diffContrib;
+    float3 specContrib;
+	plastic_shared(LightVec,WorldNormal,WorldView,LampColor,LampIntensity,diffContrib,specContrib);
+    float3 result = (diffContrib * SurfaceColor) + specContrib;
+    return float4(result,1);
+}
+
+//
+// Pixel (Fragment) shader using a texture to modulate color for the material
+//		Note that the base surface color IS still applied as well. For pure texture
+//			color set the "SurfaceColor" to white.
+//
+float4 plasticPQPS_t(
+
+	float4 HPosition	: POSITION,
+    float2 UV	: TEXCOORD0,
+    float3 LightVec	: TEXCOORD1,
+    float3 WorldNormal	: TEXCOORD2,
+    float3 WorldView	: TEXCOORD5,
+	
+	uniform sampler2D ColorSampler : register(s0),
+	uniform float3 LampColor,
+	uniform float LampIntensity) : COLOR 
+{
+	float3 diffContrib;
+    float3 specContrib;
+    plastic_shared(LightVec,WorldNormal,WorldView,LampColor,LampIntensity,diffContrib,specContrib);
+    float3 map = tex2D(ColorSampler,UV).xyz;
+    float3 result = (diffContrib * SurfaceColor * map) + specContrib;
+    return float4(result,1);
+}

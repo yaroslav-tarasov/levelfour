@@ -1,0 +1,192 @@
+/*
+
+% A phong-shaded plastic-style surface lit from a point source.
+% Textured, untextured, quadratic falloff or not
+
+*/
+
+vertex_program PlasticP_vs cg {
+	source vs_PlasticP.cg
+	entry_point plasticPVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto WorldXf 		world_matrix
+		param_named_auto ViewIXf 		inverse_view_matrix
+		param_named_auto WvpXf 			worldviewproj_matrix
+		// param_named 	LampPos			float3 	-0.5 2.0 1.25		
+		param_named_auto 	LampPos		light_position_object_space 0
+	}
+}
+
+fragment_program PlasticP_ps cg {
+	source ps_PlasticP.cg
+	entry_point plasticPPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  Kd	 			float 		0.9
+		param_named  Ks	 			float 		0.4
+		param_named  SpecExpon	 	float 		30.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+
+	}
+}
+
+fragment_program PlasticP_ps_t cg {
+	source ps_PlasticP.cg
+	entry_point plasticPPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  Kd	 			float 		0.9
+		param_named  Ks	 			float 		0.4
+		param_named  SpecExpon	 	float 		30.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		// texture
+		
+	}
+}
+
+fragment_program PlasticP_ps_qps cg {
+	source ps_PlasticP.cg
+	entry_point plasticPQPS
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  Kd	 			float 		0.9
+		param_named  Ks	 			float 		0.4
+		param_named  SpecExpon	 	float 		30.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		param_named	 LampIntensity	float		1.0
+		
+	}
+}
+
+fragment_program PlasticP_ps_qps_t cg {
+	source ps_PlasticP.cg
+	entry_point plasticPQPS_t
+	profiles arbfp1
+	
+	default_params {
+		
+		param_named  SurfaceColor	float3 		1.0 1.0 1.0
+		param_named  Kd	 			float 		0.9
+		param_named  Ks	 			float 		0.4
+		param_named  SpecExpon	 	float 		30.0
+		param_named  LampColor	 	float3 		1.0 1.0 1.0
+		param_named  AmbiColor	 	float3 		0.07 0.07 0.07
+		param_named	 LampIntensity	float		1.0
+		// texture
+		
+	}
+}
+
+// PlasticP_Default
+material p_Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref PlasticP_vs {
+							
+			}
+			
+			fragment_program_ref PlasticP_ps {
+				
+			}
+			
+		}
+		
+	}
+}
+// PlasticP_Texture
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref PlasticP_vs {
+							
+			}
+			
+			fragment_program_ref PlasticP_ps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture PlasticP_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+						
+		}
+		
+	}
+}
+material PlasticP_Quadratic_Falloff {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref PlasticP_vs {
+							
+			}
+			
+			fragment_program_ref PlasticP_ps_qps {
+				
+			}
+							
+		}
+		
+	}
+}
+// PlasticP_Quadratic_Falloff_Texture
+material PlasticP_Quadratic_Falloff_Texture {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref PlasticP_vs {
+							
+			}
+			
+			fragment_program_ref PlasticP_ps_qps_t {
+				
+			}
+			
+			texture_unit
+			{
+				texture PlasticP_default_color.dds
+				tex_coord_set 0
+				tex_address_mode wrap
+			}
+			
+		}
+		
+	}
+}

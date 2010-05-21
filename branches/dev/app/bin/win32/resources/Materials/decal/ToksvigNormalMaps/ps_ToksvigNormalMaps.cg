@@ -2,25 +2,37 @@
 /*********** pixel shader ********************************/
 /*********************************************************/
 
+#define SPEC_EXPON 64.0
+#define TOX_TABLE_SIZE 256
+#define TOX_FORMAT "g16r16"
+
+float Bumpy = 1.0;
+
 float4 toksvigPS(
 
-			vertexOutput IN,
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 WorldNormal	: TEXCOORD1,
+			float3 WorldView	: TEXCOORD2,
+			float3 WorldTangent	: TEXCOORD3,
+			float3 WorldBinorm	: TEXCOORD4,
 		    
 			uniform float3 SurfaceColor,
+			uniform sampler2D ColorSampler : register(s2),
 		    uniform sampler2D NormalSampler : register(s0),
 		    uniform float Kd,
 		    uniform float Ks,
 		    uniform float3 LightDir,
 		    uniform float3 LampColor,
 		    uniform float3 AmbiColor,
-		    uniform sampler2D SpecSampler : register(s0)
+		    uniform sampler2D SpecSampler : register(s1)
 ) : COLOR {
-    float3 Nn = /*normalize*/(IN.WorldNormal);
-    float3 Tn = /*normalize*/(IN.WorldTangent);
-    float3 Bn = /*normalize*/(IN.WorldBinorm);
-    float3 bumps = 2.0 * (tex2D(NormalSampler,IN.UV).xyz-(0.5).xxx);
+    float3 Nn = /*normalize*/(WorldNormal);
+    float3 Tn = /*normalize*/(WorldTangent);
+    float3 Bn = /*normalize*/(WorldBinorm);
+    float3 bumps = 2.0 * (tex2D(NormalSampler,UV).xyz-(0.5).xxx);
     float3 Na = bumps.x * Tn + bumps.y * Bn + bumps.z * Nn;
-    float3 Vn = normalize(IN.WorldView);
+    float3 Vn = normalize(WorldView);
     float3 Ln = /*normalize*/(-LightDir);	// normalize() required? FXComposer should provide pre-norm'd value
     float3 Hn = normalize(Vn + Ln);
     float NaH = dot(Hn,Na);
@@ -35,7 +47,7 @@ float4 toksvigPS(
     float3 specContrib = ((s * Ks) * LampColor);
     // add, incorporating ambient light term
 #ifdef DO_COLORTEX
-    float3 colorTex = SurfaceColor * tex2D(ColorSampler,IN.UV).xyz;
+    float3 colorTex = SurfaceColor * tex2D(ColorSampler,UV).xyz;
 #define SURF_COLOR colorTex
 #else /* !DO_COLORTEX */
 #define SURF_COLOR SurfaceColor
@@ -46,22 +58,30 @@ float4 toksvigPS(
 
 float4 nonToksvigPS(
 
-			vertexOutput IN,
+			float4 HPosition	: POSITION,
+			float2 UV		: TEXCOORD0,
+			float3 WorldNormal	: TEXCOORD1,
+			float3 WorldView	: TEXCOORD2,
+			float3 WorldTangent	: TEXCOORD3,
+			float3 WorldBinorm	: TEXCOORD4,
+	
 		    uniform float3 SurfaceColor,
+			uniform sampler2D ColorSampler : register(s1),
 		    uniform sampler2D NormalSampler : register(s0),
 		    uniform float Kd,
 		    uniform float Ks,
 		    uniform float3 LightDir,
 		    uniform float3 LampColor,
-		    uniform float3 AmbiColor
+		    uniform float3 AmbiColor,
+		    uniform float Bumpy
 ) : COLOR {
-    float3 Nn = normalize(IN.WorldNormal);
-    float3 Tn = normalize(IN.WorldTangent);
-    float3 Bn = normalize(IN.WorldBinorm);
-    float3 bumps = (Bumpy*2.0) * (tex2D(NormalSampler,IN.UV).xyz-(0.5).xxx);
+    float3 Nn = normalize(WorldNormal);
+    float3 Tn = normalize(WorldTangent);
+    float3 Bn = normalize(WorldBinorm);
+    float3 bumps = (Bumpy*2.0) * (tex2D(NormalSampler,UV).xyz-(0.5).xxx);
     Nn = (bumps.x*Tn + bumps.y*Bn + bumps.z*Nn);
     Nn = normalize(Nn);
-    float3 Vn = normalize(IN.WorldView);
+    float3 Vn = normalize(WorldView);
     float3 Ln = normalize(-LightDir);	// normalize() required?
     float3 Hn = normalize(Vn + Ln);
     float hdn = dot(Hn,Nn);
@@ -71,7 +91,7 @@ float4 nonToksvigPS(
     float3 specContrib = ((litVec.z * Ks) * LampColor);
     // add, incorporating ambient light term
 #ifdef DO_COLORTEX
-    float3 colorTex = SurfaceColor * tex2D(ColorSampler,IN.UV).xyz;
+    float3 colorTex = SurfaceColor * tex2D(ColorSampler,UV).xyz;
 #define SURF_COLOR colorTex
 #else /* !DO_COLORTEX */
 #define SURF_COLOR SurfaceColor

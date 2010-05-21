@@ -9,9 +9,10 @@ vertex_program toonShading_vs cg {
 	
 	default_params {
 		
-		param_named_auto modelViewProj worldviewproj_matrix
-        param_named_auto modelToWorld world_matrix
-        param_named_auto eyePositionW camera_position
+		param_named_auto modelViewProj 	worldviewproj_matrix
+        param_named_auto modelToWorld 	world_matrix
+        param_named_auto eyePositionW 	camera_position_object_space 0
+		param_named_auto lightPosition  light_position_object_space  0
 		param_named shininess float 8
 	}
 }
@@ -34,11 +35,11 @@ material Default {
 	technique {
 		
 		pass  {
-			scene_blend src_alpha one_minus_src_alpha
+			scene_blend scene_blend src_alpha one_minus_src_alpha 
 			depth_check on
+			depth_write off
 			depth_func less_equal
-			lighting on
-			
+						
 			vertex_program_ref toonShading_vs {
 							
 			}
@@ -51,24 +52,22 @@ material Default {
 			{
 				texture RampMap0.dds
 				tex_coord_set 0
-				tex_address_mode wrap
+				tex_address_mode clamp
 			}
 			
 			texture_unit // specular ramp
 			{
 				texture RampMap1.dds
 				tex_coord_set 1
-				tex_address_mode wrap
+				tex_address_mode clamp
 			}
 			
 			texture_unit // edge ramp
 			{
 				texture RampMap2.dds
 				tex_coord_set 2
-				tex_address_mode wrap
+				tex_address_mode clamp
 			}
-						
 		}
-		
 	}
 }

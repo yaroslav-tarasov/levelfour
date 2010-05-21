@@ -1,4 +1,4 @@
-void main(float3 Position : POSITION,
+void glowBalloonVS(float3 Position : POSITION,
 		    float4 Normal : NORMAL,
 			uniform float Inflate,
 			uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
