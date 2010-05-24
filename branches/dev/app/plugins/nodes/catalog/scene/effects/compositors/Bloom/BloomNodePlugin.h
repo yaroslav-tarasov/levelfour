@@ -25,70 +25,40 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 */
 
 //!
-//! \file "AqtFilterSobelNode.h"
-//! \brief Header file for AqtFilterSobelNode class.
+//! \file "BloomNodePlugin.h"
+//! \brief Header file for BloomNodePlugin class.
 //!
-//! \author     Thomas Luft <thomas.luft@web.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
-//! \version    1.0
-//! \date       18.05.2009 (last updated)
+//! \author     Stefan Habel <stefan.habel@filmakademie.de>
+//! \version    0.1
+//! \date       11.02.2009 (last updated)
 //!
 
-#ifndef AQTFILTERSOBELNODE_H
-#define AQTFILTERSOBELNODE_H
+#ifndef BloomNODEPLUGIN_H
+#define BloomNODEPLUGIN_H
 
-#include "CompositorNode.h"
+#include "NodeTypeInterface.h"
 
 
 //!
-//! Base class for all render nodes.
+//! Plugin class for creating BloomNode objects.
 //!
-class AqtFilterSobelNode : public CompositorNode
+class BloomNodePlugin : public QObject, public NodeTypeInterface
 {
 
     Q_OBJECT
+    Q_INTERFACES(NodeTypeInterface)
 
-public: // constructors and destructors
+public: // functions
 
     //!
-    //! Constructor of the AqtFilterSobelNode class.
+    //! Creates a node of this node type.
     //!
     //! \param name The name for the new node.
     //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
+    //! \return A pointer to the new node.
     //!
-    AqtFilterSobelNode ( const QString &name, ParameterGroup *parameterRoot );
-
-    //!
-    //! Destructor of the AqtFilterSobelNode class.
-    //!
-    //! Defined virtual to guarantee that the destructor of a derived class
-    //! will be called if the instance of the derived class is saved in a
-    //! variable of its parent class type.
-    //!
-    virtual ~AqtFilterSobelNode ();
-
-protected: // functions
-
-    //!
-    //! Callback when instance of this class is registered as Ogre::CompositorListener.
-    //! 
-    //! \param pass_id Id to identifiy current compositor pass.
-    //! \param mat Material this pass is currently using.
-    //!
-    virtual void notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialPtr &mat);
-
-private slots:
-
-    //!
-    //! Processes the node's input data to generate the node's output image.
-    //!
-    void processOutputImage ();
-
-    //!
-    //! Marks the cache as being invalid so that it is cleared the next time
-    //! the output image is processed.
-    //!
-    void invalidateCache ();
+    virtual Node * createNode ( const QString &name, ParameterGroup *parameterRoot );
 
 };
 

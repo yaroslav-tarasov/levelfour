@@ -1,0 +1,39 @@
+
+
+void pulse23VS(
+
+	float3 Position	: POSITION,
+    float4 UV		: TEXCOORD0,
+    float4 Normal	: NORMAL,
+    float4 Tangent	: TEXCOORD1,
+    float4 Binormal	: TEXCOORD2,
+	
+	uniform float4x4 WorldITXf,
+	uniform float4x4 WvpXf,
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewInvTransXf,
+	uniform float4 LightPos,
+	
+	out float4 HPosition	: POSITION,
+    out float4 TexCoord	: TEXCOORD0,
+    out float3 LightVec	: TEXCOORD1,
+    out float3 WorldNormal	: TEXCOORD2,
+    out float3 WorldPos	: TEXCOORD3, // we will use this coord for texturing
+    out float3 WorldView	: TEXCOORD4,
+    out float3 WorldTangent	: TEXCOORD5,
+    out float3 WorldBinorm	: TEXCOORD6
+	
+	) 
+{
+    WorldNormal = mul(WorldITXf, Normal).xyz;
+    WorldTangent = mul(WorldITXf, Tangent).xyz;
+    WorldBinorm = mul(WorldITXf, Binormal).xyz;
+    float4 Po = float4(Position.xyz,1.0);
+    float3 Pw = mul(WorldXf, Po).xyz;
+    WorldPos = Pw;
+    LightVec = LightPos - Pw;
+    TexCoord = UV;
+    WorldView = normalize(ViewInvTransXf[3].xyz - Pw);
+    float4 hpos = mul(WvpXf, Po);
+    HPosition = hpos;
+}

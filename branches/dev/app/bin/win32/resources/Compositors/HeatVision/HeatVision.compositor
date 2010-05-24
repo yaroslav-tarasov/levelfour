@@ -15,7 +15,7 @@ compositor Heat Vision
             input none
             pass render_quad
             {
-                material Fury/HeatVision/LightToHeat
+                material LightToHeat
                 input 0 scene
                 identifier 616
             }
@@ -26,7 +26,7 @@ compositor Heat Vision
             input none
             pass render_quad
             {
-                material Fury/HeatVision/Blur
+                material Blur
                 input 0 temp
             }
         }

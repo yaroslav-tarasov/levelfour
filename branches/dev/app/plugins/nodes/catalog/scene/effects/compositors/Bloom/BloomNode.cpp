@@ -25,8 +25,8 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 */
 
 //!
-//! \file "AqtFilterSobelNode.cpp"
-//! \brief Implementation file for AqtFilterSobelNode class.
+//! \file "BloomNode.cpp"
+//! \brief Implementation file for BloomNode class.
 //!
 //! \author     Thomas Luft <thomas.luft@web.de>
 //! \author     Nils Zweiling <nils.zweiling@filmakademie.de>
@@ -35,8 +35,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 
 
-#include "AqtFilterSobelNode.h"
-#include "ImageNode.h"
+#include "BloomNode.h"
 #include "Parameter.h"
 #include "OgreTools.h"
 #include "OgreManager.h"
@@ -46,44 +45,45 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 /// Constructors and Destructors
 ///
 
+
 //!
-//! Constructor of the AqtFilterSobelNode class.
+//! Constructor of the BloomNode class.
 //!
 //! \param name The name for the new node.
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //! \param outputImageName The name of the geometry output parameter.
 //!
-AqtFilterSobelNode::AqtFilterSobelNode ( const QString &name, ParameterGroup *parameterRoot ) :
+BloomNode::BloomNode ( const QString &name, ParameterGroup *parameterRoot ) :
     CompositorNode(name, parameterRoot)
 {
     // create compositor
     if (m_viewport)
-        m_compositor = Ogre::CompositorManager::getSingleton().addCompositor(m_viewport, "SobelCompositor", 0);
+        m_compositor = Ogre::CompositorManager::getSingleton().addCompositor(m_viewport, "BloomCompositor", 0);
     
-    // add listener
+    // add compositor listener
     if (m_compositor) {
         m_compositor->addListener(this);
     }
 
+    // set affections and callback functions
     addAffection("Input Map", m_outputImageName);
     setProcessingFunction(m_outputImageName, SLOT(processOutputImage()));
-    setChangeFunction("Monochrome", SIGNAL(triggerRedraw()));
-    setChangeFunction("Extent", SIGNAL(triggerRedraw()));
-    setChangeFunction("Threshold", SIGNAL(triggerRedraw()));
+    // setChangeFunction("Extent", SIGNAL(triggerRedraw()));
+    // setCommandFunction("Polish > Reload Shader", SLOT(reloadShader()));
+
 }
 
 
 //!
-//! Destructor of the AqtFilterSobelNode class.
+//! Destructor of the BloomNode class.
 //!
 //! Defined virtual to guarantee that the destructor of a derived class
 //! will be called if the instance of the derived class is saved in a
 //! variable of its parent class type.
 //!
-AqtFilterSobelNode::~AqtFilterSobelNode ()
+BloomNode::~BloomNode ()
 {
 }
-
 
 ///
 /// Protected Functions
@@ -95,50 +95,85 @@ AqtFilterSobelNode::~AqtFilterSobelNode ()
 //! \param pass_id Id to identifiy current compositor pass.
 //! \param mat Material this pass is currently using.
 //!
-void AqtFilterSobelNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialPtr &mat)
+void BloomNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialPtr &mat)
 {
     Ogre::TexturePtr inputTexture = getTextureValue("Input Map");
     if (inputTexture.isNull())
         return;
-    
-    // Smooth horizontal
+
+    //downscaled pass
     if (pass_id == 0000)
     {
-        //set shader parameters
+        //set texture name
+        setTexture(mat, inputTexture, 0);
+    }
+
+    //smooth downscaled pass
+    if (pass_id == 0001)
+    {
+        //set gpu parameter
         Ogre::GpuProgramParametersSharedPtr fpParams = getShaderParameters(mat);
         if (!fpParams.isNull())
         {
-            setShaderParameter(fpParams, "pixelSize", Ogre::Vector4(1.0 / getWidth(), 1.0 / getHeight(), (double)rand()/(double)RAND_MAX, (double)rand()/(double)RAND_MAX));
-            setShaderParameter(fpParams, "domainRadius", (Ogre::Real) (getDoubleValue("Extent") / 10.0));
+            // double downscaleFactor = 0.125;
+            // setShaderParameter(fpParams, "pixelSize", Ogre::Vector4(1.0 / (double)(downscaleFactor * getWidth()), 1.0 / (double)(downscaleFactor * getHeight()), 0.0, 0.0));
+            // setShaderParameter(fpParams, "domainRadius", (Ogre::Real)(getDoubleValue("Extent") / 10.0 + 1.0));
+        }
+
+		setTexture(mat, inputTexture, 0);
+    }
+
+    //indication pass
+    if (pass_id == 0002)
+    {
+        //set gpu parameter
+        Ogre::GpuProgramParametersSharedPtr fpParams = getShaderParameters(mat);
+        if (!fpParams.isNull())
+        {
+            // setShaderParameter(fpParams, "pixelSize", Ogre::Vector4(1.0 / (double)getWidth(), 1.0 / (double)getHeight(), 0.0, 0.0));
         }
 
         //set texture name
         setTexture(mat, inputTexture, 0);
     }
 
-    // Smooth vertical
-    if (pass_id == 0001)
+	if (pass_id == 0003)
     {
-        //set shader parameters
+        //set gpu parameter
         Ogre::GpuProgramParametersSharedPtr fpParams = getShaderParameters(mat);
         if (!fpParams.isNull())
         {
-            setShaderParameter(fpParams, "pixelSize", Ogre::Vector4(1.0 / (double) getWidth(), 1.0 / (double) getHeight(), (double)rand()/(double)RAND_MAX, (double)rand()/(double)RAND_MAX));
-            setShaderParameter(fpParams, "domainRadius", (Ogre::Real) (getDoubleValue("Extent") / 10.0));
+            // setShaderParameter(fpParams, "pixelSize", Ogre::Vector4(1.0 / (double)getWidth(), 1.0 / (double)getHeight(), 0.0, 0.0));
         }
+
+        //set texture name
+        setTexture(mat, inputTexture, 0);
     }
 
-    // Sobel
-    if (pass_id == 0002)
+	if (pass_id == 0004)
     {
-        //set shader parameters
+        //set gpu parameter
         Ogre::GpuProgramParametersSharedPtr fpParams = getShaderParameters(mat);
         if (!fpParams.isNull())
         {
-            setShaderParameter(fpParams, "pixelSize", Ogre::Vector4(1.0 / (double) getWidth(), 1.0 / (double) getHeight(), (double)rand()/(double)RAND_MAX, (double)rand()/(double)RAND_MAX));
-            setShaderParameter(fpParams, "threshold", (Ogre::Real) getDoubleValue("Threshold"));
-            setShaderParameter(fpParams, "monochrome", (int) getBoolValue("Monochrome"));
+            // setShaderParameter(fpParams, "pixelSize", Ogre::Vector4(1.0 / (double)getWidth(), 1.0 / (double)getHeight(), 0.0, 0.0));
         }
+
+        //set texture name
+        setTexture(mat, inputTexture, 0);
+    }
+
+	if (pass_id == 0005)
+    {
+        //set gpu parameter
+        Ogre::GpuProgramParametersSharedPtr fpParams = getShaderParameters(mat);
+        if (!fpParams.isNull())
+        {
+            // setShaderParameter(fpParams, "pixelSize", Ogre::Vector4(1.0 / (double)getWidth(), 1.0 / (double)getHeight(), 0.0, 0.0));
+        }
+
+        //set texture name
+        setTexture(mat, inputTexture, 0);
     }
 }
 
@@ -150,9 +185,9 @@ void AqtFilterSobelNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::Materi
 //!
 //! Processes the node's input data to generate the node's output image.
 //!
-void AqtFilterSobelNode::processOutputImage ()
+void BloomNode::processOutputImage ()
 {
-     // obtain input image
+    // obtain input image
     Ogre::TexturePtr inputTexture = getTextureValue("Input Map");
     if (inputTexture.isNull()) {
         //disable compositor (now that the input texture name was set)
@@ -179,11 +214,33 @@ void AqtFilterSobelNode::processOutputImage ()
     }
 }
 
+
 //!
 //! Marks the cache as being invalid so that it is cleared the next time
 //! the output image is processed.
 //!
-void AqtFilterSobelNode::invalidateCache ()
+void BloomNode::invalidateCache ()
 {
     m_cacheInvalid = true;
+}
+
+
+//!
+//! Reloads the shader.
+//!
+void BloomNode::reloadShader ()
+{
+    Ogre::MaterialPtr  mat = Ogre::MaterialManager::getSingleton().getByName("UnsharpMaskMaterial");
+    if (!mat.isNull())
+    {
+        Ogre::GpuProgramPtr gpuPrg = mat->getTechnique(0)->getPass(0)->getFragmentProgram();
+        if (!gpuPrg.isNull())
+        {
+            gpuPrg->reload();
+            mat->getTechnique(0)->getPass(0)->setFragmentProgram(gpuPrg->getName(), true);
+            Log::info("shader reloaded", "BloomNode::reloadShader");
+            processOutputImage();
+        }
+    }
+
 }

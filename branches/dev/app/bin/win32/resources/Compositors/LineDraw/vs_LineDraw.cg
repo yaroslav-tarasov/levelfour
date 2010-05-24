@@ -1,0 +1,82 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+void simpleVS(
+
+	float3 Pos    : POSITION,
+	float4 UV        : TEXCOORD0,
+	float4 Normal    : NORMAL,
+    float4 Tangent    : TANGENT0,
+    float4 Binormal    : BINORMAL0,
+	
+	out float4 HPosition	: POSITION,
+    out float3 WorldNormal	: TEXCOORD0,
+    out float3 WorldEyeVec	: TEXCOORD1,
+    out float3 EyePos	: TEXCOORD2,
+		
+	uniform float4x4 WorldITXf, // our four standard "untweakable" xforms
+	uniform float4x4 WorldXf,
+	uniform float4x4 ViewIXf,
+	uniform float4x4 WvpXf,
+	uniform float4x4 WorldViewXf
+) {
+    float4 Po = float4(Pos,1.0);
+    HPosition = mul(WvpXf,Po);
+    float4 Nn = normalize(Normal);
+    WorldNormal = mul(Nn,WorldITXf).xyz;
+    float4 Pw = mul(Po,WorldXf);
+    EyePos = mul(WorldViewXf,Po).xyz;
+    WorldEyeVec = normalize(float3(ViewIXf[0].w,ViewIXf[1].w,ViewIXf[2].w) - Pw.xyz);
+}
+
+/////// edge detection //////////////
+
+// packing macros
+#define UV00 TC00.xy
+#define UV01 TC00.zw
+#define UV02 TC01.xy
+#define UV10 TC01.zw
+#define UV11 TC02.xy
+#define UV12 TC02.zw
+#define UV20 TC03.xy
+#define UV21 TC03.zw
+#define UV22 TC04.xy
+
+
+void edgeVS(
+
+		QUAD_REAL3 PositionIN : POSITION, 
+		QUAD_REAL3 TexCoord : TEXCOORD0,
+		
+		out QUAD_REAL4 Position	: POSITION,
+		out QUAD_REAL4 TC00	: TEXCOORD0, 	// packed
+		out QUAD_REAL4 TC01	: TEXCOORD1, 	// packed
+		out QUAD_REAL4 TC02	: TEXCOORD2, 	// packed
+		out QUAD_REAL4 TC03	: TEXCOORD3, 	// packed
+		out QUAD_REAL2 TC04	: TEXCOORD4, 	// not packed
+		
+		uniform float2 ScreenSize,
+		uniform float NPixels
+		
+) {
+    Position = QUAD_REAL4(PositionIN, 1);
+    QUAD_REAL2 ctr = QUAD_REAL2(TexCoord.xy); 
+    QUAD_REAL2 ox = QUAD_REAL2(NPixels/ScreenSize.x,0.0);
+    QUAD_REAL2 oy = QUAD_REAL2(0.0,NPixels/ScreenSize.y);
+    UV00 = ctr - ox - oy;
+    UV01 = ctr - oy;
+    UV02 = ctr + ox - oy;
+    UV10 = ctr - ox;
+    UV11 = ctr;
+    UV12 = ctr + ox;
+    UV20 = ctr - ox + oy;
+    UV21 = ctr + oy;
+    UV22 = ctr + ox + oy;
+}

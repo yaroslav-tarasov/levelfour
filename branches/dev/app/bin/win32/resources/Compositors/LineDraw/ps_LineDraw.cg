@@ -1,0 +1,223 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+// packing macros
+#define UV00 TC00.xy
+#define UV01 TC00.zw
+#define UV02 TC01.xy
+#define UV10 TC01.zw
+#define UV11 TC02.xy
+#define UV12 TC02.zw
+#define UV20 TC03.xy
+#define UV21 TC03.zw
+#define UV22 TC04.xy
+
+//////////////////////////////////////////////////////
+////////////////////////////////// pixel shader //////
+//////////////////////////////////////////////////////
+
+//
+// Edge detect against gray
+//
+// Note for THIS conversion, we treat R G and B *equally* -- a better
+//	value for the dot product for a regular color image might be something
+//	perceptual like (.2,.7,.1) -- but in this case we are filtering 3D normals
+//  so (0.333).xxx is good
+//
+QUAD_REAL getGray(QUAD_REAL4 c)
+{
+    return(dot(c.rgb,((0.33333).xxx)));
+}
+
+QUAD_REAL edgeDetectGray(
+
+		QUAD_REAL4 TC00	: TEXCOORD0, // packed
+		QUAD_REAL4 TC01	: TEXCOORD1, // packed
+		QUAD_REAL4 TC02	: TEXCOORD2, // packed
+		QUAD_REAL4 TC03	: TEXCOORD3, // packed
+		QUAD_REAL2 TC04	: TEXCOORD4, // not packed
+	
+		uniform sampler2D ColorMap : register(s0),
+		uniform QUAD_REAL T2) 
+{
+	QUAD_REAL4 CC;
+	CC = tex2D(ColorMap,UV00); QUAD_REAL g00 = getGray(CC);
+	CC = tex2D(ColorMap,UV01); QUAD_REAL g01 = getGray(CC);
+	CC = tex2D(ColorMap,UV02); QUAD_REAL g02 = getGray(CC);
+	CC = tex2D(ColorMap,UV10); QUAD_REAL g10 = getGray(CC);
+	CC = tex2D(ColorMap,UV12); QUAD_REAL g12 = getGray(CC);
+	CC = tex2D(ColorMap,UV20); QUAD_REAL g20 = getGray(CC);
+	CC = tex2D(ColorMap,UV21); QUAD_REAL g21 = getGray(CC);
+	CC = tex2D(ColorMap,UV22); QUAD_REAL g22 = getGray(CC);
+	QUAD_REAL sx = 0;
+	sx -= g00;
+	sx -= g01 * 2;
+	sx -= g02;
+	sx += g20;
+	sx += g21 * 2;
+	sx += g22;
+	QUAD_REAL sy = 0;
+	sy -= g00;
+	sy += g02;
+	sy -= g10 * 2;
+	sy += g12 * 2;
+	sy -= g20;
+	sy += g22;
+	QUAD_REAL dist = (sx*sx+sy*sy);
+	QUAD_REAL result = 0;
+	if (dist>T2) { result = 1; }
+	return result;
+}
+
+//
+// Only the red channel since the image is grayscale already
+//
+QUAD_REAL edgeDetectR(
+
+	QUAD_REAL4 TC00	: TEXCOORD0, // packed
+	QUAD_REAL4 TC01	: TEXCOORD1, // packed
+	QUAD_REAL4 TC02	: TEXCOORD2, // packed
+	QUAD_REAL4 TC03	: TEXCOORD3, // packed
+	QUAD_REAL2 TC04	: TEXCOORD4, // not packed
+	
+	uniform sampler2D ColorMap,
+	uniform QUAD_REAL T2) 
+{
+	QUAD_REAL4 CC;
+	QUAD_REAL g00 = tex2D(ColorMap,UV00).x;
+	QUAD_REAL g01 = tex2D(ColorMap,UV01).x;
+	QUAD_REAL g02 = tex2D(ColorMap,UV02).x;
+	QUAD_REAL g10 = tex2D(ColorMap,UV10).x;
+	QUAD_REAL g12 = tex2D(ColorMap,UV12).x;
+	QUAD_REAL g20 = tex2D(ColorMap,UV20).x;
+	QUAD_REAL g21 = tex2D(ColorMap,UV21).x;
+	QUAD_REAL g22 = tex2D(ColorMap,UV22).x;
+	QUAD_REAL sx = 0;
+	sx -= g00;
+	sx -= g01 * 2;
+	sx -= g02;
+	sx += g20;
+	sx += g21 * 2;
+	sx += g22;
+	QUAD_REAL sy = 0;
+	sy -= g00;
+	sy += g02;
+	sy -= g10 * 2;
+	sy += g12 * 2;
+	sy -= g20;
+	sy += g22;
+	QUAD_REAL dist = (sx*sx+sy*sy);
+	QUAD_REAL result = 0;
+	if (dist>T2) { result = 1; }
+	return result;
+}
+
+///////
+
+QUAD_REAL4 edgeDetect2PS(
+
+			QUAD_REAL4 Position	: POSITION,
+			QUAD_REAL4 TC00	: TEXCOORD0, // packed
+			QUAD_REAL4 TC01	: TEXCOORD1, // packed
+			QUAD_REAL4 TC02	: TEXCOORD2, // packed
+			QUAD_REAL4 TC03	: TEXCOORD3, // packed
+			QUAD_REAL2 TC04	: TEXCOORD4, // not packed
+		
+		    uniform sampler2D NormSampler : register(s0),
+		    uniform sampler2D DeepSampler : register(s1),
+		    uniform float Threshhold,
+		    uniform float ThreshholdD
+) : COLOR {
+    float EdgeT2 = (Threshhold * Threshhold);
+    float DeepT2 = (ThreshholdD * ThreshholdD);
+    QUAD_REAL n = edgeDetectGray(TC00,TC01,TC02,TC03,TC04,NormSampler,EdgeT2);
+    QUAD_REAL d = edgeDetectR(TC00,TC01,TC02,TC03,TC04,DeepSampler,DeepT2);
+    QUAD_REAL ink = 1 - (n*d);
+    return ink.xxxx;
+}
+
+QUAD_REAL4 normEdgePS(
+			
+			QUAD_REAL4 Position	: POSITION,
+			QUAD_REAL4 TC00	: TEXCOORD0, // packed
+			QUAD_REAL4 TC01	: TEXCOORD1, // packed
+			QUAD_REAL4 TC02	: TEXCOORD2, // packed
+			QUAD_REAL4 TC03	: TEXCOORD3, // packed
+			QUAD_REAL2 TC04	: TEXCOORD4, // not packed
+			
+		    uniform sampler2D NormSampler : register(s0),
+		    uniform float Threshhold
+) : COLOR {
+    float EdgeT2 = (Threshhold * Threshhold);
+    QUAD_REAL d = 1.0 - edgeDetectGray(TC00,TC01,TC02,TC03,TC04,NormSampler,EdgeT2);
+    float4 dc = tex2D(NormSampler,UV11).x;
+    return float4(dc.rgb,1.0);
+    return d.xxxx;
+}
+
+QUAD_REAL4 deepEdgePS(
+			
+			QUAD_REAL4 Position	: POSITION,
+			QUAD_REAL4 TC00	: TEXCOORD0, // packed
+			QUAD_REAL4 TC01	: TEXCOORD1, // packed
+			QUAD_REAL4 TC02	: TEXCOORD2, // packed
+			QUAD_REAL4 TC03	: TEXCOORD3, // packed
+			QUAD_REAL2 TC04	: TEXCOORD4, // not packed
+			
+		    uniform sampler2D DeepSampler : register(s0),
+		    uniform float ThreshholdD
+) : COLOR {
+    float DeepT2 = (ThreshholdD * ThreshholdD);
+    QUAD_REAL d = 1.0 - edgeDetectR(TC00,TC01,TC02,TC03,TC04,DeepSampler,DeepT2);
+    float dv = tex2D(DeepSampler,UV11).x;
+    return float4(dv.xxx,1.0);
+    return d.xxxx;
+}
+
+/// geom pixel shaders ////
+
+QUAD_REAL4 vecColorN(QUAD_REAL3 V) {
+    QUAD_REAL3 Nc = 0.5 * (normalize(V.xyz) + ((1.0).xxx));
+    return QUAD_REAL4(Nc,1);
+}
+
+QUAD_REAL4 normPS(
+
+		float3 WorldNormal	: TEXCOORD0)   : COLOR 
+{ 
+return vecColorN(WorldNormal); 
+}
+
+QUAD_REAL4 deepPS(
+
+	float3 EyePos	: TEXCOORD2,
+	uniform float Near,
+	uniform float Far
+
+)   : COLOR {
+    QUAD_REAL d = (abs(EyePos.z)-Near)/(Far-Near);
+    return QUAD_REAL4(d.xxx,1);
+}
+
+void geomMRT_PS(
+		float3 WorldNormal	: TEXCOORD0,
+		float3 WorldEyeVec	: TEXCOORD1,
+		float3 EyePos		: TEXCOORD2,
+		
+		uniform float Near,
+		uniform float Far,
+		
+		out QUAD_REAL4 normColor : COLOR0,
+		out QUAD_REAL4 deepColor : COLOR1
+) {
+	normColor = vecColorN(WorldNormal);
+	QUAD_REAL d = (abs(EyePos.z)-Near)/(Far-Near);
+	deepColor = QUAD_REAL4(d.xxx,1);
+}

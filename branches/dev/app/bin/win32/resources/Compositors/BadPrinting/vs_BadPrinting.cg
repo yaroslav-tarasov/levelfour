@@ -1,0 +1,88 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+//////////////////////////////////////////////////////
+////////////////////////////////// vertex shader /////
+//////////////////////////////////////////////////////
+
+// utility
+
+QUAD_REAL2 misalign(QUAD_REAL2 Orig,
+		    QUAD_REAL2 Off,
+		    QUAD_REAL2 Rot,
+		    QUAD_REAL2 Ctr)
+{
+    QUAD_REAL2 m = Orig + Off - Ctr;
+    QUAD_REAL2 tilt = QUAD_REAL2(m.x*Rot.x - m.y*Rot.y,
+				 m.y*Rot.x + m.x*Rot.y);
+    return (tilt+Ctr);
+}
+
+void ScreenQuadVS2(
+
+	out QUAD_REAL4 Position	: POSITION,
+    out QUAD_REAL2 UV	: TEXCOORD0,
+
+    QUAD_REAL3 PositionIN : POSITION, 
+    QUAD_REAL3 TexCoord : TEXCOORD0,
+    uniform QUAD_REAL2 TexelOffsets
+) {
+    Position = QUAD_REAL4(PositionIN, 1);
+    UV = QUAD_REAL2(TexCoord.xy /* TexelOffsets ignored for OpenGL */); 
+}
+
+void SplitVS(
+
+		out QUAD_REAL4 Position	: POSITION,
+		out QUAD_REAL2 UV0		: TEXCOORD0,
+		out QUAD_REAL2 UV1		: TEXCOORD1,
+		out QUAD_REAL2 UV2		: TEXCOORD2,
+		out QUAD_REAL2 UV3		: TEXCOORD3,
+		
+		QUAD_REAL3 PositionIN : POSITION, 
+		QUAD_REAL3 TexCoord : TEXCOORD0,
+		uniform float gOffCx,
+		uniform float gOffCy,
+		uniform float gOffCr,
+		uniform float gOffMx,
+		uniform float gOffMy,
+		uniform float gOffMr,
+		uniform float gOffYx,
+		uniform float gOffYy,
+		uniform float gOffYr,
+		uniform float gOffKx,
+		uniform float gOffKy,
+		uniform float gOffKr,
+		uniform float gCtrX,
+		uniform float gCtrY,
+		uniform QUAD_REAL2 TexelOffsets
+) {
+    
+	Position = QUAD_REAL4(PositionIN, 1);
+#ifdef QUAD_RESCALE
+    QUAD_REAL2 base = QUAD_REAL2(TexScale.xx * TexCoord.xy);
+#else /* ! QUAD_RESCALE */
+    QUAD_REAL2 base = TexCoord.xy;
+#endif /* ! QUAD_RESCALE */
+    QUAD_REAL2 COffset = QUAD_REAL2(gOffCx,gOffCy);
+    QUAD_REAL2 MOffset = QUAD_REAL2(gOffMx,gOffMy);
+    QUAD_REAL2 YOffset = QUAD_REAL2(gOffYx,gOffYy);
+    QUAD_REAL2 KOffset = QUAD_REAL2(gOffKx,gOffKy);
+    QUAD_REAL2 CRot = QUAD_REAL2(cos(radians(-gOffCr)),sin(radians(-gOffCr)));
+    QUAD_REAL2 MRot = QUAD_REAL2(cos(radians(-gOffMr)),sin(radians(-gOffMr)));
+    QUAD_REAL2 YRot = QUAD_REAL2(cos(radians(-gOffYr)),sin(radians(-gOffYr)));
+    QUAD_REAL2 KRot = QUAD_REAL2(cos(radians(-gOffKr)),sin(radians(-gOffKr)));
+    QUAD_REAL2 CenterPt = QUAD_REAL2(gCtrX,gCtrY);
+    UV0 = misalign(base,COffset,CRot,CenterPt);
+    UV1 = misalign(base,MOffset,MRot,CenterPt);
+    UV2 = misalign(base,YOffset,YRot,CenterPt);
+    UV3 = misalign(base,KOffset,KRot,CenterPt);
+
+}
