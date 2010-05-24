@@ -1,0 +1,113 @@
+vertex_program LineDraw_nd_vs cg
+{
+	source vs_LineDraw.cg
+	entry_point simpleVS
+	profiles arbvp1
+	
+	default_params
+	{
+		param_named_auto 	WorldITXf 		inverse_transpose_world_matrix
+		param_named_auto 	WorldXf   		world_matrix
+		param_named_auto 	ViewIXf   		inverse_view_matrix
+		param_named_auto 	WvpXf     		worldviewproj_matrix
+		param_named_auto	WorldViewXf		worldview_matrix
+	}
+}
+
+vertex_program LineDraw_ip_vs cg
+{
+	source vs_LineDraw.cg
+	entry_point edgeVS
+	profiles arbvp1
+	
+	default_params
+	{
+		param_named_auto	ScreenSize	viewport_size
+		param_named 		NPixels		float	1.5
+	}
+}
+
+fragment_program LineDraw_nd_ps cg
+{
+	source ps_LineDraw.cg
+	entry_point geomMRT_PS
+	profiles arbfp1
+	
+	default_params
+	{
+		param_named Near 			float 1.2
+		param_named	Far 			float 10.2
+	}
+}
+
+fragment_program LineDraw_ip_ps cg
+{
+	source ps_LineDraw.cg
+	entry_point edgeDetect2PS
+	profiles arbfp1
+	
+	default_params
+	{
+		param_named Threshold 		float 	0.2
+		param_named	ThresholdD 		float	0.2
+		// NormSampler, DeepSampler
+		param_named NormSampler 	int 	0
+		param_named DeepSampler		int		1
+	}
+}
+
+material LineDraw
+{
+    technique Main
+    {
+
+		pass NormsAndDepth
+		{
+			cull_hardware none
+			cull_software none
+			depth_func always_pass
+
+			vertex_program_ref LineDraw_nd_vs
+			{
+			}
+
+			fragment_program_ref LineDraw_nd_ps
+			{
+			
+			}
+
+		}
+		
+		pass ImageProc
+		{
+			cull_hardware none
+			cull_software none
+			depth_func always_pass
+
+			vertex_program_ref LineDraw_ip_vs
+			{
+			}
+
+			fragment_program_ref LineDraw_ip_ps
+			{
+			
+			}
+
+			texture_unit NormSampler
+			{
+				texture NormSampler 2d
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit DeepSampler
+			{
+				texture DeepSampler 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}

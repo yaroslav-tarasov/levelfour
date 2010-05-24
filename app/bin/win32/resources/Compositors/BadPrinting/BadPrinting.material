@@ -1,0 +1,127 @@
+/*
+
+% Emulates CMYK printing -- where the print passes are misaligned!!!
+% Note that you might not see much effect on any channel except K'
+%  if you apply this effect to a gray object
+
+*/
+
+
+vertex_program BadPrinting_convert_vs cg
+{
+	source vs_BadPrinting.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	default_params
+    {
+        
+    }
+}
+
+vertex_program BadPrinting_split_vs cg
+{
+	source vs_BadPrinting.cg
+	profiles arbvp1
+    entry_point SplitVS
+	default_params
+    {
+       	param_named gOffCx float	-0.024
+		param_named gOffCy float	0.0
+		param_named gOffCr float	-2.44
+		param_named gOffMx float	0.0
+		param_named gOffMy float	0.001
+		param_named gOffMr float	0.0
+		param_named gOffYx float	-0.003
+		param_named gOffYy float	-0.001
+		param_named gOffYr float	0.0
+		param_named gOffKx float	0.0
+		param_named gOffKy float	-0.015
+		param_named gOffKr float	0.0
+		param_named gCtrX float		0.5
+		param_named gCtrY float		0.5
+		
+    }
+}
+
+
+fragment_program BadPrinting_convert_ps cg
+{
+    source ps_BadPrinting.cg
+    entry_point SeparatePS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+	}
+}
+
+fragment_program BadPrinting_split_ps cg
+{
+    source ps_BadPrinting.cg
+    entry_point SplitPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named DSamp0 	int 	0
+	}
+}
+
+
+material BadPrinting_Convert
+{
+	technique
+	{
+		pass Convert
+		{
+			depth_check off
+
+			vertex_program_ref BadPrinting_convert_vs
+			{
+			}
+			
+			fragment_program_ref BadPrinting_convert_ps
+			{
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+
+	}
+}
+
+material BadPrinting_Split
+{
+	technique
+	{
+		pass Split
+		{
+			depth_check off
+
+			vertex_program_ref BadPrinting_split_vs
+			{
+			}
+			
+			fragment_program_ref BadPrinting_split_ps
+			{
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture DSamp0 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}

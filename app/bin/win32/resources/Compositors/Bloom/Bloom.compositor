@@ -1,0 +1,110 @@
+/*
+
+% Glow/bloom post processing effect -- for "bloom," only the brightest areas are affected.
+
+Down-samples scene first for performance (reduces size by 4),
+Thresholds luminance for extra highlights
+Separable filter, filters in X, then in Y
+Takes advantage of bilinear filtering for blur
+
+*/
+
+
+
+compositor BloomCompositor
+{
+    technique
+    {
+		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_X8R8G8B8
+		texture DownsampleTex target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture HBlurTex target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture FinalBlurTex target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		
+		// Initial Pass
+		target SceneSampler
+		{
+			input previous
+		}
+		
+		// DownSample Pass
+		target DownsampleTex
+        {
+            input none
+            
+            pass render_quad
+            {
+				identifier 0000
+				material BloomDownSample
+				input 0 SceneSampler
+            }
+        }
+
+		// pass GlowH
+        target HBlurTex
+        {
+            input none
+            
+            pass render_quad
+            {
+				identifier 0001
+                material BloomGlowH
+                input 0 DownsampleTex
+            }
+        }
+        
+		// pass GlowV
+        target FinalBlurTex
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0002
+                material BloomGlowV
+                input 0 HBlurTex
+            }
+        }
+		
+		// pass BloomGlowH_Central
+		target HBlurTex
+        {
+            input none
+            
+            pass render_quad
+            {
+				identifier 0003
+                material BloomGlowH_Central
+                input 0 DownsampleTex
+            }
+        }
+        
+		// pass BloomGlowV_Central
+        target FinalBlurTex
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0004
+                material BloomGlowV_Central
+                input 0 HBlurTex
+            }
+        }
+            
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0005
+				material BloomFinalComp
+				input 0 SceneSampler
+                input 1 FinalBlurTex
+            }
+        }
+
+    }
+
+}
+

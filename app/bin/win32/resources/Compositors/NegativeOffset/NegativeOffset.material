@@ -1,0 +1,68 @@
+/*
+
+% A look typical of 1960s "op-art" optical printing.
+% Add slight shifts to an image
+
+*/
+
+vertex_program NegativeOffset_vs cg
+{
+	source vs_NegativeOffset.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program NegativeOffset_ps cg
+{
+    source ps_NegativeOffset.cg
+    entry_point negativeOffsetPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+		param_named OffX 			float 	0.003
+		param_named OffY 			float 	0.003
+		param_named Scale 			float 	1.0
+		param_named Rot 			float 	0.0
+		param_named Density 		float 	1.0
+		
+	}
+}
+
+
+material NegativeOffset
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref NegativeOffset_vs
+			{
+			
+			}
+			
+			fragment_program_ref NegativeOffset_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}

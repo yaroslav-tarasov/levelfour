@@ -11,7 +11,6 @@
 #define QUAD_REAL3x4 float3x4
 #define QUAD_REAL4x4 float4x4
 
-
 half getGray(half4 c)
 {
     return(dot(c.rgb,((0.33333).xxx)));
@@ -24,10 +23,10 @@ half4 kuwaharaPS
 
 			QUAD_REAL4 Position	: POSITION,
 			QUAD_REAL2 UV	: TEXCOORD0,
-			QUAD_REAL2 QuadScreenSize : VIEWPORTPIXELSIZE,
+			QUAD_REAL2 QuadScreenSize, // : VIEWPORTPIXELSIZE
 		    
 			uniform half NPixels,
-			uniform sampler2D SceneSampler) : COLOR 
+			uniform sampler2D SceneSampler : register(s0)) : COLOR 
 {
 	half2 ox = half2(NPixels/QuadScreenSize.x,0.0);
 	half2 oy = half2(0.0,NPixels/QuadScreenSize.y);

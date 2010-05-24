@@ -9,8 +9,10 @@ compositor "Night Vision"
 	{
 	    input previous
 	}
-		target_output
-		{
+	
+	target_output
+	
+	{
 			input none
 	   
 			pass render_quad

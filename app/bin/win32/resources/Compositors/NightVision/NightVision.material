@@ -47,7 +47,7 @@ material NightVision
 
 			texture_unit RT
 			{
-				texture RT 2d
+				// texture RT 2d
                 tex_coord_set 0
 				tex_address_mode clamp
 				filtering trilinear

@@ -1,0 +1,32 @@
+
+
+void particleVS(
+			float4 pInitial : POSITION,
+            float  tInitial : TEXCOORD0,
+            float4 vInitial : TEXCOORD1,
+
+            out float4 oPosition : POSITION,
+            out float3 color     : COLOR,
+            out float  pointSize : PSIZE,
+
+			uniform float    rate,
+			uniform float3	 startVelocity,
+			uniform float4   acceleration,
+			uniform float    time,
+            uniform float4x4 modelViewProj)
+{
+  float t = time - tInitial;
+  float4 pFinal = pInitial +
+                  vInitial * t + 
+                  0.5 * acceleration * t * t;
+
+  oPosition = mul(modelViewProj, pFinal);
+  
+  color = float3(t, t, t);
+ 
+  pointSize = -8.0 * t * t + 
+               8.0 * t + 
+               0.1 * pFinal.y + 1;
+  if (pointSize < 0)
+    pointSize = 0;
+}

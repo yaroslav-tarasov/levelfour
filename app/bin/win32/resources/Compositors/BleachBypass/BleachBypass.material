@@ -1,0 +1,66 @@
+/*
+
+% An image effect that's intended to look like the movie-film printing
+% effect called "bleach bypass," where a normal step of processing is
+% skipped to cause unique color- and contrast effects.
+% The "Blend Opacity" slider lets you dial-in the strength of this effect.
+
+*/
+
+vertex_program BleachBypass_vs cg
+{
+	source vs_BleachBypass.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program BleachBypass_ps cg
+{
+    source ps_BleachBypass.cg
+    entry_point bypassPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+		param_named Opacity 		float 	1.0
+	
+	}
+}
+
+
+material BleachBypass
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref BleachBypass_vs
+			{
+			
+			}
+			
+			fragment_program_ref BleachBypass_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}
