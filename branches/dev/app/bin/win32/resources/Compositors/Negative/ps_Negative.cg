@@ -1,0 +1,25 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4
+
+//////////////////////////////////////////////////////
+/////////////////////////////////// pixel shader /////
+//////////////////////////////////////////////////////
+
+QUAD_REAL4 negativePS(
+	
+	QUAD_REAL4 Position	: POSITION,
+    QUAD_REAL2 UV	: TEXCOORD0,
+	
+	uniform sampler2D SceneSampler : register(s0)
+	) : COLOR
+{   
+    QUAD_REAL4 texCol = tex2D(SceneSampler, UV);
+    return float4((float3(1,1,1)-texCol.xyz),texCol.w); // protect alpha
+}  

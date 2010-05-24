@@ -2,7 +2,7 @@ vertex_program Kuwahara_vs cg
 {
 	source vs_Kuwahara.cg
 	profiles arbvp1
-    entry_point KuwaharaVS
+    entry_point kuwaharaVS
 	default_params
     {
         // param_named_auto worldViewProj worldviewproj_matrix
@@ -13,12 +13,12 @@ vertex_program Kuwahara_vs cg
 fragment_program Kuwahara_ps cg
 {
     source ps_Kuwahara.cg
-    entry_point KuwaharaPS
+    entry_point kuwaharaPS
     profiles arbfp1
 
 	default_params
 	{
-		// param_named exampleParam float3 0.0 1.0 2.0
+		param_named SceneSampler 	int 	0
 	}
 }
 
@@ -31,11 +31,11 @@ material Kuwahara
 		{
 			depth_check off
 
-			fragment_program_ref Kuwahara_vs
+			vertex_program_ref Kuwahara_vs
 			{
 			}
 			
-			vertex_program_ref Kuwahara_ps
+			fragment_program_ref Kuwahara_ps
 			{
 			}	
 			

@@ -1,0 +1,59 @@
+/*
+
+% Create a negative image of the underlying scene.
+% Un-inverted alpha is preserved.
+
+*/
+
+vertex_program Negative_vs cg
+{
+	source vs_Negative.cg
+	profiles arbvp1
+    entry_point negativeVS
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program Negative_ps cg
+{
+    source ps_Negative.cg
+    entry_point negativePS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+	}
+}
+
+
+material Negative
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Negative_vs
+			{
+			}
+			
+			fragment_program_ref Negative_ps
+			{
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}

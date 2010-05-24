@@ -1,0 +1,59 @@
+compositor "CoronaCompositor"
+{
+    technique
+    {
+		texture HorizBlur target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		texture VertBlur target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		texture RedrawGlow target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		
+		target HorizBlur
+        {
+            input previous
+            
+            pass render_quad
+            {
+				identifier 0000
+				material HorizBlur
+            }
+        }
+
+        target VertBlur
+        {
+            input none
+            
+            pass render_quad
+            {
+				identifier 0001
+                material VertBlur
+                input 0 HorizBlur
+            }
+        }
+        
+        target RedrawGlow
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0002
+                material RedrawGlow
+                input 0 VertBlur
+            }
+        }
+            
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0003
+				material RedrawObj
+                input 0 RedrawGlow
+            }
+        }
+
+    }
+
+}
+

@@ -8,7 +8,7 @@
 #define QUAD_REAL3x4 float3x4
 #define QUAD_REAL4x4 float4x4
 
-void KuwaharaVS(
+void kuwaharaVS(
     
 	QUAD_REAL3 PositionIN : POSITION, 
     QUAD_REAL3 TexCoord : TEXCOORD0,

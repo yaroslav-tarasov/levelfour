@@ -1,0 +1,59 @@
+
+
+/********* pixel shader ********/
+
+// PS with box-filtered step function
+float4 pulse23PS(
+
+	float4 HPosition	: POSITION,
+    float4 TexCoord	: TEXCOORD0,
+    float3 LightVec	: TEXCOORD1,
+    float3 WorldNormal	: TEXCOORD2,
+    float3 WorldPos	: TEXCOORD3, // we will use this coord for texturing
+    float3 WorldView	: TEXCOORD4,
+    float3 WorldTangent	: TEXCOORD5,
+    float3 WorldBinorm	: TEXCOORD6,
+	
+	uniform float4 LiteColor,
+	uniform float4 AmbiColor,
+	uniform float Intensity,
+	uniform float4 SurfColor,
+	uniform float Ks,
+	uniform float SpecExpon,
+	uniform float Oversample,
+	uniform float Period,
+	uniform float Balance,
+	uniform float WaveFreq,
+	uniform float WaveGain,
+	uniform float Speed,
+	uniform float Timer
+	
+	) : COLOR 
+{
+    float3 Ln = normalize(LightVec);
+	float falloff = Intensity/dot(LightVec,LightVec);
+    float3 Nn = normalize(WorldNormal);
+    float wavy = WaveGain*sin(WorldPos.z*WaveFreq+(Speed*Timer));
+    float balanced = (wavy + Balance);
+    balanced = min(1.0,max(0.0,balanced));
+    float edge = Period*balanced;
+    float width = abs(ddx(WorldPos.x)) + abs(ddy(WorldPos.x));
+    float w = width*Oversample/Period;
+    float x0 = WorldPos.x/Period - (w/2.0);
+    float x1 = x0 + w;
+    float nedge = edge/Period;
+    float i0 = (1.0-nedge)*floor(x0) + max(0.0, frac(x0)-nedge);
+    float i1 = (1.0-nedge)*floor(x1) + max(0.0, frac(x1)-nedge);
+    float s = (i1 - i0)/w;
+    s = min(1.0,max(0.0,s));
+    float4 dColor = lerp((1.0).xxxx,float4(0.0,0.0,0.0,1.0),s);
+    float3 Vn = normalize(WorldView);
+    float3 Hn = normalize(Vn + Ln);
+    float hdn = pow(max(0,dot(Hn,Nn)),SpecExpon);
+    float ldn = dot(Ln,Nn);
+    float diffComp = falloff * max(0,ldn);
+    float4 diffContrib = dColor * SurfColor * (diffComp*LiteColor + AmbiColor);
+    float4 specContrib = falloff * hdn * LiteColor;
+    float4 result = diffContrib + (s*Ks * specContrib);
+    return result;
+}

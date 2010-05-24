@@ -1,0 +1,92 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+///////////////////////////////////////////////////
+// CMYK ///////////////////////////////////////////
+///////////////////////////////////////////////////
+
+// CMY with no 'K' is verrry simple...
+
+QUAD_REAL3 rgb2cmy(QUAD_REAL3 rgbColor) {
+    return (QUAD_REAL3(1,1,1) - rgbColor);	// simplest conversion
+}
+
+QUAD_REAL3 cmy2rgb(QUAD_REAL3 cmyColor) {
+    return (QUAD_REAL3(1,1,1) - cmyColor);	// simplest conversion
+}
+
+//
+// There are many device-specific methods for determining 'K' (black ink).
+//		This is a popular and simple one.
+//
+QUAD_REAL4 cmy2cmyk(QUAD_REAL3 cmyColor)
+{
+    QUAD_REAL k = ((QUAD_REAL)1.0);
+    k = min(k,cmyColor.x);
+    k = min(k,cmyColor.y);
+    k = min(k,cmyColor.z);
+    QUAD_REAL4 cmykColor;
+    cmykColor.xyz = (cmyColor - (QUAD_REAL3)k)/((QUAD_REAL3)(((QUAD_REAL)1.0)-k).xxx);
+    cmykColor.w = k;
+    return (cmykColor);
+}
+
+QUAD_REAL3 cmyk2cmy(QUAD_REAL4 cmykColor)
+{
+    QUAD_REAL3 k = cmykColor.www;
+    return ((cmykColor.xyz * (QUAD_REAL3(1,1,1)-k)) + k);
+}
+
+/////////
+
+QUAD_REAL4 rgb2cmyk(QUAD_REAL3 rgbColor) {
+    return cmy2cmyk(rgb2cmy(rgbColor));
+}
+
+QUAD_REAL3 cmyk2rgb(QUAD_REAL4 cmykColor) {
+    return cmy2rgb(cmyk2cmy(cmykColor));
+}
+
+
+//////////////////////////////////////////////////////
+/////////////////////////////////// pixel shader /////
+//////////////////////////////////////////////////////
+
+
+QUAD_REAL4 SeparatePS(
+
+			QUAD_REAL4 Position	: POSITION,
+			QUAD_REAL2 UV	: TEXCOORD0,
+	
+		    uniform sampler2D SceneSampler : register(s0)) : COLOR
+{   
+    QUAD_REAL3 rgbC = tex2D(SceneSampler, UV).xyz;
+    QUAD_REAL4 cmykC = rgb2cmyk(rgbC);
+    return QUAD_REAL4(cmykC);
+}  
+
+QUAD_REAL4 SplitPS(
+
+	uniform sampler2D DSamp0 : register(s0),
+
+	QUAD_REAL4 Position	: POSITION,
+    QUAD_REAL2 UV0		: TEXCOORD0,
+    QUAD_REAL2 UV1		: TEXCOORD1,
+    QUAD_REAL2 UV2		: TEXCOORD2,
+    QUAD_REAL2 UV3		: TEXCOORD3) : COLOR
+{   
+    QUAD_REAL c = tex2D(DSamp0, UV0).x;
+    QUAD_REAL m = tex2D(DSamp0, UV1).y;
+    QUAD_REAL y = tex2D(DSamp0, UV2).z;
+    QUAD_REAL k = tex2D(DSamp0, UV3).w;
+    QUAD_REAL4 cmykC = QUAD_REAL4(c,m,y,k);
+    QUAD_REAL3 rgbC = cmyk2rgb(cmykC);
+    return QUAD_REAL4(rgbC.xyz,1);
+}  

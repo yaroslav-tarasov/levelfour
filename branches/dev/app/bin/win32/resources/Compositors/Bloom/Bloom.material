@@ -1,0 +1,279 @@
+/*
+
+Down-samples scene first for performance (reduces size by 4),
+Thresholds luminance for extra highlights
+Separable filter, filters in X, then in Y
+Takes advantage of bilinear filtering for blur
+
+*/
+
+vertex_program Bloom_Downsample_vs cg
+{
+	source vs_Bloom.cg
+	profiles arbvp1
+    entry_point VS_Downsample
+	
+	default_params
+    {
+        // uniform float2 WindowSize
+    }
+}
+
+vertex_program Bloom_GlowHVC_vs cg
+{
+	source vs_Bloom.cg
+	profiles arbvp1
+    entry_point VS_Blur7
+	
+	default_params
+    {
+			// param_named direction float2
+		    param_named BlurWidth 	float	2.0
+		    // param_named WindowSize float2
+    }
+}
+
+vertex_program Bloom_FinalComp_vs cg
+{
+	source vs_Bloom.cg
+	profiles arbvp1
+    entry_point VS_Quad
+	
+	default_params
+    {
+			// uniform float2 WindowSize
+    }
+}
+
+fragment_program Bloom_DownSample_ps cg
+{
+    source ps_Bloom.cg
+    entry_point PS_Downsample
+    profiles arbfp1
+
+	default_params
+	{
+		param_named OrigSampler 		int 	0
+		param_named HighlightThreshold 	float	0.9
+	
+	}
+}
+
+fragment_program Bloom_GlowHVC_ps cg
+{
+    source ps_Bloom.cg
+    entry_point PS_Blur7
+    profiles arbfp1
+
+	default_params
+	{
+		param_named OrigSampler 	int 	0
+	
+	}
+}
+
+fragment_program Bloom_FinalComp_ps cg
+{
+    source ps_Bloom.cg
+    entry_point PS_Comp
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 			int 	0
+		param_named FinalBlurSampler	 	int 	1
+		param_named SceneIntensity  		float	0.5
+		param_named GlowIntensity 			float	0.5
+		param_named HighlightIntensity 		float	0.5
+	
+	}
+}
+
+
+material BloomDownSample
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Bloom_Downsample_vs
+			{
+			
+			}
+			
+			fragment_program_ref Bloom_Downsample_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture OrigSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}
+
+material BloomGlowH
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Bloom_GlowHVC_vs
+			{
+			
+			}
+			
+			fragment_program_ref Bloom_GlowHVC_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture OrigSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}
+
+material BloomGlowV
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Bloom_GlowHVC_vs
+			{
+			
+			}
+			
+			fragment_program_ref Bloom_GlowHVC_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture OrigSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}
+
+material BloomGlowH_Central
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Bloom_GlowHVC_vs
+			{
+			
+			}
+			
+			fragment_program_ref Bloom_GlowHVC_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture OrigSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}
+
+material BloomGlowV_Central
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Bloom_GlowHVC_vs
+			{
+			
+			}
+			
+			fragment_program_ref Bloom_GlowHVC_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture OrigSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}
+
+material BloomFinalComp
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Bloom_FinalComp_vs
+			{
+			
+			}
+			
+			fragment_program_ref Bloom_FinalComp_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (SceneSampler
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			 
+			 texture_unit	// FinalBlurSampler
+			 {
+                 // texture FinalBlurSampler 2d
+				 tex_coord_set 1
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}

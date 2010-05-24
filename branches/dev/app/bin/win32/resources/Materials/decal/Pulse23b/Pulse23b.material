@@ -1,0 +1,68 @@
+/*
+
+% Blast from the past (Cg 1 Maya sample shader).
+% Analytic anti-aliasing against an arbitrary function.
+
+*/
+
+vertex_program Pulse23_vs cg {
+	source vs_Pulse23b.cg
+	entry_point pulse23VS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto WorldITXf 				inverse_transpose_world_matrix
+		param_named_auto WorldXf 				world_matrix
+		param_named_auto ViewInvTransXf 		inverse_transpose_viewproj_matrix 
+		param_named_auto WvpXf 					worldviewproj_matrix
+		param_named 	LightPos				float4 	-2.0 3.0 2.0 0.0		
+	}
+}
+
+fragment_program Pulse23_ps cg {
+	source ps_Pulse23b.cg
+	entry_point pulse23PS
+	profiles fp30
+	
+	default_params {
+		
+		param_named  LiteColor		float4 		1.0 1.0 1.0 1.0
+		param_named  AmbiColor		float4 		0.17 0.17 0.17 1.0
+		param_named  Intensity	 	float 		15.0
+		param_named  SurfColor	 	float3 		0.7 0.5 0.2 1.0
+		param_named  Ks	 			float 		1.0
+		param_named  SpecExpon	 	float 		65.0
+		param_named  Oversample	 	float 		1.0
+		param_named  Period	 		float 		0.5
+		param_named  Balance 		float 		0.5
+		param_named  WaveFreq	 	float 		7.0
+		param_named  WaveGain	 	float 		0.2
+		param_named  Speed	 		float 		2.5
+		param_named_auto  Timer	 	time_0_1 1
+		
+	}
+}
+
+// Pulse23_Default
+material Default {
+	technique {
+		pass {
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref Pulse23_vs {
+							
+			}
+			
+			fragment_program_ref Pulse23_ps {
+				
+			}
+			
+			
+		}
+		
+	}
+}

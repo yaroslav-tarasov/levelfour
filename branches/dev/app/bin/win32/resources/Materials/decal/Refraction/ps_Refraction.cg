@@ -1,0 +1,20 @@
+
+
+void refractionPS(float2 texCoord : TEXCOORD0,
+                      float3 T        : TEXCOORD1,
+
+                  out float4 color : COLOR,
+
+              uniform float       transmittance,
+              uniform sampler2D   decalMap : register(s0),
+              uniform samplerCUBE environmentMap : register(s1))
+{
+  // Fetch the decal base color
+  float4 decalColor = tex2D(decalMap, texCoord);
+
+  // Fetch refracted environment color
+  float4 refractedColor = texCUBE(environmentMap, T);
+
+  // Compute the final color
+  color = lerp(decalColor, refractedColor, transmittance);
+}

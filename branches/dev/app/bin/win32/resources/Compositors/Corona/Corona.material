@@ -1,0 +1,242 @@
+/*
+
+% Render-to-Texture (RTT) *animated* glow example.
+% Blur is done in two separable passes.
+
+*/
+// HorizBlur
+vertex_program Corona_hb_vs cg
+{
+	source vs_Corona.cg
+	entry_point VS_Quad_Horizontal_9tap
+	profiles arbvp1
+	
+	default_params
+	{
+		param_named 		Bias		float	2.0
+	}
+}
+
+vertex_program Corona_vb_vs cg
+{
+	source vs_Corona.cg
+	entry_point VS_Quad_Vertical_9tap
+	profiles arbvp1
+	
+	default_params
+	{
+		param_named 		Bias		float	2.0
+	}
+}
+
+vertex_program Corona_rdgro_vs cg
+{
+	source vs_Corona.cg
+	entry_point VS_Quad
+	profiles arbvp1
+	
+	default_params
+	{
+		param_named 		Bias		float	2.0
+	}
+}
+
+fragment_program Corona_hb_ps cg
+{
+	source ps_Corona.cg
+	entry_point PS_Blur_Horizontal_9tap
+	profiles arbfp1
+	
+	default_params
+	{
+		param_named Timer 			float 	1.2
+		param_named	Speed 			float 	0.03
+		param_named	Crawl 			float2 	0.04 -0.02
+		param_named	NoiseBright 	float 	1.51
+		param_named	NoiseScale 		float 	1.03
+		param_named	Trailfade 		float 	0.45
+		// ObjectsSamp, GlowSampler, NoiseSampler
+		param_named ObjectsSamp 	int 	0
+		param_named GlowSampler		int		1
+		// param_named NoiseSampler	int		2
+	}
+}
+
+fragment_program Corona_vb_ps cg
+{
+	source ps_Corona.cg
+	entry_point PS_Blur_Vertical_9tap
+	profiles arbfp1
+	
+	default_params
+	{
+		param_named Glowness 		float 	2.2
+		param_named	GlowCol 		float4	1.0 0.6 0.0 1.0
+		param_named HBlurredSamp 	int 	0
+	}
+}
+
+fragment_program Corona_rdg_ps cg
+{
+	source ps_Corona.cg
+	entry_point PS_GlowPass
+	profiles arbfp1
+	
+	default_params
+	{
+		param_named GlowSampler 	int 	0
+	}
+}
+
+fragment_program Corona_rdo_ps cg
+{
+	source ps_Corona.cg
+	entry_point PS_OrigPass
+	profiles arbfp1
+	
+	default_params
+	{
+		param_named ObjectsSamp 	int 	0
+	}
+}
+// Four passes HorizBlur, VertBlur, RedrawGlow, RedrawObj
+material HorizBlur
+{
+    technique
+    {
+		
+		pass 
+		{
+			cull_hardware none
+			cull_software none
+			depth_func always_pass
+
+			vertex_program_ref Corona_hb_vs
+			{
+			}
+
+			fragment_program_ref Corona_hb_ps
+			{
+			
+			}
+			
+			texture_unit
+			{
+				texture ObjectsSamp 2d
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				texture GlowSampler 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				texture noiseL8_32x32x32.dds 3d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+
+		}
+	}
+}
+material VertBlur
+{
+	technique
+	{
+		
+		pass VertBlur
+		{
+			cull_hardware none
+			cull_software none
+			depth_func always_pass
+
+			vertex_program_ref Corona_vb_vs
+			{
+			}
+
+			fragment_program_ref Corona_vb_ps
+			{
+			
+			}
+
+			texture_unit
+			{
+				texture HBlurredSamp 2d
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+		}
+	}
+}
+material RedrawGlow
+{
+	technique
+	{
+		
+		pass RedrawGlow
+		{
+			cull_hardware none
+			cull_software none
+			depth_func always_pass
+
+			vertex_program_ref Corona_rdgro_vs
+			{
+			}
+
+			fragment_program_ref Corona_rdg_ps
+			{
+			
+			}
+
+			texture_unit
+			{
+				texture GlowSampler 2d
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+		}
+	}
+}
+
+material RedrawObj
+{
+	technique
+	{
+		pass RedrawObj
+		{
+			cull_hardware none
+			cull_software none
+			depth_func always_pass
+
+			vertex_program_ref Corona_rdgro_vs
+			{
+			}
+
+			fragment_program_ref Corona_rdo_ps
+			{
+			
+			}
+
+			texture_unit
+			{
+				texture ObjectsSamp 2d
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+			
+		}
+	}
+}

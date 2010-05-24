@@ -1,0 +1,35 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+//////////////////////////////////////////////////////
+/////////////////////////////////// pixel shader /////
+//////////////////////////////////////////////////////
+
+QUAD_REAL4 bypassPS(
+
+			QUAD_REAL4 Position	: POSITION,
+			QUAD_REAL2 UV	: TEXCOORD0,
+	
+			uniform float Opacity,
+		    uniform sampler2D SceneSampler : register(s0)) : COLOR
+{
+    QUAD_REAL4 base = tex2D(SceneSampler, UV);
+    QUAD_REAL3 lumCoeff = QUAD_REAL3(0.25,0.65,0.1);
+    QUAD_REAL lum = dot(lumCoeff,base.rgb);
+    QUAD_REAL3 blend = lum.rrr;
+    QUAD_REAL L = min(1,max(0,10*(lum- 0.45)));
+    QUAD_REAL3 result1 = 2.0f * base.rgb * blend;
+    QUAD_REAL3 result2 = 1.0f - 2.0f*(1.0f-blend)*(1.0f-base.rgb);
+    QUAD_REAL3 newColor = lerp(result1,result2,L);
+    QUAD_REAL A2 = Opacity * base.a;
+    QUAD_REAL3 mixRGB = A2 * newColor.rgb;
+    mixRGB += ((1.0f-A2) * base.rgb);
+    return QUAD_REAL4(mixRGB,base.a);
+}

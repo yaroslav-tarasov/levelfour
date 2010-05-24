@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         CameraShake.xml
+  Description:  Contains the XML description of CameraShake nodes.
+  Author:       Thomas Luft <thomas.luft@web.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="CameraShake" category="Compositors" color="7, 45, 87" plugin="CameraShake.dll">
+  <parameters>
+    <parameter name="Input Map" type="Image" pin="in" selfEvaluating="true"/>
+    <parameter name="Resource Group Name" type="String" defaultValue="CameraShake" visible="false"/>
+    <parameter name="Reload" type="Command" />
+    <parameter name="Speed" type="Float" inputMethod="SliderPlusSpinBox" minValue="-1.0" maxValue="100.0" defaultValue="21.0" unit=""/>
+    <parameter name="Shake" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.25" unit=""/>
+    <parameter name="Sharpness" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.1" maxValue="3.0" defaultValue="2.2" unit=""/>
+    
+  </parameters>
+</nodetype>
+

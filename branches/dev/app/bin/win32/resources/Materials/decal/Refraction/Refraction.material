@@ -1,0 +1,69 @@
+
+
+vertex_program Refraction_vs cg {
+	source vs_Refraction.cg
+	entry_point refractionVS
+	profiles arbvp1
+	
+	default_params {
+		
+		param_named_auto modelViewProj worldviewproj_matrix
+        param_named_auto modelToWorld world_matrix
+        param_named_auto eyePositionW camera_position
+		param_named etaRatio 		float3 	1.1 1.12 1.14
+	}
+}
+
+fragment_program Refraction_ps cg {
+	source ps_Refraction.cg
+	entry_point refractionPS
+	profiles arbfp1
+	
+	default_params {
+	
+		param_named transmittance 	float 	0.8
+		// Sampler2d DecalMap
+		// sampleCube EnvironMap
+		
+	}
+}
+
+// Refraction_Default
+material Default {
+	technique {
+		pass {
+			
+			scene_blend src_alpha one_minus_src_alpha
+			depth_check on
+			depth_func less_equal
+			lighting on
+			
+			vertex_program_ref Refraction_vs {
+					
+			}
+			
+			fragment_program_ref Refraction_ps {
+				
+			}
+			
+			// Diffuse Map
+			texture_unit {
+			
+				texture DiffuseMap.dds
+				tex_coord_set 0
+			
+			}
+			
+			// Environment Map
+			texture_unit {
+			
+				cubic_texture EnvironmentMap.dds combinedUVW
+				tex_coord_set 1
+				env_map spherical
+			
+			}
+
+		}
+	
+	}
+}

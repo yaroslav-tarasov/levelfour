@@ -1,0 +1,94 @@
+#define QUAD_REAL2 float2
+QUAD_REAL2 QuadScreenSize;
+
+// HorizBlur pass
+
+void VS_Quad_Horizontal_9tap(
+
+			// VS_OUTPUT_BLUR
+			out float4 Position   : POSITION,
+			out float4 Diffuse    : COLOR0,
+			out float4 TexCoord0   : TEXCOORD0,
+			out float4 TexCoord1   : TEXCOORD1,
+			out float4 TexCoord2   : TEXCOORD2,
+			out float4 TexCoord3   : TEXCOORD3,
+			out float4 TexCoord4   : TEXCOORD4,
+			out float4 TexCoord5   : TEXCOORD5,
+			out float4 TexCoord6   : TEXCOORD6,
+			out float4 TexCoord7   : TEXCOORD7,
+			out float4 TexCoord8   : COLOR1,
+
+			float3 PositionIN : POSITION, 
+			float3 TexCoord : TEXCOORD0,
+			uniform float Bias
+) {
+    Position = float4(PositionIN, 1);
+    float TexelIncrement = (1.0+Bias)/QuadScreenSize.x;
+#ifdef QUAD_RESCALE
+    float4 Coord = float4(TexScale.xx * TexCoord.xy, TexCoord.z, Bias);
+#else /* ! QUAD_RESCALE */
+    float4 Coord = float4(TexCoord.xyz, Bias);
+#endif /* ! QUAD_RESCALE */
+    TexCoord0 = float4(Coord.x + TexelIncrement, Coord.yzw);
+    TexCoord1 = float4(Coord.x + TexelIncrement * 2, Coord.yzw);
+    TexCoord2 = float4(Coord.x + TexelIncrement * 3, Coord.yzw);
+    TexCoord3 = float4(Coord.x + TexelIncrement * 4, Coord.yzw);
+    TexCoord4 = float4(Coord.x, Coord.yzw);
+    TexCoord5 = float4(Coord.x - TexelIncrement, Coord.yzw);
+    TexCoord6 = float4(Coord.x - TexelIncrement * 2, Coord.yzw);
+    TexCoord7 = float4(Coord.x - TexelIncrement * 3, Coord.yzw);
+    TexCoord8 = float4(Coord.x - TexelIncrement * 4, Coord.yzw);
+}
+
+// VertBlur pass
+
+void VS_Quad_Vertical_9tap(
+
+			// VS_OUTPUT_BLUR
+			out float4 Position   : POSITION,
+			out float4 Diffuse    : COLOR0,
+			out float4 TexCoord0   : TEXCOORD0,
+			out float4 TexCoord1   : TEXCOORD1,
+			out float4 TexCoord2   : TEXCOORD2,
+			out float4 TexCoord3   : TEXCOORD3,
+			out float4 TexCoord4   : TEXCOORD4,
+			out float4 TexCoord5   : TEXCOORD5,
+			out float4 TexCoord6   : TEXCOORD6,
+			out float4 TexCoord7   : TEXCOORD7,
+			out float4 TexCoord8   : COLOR1,
+
+			float3 PositionIN : POSITION, 
+			float3 TexCoord : TEXCOORD0,
+			uniform float Bias
+) {
+    Position = float4(PositionIN, 1);
+    float TexelIncrement = (1.0+Bias)/QuadScreenSize.y;
+    float4 Coord = float4(TexCoord.xyz, Bias);
+    TexCoord0 = float4(Coord.x, Coord.y + TexelIncrement, Coord.zw);
+    TexCoord1 = float4(Coord.x, Coord.y + TexelIncrement * 2, Coord.zw);
+    TexCoord2 = float4(Coord.x, Coord.y + TexelIncrement * 3, Coord.zw);
+    TexCoord3 = float4(Coord.x, Coord.y + TexelIncrement * 4, Coord.zw);
+    TexCoord4 = float4(Coord.x, Coord.y, Coord.zw);
+    TexCoord5 = float4(Coord.x, Coord.y - TexelIncrement, Coord.zw);
+    TexCoord6 = float4(Coord.x, Coord.y - TexelIncrement * 2, Coord.zw);
+    TexCoord7 = float4(Coord.x, Coord.y - TexelIncrement * 3, Coord.zw);
+    TexCoord8 = float4(Coord.x, Coord.y - TexelIncrement * 4, Coord.zw);
+}
+
+// pass RedrawGlow and RedrawObj
+
+void VS_Quad(
+		
+		// VS_OUTPUT
+		out float4 Position   : POSITION,
+		out float4 Diffuse    : COLOR0,
+		out float4 TexCoord0   : TEXCOORD0,
+
+		float3 PositionIN : POSITION, 
+		float3 TexCoord : TEXCOORD0,
+		uniform float Bias
+		)
+{
+    Position = float4(PositionIN, 1);
+    TexCoord0 = float4(TexCoord, Bias); 
+}
