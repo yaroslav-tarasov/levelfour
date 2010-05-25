@@ -56,12 +56,12 @@ fragment_program LineDraw_ip_ps cg
 	}
 }
 
-material LineDraw
+material LineDraw_NormsAndDepth
 {
     technique Main
     {
-
-		pass NormsAndDepth
+		// NormsAndDepth
+		pass
 		{
 			cull_hardware none
 			cull_software none
@@ -77,8 +77,15 @@ material LineDraw
 			}
 
 		}
-		
-		pass ImageProc
+	}
+}
+
+material LineDraw_ImageProc
+{
+    technique Main
+    {
+		// ImageProc
+		pass
 		{
 			cull_hardware none
 			cull_software none
@@ -95,7 +102,7 @@ material LineDraw
 
 			texture_unit NormSampler
 			{
-				texture NormSampler 2d
+				// texture NormSampler 2d
                 tex_coord_set 0
 				tex_address_mode clamp
 				filtering none
@@ -103,7 +110,7 @@ material LineDraw
 			
 			texture_unit DeepSampler
 			{
-				texture DeepSampler 2d
+				// texture DeepSampler 2d
 				tex_coord_set 0
 				tex_address_mode clamp
 				filtering none
@@ -111,3 +118,4 @@ material LineDraw
 		}
 	}
 }
+

@@ -160,7 +160,7 @@ protected: // methods
 	//!	\param width The width of render texture.
 	//!	\param height The height of render texture.
 	//!
-	void resizeRenderTexture(int width, int height);
+	void resizeRenderTexture(int width, int height, Ogre::PixelFormat pixelFormat = Ogre::PF_FLOAT16_RGBA);
 
 	//!
 	//! Clean up all textures

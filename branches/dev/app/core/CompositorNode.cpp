@@ -139,9 +139,10 @@ void CompositorNode::reload ()
 //!	\param width The width of render texture.
 //!	\param height The height of render texture.
 //!
-void CompositorNode::resizeRenderTexture(int width, int height)
+void CompositorNode::resizeRenderTexture(int width, int height, Ogre::PixelFormat pixelFormat /* = Ogre::PF_FLOAT16_RGBA */)
 {
-	if (m_renderTexture.isNull() || (m_renderTexture->getWidth() == width && m_renderTexture->getHeight() == height))
+	if (m_renderTexture.isNull() || (m_renderTexture->getWidth() == width && m_renderTexture->getHeight() == height 
+                                                                          && m_renderTexture->getFormat() == pixelFormat))
         return;
 
     // save the compositor name and destroy compositor
@@ -155,7 +156,7 @@ void CompositorNode::resizeRenderTexture(int width, int height)
 		m_compositor = 0;
 	}
 	
-	RenderNode::resizeRenderTexture(width, height);
+	RenderNode::resizeRenderTexture(width, height, pixelFormat);
 	
 	// create the new compositor with old name and location
 	m_compositor = Ogre::CompositorManager::getSingleton().addCompositor(m_viewport, compositorName, 0);

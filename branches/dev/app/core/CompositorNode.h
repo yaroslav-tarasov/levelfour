@@ -87,7 +87,7 @@ protected: // functions
     //!	\param width The width of render texture.
     //!	\param height The height of render texture.
     //!
-	virtual void resizeRenderTexture(int width, int height);
+    virtual void resizeRenderTexture(int width, int height, Ogre::PixelFormat pixelFormat = Ogre::PF_FLOAT16_RGBA);
 
     //!
     //! Get shader parameters.

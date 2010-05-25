@@ -1,0 +1,32 @@
+/*
+
+% Degrade image into a set of mock "3D-looking" tiles
+
+*/
+
+compositor TilesCompositor
+{
+    technique
+    {
+		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		
+		// Initial Pass
+		target SceneSampler
+		{
+			input previous
+		}
+		
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  Tiles
+				input 0 SceneSampler
+            }
+        }
+    }
+
+}

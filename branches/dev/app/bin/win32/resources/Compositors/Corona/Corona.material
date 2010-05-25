@@ -58,7 +58,7 @@ fragment_program Corona_hb_ps cg
 		// ObjectsSamp, GlowSampler, NoiseSampler
 		param_named ObjectsSamp 	int 	0
 		param_named GlowSampler		int		1
-		// param_named NoiseSampler	int		2
+		param_named NoiseSampler	int		2
 	}
 }
 
@@ -122,7 +122,7 @@ material HorizBlur
 			
 			texture_unit
 			{
-				texture ObjectsSamp 2d
+				// texture ObjectsSamp 2d
                 tex_coord_set 0
 				tex_address_mode clamp
 				filtering none
@@ -130,7 +130,7 @@ material HorizBlur
 			
 			texture_unit
 			{
-				texture GlowSampler 2d
+				// texture GlowSampler 2d
 				tex_coord_set 0
 				tex_address_mode clamp
 				filtering none
@@ -169,7 +169,7 @@ material VertBlur
 
 			texture_unit
 			{
-				texture HBlurredSamp 2d
+				// texture HBlurredSamp 2d
                 tex_coord_set 0
 				tex_address_mode clamp
 				filtering none
@@ -185,9 +185,7 @@ material RedrawGlow
 		
 		pass RedrawGlow
 		{
-			cull_hardware none
-			cull_software none
-			depth_func always_pass
+			depth_func less_equal
 
 			vertex_program_ref Corona_rdgro_vs
 			{
@@ -200,7 +198,7 @@ material RedrawGlow
 
 			texture_unit
 			{
-				texture GlowSampler 2d
+				// texture GlowSampler 2d
                 tex_coord_set 0
 				tex_address_mode clamp
 				filtering none
@@ -216,10 +214,9 @@ material RedrawObj
 	{
 		pass RedrawObj
 		{
-			cull_hardware none
-			cull_software none
-			depth_func always_pass
-
+			depth_check off
+			depth_func less_equal
+			
 			vertex_program_ref Corona_rdgro_vs
 			{
 			}
@@ -231,7 +228,7 @@ material RedrawObj
 
 			texture_unit
 			{
-				texture ObjectsSamp 2d
+				// texture ObjectsSamp 2d
                 tex_coord_set 0
 				tex_address_mode clamp
 				filtering none

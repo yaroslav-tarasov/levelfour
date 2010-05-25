@@ -213,7 +213,7 @@ void RenderNode::resizeAllTexturesInMap(int width, int height)
 //!	\param width The width of new render texture.
 //!	\param height The height of new render texture.
 //!
-void RenderNode::resizeRenderTexture(int width, int height)
+void RenderNode::resizeRenderTexture(int width, int height, Ogre::PixelFormat pixelFormat /* = Ogre::PF_FLOAT16_RGBA */)
 {
 	Ogre::TextureManager &textureManager = Ogre::TextureManager::getSingleton();
 	// delete the render texture
@@ -222,7 +222,7 @@ void RenderNode::resizeRenderTexture(int width, int height)
         textureManager.remove(m_renderTextureName);
     }
 	// (re-)create the render texture
-	m_renderTexture = Ogre::TextureManager::getSingleton().createManual(m_renderTextureName, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, Ogre::TEX_TYPE_2D, width, height, 0, Ogre::PF_FLOAT16_RGBA, Ogre::TU_RENDERTARGET);
+	m_renderTexture = Ogre::TextureManager::getSingleton().createManual(m_renderTextureName, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, Ogre::TEX_TYPE_2D, width, height, 0, pixelFormat, Ogre::TU_RENDERTARGET);
 
 	//Ogre::Camera* tempCamera = new Ogre::Camera("tempCamX", m_sceneManager); 
 

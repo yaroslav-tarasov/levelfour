@@ -3,10 +3,17 @@ compositor DropShadowCompositor
     technique
     {
 	
-		texture BlurGlowBuffer_HorzMap target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
-		texture BlurGlowBuffer_VertMap target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		texture ScnMap target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture GlowMap1 target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture GlowMap2 target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
 		
-        target BlurGlowBuffer_HorzMap
+		// Initial Pass
+		target ScnMap
+		{
+			input previous
+		}
+		
+        target GlowMap1
         {
             input none
 
@@ -14,10 +21,11 @@ compositor DropShadowCompositor
             {
 				identifier 0000
 				material  BlurGlowBuffer_Horz
+				input 0 ScnMap
             }
         }
 		
-		target BlurGlowBuffer_VertMap
+		target GlowMap2
         {
             input none
 
@@ -25,7 +33,7 @@ compositor DropShadowCompositor
             {
 				identifier 0001
 				material  BlurGlowBuffer_Vert
-				input 0 BlurGlowBuffer_HorzMap
+				input 0 GlowMap1
             }
         }
 		
@@ -38,7 +46,8 @@ compositor DropShadowCompositor
             {
 				identifier 0002
 				material  DropShadow
-				input 0 BlurGlowBuffer_VertMap
+				input 0 ScnMap
+				input 1 GlowMap2
             }
         }
     }

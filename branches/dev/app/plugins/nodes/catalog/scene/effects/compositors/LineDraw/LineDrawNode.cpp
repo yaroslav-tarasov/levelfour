@@ -40,7 +40,7 @@ LineDrawNode::LineDrawNode ( const QString &name, ParameterGroup *parameterRoot 
     }
 
     addAffection("Normal Map", m_outputImageName);
-    addAffection("Deep Map", m_outputImageName);
+    // addAffection("Deep Map", m_outputImageName);
     setProcessingFunction(m_outputImageName, SLOT(processOutputImage()));
     
 	/*
@@ -77,7 +77,7 @@ LineDrawNode::~LineDrawNode ()
 void LineDrawNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialPtr &mat)
 {
     Ogre::TexturePtr inputTextureNormal = getTextureValue("Normal Map");
-	Ogre::TexturePtr inputTextureDeep = getTextureValue("Deep Map");
+	// Ogre::TexturePtr inputTextureDeep = getTextureValue("Deep Map");
     if (inputTextureNormal.isNull())
         return;
 
@@ -96,8 +96,45 @@ void LineDrawNode::notifyMaterialRender(Ogre::uint32 pass_id, Ogre::MaterialPtr 
         }
 
         // set texture name
+        // setTexture(mat, inputTextureNormal, 0);
+		// setTexture(mat, inputTextureDeep, 1);
+    }
+
+	// watercolor pass
+    if (pass_id == 0001) {
+        // set shader parameters
+        Ogre::GpuProgramParametersSharedPtr fpParams = getShaderParameters(mat);
+        if (!fpParams.isNull()) {
+            /*
+			setShaderParameter(fpParams, "desat", (Ogre::Real)(getDoubleValue("Desat") / 100.0));
+			setShaderParameter(fpParams, "toned", (Ogre::Real)(getDoubleValue("Toned") / 100.0));
+			// setShaderParameter(fpParams, "speed1", (Ogre::Real)(getDoubleValue("Speed1") / 100.0));
+			// setShaderParameter(fpParams, "scratchIntensity", (Ogre::Real)(getDoubleValue("ScratchIntensity") / 100.0));
+			*/
+			
+        }
+
+        // set texture name
+        // setTexture(mat, inputTextureNormal, 0);
+		// setTexture(mat, inputTextureDeep, 1);
+    }
+
+	if (pass_id == 0002) {
+        // set shader parameters
+        Ogre::GpuProgramParametersSharedPtr fpParams = getShaderParameters(mat);
+        if (!fpParams.isNull()) {
+            /*
+			setShaderParameter(fpParams, "desat", (Ogre::Real)(getDoubleValue("Desat") / 100.0));
+			setShaderParameter(fpParams, "toned", (Ogre::Real)(getDoubleValue("Toned") / 100.0));
+			// setShaderParameter(fpParams, "speed1", (Ogre::Real)(getDoubleValue("Speed1") / 100.0));
+			// setShaderParameter(fpParams, "scratchIntensity", (Ogre::Real)(getDoubleValue("ScratchIntensity") / 100.0));
+			*/
+			
+        }
+
+        // set texture name
         setTexture(mat, inputTextureNormal, 0);
-		setTexture(mat, inputTextureDeep, 1);
+		// setTexture(mat, inputTextureDeep, 1);
     }
 }
 

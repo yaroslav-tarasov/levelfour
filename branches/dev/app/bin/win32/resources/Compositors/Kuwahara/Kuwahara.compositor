@@ -2,6 +2,15 @@ compositor KuwaharaCompositor
 {
     technique
     {
+	
+		texture SceneTexture target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+	
+		// Initial Pass
+		target SceneTexture
+		{
+			input previous
+		}
+		
         target_output
         {
             input none
@@ -10,6 +19,7 @@ compositor KuwaharaCompositor
             {
 				identifier 0000
 				material  Kuwahara
+				input 0 SceneTexture
             }
         }
     }
