@@ -1,0 +1,62 @@
+/*
+
+% Degrade image into a set of mock "3D-looking" tiles
+
+*/
+
+vertex_program Tiles_vs cg
+{
+	source vs_Tiles.cg
+	profiles arbvp1
+    entry_point VS_Quad
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program Tiles_ps cg
+{
+    source ps_Tiles.cg
+    entry_point tilesPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 		int 	0
+		param_named NumTiles 			float	8.0
+		param_named Threshhold 			float	0.15
+		param_named EdgeColor 			float3	0.7 0.7 0.7
+		
+	}
+}
+
+
+material Tiles
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Tiles_vs
+			{
+			}
+
+			fragment_program_ref Tiles_ps
+			{
+			}
+			
+			texture_unit	// (scene)
+			 {
+				// texture SceneSampler 2d
+				tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			 }
+			
+		}
+	}
+}

@@ -269,7 +269,7 @@ material BloomFinalComp
 			 texture_unit	// FinalBlurSampler
 			 {
                  // texture FinalBlurSampler 2d
-				 tex_coord_set 1
+				 tex_coord_set 0
 				 tex_address_mode clamp
 				 filtering linear linear linear
 			 }

@@ -2,16 +2,25 @@ compositor "BadPrintingCompositor"
 {
     technique
     {
-		texture BPConvert target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
-				
-		target BPConvert
+		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		texture DTex0 target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		
+		// Initial Pass
+		target SceneSampler
+		{
+			input previous
+		}
+		
+		// Convert pass
+		target DTex0
         {
-            input previous
+            input none
             
             pass render_quad
             {
 				identifier 0000
 				material BadPrinting_Convert
+				input 0 SceneSampler
             }
         }
 
@@ -23,7 +32,7 @@ compositor "BadPrintingCompositor"
             {
 				identifier 0001
 				material BadPrinting_Split
-                input 0 BPConvert
+                input 0 DTex0
             }
         }
 
