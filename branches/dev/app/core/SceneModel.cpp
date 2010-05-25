@@ -1196,6 +1196,29 @@ void SceneModel::deleteSelected ()
 			currentViewNode->setView(false);
 		}
 	}
+    
+    QStringList connectionObjectsToDelete = getSelectedObjects(true);
+    if (connectionObjectsToDelete.size() > 0) {
+        // deselect all objects
+        m_selectionModel->clear();
+
+        // display a progress dialog for deleting the selected objects
+        QProgressDialog connectionProgressDialog (tr("Deleting connections..."), QString(), 0, connectionObjectsToDelete.size());
+        connectionProgressDialog.setWindowTitle(tr("Delete"));
+        connectionProgressDialog.setWindowModality(Qt::ApplicationModal);
+        int progress = 0;
+
+        // delete the previously selected objects from the model
+        m_nodeModel->beginUpdate();
+        for (int i = 0; i < connectionObjectsToDelete.size(); ++i) {
+            QString name = connectionObjectsToDelete.at(i);
+			// delete connection
+			deleteConnection(name);
+            ++progress;
+            connectionProgressDialog.setValue(progress);
+        }
+        m_nodeModel->endUpdate();
+    }
 
     QStringList nodeObjectsToDelete = getSelectedObjects();
     if (nodeObjectsToDelete.size() > 0) {
@@ -1253,28 +1276,7 @@ void SceneModel::deleteSelected ()
         }
     }
 
-    QStringList connectionObjectsToDelete = getSelectedObjects(true);
-    if (connectionObjectsToDelete.size() > 0) {
-        // deselect all objects
-        m_selectionModel->clear();
 
-        // display a progress dialog for deleting the selected objects
-        QProgressDialog connectionProgressDialog (tr("Deleting connections..."), QString(), 0, connectionObjectsToDelete.size());
-        connectionProgressDialog.setWindowTitle(tr("Delete"));
-        connectionProgressDialog.setWindowModality(Qt::ApplicationModal);
-        int progress = 0;
-
-        // delete the previously selected objects from the model
-        m_nodeModel->beginUpdate();
-        for (int i = 0; i < connectionObjectsToDelete.size(); ++i) {
-            QString name = connectionObjectsToDelete.at(i);
-			// delete connection
-			deleteConnection(name);
-            ++progress;
-            connectionProgressDialog.setValue(progress);
-        }
-        m_nodeModel->endUpdate();
-    }
 
     if (nodeObjectsToDelete.size() == 0 && connectionObjectsToDelete.size() == 0) {
         Log::debug("Nothing to delete has been selected.", "SceneModel::deleteSelected");

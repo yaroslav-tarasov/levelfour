@@ -1,8 +1,15 @@
-compositor CameraShakeCompositor
+/*
+
+% Reduce color space - each RGB channel will be reduced to no more
+% than "nColors" tones
+
+*/
+
+compositor PosterizeCompositor
 {
     technique
     {
-		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_X8R8G8B8
+		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
 		
 		// Initial Pass
 		target SceneSampler
@@ -17,7 +24,7 @@ compositor CameraShakeCompositor
             pass render_quad
             {
 				identifier 0000
-				material  CameraShake
+				material  Posterize
 				input 0 SceneSampler
             }
         }

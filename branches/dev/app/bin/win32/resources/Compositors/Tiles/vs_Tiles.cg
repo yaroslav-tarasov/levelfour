@@ -1,0 +1,15 @@
+
+
+/*********** vertex shader ******/
+
+void VS_Quad(
+
+			out half4 HPosition	: POSITION,
+			out half2 UV	: TEXCOORD0,
+
+			half3 PositionIN : POSITION, 
+		    half3 TexCoord : TEXCOORD0)
+{
+    HPosition = half4(PositionIN, 1);
+    UV = TexCoord.xy; 
+}

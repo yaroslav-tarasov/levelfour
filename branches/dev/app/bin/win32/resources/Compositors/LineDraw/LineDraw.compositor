@@ -2,14 +2,55 @@ compositor LineDrawCompositor
 {
     technique
     {
+	
+		texture NormTexture target_width_scaled 0.125 target_height_scaled 0.125 PF_X8R8G8B8
+		texture DeepTexture target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+
+		// Initial Pass
+		target NormTexture
+		{
+			input previous
+		}
+		
+		target DeepTexture
+		{
+			input previous
+		}
+		
+		// NormsAndDepth
+		target NormTexture
+        {
+            input none
+            
+            pass render_quad
+            {
+				identifier 0000
+				material LineDraw_NormsAndDepth
+            }
+        }
+		
+		target DeepTexture
+        {
+            input none
+            
+            pass render_quad
+            {
+				identifier 0001
+				material LineDraw_NormsAndDepth
+            }
+        }
+		
+		// ImageProc
         target_output
         {
             input none
 
             pass render_quad
             {
-				identifier 0000
-				material  LineDraw
+				identifier 0002
+				material  LineDraw_ImageProc
+				input 0 NormTexture
+				input 1 DeepTexture
             }
         }
     }

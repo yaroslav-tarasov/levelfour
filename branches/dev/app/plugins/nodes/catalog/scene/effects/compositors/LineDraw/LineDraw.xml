@@ -13,7 +13,6 @@
 <nodetype name="LineDraw" category="Compositors" color="7, 45, 87" plugin="LineDraw.dll">
   <parameters>
     <parameter name="Normal Map" type="Image" pin="in" selfEvaluating="true"/>
-    <parameter name="Deep Map" type="Image" pin="in" selfEvaluating="true"/>
     <parameter name="Resource Group Name" type="String" defaultValue="LineDraw" visible="false"/>
     <parameter name="Reload" type="Command" />
     

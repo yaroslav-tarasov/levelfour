@@ -92,7 +92,7 @@ material BlurGlowBuffer_Horz
 			
 			texture_unit	// (scene)
 			 {
-				texture SrcSamp 2d
+				// texture SrcSamp 2d
 				tex_coord_set 0
 				tex_address_mode clamp
 				filtering linear linear linear
@@ -121,7 +121,7 @@ material BlurGlowBuffer_Vert
 			
 			texture_unit	// (scene)
 			 {
-				texture SrcSamp 2d
+				// texture SrcSamp 2d
 				tex_coord_set 0
 				tex_address_mode clamp
 				filtering linear linear linear
@@ -151,7 +151,7 @@ material DropShadow
 			
 			texture_unit	// (scene)
 			 {
-				texture SrcSamp 2d
+				// texture SrcSamp 2d
 				tex_coord_set 0
 				tex_address_mode clamp
 				filtering linear linear linear
@@ -159,10 +159,10 @@ material DropShadow
 			 
 			 texture_unit	// (noise)
 			 {
-                 texture GlowSamp2 2d
+                 // texture GlowSamp2 2d
 				 tex_coord_set 0
 				 tex_address_mode wrap
-				 // filtering linear linear linear
+				 filtering linear linear linear
 			 }
 			
 		}
