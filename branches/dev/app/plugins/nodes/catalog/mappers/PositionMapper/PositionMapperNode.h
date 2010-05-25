@@ -1,7 +1,7 @@
 #ifndef PositionMapperNODE_H
 #define PositionMapperNODE_H
 
-#include "GeometryNode.h"
+#include "ViewNode.h"
 #include "OgreContainer.h"
 #include "Ogre.h"
 #include "OgreTools.h"
@@ -11,7 +11,7 @@
 //!
 //! Class representing nodes that can contain OGRE entities with animation.
 //!
-class PositionMapperNode : public GeometryNode
+class PositionMapperNode : public ViewNode
 {
 
     Q_OBJECT
@@ -159,6 +159,11 @@ private: // data
     //! The name of the input geometry parameter.
     //!
     QString m_inputGeometryParameterName;
+
+    //!
+    //! The name of the geometry output parameter.
+    //!
+    QString m_outputGeometryName;
 
 	//!
     //! The parameters that defines the edgeFrom/To and vertices for the graph.

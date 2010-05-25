@@ -30,7 +30,7 @@ INIT_INSTANCE_COUNTER(PositionMapperNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    GeometryNode(name, parameterRoot, "SceneNode"),
+    ViewNode(name, parameterRoot),
 	m_sceneNode(0),
 	m_entity(0), 
     m_entityContainer(0),
@@ -93,7 +93,18 @@ PositionMapperNode::~PositionMapperNode ()
 {
     destroyEntity();
 	destroyAllAttachedMovableObjects(m_sceneNode);
-    OgreTools::destroyResourceGroup(m_oldResourceGroupName);
+
+	if (m_sceneNode) {
+        // destroy the scene node through its scene manager
+        Ogre::SceneManager *sceneManager = m_sceneNode->getCreator();
+        if (sceneManager) {
+            sceneManager->destroySceneNode(m_sceneNode);
+            m_sceneNode = 0;
+            setValue(m_outputGeometryName, m_sceneNode);
+        }
+    }
+
+	OgreTools::destroyResourceGroup(m_oldResourceGroupName);
     emit viewNodeUpdated();
 
     DEC_INSTANCE_COUNTER
