@@ -93,19 +93,20 @@ void CompositorNode::reload ()
     // save the compositor name and destroy compositor
     //if (m_compositor)
     //    return;
-    m_compositor->setEnabled(false);
-    Ogre::Compositor *compositor = m_compositor->getCompositor();
     Ogre::String compositorName;
-    if (compositor) {
-        compositorName = compositor->getName();
-        m_compositor->removeListener(this);
-        Ogre::CompositorManager::getSingleton().removeCompositorChain(m_viewport);		
-        m_compositor = 0;
+    if (m_compositor) {
+        m_compositor->setEnabled(false);
+        Ogre::Compositor *compositor = m_compositor->getCompositor();
+        if (compositor) {
+            compositorName = compositor->getName();
+            m_compositor->removeListener(this);
+            Ogre::CompositorManager::getSingleton().removeCompositorChain(m_viewport);		
+            m_compositor = 0;
+        }
     }
 
 	// get the resource location and reload the resources
 	QString resourceGroupName = getStringValue("Resource Group Name");
-	std::cout << resourceGroupName.toStdString() << std::endl;
 	if (resourceGroupName != "") {
 
 		//TODO: NILZ: Do resource group checking.
@@ -120,7 +121,10 @@ void CompositorNode::reload ()
 	}
 	
 	// create the new compositor with old name and location
-	m_compositor = Ogre::CompositorManager::getSingleton().addCompositor(m_viewport, compositorName, 0);
+	const QString newCompositorName = getStringValue("Compositor Name");
+    if (newCompositorName != "")
+        compositorName = newCompositorName.toStdString();
+    m_compositor = Ogre::CompositorManager::getSingleton().addCompositor(m_viewport, compositorName, 0);
 	if (m_compositor) {
 		m_compositor->addListener(this);
 		m_compositor->setEnabled(true);
@@ -141,12 +145,12 @@ void CompositorNode::reload ()
 //!
 void CompositorNode::resizeRenderTexture(int width, int height, Ogre::PixelFormat pixelFormat /* = Ogre::PF_FLOAT16_RGBA */)
 {
-	if (m_renderTexture.isNull() || (m_renderTexture->getWidth() == width && m_renderTexture->getHeight() == height 
+	if (!m_compositor || m_renderTexture.isNull() || (m_renderTexture->getWidth() == width && m_renderTexture->getHeight() == height 
                                                                           && m_renderTexture->getFormat() == pixelFormat))
         return;
 
     // save the compositor name and destroy compositor
-	m_compositor->setEnabled(false);
+    m_compositor->setEnabled(false);
 	Ogre::Compositor *compositor = m_compositor->getCompositor();
 	Ogre::String compositorName;
 	if (compositor) {
