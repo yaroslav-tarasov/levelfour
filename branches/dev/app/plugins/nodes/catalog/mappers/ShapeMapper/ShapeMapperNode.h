@@ -74,24 +74,7 @@ public: // constructors and destructors
 
 private slots: //
 
-    //!
-    //! Change function for the Geometry File parameter.
-    //!
-    bool geometryFileChanged ();
-
 private: // functions
-    //!
-    //! Removes the OGRE entity containing the mesh geometry from the scene and
-    //! destroys it along with the OGRE scene node.
-    //!
-    void destroyEntity ();
-
-    //!
-    //! Create new scene.
-    //! \return True if the scene was successfully created, otherwise False.
-    //!
-	bool createEntity(QString name, QString fileName);
-
 
 private: //data
 
@@ -101,11 +84,6 @@ private: //data
     //! OGRE entity.
     //!
     Ogre::Entity *m_entity;
-
-    //!
-    //! Old resource group name.
-    //!
-    QString m_oldResourceGroupName;
 
 	EntityParameter * m_outputGeometryParameter;
 
