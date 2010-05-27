@@ -102,6 +102,7 @@ public: // nested enumerations
 		T_VTKTable,
 		T_VTKGraph,
 		T_VTKTree,
+		T_Entity,
 
         T_NumTypes
     };
