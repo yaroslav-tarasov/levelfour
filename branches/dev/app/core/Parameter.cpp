@@ -38,6 +38,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "VTKTableParameter.h"
 #include "VTKGraphParameter.h"
 #include "VTKTreeParameter.h"
+#include "EntityParameter.h"
 #include "SceneNodeParameter.h"
 #include "ParameterPlugin.h"
 #include "Node.h"
@@ -52,6 +53,7 @@ Q_DECLARE_METATYPE(ParameterGroup *)
 Q_DECLARE_METATYPE(vtkTable *)
 Q_DECLARE_METATYPE(vtkGraph *)
 Q_DECLARE_METATYPE(vtkTree *)
+Q_DECLARE_METATYPE(Ogre::Entity *)
 
 
 ///
@@ -93,7 +95,8 @@ static const char *ParameterTypeNames[Parameter::T_NumTypes] = {
 	"Generic",
 	"VTKTable",
 	"VTKGraph",
-	"VTKTree"
+	"VTKTree",
+	"Entity"
 };
 
 
@@ -120,7 +123,8 @@ static const QColor ParameterTypeColors[Parameter::T_NumTypes] = {
 	QColor(255, 255, 255),		// Generic
     QColor(125, 43, 139),       // VTKTable
     QColor(230, 45, 137),		// VTKGraph
-	QColor(0, 195, 136)			// VTKTree
+	QColor(0, 195, 136),		// VTKTree
+	QColor(101, 195, 136)		// Entity
 
 // (230, 45, 137) // Pink
 // (255, 0, 0) // Red
@@ -176,6 +180,7 @@ static const QVariantList ParameterDefaultValues = QVariantList()
 	<< QVariant::fromValue<vtkTable *>(0)                     // VTKTable
 	<< QVariant::fromValue<vtkGraph *>(0)                     // VTKGraph
 	<< QVariant::fromValue<vtkTree *>(0)                     // VTKTree
+	<< QVariant::fromValue<Ogre::Entity *>(0)                     // Entity
 
 ;
 
@@ -419,6 +424,8 @@ Parameter * Parameter::create ( const QString &name, Parameter::Type type, QVari
 			return new VTKTreeParameter(name);
         case T_VTKGraph:
 			return new VTKGraphParameter(name);
+        case T_Entity:
+			return new EntityParameter(name);
 		case T_PlugIn:
 			return new ParameterPlugin(name, defaultValue);
         default:
@@ -745,6 +752,8 @@ Parameter * Parameter::clone ( const Parameter &parameter )
             return new VTKTreeParameter(dynamic_cast<const VTKTreeParameter &>(parameter));
         case T_VTKGraph:
 			return new VTKGraphParameter(dynamic_cast<const VTKGraphParameter &>(parameter));
+        case T_Entity:
+			return new EntityParameter(dynamic_cast<const EntityParameter &>(parameter));
 		case T_PlugIn:
             return new ParameterPlugin(dynamic_cast<const ParameterPlugin &>(parameter));
         default:

@@ -4,6 +4,11 @@ SET(CMAKE_DEBUG_POSTFIX _d)
 
 include_directories(
 			${CMAKE_CURRENT_SOURCE_DIR}
+			$ENV{VTK_INC}
+			)
+
+link_directories(
+			$ENV{VTK_LIB}
 			)
 
 # frappercore
@@ -20,6 +25,7 @@ set( frappercore_h ${frappercore_h}
 			FlagGraphicsItem.h
 			FrapperPlatform.h
 			FrapperPrerequisites.h
+			GenericParameter.h
 			GeometryNode.h
 			GeometryRenderNode.h
 			Helper.h
@@ -86,14 +92,14 @@ set( frappercore_moc ${frappercore_moc}
 			 SceneNodeParameter.h
 			 ViewFlagGraphicsItem.h
 			 ViewNode.h
-			 VTKGraphLayoutNode.h
-			 VTKLayoutNode.h
-			 VTKTableNode.h
-			 VTKTreeNode.h
-			 VTKTreeLayoutNode.h
-			 VTKAreaLayoutNode.h
-			 VTKAxisLayoutNode.h
-			 VTKGeoLayoutNode.h
+			VTKGraphLayoutNode.h
+			VTKLayoutNode.h
+			VTKTableNode.h
+			VTKTreeNode.h
+			VTKTreeLayoutNode.h
+			VTKAreaLayoutNode.h
+			VTKAxisLayoutNode.h
+			VTKGeoLayoutNode.h
 			 )
 
 set( frappercore_src ${frappercore_src}	
@@ -107,6 +113,7 @@ set( frappercore_src ${frappercore_src}
 			EnumerationParameter.cpp
 			FilenameParameter.cpp
 			FlagGraphicsItem.cpp
+			GenericParameter.cpp
 			GeometryNode.cpp
 			GeometryRenderNode.cpp
 			ImageNode.cpp
@@ -137,8 +144,8 @@ set( frappercore_src ${frappercore_src}
 			VTKGraphLayoutNode.cpp
 			VTKGraphParameter.cpp
 			VTKLayoutNode.cpp
-			VTKTableParameter.cpp
 			VTKTableNode.cpp
+			VTKTableParameter.cpp
 			VTKTreeNode.cpp
 			VTKTreeLayoutNode.cpp
 			VTKTreeParameter.cpp
