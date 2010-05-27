@@ -29,32 +29,21 @@ INIT_INSTANCE_COUNTER(EntityNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 EntityNode::EntityNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    GeometryNode(name, parameterRoot, "SceneNode"),
-	m_sceneNode(0),
+    Node(name, parameterRoot),
 	m_entity(0), 
     m_entityContainer(0),
-    m_oldResourceGroupName(""),
-	m_size(1.0,1.0,1.0)
+    m_oldResourceGroupName("")
 {
-    // create the mandatory vtk table input parameter - multiplicity ONE OR MORE
-	VTKTableParameter * inputVTKTableParameter = new VTKTableParameter(m_inputVTKTableParameterName);
-	inputVTKTableParameter->setMultiplicity(1);
-    inputVTKTableParameter->setPinType(Parameter::PT_Input);
-    inputVTKTableParameter->setSelfEvaluating(true);
-    parameterRoot->addParameter(inputVTKTableParameter);
-    connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processScene()));
+	// create the geometry output parameter (shape mapper)
+	m_outputGeometryParameter = new EntityParameter(m_outputGeometryParameterName);
+	m_outputGeometryParameter->setPinType(Parameter::PT_Output);
+	parameterRoot->addParameter(m_outputGeometryParameter);
 
 	// set affections and functions
-    addAffection("Geometry File", m_outputGeometryName);
-    setChangeFunction("Geometry File", SLOT(geometryFileChanged()));
-    setCommandFunction("Geometry File", SLOT(geometryFileChanged()));
+    addAffection("Entity File", m_outputGeometryParameterName);
+    setChangeFunction("Entity File", SLOT(geometryFileChanged()));
+    setCommandFunction("Entity File", SLOT(geometryFileChanged()));
     connect(this, SIGNAL(frameChanged(int)), SLOT(updateAll()));
-
-	// set affections and functions
-    setChangeFunction("Size", SLOT(sizeChanged()));
-    setCommandFunction("Size", SLOT(sizeChanged()));
-
-	createSceneNode();
 
 	INC_INSTANCE_COUNTER
 }
@@ -65,10 +54,11 @@ EntityNode::EntityNode ( const QString &name, ParameterGroup *parameterRoot ) :
 //!
 EntityNode::~EntityNode ()
 {
-    destroyEntity();
-	destroyAllAttachedMovableObjects(m_sceneNode);
+	destroyEntity();
     OgreTools::destroyResourceGroup(m_oldResourceGroupName);
-    emit viewNodeUpdated();
+
+	emit destroyed();
+	Log::info(QString("EntityNode destroyed."), "EntityNode::~EntityNode");
 
     DEC_INSTANCE_COUNTER
 }
@@ -92,9 +82,9 @@ bool EntityNode::loadMesh ()
     // destroy an existing OGRE entity for the mesh
     destroyEntity();
 
-	QString filename = getStringValue("Geometry File");
+	QString filename = getStringValue("Entity File");
     if (filename == "") {
-        Log::debug(QString("Geometry file has not been set yet. (\"%1\")").arg(m_name), "EntityNode::loadMesh");
+        Log::debug(QString("Entity file has not been set yet. (\"%1\")").arg(m_name), "EntityNode::loadMesh");
         return false;
     }
 
@@ -112,7 +102,7 @@ bool EntityNode::loadMesh ()
         filename = filename.mid(lastSlashIndex + 1);
     }
     if (!filename.endsWith(".mesh")) {
-        Log::error("The geometry file has to be an OGRE mesh file.", "EntityNode::loadMesh");
+        Log::error("The Entity file has to be an OGRE mesh file.", "EntityNode::loadMesh");
         return false;
     }
 	// destroy old resource group and generate new one
@@ -145,73 +135,14 @@ void EntityNode::geometryFileChanged ()
 }
 
 //!
-//! Change size scale of the entity.
-//!
-void EntityNode::sizeChanged()
-{
-	m_size.x = m_size.y = m_size.z = getDoubleValue("Size");
-
-	if (m_sceneNode)
-		resizeNodes(m_sceneNode);
-}
-
-//!
 //! Processes the node's input data to generate the node's output table.
 //!
 void EntityNode::processScene()
 {
-	// load the input vtk parameter 
-	VTKTableParameter * inputParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_inputVTKTableParameterName));
-	if (!inputParameter || !inputParameter->isConnected())
-		return;
-
-	// get the source parameter (output of source node) connected to the input parameter
-	VTKTableParameter * sourceParameter = dynamic_cast<VTKTableParameter*>(inputParameter->getConnectedParameter());
-
-	inputParameter->setVTKTable(sourceParameter->getVTKTable());
-
-	vtkTable * xyzTable = inputParameter->getVTKTable();
-
-	if (!m_sceneNode)
-		createSceneNode();
-
-
-	if (!m_entity || !xyzTable || !m_sceneNode)
-		return;
-
-	//Get columns named "NodeID", "X", "Y" and "Z"
-	vtkIdTypeArray *colNodeId = dynamic_cast<vtkIdTypeArray*>(xyzTable->GetColumnByName("NodeId"));
-	vtkDoubleArray *colX = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName("X"));
-	vtkDoubleArray *colY = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName("Y"));
-	vtkDoubleArray *colZ = dynamic_cast<vtkDoubleArray*>(xyzTable->GetColumnByName("Z"));
-
-	destroyAllAttachedMovableObjects(m_sceneNode);
-	destroyAllChildren(m_sceneNode);
-
-	Ogre::String idPrefix(QString(m_name + ":").toStdString());
-
-	Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
-
-	for (int i=0; i<xyzTable->GetNumberOfRows(); i++)
+	if (m_entity)
 	{
-		int colIDValue = colNodeId->GetValue(i);
-		Ogre::String nodeID(idPrefix + Ogre::StringConverter::toString(colIDValue));
-
-		// create new scene node for each item
-		Ogre::SceneNode *sceneItem = sceneManager->createSceneNode(nodeID);
-
-		// create new entity for each item
-		Ogre::Entity *entityItem = m_entity->clone(nodeID);
-		
-		sceneItem->attachObject(entityItem);
-
-		double x = colX->GetValue(i);
-		double y = colY->GetValue(i);
-		double z = colZ->GetValue(i);
-		sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
-		sceneItem->setScale(m_size);
-		m_sceneNode->addChild(sceneItem);
-		
+		m_outputGeometryParameter->setEntity(m_entity);
+		m_outputGeometryParameter->propagateDirty(0);
 	}
 }
 
@@ -268,131 +199,4 @@ bool EntityNode::createEntity(QString name, QString fileName)
     m_entity->setUserAny(Ogre::Any(m_entityContainer));
 
 	return true;
-}
-
-//!
-//! Remove and destroy this scene.
-//!
-void EntityNode::destroySceneNode()
-{
-    if (m_sceneNode) {
-        // destroy the scene node through its scene manager
-        Ogre::SceneManager *sceneManager =OgreManager::getSceneManager();
-        if (sceneManager) {
-            sceneManager->destroySceneNode(m_sceneNode);
-            m_sceneNode = 0;
-            setValue(m_outputGeometryName, m_sceneNode, true);
-        }
-    }
-}
-
-//!
-//! Create new scene.
-//! \return True if the scene was successfully created, otherwise False.
-//!
-bool EntityNode::createSceneNode()
-{
-    // obtain the OGRE scene manager
-    Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
-    if (!sceneManager) {
-        Log::error("Could not obtain OGRE scene manager.", "EntityNode::loadMesh");
-        return false;
-    }
-
-	// create new scene node
-    m_sceneNode = OgreManager::createSceneNode(m_name);
-
-	// get the scene if it could not create it and if it already exists
-    Ogre::String sceneNodeName = QString("%1SceneNode").arg(m_name).toStdString();  
-	if (!m_sceneNode && sceneManager->hasSceneNode(sceneNodeName))
-		m_sceneNode = sceneManager->getSceneNode(sceneNodeName);
-
-	// alert in case it could not be either created or loaded
-    if (!m_sceneNode) {
-        Log::error(QString("Scene node for node \"%1\" could not be created.").arg(m_name), "EntityNode::loadMesh");
-        return false;
-    }
-    setValue(m_outputGeometryName, m_sceneNode, true);
-	return m_sceneNode != 0;
-}
-
-
-//!
-//! Remove and destroy all movable objects of this scene.
-//! \param The scenenode to be destroyed
-//!
-void EntityNode::destroyAllAttachedMovableObjects( Ogre::SceneNode* i_pSceneNode )
-{
-   if ( !i_pSceneNode )
-      return;
-
-   // Destroy all the attached objects
-   Ogre::SceneNode::ObjectIterator itObject = i_pSceneNode->getAttachedObjectIterator();
-
-   while ( itObject.hasMoreElements() )
-   {
-      Ogre::MovableObject* pObject = static_cast<Ogre::MovableObject*>(itObject.getNext());
-      i_pSceneNode->getCreator()->destroyMovableObject( pObject );
-   }
-
-   // Recurse to child SceneNodes
-   Ogre::SceneNode::ChildNodeIterator itChild = i_pSceneNode->getChildIterator();
-
-   while ( itChild.hasMoreElements() )
-   {
-      Ogre::SceneNode* pChildNode = static_cast<Ogre::SceneNode*>(itChild.getNext());
-      destroyAllAttachedMovableObjects( pChildNode );
-   }
-}
-
-//!
-//! Remove and destroy this scene children.
-//! \param The scenenode to be destroyed
-//!
-void EntityNode::destroyAllChildren( Ogre::SceneNode* i_pSceneNode )
-{
-	if ( !i_pSceneNode || i_pSceneNode->numChildren() == 0 )
-      return;
-
-   // Destroy all the attached objects
-   Ogre::SceneNode::ObjectIterator itObject = i_pSceneNode->getAttachedObjectIterator();
-
-   // Recurse to child SceneNodes
-   Ogre::SceneNode::ChildNodeIterator itChild = i_pSceneNode->getChildIterator();
-
-   while ( itChild.hasMoreElements() )
-   {
-      Ogre::SceneNode* pChildNode = static_cast<Ogre::SceneNode*>(itChild.getNext());
-      destroyAllAttachedMovableObjects( pChildNode );
-	  // obtain the OGRE scene manager
-	  Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
-	  if (pChildNode != m_sceneNode)
-		  sceneManager->destroySceneNode( pChildNode->getName() );
-   }
-}
-
-//!
-//! Remove and destroy this scene children.
-//! \param The scenenode to be destroyed
-//!
-void EntityNode::resizeNodes( Ogre::SceneNode* i_pSceneNode )
-{
-	if ( !i_pSceneNode || i_pSceneNode->numChildren() == 0 )
-      return;
-
-   // Destroy all the attached objects
-   Ogre::SceneNode::ObjectIterator itObject = i_pSceneNode->getAttachedObjectIterator();
-
-   // Recurse to child SceneNodes
-   Ogre::SceneNode::ChildNodeIterator itChild = i_pSceneNode->getChildIterator();
-
-   while ( itChild.hasMoreElements() )
-   {
-      Ogre::SceneNode* pChildNode = static_cast<Ogre::SceneNode*>(itChild.getNext());
-
-	  // obtain the OGRE scene manager
-	  Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
-	  if (pChildNode != m_sceneNode)
-		  pChildNode->setScale(m_size);
-   }
 }

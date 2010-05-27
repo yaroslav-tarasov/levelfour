@@ -30,13 +30,13 @@ INIT_INSTANCE_COUNTER(PositionMapperNode)
 //! \param parameterRoot A copy of the parameter tree specific for the type of the node.
 //!
 PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *parameterRoot ) :
-    ViewNode(name, parameterRoot),
+    GeometryNode(name, parameterRoot, "SceneNode"),
 	m_sceneNode(0),
 	m_entity(0), 
     m_entityContainer(0),
+	m_oldResourceGroupName(""),
 	m_inputVTKTableParameterName("VTKTableInput"),
-	m_inputGeometryParameterName("Geometry"),
-	m_oldResourceGroupName("")
+	m_inputGeometryParameterName("Geometry")
 {
     // create the vtk table input parameter - multiplicity ONE OR MORE
 	VTKTableParameter * inputVTKTableParameter = new VTKTableParameter(m_inputVTKTableParameterName);
@@ -93,8 +93,9 @@ PositionMapperNode::~PositionMapperNode ()
 {
     destroyEntity();
 	destroyAllAttachedMovableObjects(m_sceneNode);
+	OgreTools::destroyResourceGroup(m_oldResourceGroupName);
 
-	if (m_sceneNode) {
+/*	if (m_sceneNode) {
         // destroy the scene node through its scene manager
         Ogre::SceneManager *sceneManager = m_sceneNode->getCreator();
         if (sceneManager) {
@@ -103,9 +104,11 @@ PositionMapperNode::~PositionMapperNode ()
             setValue(m_outputGeometryName, m_sceneNode);
         }
     }
+*/
+	emit destroyed();
+	Log::info(QString("PositionMapperNode destroyed."), "PositionMapperNode::~PositionMapperNode");
 
-	OgreTools::destroyResourceGroup(m_oldResourceGroupName);
-    emit viewNodeUpdated();
+	emit viewNodeUpdated();
 
     DEC_INSTANCE_COUNTER
 }
@@ -263,6 +266,8 @@ void PositionMapperNode::processScene()
 		double y = colY->GetValue(i);
 		double z = colZ->GetValue(i);
 		sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
+		Ogre::Vector3 m_size(1.0,1.0,1.0);
+		sceneItem->setScale(m_size);
 		m_sceneNode->addChild(sceneItem);
 		
 	}
@@ -457,6 +462,7 @@ void PositionMapperNode::setGeometry()
 
 	// get the source parameter (output of source node) connected to the input parameter
 	EntityParameter * sourceParameter = dynamic_cast<EntityParameter*>(inputParameter->getConnectedParameter());
+
 
 	// get the vtk table that comes with the source parameter and set it into the input parameter of this node
 	m_entity = sourceParameter->getEntity();

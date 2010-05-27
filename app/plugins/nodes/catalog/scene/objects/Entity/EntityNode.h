@@ -1,16 +1,17 @@
 #ifndef EntityNODE_H
 #define EntityNODE_H
 
-#include "GeometryNode.h"
+#include "Node.h"
 #include "OgreContainer.h"
 #include "Ogre.h"
 #include "OgreTools.h"
+#include "EntityParameter.h"
 
 
 //!
 //! Class representing nodes that can contain OGRE entities with animation.
 //!
-class EntityNode : public GeometryNode
+class EntityNode : public Node
 {
 
     Q_OBJECT
@@ -78,52 +79,14 @@ private: // functions
     //!
 	bool createEntity(QString name, QString fileName);
 
-	//!
-    //! Remove and destroy this scene.
-    //!
-	void destroySceneNode();
-
-	//!
-    //! Remove and destroy all movable objects of this scene.
-    //! \param The scenenode to be destroyed
-    //!
-	void destroyAllAttachedMovableObjects( Ogre::SceneNode* i_pSceneNode );
-
-	//!
-    //! Remove and destroy this scene and all its children.
-    //! \param The scenenode to be destroyed
-    //!
-	void destroyAllChildren( Ogre::SceneNode* i_pSceneNode );
-
-	//!
-    //! Create new scene.
-    //! \return True if the scene was successfully created, otherwise False.
-    //!
-	bool createSceneNode();
-
-	//!
-    //! Resize nodes.
-    //!
-	void resizeNodes(Ogre::SceneNode* i_pSceneNode);
-	
 private slots: //
 
     //!
     //! Change function for the Geometry File parameter.
     //!
     void geometryFileChanged ();
-
-    //!
-    //! Change size scale of the entity.
-    //!
-    void sizeChanged();
 	
 private: // data
-
-    //!
-    //! OGRE scene node.
-    //!
-    Ogre::SceneNode *m_sceneNode;
 
     //!
     //! OGRE entity.
@@ -145,10 +108,9 @@ private: // data
     //!
     QString m_inputVTKTableParameterName;
 
-    //!
-    //! The size scale of the entity.
-    //!
-	Ogre::Vector3 m_size;
+	EntityParameter * m_outputGeometryParameter;
+
+	QString m_outputGeometryParameterName;
 };
 
 
