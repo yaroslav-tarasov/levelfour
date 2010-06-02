@@ -77,7 +77,7 @@ protected slots:
 	//!
 	//! Reload resources.
 	//!
-	void reload ();
+	virtual void reload ();
 
 protected: // functions
 

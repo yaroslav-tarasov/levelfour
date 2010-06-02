@@ -1,0 +1,46 @@
+vertex_program Blur/QuadVP cg
+{
+	source Blur.cg
+	profiles vs_1_1 arbvp1
+    entry_point quad_vs
+	default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+    }
+}
+
+
+fragment_program Blur/BlurFP cg
+{
+    source Blur.cg
+    entry_point blur_ps
+    // will run on anything with pixel shader 2.b and up
+    profiles ps_2_x arbfp1
+}
+
+
+material Blur/BlurMaterial
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			fragment_program_ref Blur/BlurFP
+			{
+			}
+			
+			vertex_program_ref Blur/QuadVP
+			{
+			}	
+			
+			texture_unit	//(inputMap0)
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+	}
+}
