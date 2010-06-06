@@ -1,0 +1,81 @@
+/*
+
+% A simple defered-rendering example -- an initial pass renders color, surface normals,
+% and view vectors into multiple render targets (textures). A second pass combines the data
+% in these textures with lighting info to create a final shaded image.
+
+*/
+
+compositor SceneDeferredCompositor
+{
+    technique
+    {
+		// Initial Pass
+		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		// Target 0
+		texture ColrTex target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		// Target 1
+		texture NormTex target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		// Target 2
+		texture ViewTex target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+		
+		// create_MRTs
+		target SceneSampler
+		{
+			input previous
+		}
+		
+		target ColrTex
+        {
+            input none
+            
+            pass render_quad
+            {
+				identifier 0000
+				material SceneDeferred_create_MRTs
+				input 0 SceneSampler
+            }
+        }
+		
+		target NormTex
+        {
+            input none
+            
+            pass render_quad
+            {
+				// identifier 0000
+				material SceneDeferred_create_MRTs
+				input 0 SceneSampler
+            }
+        }
+		
+		target ViewTex
+        {
+            input none
+            
+            pass render_quad
+            {
+				// identifier 0000
+				material SceneDeferred_create_MRTs
+				input 0 SceneSampler
+            }
+        }
+
+		// deferred_lighting
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0001
+				material SceneDeferred_deferred_lighting
+                input 0 ColrTex
+				input 1 NormTex
+				input 2 ViewTex
+            }
+        }
+
+    }
+
+}

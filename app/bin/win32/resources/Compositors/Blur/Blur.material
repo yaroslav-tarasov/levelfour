@@ -1,4 +1,4 @@
-vertex_program Blur/QuadVP cg
+vertex_program QuadVP cg
 {
 	source Blur.cg
 	profiles vs_1_1 arbvp1
@@ -10,7 +10,7 @@ vertex_program Blur/QuadVP cg
 }
 
 
-fragment_program Blur/BlurFP cg
+fragment_program BlurFP cg
 {
     source Blur.cg
     entry_point blur_ps
@@ -19,7 +19,7 @@ fragment_program Blur/BlurFP cg
 }
 
 
-material Blur/BlurMaterial
+material BlurMaterial
 {
 	technique
 	{
@@ -27,11 +27,11 @@ material Blur/BlurMaterial
 		{
 			depth_check off
 
-			fragment_program_ref Blur/BlurFP
+			fragment_program_ref BlurFP
 			{
 			}
 			
-			vertex_program_ref Blur/QuadVP
+			vertex_program_ref QuadVP
 			{
 			}	
 			

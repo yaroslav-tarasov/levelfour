@@ -1,0 +1,34 @@
+/*
+
+% Radial blur effect. This version allows you to specifiy an arbitrary
+% number of samples.
+
+*/
+
+compositor RadialBlurCompositor
+{
+    technique
+    {
+		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+				
+		// Initial Pass
+		target SceneSampler
+		{
+			input previous
+		}
+		
+		target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material RadialBlur
+                input 0 SceneSampler
+            }
+        }
+
+    }
+
+}

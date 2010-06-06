@@ -1,0 +1,71 @@
+/*
+
+% A noisy halftoning pattern, based on noisy pre-calculated an
+%    indexed out of a 3D volume texture.
+
+*/
+
+vertex_program HalfToneGrainy_vs cg
+{
+	source vs_HalfToneGrainy.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program HalfToneGrainy_ps cg
+{
+    source ps_HalfToneGrainy.cg
+    entry_point tonePS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+	
+	}
+}
+
+
+material HalfToneGrainy
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref HalfToneGrainy_vs
+			{
+			
+			}
+			
+			fragment_program_ref HalfToneGrainy_ps
+			{
+			
+			}	
+			
+			 texture_unit	// SceneSampler
+			 {
+                 // SceneSampler
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			 
+			 texture_unit	// DotSampler
+			 {
+                 texture HalftoneGrain16x16.dds 3d
+				 tex_coord_set 1
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}

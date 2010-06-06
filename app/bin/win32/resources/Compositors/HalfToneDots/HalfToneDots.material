@@ -1,0 +1,72 @@
+/*
+
+% Radial-dot B&W halftones applied to the underlying scene. The dots are
+% pre-calculated and are fetched, according to the desired intensity,
+% from a small volume texture.
+
+*/
+
+vertex_program HalfToneDots_vs cg
+{
+	source vs_HalfToneDots.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program HalfToneDots_ps cg
+{
+    source ps_HalfToneDots.cg
+    entry_point tonePS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+	
+	}
+}
+
+
+material HalfToneDots
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref HalfToneDots_vs
+			{
+			
+			}
+			
+			fragment_program_ref HalfToneDots_ps
+			{
+			
+			}	
+			
+			 texture_unit	// SceneSampler
+			 {
+                 // SceneSampler
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			 
+			 texture_unit	// DotSampler
+			 {
+                 texture HalftoneDots16x16.dds 3d
+				 tex_coord_set 1
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}
