@@ -1,0 +1,70 @@
+/*
+
+% Based on a radal blur effect, then with the origin image re-composited.
+
+*/
+
+vertex_program GodRays_vs cg
+{
+	source vs_GodRays.cg
+	profiles vp40
+    entry_point GodRaysVS
+	
+	default_params
+    {
+        param_named CX 	float 	0.5
+		param_named CY 	float 	0.5
+    }
+}
+
+
+fragment_program GodRays_ps cg
+{
+    source ps_GodRays.cg
+    entry_point GodRaysPS
+    profiles fp40
+
+	default_params
+	{
+		param_named tex 			int 	0
+		param_named BlurStart 		float 	1.0
+		param_named BlurWidth 		float 	-0.3
+		param_named CX 				float 	0.5
+		param_named CY 				float 	0.5
+		param_named Intensity 		float 	6.0
+		param_named GlowGamma 		float 	1.6
+		param_named nsamples 		int 	5.0
+	
+	}
+}
+
+
+material GodRays
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref GodRays_vs
+			{
+			
+			}
+			
+			fragment_program_ref GodRays_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}

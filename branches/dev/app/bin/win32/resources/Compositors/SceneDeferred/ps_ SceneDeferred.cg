@@ -1,0 +1,71 @@
+/********* pixel shader ********/
+
+
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+float3 vector_to_texture(float3 v) { return ((v*0.5)+float3(0.5,0.5,0.5)); }
+float3 texture_to_vector(float3 t) { return ((t-float3(0.5,0.5,0.5))*2.0); }
+
+//
+//    Create MRTs for defered shading
+//
+void prepMRTPS(
+
+	float4 HPosition	: POSITION,
+    float2 UV		: TEXCOORD0,
+    float3 LightVec	: TEXCOORD1,
+    float3 WorldNormal	: TEXCOORD2,
+    float3 WorldTangent	: TEXCOORD3,
+    float3 WorldBinormal : TEXCOORD4,
+    float3 WorldView	: TEXCOORD5,
+	
+	uniform float3 SurfaceColor,
+	uniform sampler2D ColorSampler : register(s0),
+	
+	out float4 ColorOutput : COLOR0,
+	out float4 NormalOutput : COLOR1,
+	out float4 ViewptOutput : COLOR2)
+{
+    float3 Nn = vector_to_texture(normalize(WorldNormal));
+    NormalOutput = float4(Nn,0);
+    float3 Vn = vector_to_texture(normalize(WorldView));
+    ViewptOutput = float4(Vn,0);
+    float3 texC = SurfaceColor*tex2D(ColorSampler,UV).rgb;
+    ColorOutput = float4(texC,1);
+}
+
+//
+// full-screen pass that uses the above values
+//
+float4 useMRTPS(
+
+		QUAD_REAL4 Position	: POSITION,
+		QUAD_REAL2 UV	: TEXCOORD0,
+	    
+		uniform float Ks,
+	    uniform float SpecExpon,
+	    uniform float3 LightDir,
+	    uniform float3 LightColor,
+	    uniform float3 AmbiColor) : COLOR
+{
+    float3 texC = tex2D(ColrSampler,UV).rgb;
+    float3 Nn = texture_to_vector(tex2D(NormSampler,UV).xyz);
+    float3 Vn = texture_to_vector(tex2D(ViewSampler,UV).xyz);
+    float3 Ln = normalize(-LightDir); // normalize() potentially un-neccesary
+    float3 Hn = normalize(Vn + Ln);
+    float ldn = dot(Ln,Nn);
+    float hdn = dot(Hn,Nn);
+    float4 lv = lit(ldn,hdn,SpecExpon);
+    float3 specC = (Ks * lv.y * lv.z) * LightColor;
+    float3 diffC = ((lv.y * LightColor) + AmbiColor) * texC;
+    float3 result = diffC + specC;
+    return float4(result.rgb,1.0);
+}

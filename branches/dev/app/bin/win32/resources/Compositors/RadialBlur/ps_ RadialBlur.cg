@@ -1,0 +1,36 @@
+//////////////////////////////////////////////////////
+////////////////////////////////// pixel shaders /////
+//////////////////////////////////////////////////////
+
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4
+#define NSAMPLES 16
+
+half4 RadialBlurPS(
+
+				QUAD_REAL4 Position	: POSITION,
+				QUAD_REAL2 UV	: TEXCOORD0,
+				
+				uniform sampler2D tex : register(s0),
+				uniform float BlurStart,
+				uniform float BlurWidth,
+				uniform float CX,
+				uniform float CY
+) : COLOR {
+    half4 c = 0;
+    float2 Center = float2(CX,CY);
+    // this loop will be unrolled by compiler and the constants precalculated:
+    for(int i=0; i<NSAMPLES; i++) {
+    	float scale = BlurStart + BlurWidth*(i/(float) (NSAMPLES-1.0));
+    	c += tex2D(tex, UV.xy*scale + Center );
+    }
+    c /= NSAMPLES;
+    return c;
+} 

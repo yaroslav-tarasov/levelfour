@@ -1,0 +1,24 @@
+/*
+
+% A noisy halftoning pattern, based on noisy pre-calculated an
+%    indexed out of a 3D volume texture.
+
+*/
+
+compositor HalfToneGrainyCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  HalfToneGrainy
+            }
+        }
+    }
+
+}

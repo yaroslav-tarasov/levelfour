@@ -1,0 +1,131 @@
+///////////////////////////////////////////////////////////
+////////////////////////////////// vertex shader //////////
+///////////////////////////////////////////////////////////
+
+// misc utility functions.....
+
+float gBrightness;
+float gContrast;
+float gSaturation;
+float gHue;
+
+float4x4 scaleMat(float s)
+{
+    return float4x4(
+	s, 0, 0, 0,
+	0, s, 0, 0,
+	0, 0, s, 0,
+	0, 0, 0, 1);
+}
+
+float4x4 translateMat(float3 t)
+{
+    return float4x4(
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 0,
+	t, 1);
+}
+
+float4x4 rotateMat(float3 d, float ang)
+{
+    float s = sin(ang);
+    float c = cos(ang);
+    d = normalize(d);
+    return float4x4(
+	d.x*d.x*(1 - c) + c,
+	    d.x*d.y*(1 - c) - d.z*s,
+		d.x*d.z*(1 - c) + d.y*s,
+		    0,
+	d.x*d.y*(1 - c) + d.z*s,
+	    d.y*d.y*(1 - c) + c,
+		d.y*d.z*(1 - c) - d.x*s,
+		    0, 
+	d.x*d.z*(1 - c) - d.y*s,
+	    d.y*d.z*(1 - c) + d.x*s,
+		d.z*d.z*(1 - c) + c,
+		    0, 
+	0, 0, 0, 1 );
+}
+
+float4x4 build_contrast_mat() {
+    float4x4 c = translateMat(-0.5);
+    c = mul(scaleMat(gContrast) ,c);
+    c = mul(translateMat(0.5) ,c);
+    return c;
+}
+
+const float rwgt = 0.3086;
+const float gwgt = 0.6094;
+const float bwgt = 0.0820;
+
+float4x4 build_saturation_mat()
+{
+    // saturation
+    // weights to convert linear RGB values to luminance
+    float s = gSaturation;
+    float4x4 satMat = float4x4(
+	(1.0-s)*rwgt + s,
+	    (1.0-s)*rwgt,   
+		(1.0-s)*rwgt,	
+		    0,
+	(1.0-s)*gwgt, 	
+	    (1.0-s)*gwgt + s, 
+		(1.0-s)*gwgt,	
+		    0,
+	(1.0-s)*bwgt,    
+	    (1.0-s)*bwgt,  	
+		(1.0-s)*bwgt + s,
+		    0,
+	0.0, 0.0, 0.0, 1.0);
+    return satMat;
+}
+
+float4x4 build_hue_mat()
+{
+    // hue - rotate around (1, 1, 1)
+    float4x4 hueMatrix = rotateMat(float3(1, 1, 1), radians(gHue));
+    return hueMatrix;
+}
+
+float4x4 composite_mat(float4x4 bMat,float4x4 cMat,float4x4 sMat,float4x4 hMat)
+{
+    float4x4 m;
+    m = bMat;
+    m = mul(cMat,m);
+    m = mul(sMat,m);
+    m = mul(hMat,m);
+    return m;
+}
+
+////////////////////
+// vert shader ///////
+//////////////////////
+
+void colorControlsVS(
+
+	out float4 Position      : POSITION,
+	out float2 TexCoord0     : TEXCOORD0,
+	out float4x4 colorMatrix : TEXCOORD1,
+	
+	uniform float gBrightness,
+	uniform float gContrast,
+	uniform float gSaturation,
+	uniform float gHue,
+	
+	float4 PositionIN : POSITION, 
+	float2 TexCoord : TEXCOORD0)
+{
+    Position = PositionIN;
+    TexCoord0 = TexCoord;
+    // construct color matrices
+    float4x4 brightnessMatrix = scaleMat(gBrightness);
+    float4x4 contrastMatrix = build_contrast_mat();
+    float4x4 saturationMatrix = build_saturation_mat();
+    float4x4 hueMatrix = build_hue_mat();
+    float4x4 colorMat = composite_mat(brightnessMatrix,
+	    contrastMatrix,
+	    saturationMatrix,
+	    hueMatrix);
+    colorMatrix = colorMat;
+}
