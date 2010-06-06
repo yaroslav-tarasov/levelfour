@@ -1,0 +1,45 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+//////////////////////////////////////////////////////
+/////////////////////////////////// pixel shader /////
+//////////////////////////////////////////////////////
+
+
+half4 GodRaysPS(
+
+				QUAD_REAL4 Position	: POSITION,
+				QUAD_REAL2 UV	: TEXCOORD0,
+				
+				uniform sampler2D tex : register(s0),
+				uniform float BlurStart,
+				uniform float BlurWidth,
+				uniform float CX,
+				uniform float CY,
+				uniform float Intensity,
+				uniform float GlowGamma,
+				uniform int nsamples
+) : COLOR {
+    half4 blurred = 0;
+    float2 ctrPt = float2(CX,CY);
+    // this loop will be unrolled by compiler and the constants precalculated:
+    for(int i=0; i<nsamples; i++) {
+    	float scale = BlurStart + BlurWidth*(i/(float) (nsamples-1));
+    	blurred += tex2D(tex, UV.xy*scale + ctrPt );
+    }
+    blurred /= nsamples;
+    blurred.rgb = pow(blurred.rgb,GlowGamma);
+    blurred.rgb *= Intensity;
+    blurred.rgb = saturate(blurred.rgb);
+    half4 origTex = tex2D(tex, UV.xy + ctrPt );
+    half3 newC = origTex.rgb + (1.0-origTex.a)* blurred.rgb;
+    half newA = max(origTex.a,blurred.a);
+    return half4(newC.rgb,newA);
+} 

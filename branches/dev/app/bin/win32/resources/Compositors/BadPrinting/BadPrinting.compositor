@@ -1,4 +1,4 @@
-compositor "BadPrintingCompositor"
+compositor BadPrintingCompositor
 {
     technique
     {

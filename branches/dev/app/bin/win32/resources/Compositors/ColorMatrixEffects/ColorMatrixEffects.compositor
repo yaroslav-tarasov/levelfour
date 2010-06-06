@@ -1,0 +1,26 @@
+/*
+
+% Simple color correction controls using a color matrix,
+% as seen in the NVIDIA "Toys" demo. Controls are much like 
+% those on your TV: Brightness, Contrast, etc.
+% See http://www.sgi.com/grafica/matrix/
+
+*/
+
+compositor ColorMatrixEffectsCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  ColorMatrixEffects
+            }
+        }
+    }
+
+}

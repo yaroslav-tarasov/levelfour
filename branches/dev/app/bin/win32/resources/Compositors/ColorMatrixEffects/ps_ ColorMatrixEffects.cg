@@ -1,0 +1,31 @@
+/////////////////////////////////////////////////////
+////////////////////////////////// pixel shader /////
+/////////////////////////////////////////////////////
+
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+QUAD_REAL4 colorControlsPS(
+
+		float4 Position      : POSITION,
+		float2 TexCoord0     : TEXCOORD0,
+		float4x4 colorMatrix : TEXCOORD1,
+	    
+		uniform sampler2D SceneSampler : register(s0)
+) : COLOR
+{   
+    QUAD_REAL4 scnColor = tex2D(SceneSampler, TexCoord0);
+    QUAD_REAL4 rgbOnly = QUAD_REAL4(scnColor.rgb,1);
+    QUAD_REAL4 c;
+    // this compiles to 3 dot products:
+    c.rgb = mul((QUAD_REAL4x4) colorMatrix,rgbOnly).rgb;
+    c.a = scnColor.a;
+    return c;
+}  

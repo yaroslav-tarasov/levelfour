@@ -1,0 +1,25 @@
+/*
+
+% Radial-dot B&W halftones applied to the underlying scene. The dots are
+% pre-calculated and are fetched, according to the desired intensity,
+% from a small volume texture.
+
+*/
+
+compositor HalfToneDotsCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  HalfToneDots
+            }
+        }
+    }
+
+}

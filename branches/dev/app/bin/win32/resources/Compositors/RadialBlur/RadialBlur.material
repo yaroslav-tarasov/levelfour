@@ -1,0 +1,68 @@
+/*
+
+% Radial blur effect. This version allows you to specifiy an arbitrary
+% number of samples.
+
+*/
+
+vertex_program RadialBlur_vs cg
+{
+	source vs_RadialBlur.cg
+	profiles vp40
+    entry_point RadialBlurVS
+	
+	default_params
+    {
+        param_named CX 	float 	0.5
+		param_named CY 	float 	0.5
+    }
+}
+
+
+fragment_program RadialBlur_ps cg
+{
+    source ps_RadialBlur.cg
+    entry_point RadialBlurPS
+    profiles fp40
+
+	default_params
+	{
+		param_named tex 			int 	0
+		param_named BlurStart 		float 	1.0
+		param_named BlurWidth 		float 	-0.2
+		param_named CX 				float 	0.5
+		param_named CY 				float 	0.5
+	
+	}
+}
+
+
+material RadialBlur
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref RadialBlur_vs
+			{
+			
+			}
+			
+			fragment_program_ref RadialBlur_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}

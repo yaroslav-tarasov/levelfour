@@ -9,7 +9,7 @@ compositor BlurCompositor
             pass render_quad
             {
 				identifier 0
-				material Blur/BlurMaterial
+				material BlurMaterial
             }
         }
     }

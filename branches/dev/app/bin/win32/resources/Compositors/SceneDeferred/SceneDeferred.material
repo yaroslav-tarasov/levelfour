@@ -1,0 +1,125 @@
+/*
+
+% A simple defered-rendering example -- an initial pass renders color, surface normals,
+% and view vectors into multiple render targets (textures). A second pass combines the data
+% in these textures with lighting info to create a final shaded image.
+
+*/
+
+// Pass 0 - create_MRTs
+vertex_program SceneDeferred_create_MRTs_vs cg
+{
+	source vs_SceneDeferred.cg
+	profiles arbvp1
+    entry_point unlitVS
+	
+	default_params
+    {
+	
+		param_named_auto WorldITXf  inverse_transpose_world_matrix
+		param_named_auto WorldXf 	world_matrix
+		param_named_auto ViewIXf 	inverse_view_matrix
+		param_named_auto WvpXf  	worldviewproj_matrix
+        
+    }
+}
+
+// Pass 1 - deferred_lighting
+vertex_program SceneDeferred_deferred_lighting_vs cg
+{
+	source vs_SceneDeferred.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+// Pass 0 - create_MRTs
+fragment_program SceneDeferred_create_MRTs_ps cg
+{
+    source ps_SceneDeferred.cg
+    entry_point prepMRTPS
+    profiles arbfp1
+
+	default_params
+	{
+		// param_named ColorSampler 	int 	0
+		param_named SurfaceColor 	float3 	1 1 1
+	
+	}
+}
+
+// Pass 1 - deferred_lighting
+fragment_program SceneDeferred_deferred_lighting_ps cg
+{
+    source ps_SceneDeferred.cg
+    entry_point useMRTPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named Ks 			float 	0.4
+		param_named SpecExpon 	float 	30.0
+		param_named LightDir 	float3 	0.7 -0.7 -0.7
+		param_named LightColor 	float3 	1.0 1.0 1.0
+		param_named AmbiColor 	float3 	0.07 0.07 0.07
+	
+	}
+}
+
+
+material SceneDeferred_create_MRTs
+{
+	technique
+	{
+		pass create_MRTs
+		{
+			depth_check off
+
+			vertex_program_ref SceneDeferred_create_MRTs_vs
+			{
+			
+			}
+			
+			fragment_program_ref SceneDeferred_create_MRTs_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 texture sdeferred_default_color.dds
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+		
+	}
+}
+
+material SceneDeferred_deferred_lighting
+{
+	technique
+	{
+		pass deferred_lighting
+		{
+			depth_check off
+
+			vertex_program_ref SceneDeferred_deferred_lighting_vs
+			{
+			
+			}
+			
+			fragment_program_ref SceneDeferred_deferred_lighting_ps
+			{
+			
+			}	
+						
+		}
+	}
+}

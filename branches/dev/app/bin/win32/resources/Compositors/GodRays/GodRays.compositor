@@ -1,0 +1,33 @@
+/*
+
+% Based on a radal blur effect, then with the origin image re-composited.
+
+*/
+
+compositor GodRaysCompositor
+{
+    technique
+    {
+		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
+				
+		// Initial Pass
+		target SceneSampler
+		{
+			input previous
+		}
+		
+		target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material GodRays
+                input 0 SceneSampler
+            }
+        }
+
+    }
+
+}

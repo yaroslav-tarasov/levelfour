@@ -1,0 +1,32 @@
+/*
+
+% Color space conversion -- takes the existing scene, and polarizes the
+% colors along the color wheel -- colors that are close to the "Guide Color"
+% become more like the guide, while colors closer to its complementary color
+% in that direction. Parameters allow control of how tightly colors "bunch up" 
+% and permits the user to turn the effect so that desaturated colors
+% are less affected.
+
+% In the sample image, an orange tone was chosen -- skin tones are reddish and those have
+% migrated towards the orange guide, while colors near blue (complement of orange)
+% have become bluer.
+
+*/
+
+compositor ComplementsCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  Complements
+            }
+        }
+    }
+
+}
