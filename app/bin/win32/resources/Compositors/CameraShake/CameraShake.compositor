@@ -2,15 +2,7 @@ compositor CameraShakeCompositor
 {
     technique
     {
-		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_X8R8G8B8
-		
-		// Initial Pass
-		target SceneSampler
-		{
-			input previous
-		}
-		
-        target_output
+		target_output
         {
             input none
 
@@ -18,7 +10,6 @@ compositor CameraShakeCompositor
             {
 				identifier 0000
 				material  CameraShake
-				input 0 SceneSampler
             }
         }
     }
