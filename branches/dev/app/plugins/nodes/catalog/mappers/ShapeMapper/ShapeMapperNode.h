@@ -36,6 +36,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "Ogre.h"
 #include "OgreTools.h"
 #include "EntityParameter.h"
+#include "ShapeMapParameter.h";
 
 // OGRE
 #include <Ogre.h>
@@ -73,20 +74,61 @@ public: // constructors and destructors
     virtual ~ShapeMapperNode ();
 
 private slots: //
+	void processShapeMap();
 
 private: // functions
 
 private: //data
 
-	QString m_outputGeometryParameterName;
+	//!
+    //! The name of the input geometry parameter.
+    //!
+    QString m_inputEntityParameterName;
+
+	//!
+    //! The input entity parameter.
+    //!
+	EntityParameter *inputEntityParameter;
 
 	//!
     //! OGRE entity.
     //!
     Ogre::Entity *m_entity;
 
-	EntityParameter * m_outputGeometryParameter;
+    //!
+    //! The input shape map parameter name. 
+    //!
+	QString m_inputShapeMapParameterName;
 
+    //!
+    //! The input shape map parameter. If set, than it's directly used as shape mapper
+    //!
+	ShapeMapParameter * inputShapeMapParameter;
+
+	//!
+    //! The ôutput shape map parameter name. 
+    //!
+	QString m_outputShapeMapParameterName;
+
+    //!
+    //! The ôutput shape map parameter. If set, than it's directly used as shape mapper
+    //!
+	ShapeMapParameter * outputShapeMapParameter;
+
+    //!
+    //! The name of the vtk table input parameter.
+    //!
+	QString m_inputVTKTableName; 
+
+    //!
+    //! The vtk table input parameter.
+    //!
+	VTKTableParameter * inputVTKTableParameter;
+
+	//!
+    //! The enumeration used to select which shape table to use.
+    //!
+	EnumerationParameter * shapeFieldParameter;
 };
 
 

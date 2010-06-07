@@ -16,7 +16,6 @@ set( ShpSource_h ${ShpSource_h}
 set( ShpSource_moc ${ShpSource_moc}	
 			ShpSourceNode.h
 			ShpSourceNodePlugin.h
-			vtkShapefileReader.h
 			)
 
 set( ShpSource_src ${ShpSource_src}	
@@ -26,7 +25,7 @@ set( ShpSource_src ${ShpSource_src}
 			)
 
 set( ShpSource_res ${ShpSource_res}	
-			ShpSource.xml
+			shpSource.xml
 			)
 
 # Create moc files		   

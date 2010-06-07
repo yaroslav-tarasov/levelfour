@@ -6,7 +6,7 @@
 #include "Ogre.h"
 #include "OgreTools.h"
 #include "vtkTable.h"
-
+#include "ShapeMapParameter.h"
 
 //!
 //! Class representing nodes that can contain OGRE entities with animation.
@@ -131,6 +131,16 @@ private: // data
     Ogre::SceneNode *m_sceneNode;
 
     //!
+    //! The input shape map parameter name. 
+    //!
+	QString m_inputShapeMapParameterName;
+
+    //!
+    //! The input shape map parameter. If set, than it's directly used as shape mapper
+    //!
+	ShapeMapParameter * inputShapeMapParameter;
+
+	//!
     //! OGRE entity.
     //!
     Ogre::Entity *m_entity;

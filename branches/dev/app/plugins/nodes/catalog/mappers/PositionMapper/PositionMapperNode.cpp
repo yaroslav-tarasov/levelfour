@@ -36,6 +36,7 @@ PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *pa
     m_entityContainer(0),
 	m_oldResourceGroupName(""),
 	m_inputVTKTableParameterName("VTKTableInput"),
+	m_inputShapeMapParameterName("InputShapeMap"),
 	m_inputGeometryParameterName("Geometry")
 {
     // create the vtk table input parameter - multiplicity ONE OR MORE
@@ -45,6 +46,13 @@ PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *pa
     inputVTKTableParameter->setSelfEvaluating(true);
     parameterRoot->addParameter(inputVTKTableParameter);
     connect(inputVTKTableParameter, SIGNAL(dirtied()), SLOT(processParameters()));
+
+    // create the ShapeMap input parameter - multiplicity ONE 
+	inputShapeMapParameter = new ShapeMapParameter(m_inputShapeMapParameterName);
+    inputShapeMapParameter->setPinType(Parameter::PT_Input);
+    inputShapeMapParameter->setSelfEvaluating(true);
+    parameterRoot->addParameter(inputShapeMapParameter);
+    connect(inputShapeMapParameter, SIGNAL(dirtied()), SLOT(processScene()));
 
 	// create the geometry input parameter (shape mapper)
 	EntityParameter *inputGeometryParameter = new EntityParameter(m_inputGeometryParameterName);
@@ -222,6 +230,46 @@ void PositionMapperNode::processParameters()
 //!
 void PositionMapperNode::processScene()
 {
+	Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
+	Ogre::String idPrefix(QString(m_name + ":").toStdString());
+
+	// load the source shape map parameter 
+	if (!inputShapeMapParameter->isConnected())
+		return;
+
+	// get the source parameter (output of source node) connected to the input parameter
+	ShapeMapParameter * sourceParameter = dynamic_cast<ShapeMapParameter*>(inputShapeMapParameter->getConnectedParameter());
+
+	// get the vtk table that comes with the source parameter and set it into the input parameter of this node
+	inputShapeMapParameter->setVTKTable(sourceParameter->getVTKTable());
+	inputShapeMapParameter->setShapeType(sourceParameter->getShapeType());
+
+	// if shape parameter is geo-typed than simply create the scene without positioning items
+	vtkTable * shapeTable = inputShapeMapParameter->getVTKTable();
+	if (shapeTable != 0 && inputShapeMapParameter->getShapeType() == ShapeMapParameter::ShapeType::GEO)
+	{
+//		destroyAllAttachedMovableObjects(m_sceneNode);
+		destroyAllChildren(m_sceneNode);
+
+		for (vtkIdType id=0; id<shapeTable->GetNumberOfRows(); id++)
+		{
+			Ogre::String nodeID(idPrefix + inputShapeMapParameter->getShapeName(id).toStdString());
+
+			// create new scene node for each item
+			Ogre::SceneNode *sceneItem = sceneManager->createSceneNode(nodeID);
+
+			// create new entity for each item
+			Ogre::Entity *entityItem;
+			entityItem = inputShapeMapParameter->getShape(id);
+			
+			sceneItem->attachObject(entityItem);
+
+			m_sceneNode->addChild(sceneItem);
+		}
+
+		return;	
+	}
+
 	if (!updateTable())
 		return;
 
@@ -245,10 +293,6 @@ void PositionMapperNode::processScene()
 	if (!colNodeId || !colX || !colY || !colZ)
 		return;
 
-	Ogre::String idPrefix(QString(m_name + ":").toStdString());
-
-	Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
-
 	for (int i=0; i<m_inputTable->GetNumberOfRows(); i++)
 	{
 		int colIDValue = colNodeId->GetValue(i);
@@ -266,8 +310,6 @@ void PositionMapperNode::processScene()
 		double y = colY->GetValue(i);
 		double z = colZ->GetValue(i);
 		sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
-		Ogre::Vector3 m_size(1.0,1.0,1.0);
-		sceneItem->setScale(m_size);
 		m_sceneNode->addChild(sceneItem);
 		
 	}
@@ -421,7 +463,7 @@ void PositionMapperNode::destroyAllChildren( Ogre::SceneNode* i_pSceneNode )
    while ( itChild.hasMoreElements() )
    {
       Ogre::SceneNode* pChildNode = static_cast<Ogre::SceneNode*>(itChild.getNext());
-      destroyAllAttachedMovableObjects( pChildNode );
+//      destroyAllAttachedMovableObjects( pChildNode );
 	  // obtain the OGRE scene manager
 	  Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 	  if (pChildNode != m_sceneNode)

@@ -317,7 +317,8 @@ void vtkShapefileReader::ReadPolyLine(int rNo,
 	int off_m = is_z ? off_z+(8*nPoints) : off_z;
 	//
 	int *parts = new int[nParts+1];
-	for (int k=0;k<nParts;k++)
+	int k;
+	for (k=0;k<nParts;k++)
 	{
 		i = (int*)&data[44+(k*4)];
 		swap->Swap4LE(i);
@@ -400,7 +401,8 @@ void vtkShapefileReader::ReadPolygon (int rNo,
 	int off_m = is_z ? off_z+(8*nPoints) : off_z;
 	//
 	int *parts = new int[nParts+1];
-	for (int k=0;k<nParts;k++)
+	int k;
+	for (k=0;k<nParts;k++)
 	{
 		i = (int*)&data[44+(k*4)];
 		swap->Swap4LE(i);
@@ -544,7 +546,8 @@ void vtkShapefileReader::ReadMultiPatch(int rNo,
 	int off_m = is_z ? off_z+(8*nPoints) : off_z;
 	//
 	int *parts = new int[nParts+1];
-	for (int k=0;k<nParts;k++)
+	int k;
+	for (k=0;k<nParts;k++)
 	{
 		i = (int*)&data[44+(k*4)];
 		swap->Swap4LE(i);

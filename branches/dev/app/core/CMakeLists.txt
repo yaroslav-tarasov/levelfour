@@ -19,7 +19,6 @@ set( frappercore_h ${frappercore_h}
 			Connection.h
 			ConnectionGraphicsItem.h
 			CurveEditorDataNode.h
-			EntityParameter.h
 			EnumerationParameter.h
 			FilenameParameter.h
 			FlagGraphicsItem.h
@@ -55,6 +54,14 @@ set( frappercore_h ${frappercore_h}
 			ViewFlagGraphicsItem.h
 			ViewingParameters.h
 			ViewNode.h
+
+# Acuity classes
+			AbstractMapParameter.h
+			EntityParameter.h
+			MaterialMapParameter.h
+			PositionMapParameter.h
+			SizeMapParameter.h
+			ShapeMapParameter.h
 			VTKGraphLayoutNode.h
 			VTKGraphParameter.h
 			VTKLayoutNode.h
@@ -92,6 +99,8 @@ set( frappercore_moc ${frappercore_moc}
 			 SceneNodeParameter.h
 			 ViewFlagGraphicsItem.h
 			 ViewNode.h
+			 
+# Acuity
 			VTKGraphLayoutNode.h
 			VTKLayoutNode.h
 			VTKTableNode.h
@@ -109,7 +118,6 @@ set( frappercore_src ${frappercore_src}
 			Connection.cpp
 			ConnectionGraphicsItem.cpp
 			CurveEditorDataNode.cpp
-			EntityParameter.cpp
 			EnumerationParameter.cpp
 			FilenameParameter.cpp
 			FlagGraphicsItem.cpp
@@ -141,6 +149,14 @@ set( frappercore_src ${frappercore_src}
 			ViewFlagGraphicsItem.cpp
 			ViewingParameters.cpp
 			ViewNode.cpp
+
+# Acuity
+			AbstractMapParameter.cpp
+			EntityParameter.cpp
+			MaterialMapParameter.cpp
+			PositionMapParameter.cpp
+			SizeMapParameter.cpp
+			ShapeMapParameter.cpp
 			VTKGraphLayoutNode.cpp
 			VTKGraphParameter.cpp
 			VTKLayoutNode.cpp
