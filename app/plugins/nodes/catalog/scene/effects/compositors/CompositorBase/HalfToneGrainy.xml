@@ -10,18 +10,16 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="ColorMixer" category="Compositing" color="7, 45, 87" plugin="CompositorBase.dll">
+<nodetype name="HalfToneGrainy" category="Compositing" color="7, 45, 87" plugin="CompositorBase.dll">
   <parameters>
-    <parameter name="Compositor Name" type="String" defaultValue="ColorMixerCompositor"/>
-    <parameter name="Resource Location" type="String" defaultValue="resources/Compositors/ColorMixer/"/>
+    <parameter name="Compositor Name" type="String" defaultValue="HalfToneGrainyCompositor"/>
+    <parameter name="Resource Location" type="String" defaultValue="resources/Compositors/HalfToneGrainy/"/>
     <parameter name="Reload" type="Command"/>
     <parameters name="Input Maps">
       <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="true"/>
     </parameters>
     <parameters name="Shader Parameters Pass 0">
-		<parameter name="RedVector" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="1" defaultValue="1,0,0" pin="in" selfEvaluating="true"/>
-		<parameter name="GreenVector" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="1" defaultValue="0,1,0" pin="in" selfEvaluating="true"/>
-		<parameter name="BlueVector" type="Float" size="3" inputMethod="SliderPlusSpinBox" minValue="0" maxValue="1" defaultValue="0,0,1" pin="in" selfEvaluating="true"/>
+      
     </parameters>
   </parameters>
 </nodetype>

@@ -26,6 +26,7 @@ set( CompositorBase_res ${CompositorBase_res}
 			BadPrinting.xml
 			BleachBypass.xml
 			Bloom.xml
+			CameraShake.xml
 			ColorClipping.xml
 			ColorCurve.xml
 			ColorMixer.xml
@@ -35,6 +36,9 @@ set( CompositorBase_res ${CompositorBase_res}
 			DropShadow.xml
 			EdgeDetect.xml
 			Glow.xml
+			GodRays.xml
+			HalfToneDots.xml
+			HalfToneGrainy.xml
 			Kuwahara.xml
 			LineDraw.xml
 			Negative.xml
