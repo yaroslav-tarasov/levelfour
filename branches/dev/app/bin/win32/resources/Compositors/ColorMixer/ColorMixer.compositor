@@ -1,0 +1,25 @@
+/*
+
+% This is much like a Photoshop(tm) "color mixer" layer -- the
+% intensities of each input red, green, and blue channels are
+% graded against the colors indicated in the paramter list, then
+% remixed.
+
+*/
+
+compositor ColorMixerCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  ColorMixer
+            }
+        }
+    }
+}

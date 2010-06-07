@@ -1,0 +1,67 @@
+/*
+
+% This is much like a Photoshop(tm) "color mixer" layer -- the
+% intensities of each input red, green, and blue channels are
+% graded against the colors indicated in the paramter list, then
+% remixed.
+
+*/
+
+vertex_program ColorMixer_vs cg
+{
+	source vs_ColorMixer.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program ColorMixer_ps cg
+{
+    source ps_ColorMixer.cg
+    entry_point colorMixPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+		param_named RedVector 		float3 	1 0 0
+		param_named GreenVector 	float3 	0 1 0
+		param_named BlueVector 		float3 	0 0 1
+		
+	}
+}
+
+material ColorMixer
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref ColorMixer_vs
+			{
+			
+			}
+			
+			fragment_program_ref ColorMixer_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }			
+		}
+	}
+}
+
