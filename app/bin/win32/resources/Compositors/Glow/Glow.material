@@ -1,0 +1,183 @@
+/*
+
+% A full-screen glow effect using multiple passes
+
+*/
+
+vertex_program Glow_BlurGlowBuffer_Horz_vs cg
+{
+	source vs_Glow.cg
+	profiles arbvp1
+    entry_point horiz9BlurVS
+	
+	default_params
+    {
+		// param_named_auto RenderSize	 	viewport_size
+		param_named_auto TexelOffset	texel_offsets 
+		param_named GlowSpan 			float 	2.5
+		        
+    }
+}
+
+vertex_program Glow_BlurGlowBuffer_Vert_vs cg
+{
+	source vs_Glow.cg
+	profiles arbvp1
+    entry_point vert9BlurVS
+	
+	default_params
+    {
+        // param_named_auto RenderSize	 	viewport_size
+		param_named_auto TexelOffset	texel_offsets 
+		param_named GlowSpan 			float 	2.5
+    }
+}
+
+vertex_program Glow_GlowPass_vs cg
+{
+	source vs_Glow.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        param_named_auto TexelOffset	texel_offsets
+    }
+}
+
+
+fragment_program Glow_BlurGlowBuffer_Horz_ps cg
+{
+    source ps_Glow.cg
+    entry_point blur9PS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SrcSamp 	int 	0
+	}
+}
+
+fragment_program Glow_BlurGlowBuffer_Vert_ps cg
+{
+    source ps_Glow.cg
+    entry_point blur9PS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SrcSamp 	int 	0
+		
+	}
+}
+
+fragment_program Glow_GlowPass_ps cg
+{
+    source ps_Glow.cg
+    entry_point GlowPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named ScnSampler 		int 	0
+		param_named GlowSampler		int 	1
+		param_named Glowness		float 	0.7
+		param_named Sceneness 		float 	0.3		
+	}
+}
+
+material Glow_BlurGlowBuffer_Horz
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Glow_BlurGlowBuffer_Horz_vs
+			{
+			
+			}
+			
+			fragment_program_ref Glow_BlurGlowBuffer_Horz_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture ScnSampler
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }			
+		}
+	}
+}
+
+material Glow_BlurGlowBuffer_Vert
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Glow_BlurGlowBuffer_Vert_vs
+			{
+			
+			}
+			
+			fragment_program_ref Glow_BlurGlowBuffer_Vert_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture ScnSampler
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }			
+		}
+	}
+}
+
+material Glow_GlowPass
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Glow_GlowPass_vs
+			{
+			
+			}
+			
+			fragment_program_ref Glow_GlowPass_ps
+			{
+			
+			}	
+			
+			texture_unit	// ScnSampler
+			 {
+                 // texture ScnSampler
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+
+			texture_unit	// GlowSampler
+			 {
+                 // texture GlowSampler
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+		}
+	}
+}
+

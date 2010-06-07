@@ -9,14 +9,6 @@ compositor RadialBlurCompositor
 {
     technique
     {
-		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
-				
-		// Initial Pass
-		target SceneSampler
-		{
-			input previous
-		}
-		
 		target_output
         {
             input none
@@ -25,7 +17,6 @@ compositor RadialBlurCompositor
             {
 				identifier 0000
 				material RadialBlur
-                input 0 SceneSampler
             }
         }
 

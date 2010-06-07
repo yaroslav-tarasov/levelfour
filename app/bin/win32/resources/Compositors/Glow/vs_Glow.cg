@@ -1,0 +1,79 @@
+///////////////////////////////////////////////////////////
+/////////////////////////////////// Vertex Shaders ////////
+///////////////////////////////////////////////////////////
+
+// vertex shader to align blur samples vertically
+void vert9BlurVS(
+
+		out float4 Position   : POSITION,
+		out float2 UV    : TEXCOORD0,
+		out float4 UV1   : TEXCOORD1, // xy AND zw used as UV coords
+		out float4 UV2   : TEXCOORD2, // xy AND zw used as UV coords
+		out float4 UV3   : TEXCOORD3, // xy AND zw used as UV coords
+		out float4 UV4   : TEXCOORD4, // xy AND zw used as UV coords
+
+		float3 PositionIN : POSITION, 
+		float2 UVIN : TEXCOORD0,
+		
+		uniform float GlowSpan,
+		uniform float2 RenderSize,
+		uniform float2 TexelOffset
+) {
+    Position = float4(PositionIN, 1);
+    float TexelIncrement = GlowSpan/RenderSize.y;
+    float2 Coord = float2(UVIN.xy);
+    UV = Coord;
+    UV1 = float4(Coord.x, Coord.y + TexelIncrement,
+		     Coord.x, Coord.y - TexelIncrement);
+    UV2 = float4(Coord.x, Coord.y + TexelIncrement*2,
+		     Coord.x, Coord.y - TexelIncrement*2);
+    UV3 = float4(Coord.x, Coord.y + TexelIncrement*3,
+		     Coord.x, Coord.y - TexelIncrement*3);
+    UV4 = float4(Coord.x, Coord.y + TexelIncrement*4,
+		     Coord.x, Coord.y - TexelIncrement*4);
+}
+
+// vertex shader to align blur samples horizontally
+void horiz9BlurVS(
+
+		out float4 Position   : POSITION,
+		out float2 UV    : TEXCOORD0,
+		out float4 UV1   : TEXCOORD1, // xy AND zw used as UV coords
+		out float4 UV2   : TEXCOORD2, // xy AND zw used as UV coords
+		out float4 UV3   : TEXCOORD3, // xy AND zw used as UV coords
+		out float4 UV4   : TEXCOORD4, // xy AND zw used as UV coords
+
+		float3 PositionIN : POSITION, 
+		float2 UVIN : TEXCOORD0,
+		uniform float GlowSpan,
+		uniform float2 RenderSize,
+		uniform float2 TexelOffset
+) {
+    Position = float4(PositionIN, 1);
+    float TexelIncrement = GlowSpan/RenderSize.x;
+    float2 Coord = float2(UVIN.xy);
+    UV = Coord;
+    UV1 = float4(Coord.x + TexelIncrement, Coord.y,
+		     Coord.x - TexelIncrement, Coord.y);
+    UV2 = float4(Coord.x + TexelIncrement*2, Coord.y,
+		     Coord.x - TexelIncrement*2, Coord.y);
+    UV3 = float4(Coord.x + TexelIncrement*3, Coord.y,
+		     Coord.x - TexelIncrement*3, Coord.y);
+    UV4 = float4(Coord.x + TexelIncrement*4, Coord.y,
+		     Coord.x - TexelIncrement*4, Coord.y);
+}
+
+void ScreenQuadVS2(
+
+		float4 Position	: POSITION,
+		float2 UV		: TEXCOORD0,
+
+		float3 PositionIN : POSITION, 
+		float2 UVIN	: TEXCOORD0,
+		
+		uniform float2 TexelOffset
+) {
+    Position = float4(PositionIN, 1);
+    UV = float2(UVIN.xy);
+
+}
