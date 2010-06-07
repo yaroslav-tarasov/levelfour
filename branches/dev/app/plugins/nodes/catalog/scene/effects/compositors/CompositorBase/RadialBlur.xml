@@ -10,7 +10,7 @@
 -->
 
 <!DOCTYPE nodetype SYSTEM "nodetype.dtd">
-<nodetype name="RadialBlur" category="Compositing" color="7, 45, 87" plugin="compositortemplate.dll">
+<nodetype name="RadialBlur" category="Compositing" color="7, 45, 87" plugin="CompositorBase.dll">
   <parameters>
     <parameter name="Compositor Name" type="String" defaultValue="RadialBlurCompositor"/>
     <parameter name="Resource Location" type="String" defaultValue="resources/Compositors/RadialBlur/"/>
