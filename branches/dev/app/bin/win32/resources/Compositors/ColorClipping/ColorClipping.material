@@ -1,0 +1,111 @@
+/*
+
+% Clip low and high colors so that the resulting image is within a
+% narrower range, e.g. for TV signals.  Two Techniques are provided
+% -- one clips the colors that go outside the specified range
+% between Min and Max, while the other stretches or compresses the
+% total color space to conform to the indicated range.
+
+*/
+
+vertex_program ColorClipping_vs cg
+{
+	source vs_ColorClipping.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program ColorClipping_clipper_ps cg
+{
+    source ps_ColorClipping.cg
+    entry_point ClipperPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+		param_named MinColor 		float4 	0.0 0.0 0.0 0.0
+		param_named MaxColor		float4 	1.0 1.0 1.0 1.0
+	}
+}
+
+fragment_program ColorClipping_squisher_ps cg
+{
+    source ps_ColorClipping.cg
+    entry_point SquisherPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+		param_named MinColor 		float4 	0.0 0.0 0.0 0.0
+		param_named MaxColor		float4 	1.0 1.0 1.0 1.0
+	}
+}
+
+
+material ColorClippingClip
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref ColorClipping_vs
+			{
+			
+			}
+			
+			fragment_program_ref ColorClipping_clipper_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}
+
+material ColorClippingStretched
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref ColorClipping_vs
+			{
+			
+			}
+			
+			fragment_program_ref ColorClipping_squisher_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+			
+		}
+	}
+}
