@@ -1,0 +1,41 @@
+/*
+
+% Clip low and high colors so that the resulting image is within a
+% narrower range, e.g. for TV signals.  Two Techniques are provided
+% -- one clips the colors that go outside the specified range
+% between Min and Max, while the other stretches or compresses the
+% total color space to conform to the indicated range.
+
+*/
+
+compositor ColorClippingCompositor
+{
+    technique Clip
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  ColorClippingClip
+            }
+        }
+    }
+	
+	technique Stretched
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  ColorClippingStretched
+            }
+        }
+    }
+
+}
