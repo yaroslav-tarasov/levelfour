@@ -35,10 +35,6 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "NumberParameter.h"
 #include "FilenameParameter.h"
 #include "EnumerationParameter.h"
-#include "VTKTableParameter.h"
-#include "VTKGraphParameter.h"
-#include "VTKTreeParameter.h"
-#include "EntityParameter.h"
 #include "SceneNodeParameter.h"
 #include "ParameterPlugin.h"
 #include "Node.h"
@@ -46,14 +42,30 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include <QtGui/QColor>
 #include "MotionDataNode.h"
 
+// acuity parameters
+#include "VTKTableParameter.h"
+#include "VTKGraphParameter.h"
+#include "VTKTreeParameter.h"
+#include "EntityParameter.h"
+#include "ShapeMapParameter.h"
+#include "PositionMapParameter.h"
+#include "SizeMapParameter.h"
+#include "MaterialMapParameter.h"
+
 INIT_INSTANCE_COUNTER(Parameter)
 Q_DECLARE_METATYPE(Ogre::Vector3)
 Q_DECLARE_METATYPE(Ogre::TexturePtr)
 Q_DECLARE_METATYPE(ParameterGroup *)
+
+// acuity metatypes
 Q_DECLARE_METATYPE(vtkTable *)
 Q_DECLARE_METATYPE(vtkGraph *)
 Q_DECLARE_METATYPE(vtkTree *)
 Q_DECLARE_METATYPE(Ogre::Entity *)
+Q_DECLARE_METATYPE(ShapeMapParameter *)
+Q_DECLARE_METATYPE(PositionMapParameter *)
+Q_DECLARE_METATYPE(SizeMapParameter *)
+Q_DECLARE_METATYPE(MaterialMapParameter *)
 
 
 ///
@@ -96,7 +108,11 @@ static const char *ParameterTypeNames[Parameter::T_NumTypes] = {
 	"VTKTable",
 	"VTKGraph",
 	"VTKTree",
-	"Entity"
+	"Entity",
+	"ShapeMap",
+	"SizeMap",
+	"MaterialMap",
+	"PositionMap"
 };
 
 
@@ -121,10 +137,15 @@ static const QColor ParameterTypeColors[Parameter::T_NumTypes] = {
     QColor(100, 100, 100),      // Group
 	QColor(  0, 255,   0),      // Plugin
 	QColor(255, 255, 255),		// Generic
+// acuity parameters
     QColor(125, 43, 139),       // VTKTable
     QColor(230, 45, 137),		// VTKGraph
 	QColor(0, 195, 136),		// VTKTree
-	QColor(101, 195, 136)		// Entity
+	QColor(230, 45, 137),		// Entity
+	QColor(255, 103, 0),		// T_ShapeMap
+	QColor(0, 195, 136),		// T_SizeMap
+	QColor(125, 43, 139),		// T_MaterialMap
+	QColor(255, 0, 0)			// T_PositionMap
 
 // (230, 45, 137) // Pink
 // (255, 0, 0) // Red
@@ -151,6 +172,7 @@ static const QList<Parameter::Type> ParameterMultiplicityTypes = QList<Parameter
     << Parameter::T_Camera
     << Parameter::T_Image
 	<< Parameter::T_Group
+// acuity parameters
 	<< Parameter::T_VTKTable
 	<< Parameter::T_VTKTree
 ;
@@ -418,7 +440,10 @@ Parameter * Parameter::create ( const QString &name, Parameter::Type type, QVari
             return new LightParameter(name);
         case T_Camera:
             return new CameraParameter(name);
-        case T_VTKTable:
+		case T_PlugIn:
+			return new ParameterPlugin(name, defaultValue);
+// acuity parameters
+		case T_VTKTable:
 			return new VTKTableParameter(name);
 		case T_VTKTree:
 			return new VTKTreeParameter(name);
@@ -426,8 +451,14 @@ Parameter * Parameter::create ( const QString &name, Parameter::Type type, QVari
 			return new VTKGraphParameter(name);
         case T_Entity:
 			return new EntityParameter(name);
-		case T_PlugIn:
-			return new ParameterPlugin(name, defaultValue);
+        case T_ShapeMap:
+			return new ShapeMapParameter(name);
+        case T_SizeMap:
+			return new SizeMapParameter(name);
+        case T_PositionMap:
+			return new PositionMapParameter(name);
+        case T_MaterialMap:
+			return new MaterialMapParameter(name);
         default:
             return new Parameter(name, type, defaultValue);
     }
@@ -746,6 +777,9 @@ Parameter * Parameter::clone ( const Parameter &parameter )
             return new LightParameter(dynamic_cast<const LightParameter &>(parameter));
         case T_Camera:
             return new CameraParameter(dynamic_cast<const CameraParameter &>(parameter));
+		case T_PlugIn:
+            return new ParameterPlugin(dynamic_cast<const ParameterPlugin &>(parameter));
+// acuity parameters
         case T_VTKTable:
             return new VTKTableParameter(dynamic_cast<const VTKTableParameter &>(parameter));
 		case T_VTKTree:
@@ -754,8 +788,15 @@ Parameter * Parameter::clone ( const Parameter &parameter )
 			return new VTKGraphParameter(dynamic_cast<const VTKGraphParameter &>(parameter));
         case T_Entity:
 			return new EntityParameter(dynamic_cast<const EntityParameter &>(parameter));
-		case T_PlugIn:
-            return new ParameterPlugin(dynamic_cast<const ParameterPlugin &>(parameter));
+		case T_ShapeMap:
+			return new ShapeMapParameter(dynamic_cast<const ShapeMapParameter &>(parameter));
+        case T_SizeMap:
+			return new SizeMapParameter(dynamic_cast<const SizeMapParameter &>(parameter));
+        case T_PositionMap:
+			return new PositionMapParameter(dynamic_cast<const PositionMapParameter &>(parameter));
+        case T_MaterialMap:
+			return new MaterialMapParameter(dynamic_cast<const MaterialMapParameter &>(parameter));
+
         default:
             return new Parameter(parameter);
     }

@@ -40,7 +40,7 @@ typedef void (vtkShapefileReader::*ReadMethod)(int rNo,char *data,vtkPoints *poi
 typedef void (vtkPolyData::*CellMethod)(vtkCellArray *cells);
 
 
-class VTK_HYBRID_EXPORT vtkShapefileReader : public vtkPolyDataSource 
+class vtkShapefileReader : public vtkPolyDataSource 
 {
 public:
   static vtkShapefileReader *New();

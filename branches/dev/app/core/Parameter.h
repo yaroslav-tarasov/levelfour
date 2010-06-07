@@ -99,10 +99,15 @@ public: // nested enumerations
         T_Group,
 		T_PlugIn,
 		T_Generic,
+//acuity parameters
 		T_VTKTable,
 		T_VTKGraph,
 		T_VTKTree,
 		T_Entity,
+		T_ShapeMap,
+		T_SizeMap,
+		T_MaterialMap,
+		T_PositionMap,
 
         T_NumTypes
     };

@@ -33,7 +33,11 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #ifndef ShpSourceNode_H
 #define ShpSourceNode_H
 
-#include "Node.h"
+#include "VTKTableNode.h"
+#include "ShapeMapParameter.h"
+#include "OgreManualObject.h"
+#include "vtkPolyData.h"
+#include "vtkTable.h"
 
 // OGRE
 #include <Ogre.h>
@@ -45,7 +49,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 //! Class for a node that is used for debugging purposes.
 //!
-class ShpSourceNode : public Node
+class ShpSourceNode : public VTKTableNode
 {
 
     Q_OBJECT
@@ -70,6 +74,21 @@ public: // constructors and destructors
     //!
     virtual ~ShpSourceNode ();
 
+private slots: // slots
+	void shapeFileChanged();
+
+private: // function 
+
+	// Create the table that will contain an Ogre mesh for each shape contained in the shapefile
+	vtkTable * polydataToMesh(vtkPolyData * polydata, int type);
+
+	// Empty the table and destroy all meshes contained on it
+	void cleanTable();
+
+private: // data
+	QString m_outputShapeMapParameterName;
+
+	ShapeMapParameter * outputShapeMapParameter;
 };
 
 
