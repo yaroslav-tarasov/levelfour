@@ -1,0 +1,25 @@
+/*
+
+% Ignore selection geometry, but use its orientation to rotate
+% the colors of a texture mapped to a full-screen quad.  In FX
+% Composer, assign this effect to any node, and then spin the
+% node to rotate the color matrix of the overall image.
+
+*/
+
+compositor ColorSpinCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  ColorSpin
+            }
+        }
+    }
+}

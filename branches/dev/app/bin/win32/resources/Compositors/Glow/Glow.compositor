@@ -1,0 +1,61 @@
+/*
+
+% A full-screen glow effect using multiple passes
+
+*/
+
+compositor GlowCompositor
+{
+    technique
+    {
+	
+		texture ScnMap target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture GlowMap1 target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture GlowMap2 target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		
+		// Initial Pass
+		target ScnMap
+		{
+			input previous
+		}
+		
+        target GlowMap1
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  Glow_BlurGlowBuffer_Horz
+				input 0 ScnMap
+            }
+        }
+		
+		target GlowMap2
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0001
+				material  Glow_BlurGlowBuffer_Vert
+				input 0 GlowMap1
+            }
+        }
+		
+		
+		target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0002
+				material  Glow_GlowPass
+				input 0 ScnMap
+				input 1 GlowMap2
+            }
+        }
+    }
+
+}
