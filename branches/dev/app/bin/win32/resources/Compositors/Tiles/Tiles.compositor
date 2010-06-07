@@ -8,15 +8,7 @@ compositor TilesCompositor
 {
     technique
     {
-		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
-		
-		// Initial Pass
-		target SceneSampler
-		{
-			input previous
-		}
-		
-        target_output
+		target_output
         {
             input none
 
@@ -24,7 +16,6 @@ compositor TilesCompositor
             {
 				identifier 0000
 				material  Tiles
-				input 0 SceneSampler
             }
         }
     }

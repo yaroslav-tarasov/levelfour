@@ -8,14 +8,6 @@ compositor GodRaysCompositor
 {
     technique
     {
-		texture SceneSampler target_width_scaled 0.125 target_height_scaled 0.125 PF_R8G8B8
-				
-		// Initial Pass
-		target SceneSampler
-		{
-			input previous
-		}
-		
 		target_output
         {
             input none
@@ -24,7 +16,6 @@ compositor GodRaysCompositor
             {
 				identifier 0000
 				material GodRays
-                input 0 SceneSampler
             }
         }
 
