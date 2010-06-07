@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         Kuwahara.xml
+  Description:  Contains the XML description of AmbientOcclusion nodes.
+  Author:       Felix Bucella <felix.bucella@filmakademie.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="Kuwahara" category="Compositing" color="7, 45, 87" plugin="CompositorBase.dll">
+  <parameters>
+    <parameter name="Compositor Name" type="String" defaultValue="KuwaharaCompositor"/>
+    <parameter name="Resource Location" type="String" defaultValue="resources/Compositors/Kuwahara/"/>
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="true"/>
+    </parameters>
+    <parameters name="Shader Parameters Pass 0">
+      
+    </parameters>
+  </parameters>
+</nodetype>
+
+

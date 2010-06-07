@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         Corona.xml
+  Description:  Contains the XML description of Corona nodes.
+  Author:       Thomas Luft <thomas.luft@web.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="Corona" category="Compositing" color="7, 45, 87" plugin="CompositorBase.dll">
+  <parameters>
+    <parameter name="Compositor Name" type="String" defaultValue="CoronaCompositor"/>
+    <parameter name="Resource Location" type="String" defaultValue="resources/Compositors/Corona/"/>
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="true"/>
+    </parameters>
+    <parameters name="Shader Parameters Pass 0">
+      
+    </parameters>
+  </parameters>
+</nodetype>
+
