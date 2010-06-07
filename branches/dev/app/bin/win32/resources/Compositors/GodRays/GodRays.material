@@ -7,7 +7,7 @@
 vertex_program GodRays_vs cg
 {
 	source vs_GodRays.cg
-	profiles vp40
+	profiles arbvp1
     entry_point GodRaysVS
 	
 	default_params
