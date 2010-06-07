@@ -194,6 +194,7 @@ void TableViewPanel::showTable(Node * node)
 	if (!(QString::compare(node->getTypeName(), "VTKTableNode", Qt::CaseInsensitive) == 0) &&
 		!(QString::compare(node->getTypeName(), "DataTable", Qt::CaseInsensitive) == 0) &&
 		!(QString::compare(node->getTypeName(), "MergeTable", Qt::CaseInsensitive) == 0) &&
+		!(QString::compare(node->getTypeName(), "ShpReader", Qt::CaseInsensitive) == 0) &&
 		!(QString::compare(node->getTypeName(), "TextDelimiterSource", Qt::CaseInsensitive) == 0)) 
 		return;
 

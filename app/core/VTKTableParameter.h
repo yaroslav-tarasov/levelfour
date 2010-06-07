@@ -29,6 +29,14 @@ public: // constructors and destructors
     VTKTableParameter ( const QString &name );
 
     //!
+    //! Constructor of the VTKTableParameter class.
+    //!
+    //! \param name The name of the parameter.
+    //! \param type The type of the parameter.
+    //!
+	VTKTableParameter ( const QString &name, Parameter::Type type );
+
+	//!
     //! Copy constructor of the VTKTableParameter class.
     //!
     //! \param parameter The parameter to copy.
@@ -63,7 +71,7 @@ public: // functions
     //!
     void setVTKTable ( vtkTable * table );
 
-private: // data
+protected: // data
 
     //!
     //! The vtk table.

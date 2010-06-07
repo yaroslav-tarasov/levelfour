@@ -27,6 +27,19 @@ VTKTableParameter::VTKTableParameter ( const QString &name ) :
 }
 
 //!
+//! Constructor of the VTKTableParameter class.
+//!
+//! \param name The name of the parameter.
+//! \param type The type of the parameter.
+//! \param variant The variant of the parameter.
+//!
+VTKTableParameter::VTKTableParameter ( const QString &name, Parameter::Type type):
+	Parameter(name, type, QVariant::fromValue<vtkTable *>(0)),
+	m_table(0)
+{
+}
+
+//!
 //! Copy constructor of the VTKTableParameter class.
 //!
 //! \param parameter The parameter to copy.

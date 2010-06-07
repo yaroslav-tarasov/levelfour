@@ -49,6 +49,9 @@ target_link_libraries(ShapeMapper
 			optimized QtXml4 debug QtXmld4
 			optimized OgreMain debug OgreMain_d
 			optimized frappercore debug frappercore_d
+			optimized vtkFiltering debug vtkFiltering
+			optimized vtkInfovis debug vtkInfovis
+			optimized vtkCommon debug vtkCommon
 			)
 
 # Install files
