@@ -1,0 +1,26 @@
+
+
+/*********************************************************/
+/*********** pixel shader ********************************/
+/*********************************************************/
+
+sampler2D ShadDepthSampler;
+
+float4 applyShadowPS(
+
+			float4 HPosition	: POSITION,
+			float4 BgUV		: TEXCOORD0,
+			float4 LProj	: TEXCOORD1,	// light-projection space
+			
+
+			uniform sampler2D SceneSampler : register(s0),
+		    uniform float SDensity
+) : COLOR
+{
+    float shadowed = tex2Dproj(ShadDepthSampler,LProj).x;
+    shadowed = 1.0 - (SDensity*(1.0-shadowed));
+    float2 sp = 0.5 * float2(BgUV.x/BgUV.w,BgUV.y/BgUV.w);
+    sp += float2(0.5,0.5);
+    float4 BgColor = tex2D(SceneSampler,sp);
+    return float4(shadowed*BgColor.rgb,BgColor.a);
+}

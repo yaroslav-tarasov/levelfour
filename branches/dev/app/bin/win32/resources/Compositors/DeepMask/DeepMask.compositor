@@ -1,0 +1,85 @@
+/*
+
+% This is much like a Photoshop(tm) "color mixer" layer -- the
+% intensities of each input red, green, and blue channels are
+% graded against the colors indicated in the paramter list, then
+% remixed.
+
+*/
+
+compositor DeepMaskCompositor
+{
+    technique
+    {
+	
+		texture NormalMap target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture ColorMap target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture SoftMap1 target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture SoftMap2 target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		texture MaskMap target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
+		
+		// MakeDepthMap
+		target NormalMap
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  DeepMask_MakeDepthMap
+            }
+        }
+		// BlurGlowBuffer_Horz
+		target SoftMap1
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0001
+				material  DeepMask_BlurGlowBuffer_Horz
+				input 0 NormalMap
+            }
+        }
+		// BlurSoftBuffer_Vert
+		target SoftMap2
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0002
+				material  DeepMask_BlurSoftBuffer_Vert
+				input 0 NormalMap
+				input 1 SoftMap1
+            }
+        }
+		
+		// Difference
+		target MaskMap
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0003
+				material  DeepMask_Difference
+				input 0 NormalMap
+				input 1 SoftMap2
+            }
+        }
+		
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0004
+				material  DeepMask_DrawCombinedSurf
+				input 0 MaskMap
+				input 1 ColorMap
+            }
+        }
+    }
+}

@@ -20,12 +20,6 @@ compositor BloomCompositor
 		texture HBlurTex target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
 		texture FinalBlurTex target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
 		
-		// Initial Pass
-		target SceneSampler
-		{
-			input previous
-		}
-		
 		// DownSample Pass
 		target DownsampleTex
         {
@@ -35,7 +29,7 @@ compositor BloomCompositor
             {
 				identifier 0000
 				material BloomDownSample
-				input 0 SceneSampler
+		
             }
         }
 

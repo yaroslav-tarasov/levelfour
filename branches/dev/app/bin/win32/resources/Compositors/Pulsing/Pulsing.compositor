@@ -1,0 +1,25 @@
+/*
+
+% Renders the scene to an offscreen texture then re-renders it to
+% the screen, with pulsing, changing, on-screen texture
+% coordinates.  Clicking the mouse in the screen will also change
+% the effect slightly.
+
+*/
+
+compositor PulsingCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  Pulsing
+            }
+        }
+    }
+}

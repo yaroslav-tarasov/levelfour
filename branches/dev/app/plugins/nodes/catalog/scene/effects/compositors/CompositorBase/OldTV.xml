@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         Sepia.xml
+  Description:  Contains the XML description of Sepia nodes.
+  Author:       Thomas Luft <thomas.luft@web.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="OldTV" category="Compositing" color="7, 45, 87" plugin="CompositorBase.dll">
+  <parameters>
+    <parameter name="Compositor Name" type="String" defaultValue="OldTVCompositor"/>
+    <parameter name="Resource Location" type="String" defaultValue="resources/Compositors/OldTV/"/>
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="true"/>
+    </parameters>
+    <parameters name="Shader Parameters Pass 0">
+      <parameter name="distortionFreq" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="2.7" defaultValue="2.7" stepSize="0.01" unit=""/>
+      <parameter name="distortionScale" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="2.5" defaultValue="2.5" stepSize="0.01" unit=""/>
+	  <parameter name="distortionRoll" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.93" stepSize="0.01" unit=""/>
+	  <parameter name="interference" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.5" stepSize="0.01" unit=""/>
+	  <parameter name="frameLimit" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.40" stepSize="0.01" unit=""/>
+	  <parameter name="frameShape" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.26" stepSize="0.01" unit=""/>
+	  <parameter name="frameSharpness" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="6.0" defaultValue="6.0" stepSize="0.01" unit=""/>
+    </parameters>
+  </parameters>
+</nodetype>
+

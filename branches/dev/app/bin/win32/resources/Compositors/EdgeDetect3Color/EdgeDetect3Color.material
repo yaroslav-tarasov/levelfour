@@ -1,0 +1,60 @@
+/*
+
+% Detect image edges in the current scene.
+
+*/
+
+vertex_program EdgeDetect3Color_vs cg
+{
+	source vs_EdgeDetect3Color.cg
+	profiles arbvp1
+    entry_point edgeVS
+	default_params
+    {
+		param_named NPixels 		float	1.5
+    }
+}
+
+
+fragment_program EdgeDetect3Color_ps cg
+{
+    source ps_EdgeDetect3Color.cg
+    entry_point edgeDetectPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+		param_named NPixels 		float	1.5
+		param_named Threshhold		float	0.2
+	}
+}
+
+
+material EdgeDetect3Color
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref EdgeDetect3Color_vs
+			{
+			}
+			
+			fragment_program_ref EdgeDetect3Color_ps
+			{
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+				// texture SceneSampler 2d
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering none
+			 }
+			
+		}
+	}
+}

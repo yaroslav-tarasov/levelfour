@@ -1,0 +1,61 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4
+
+QUAD_REAL2 QuadScreenSize;
+
+//////////////////////////////////////////////////////
+/////////////////////////////////// pixel shader /////
+//////////////////////////////////////////////////////
+
+QUAD_REAL4 edgeDetectPS(
+
+	QUAD_REAL4 Position	: POSITION,
+	QUAD_REAL2 UV00	: TEXCOORD0,
+	QUAD_REAL2 UV01	: TEXCOORD1,
+	QUAD_REAL2 UV02	: TEXCOORD2,
+	QUAD_REAL2 UV10	: TEXCOORD3,
+	QUAD_REAL2 UV12	: TEXCOORD4,
+	QUAD_REAL2 UV20	: TEXCOORD5,
+	QUAD_REAL2 UV21	: TEXCOORD6,
+	QUAD_REAL2 UV22	: TEXCOORD7,
+	
+	uniform sampler2D SceneSampler : register(s0),
+	uniform float NPixels,
+	uniform float Threshhold
+	
+) : COLOR {
+    float T2 = (Threshhold*Threshhold);
+    QUAD_REAL4 cc00 = tex2D(SceneSampler,UV00);
+    QUAD_REAL4 cc01 = tex2D(SceneSampler,UV01);
+    QUAD_REAL4 cc02 = tex2D(SceneSampler,UV02);
+    QUAD_REAL4 cc10 = tex2D(SceneSampler,UV10);
+    QUAD_REAL4 cc12 = tex2D(SceneSampler,UV12);
+    QUAD_REAL4 cc20 = tex2D(SceneSampler,UV20);
+    QUAD_REAL4 cc21 = tex2D(SceneSampler,UV21);
+    QUAD_REAL4 cc22 = tex2D(SceneSampler,UV22);
+    QUAD_REAL4 sx = 0;
+    sx -= cc00;
+    sx -= cc01 * 2;
+    sx -= cc02;
+    sx += cc20;
+    sx += cc21 * 2;
+    sx += cc22;
+    QUAD_REAL4 sy = 0;
+    sy -= cc00;
+    sy += cc02;
+    sy -= cc10 * 2;
+    sy += cc12 * 2;
+    sy -= cc20;
+    sy += cc22;
+    QUAD_REAL4 dist = (sx*sx+sy*sy);	// per-channel
+    QUAD_REAL4 result = 1;
+    result = float4((dist.x<=T2),(dist.y<=T2),(dist.z<=T2),(dist.w<=T2));
+    return 1-result;
+}

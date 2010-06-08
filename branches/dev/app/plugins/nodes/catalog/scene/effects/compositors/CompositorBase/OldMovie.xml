@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         Sepia.xml
+  Description:  Contains the XML description of Sepia nodes.
+  Author:       Thomas Luft <thomas.luft@web.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="OldMovie" category="Compositing" color="7, 45, 87" plugin="CompositorBase.dll">
+  <parameters>
+    <parameter name="Compositor Name" type="String" defaultValue="OldMovieCompositor"/>
+    <parameter name="Resource Location" type="String" defaultValue="resources/Compositors/OldMovie/"/>
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="true"/>
+    </parameters>
+    <parameters name="Shader Parameters Pass 0">
+      <parameter name="flicker" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.4" unit=""/>
+      <parameter name="DirtFrequency" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.0005" unit=""/>
+	  <parameter name="frameJitter " type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.004" unit=""/>
+	  <parameter name="lumiShift " type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.03" unit=""/>
+    </parameters>
+  </parameters>
+</nodetype>
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Project:      Filmakademie Application Framework
+  File:         Sepia.xml
+  Description:  Contains the XML description of Sepia nodes.
+  Author:       Thomas Luft <thomas.luft@web.de>
+  Copyright:    (c) 2009 Filmakademie Baden-Württemberg
+  Hint:         You can use Visual Studio to edit the file. It helps following the rules of the document type
+                definition from the nodetype.dtd file.
+-->
+
+<!DOCTYPE nodetype SYSTEM "nodetype.dtd">
+<nodetype name="DeepMask" category="Compositing" color="7, 45, 87" plugin="CompositorBase.dll">
+  <parameters>
+    <parameter name="Compositor Name" type="String" defaultValue="DeepMaskCompositor"/>
+    <parameter name="Resource Location" type="String" defaultValue="resources/Compositors/DeepMask/"/>
+    <parameter name="Reload" type="Command"/>
+    <parameters name="Input Maps">
+      <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="true"/>
+    </parameters>
+    <parameters name="Pass MakeDepthMap">
+      
+    </parameters>
+	<parameters name="Pass BlurSoftBuffer_Horz">
+      
+    </parameters>
+	<parameters name="Pass BlurSoftBuffer_Vert">
+      
+    </parameters>
+	<parameters name="Pass Difference">
+      
+    </parameters>
+	<parameters name="Pass DrawCombinedSurf">
+      
+    </parameters>
+  </parameters>
+</nodetype>
+

@@ -1,0 +1,272 @@
+/*
+
+% This is much like a Photoshop(tm) "color mixer" layer -- the
+% intensities of each input red, green, and blue channels are
+% graded against the colors indicated in the paramter list, then
+% remixed.
+
+*/
+
+vertex_program DeepMask_MakeDepthMap_vs cg
+{
+	source vs_DeepMask.cg
+	profiles arbvp1
+    entry_point MakeGrayMapVS
+	
+	default_params
+    {
+        param_named_auto WvpXf		worldviewproj_matrix 
+		param_named Near 			float 	1.0
+		param_named Far 			float 	10.0
+    }
+}
+
+vertex_program DeepMask_BlurSoftBuffer_Horz_vs cg
+{
+	source vs_DeepMask.cg
+	profiles arbvp1
+    entry_point VS_Quad_Horizontal_9tap
+	
+	default_params
+    {
+		param_named BlurWid 			float 	1.0
+    }
+}
+
+vertex_program DeepMask_BlurSoftBuffer_Vert_vs cg
+{
+	source vs_DeepMask.cg
+	profiles arbvp1
+    entry_point VS_Quad_Vertical_9tap
+	
+	default_params
+    {
+        param_named BlurWid 			float 	1.0
+    }
+}
+
+vertex_program DeepMask_Difference_vs cg
+{
+	source vs_DeepMask.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+vertex_program DeepMask_DrawCombinedSurf_vs cg
+{
+	source vs_DeepMask.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program DeepMask_BlurSoftBuffer_Horz_ps cg
+{
+    source ps_DeepMask.cg
+    entry_point PS_Blur_Horizontal_9tap
+    profiles arbfp1
+
+	default_params
+	{
+		param_named NormalSamp 	int 	0		
+	}
+}
+
+fragment_program DeepMask_BlurSoftBuffer_Vert_ps cg
+{
+    source ps_DeepMask.cg
+    entry_point PS_Blur_Vertical_9tap
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SoftSamp1 	int 	0
+				
+	}
+}
+
+fragment_program DeepMask_Difference_ps cg
+{
+    source ps_DeepMask.cg
+    entry_point maskDiffPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named NormalSamp 	int 	0
+		param_named SoftSamp2 	int 	1
+		
+	}
+}
+
+fragment_program DeepMask_DrawCombinedSurf_ps cg
+{
+    source ps_DeepMask.cg
+    entry_point drawCombinedPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named MaskSamp 	int 	0
+		param_named ColorSamp 	int 	1
+		param_named MaskStr 	float 	1.0
+		param_named EdgeStr 	float 	0.5
+		
+	}
+}
+
+material DeepMask_MakeDepthMap
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref DeepMask_MakeDepthMap_vs
+			{
+			
+			}
+								
+		}
+	}
+}
+material DeepMask_BlurSoftBuffer_Horz
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref DeepMask_BlurSoftBuffer_Horz_vs
+			{
+			
+			}
+			
+			fragment_program_ref DeepMask_BlurSoftBuffer_Horz_ps
+			{
+			
+			}	
+			
+			 texture_unit	// NormalSamp
+			 {
+                 // texture NormalSamp
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }			
+		}
+	}
+}
+material DeepMask_BlurSoftBuffer_Vert
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref DeepMask_BlurSoftBuffer_Vert_vs
+			{
+			
+			}
+			
+			fragment_program_ref DeepMask_BlurSoftBuffer_Vert_ps
+			{
+			
+			}	
+			
+			 texture_unit	// SoftSamp1
+			 {
+                 // texture SoftSamp1
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }			
+		}
+	}
+}
+material DeepMask_Difference
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref DeepMask_Difference_vs
+			{
+			
+			}
+			
+			fragment_program_ref DeepMask_Difference_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture NormalSamp
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }	
+
+			texture_unit	// SoftSamp2
+			 {
+                 // texture SoftSamp2
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }				 
+		}
+	}
+}
+material DeepMask_DrawCombinedSurf
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref DeepMask_DrawCombinedSurf_vs
+			{
+			
+			}
+			
+			fragment_program_ref DeepMask_DrawCombinedSurf_ps
+			{
+			
+			}	
+			
+			 texture_unit	// MaskSamp
+			 {
+                 // texture MaskSamp
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }	
+
+			texture_unit	// ColorSamp
+			 {
+                 // texture ColorSamp
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }				 
+		}
+	}
+}
+

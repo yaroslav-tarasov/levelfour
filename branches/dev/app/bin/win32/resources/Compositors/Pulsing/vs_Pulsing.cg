@@ -1,0 +1,44 @@
+//////////////////////////////////////////////////////
+/////////////////////////////////// vertex shader ////
+//////////////////////////////////////////////////////
+
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+
+void AnnoyVS(
+	    
+		out QUAD_REAL4 Position	: POSITION,
+		out QUAD_REAL2 UV	: TEXCOORD0,
+		
+		QUAD_REAL3 PositionIN : POSITION, 
+	    QUAD_REAL3 TexCoord : TEXCOORD0,
+	    
+		uniform float Timer,
+	    uniform QUAD_REAL Speed,
+	    uniform QUAD_REAL Speed2,
+	    uniform QUAD_REAL Pulse,
+	    uniform QUAD_REAL PulseE,
+	    uniform QUAD_REAL CenterX,
+	    uniform QUAD_REAL CenterY,
+	    uniform QUAD_REAL4 MouseL,
+	    uniform QUAD_REAL2 TexelOffsets
+) {
+    QUAD_REAL r = Timer*Speed;	// radians
+    r *= (2.0 * (MouseL.z-0.5));
+    float2 cs = float2(sin(r),cos(r));
+    r = 2.0*(pow(0.5*(sin(Speed2*Timer)+1.0),PulseE)-0.5);
+    r = 1 + Pulse*r;
+    Position = QUAD_REAL4(PositionIN, 1);
+    QUAD_REAL2 ctr = QUAD_REAL2(CenterX,CenterY);
+    QUAD_REAL2 t = r*(QUAD_REAL2(TexCoord.xy + TexelOffsets) - ctr);
+    UV = (((QUAD_REAL2((t.x*cs.x - t.y*cs.y), 
+			   (t.x*cs.y + t.y*cs.x)))) + ctr);
+}
