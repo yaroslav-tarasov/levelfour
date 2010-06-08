@@ -125,7 +125,7 @@ void ShapeMapperNode::processShapeMap()
 	}
 
 	if (inputEntityParameter && inputVTKTableParameter && 
-		(inputEntityParameter->isDirty() || inputVTKTableParameter->isDirty()))
+		(inputEntityParameter->isConnected() || inputVTKTableParameter->isConnected()))
 	{
 		// load the source shape map parameter 
 		if (!inputEntityParameter->isConnected() || !inputVTKTableParameter->isConnected())
@@ -145,20 +145,22 @@ void ShapeMapperNode::processShapeMap()
 		VTKTableParameter * sourceTableParameter = dynamic_cast<VTKTableParameter*>(inputVTKTableParameter->getConnectedParameter());
 
 		// vtkTable holding the shape IDs and their relative mesh pointer
-		vtkTable * table = sourceTableParameter->getVTKTable();
+		vtkTable * sourceTable = sourceTableParameter->getVTKTable();
+		vtkTable * outputTable = vtkTable::New();
 
-		if (table)
+		if (sourceTable)
 		{
-			int rows = table->GetNumberOfRows();
+			int rows = sourceTable->GetNumberOfRows();
 			// store the mesh name 
 			for (vtkIdType id = 0; id<rows; id++)
 				meshNames->InsertNextValue(meshName);
 
-			table->AddColumn(meshNames);
+			outputTable->AddColumn(meshNames);
 			meshNames->Delete();
 		}
 
-		outputShapeMapParameter->setVTKTable(table);
+		outputShapeMapParameter->setVTKTable(outputTable);
+		outputShapeMapParameter->setShapeType(ShapeMapParameter::ShapeType::PRIMITIVE);
 		outputShapeMapParameter->propagateDirty(0);
 	}
 }
