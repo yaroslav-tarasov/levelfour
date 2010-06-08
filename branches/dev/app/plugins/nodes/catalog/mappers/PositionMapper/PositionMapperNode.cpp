@@ -233,9 +233,17 @@ void PositionMapperNode::processScene()
 	Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 	Ogre::String idPrefix(QString(m_name + ":").toStdString());
 
+//	destroyAllAttachedMovableObjects(m_sceneNode);
+	destroyAllChildren(m_sceneNode);
+
 	// load the source shape map parameter 
 	if (!inputShapeMapParameter->isConnected())
 		return;
+
+	if (!m_sceneNode)
+		return;
+
+	vtkTable * shapeTable = 0;
 
 	// get the source parameter (output of source node) connected to the input parameter
 	ShapeMapParameter * sourceParameter = dynamic_cast<ShapeMapParameter*>(inputShapeMapParameter->getConnectedParameter());
@@ -244,74 +252,67 @@ void PositionMapperNode::processScene()
 	inputShapeMapParameter->setVTKTable(sourceParameter->getVTKTable());
 	inputShapeMapParameter->setShapeType(sourceParameter->getShapeType());
 
-	// if shape parameter is geo-typed than simply create the scene without positioning items
-	vtkTable * shapeTable = inputShapeMapParameter->getVTKTable();
-	if (shapeTable != 0 && inputShapeMapParameter->getShapeType() == ShapeMapParameter::ShapeType::GEO)
+	// if the shape table is null than do nothing
+	shapeTable = inputShapeMapParameter->getVTKTable();
+	if (!shapeTable)
+		return;
+
+	// if shape parameter is geo-typed than it can still create the scene without positioning items
+	// check if items can be positioned or not
+	bool isPositionable = false;
+
+	// update position table
+	isPositionable = updateTable();
+
+	QString setIdField, setXField, setYField, setZField;
+	vtkIdTypeArray *colNodeId = 0;
+	vtkDoubleArray *colX = 0, *colY = 0, *colZ = 0;
+	if (isPositionable)
 	{
-//		destroyAllAttachedMovableObjects(m_sceneNode);
-		destroyAllChildren(m_sceneNode);
+		setIdField = idFieldParameter->getCurrentValue();
+		setXField = xFieldParameter->getCurrentValue();
+		setYField = yFieldParameter->getCurrentValue();
+		setZField = zFieldParameter->getCurrentValue();
 
-		for (vtkIdType id=0; id<shapeTable->GetNumberOfRows(); id++)
-		{
-			Ogre::String nodeID(idPrefix + inputShapeMapParameter->getShapeName(id).toStdString());
-
-			// create new scene node for each item
-			Ogre::SceneNode *sceneItem = sceneManager->createSceneNode(nodeID);
-
-			// create new entity for each item
-			Ogre::Entity *entityItem;
-			entityItem = inputShapeMapParameter->getShape(id);
-			
-			sceneItem->attachObject(entityItem);
-
-			m_sceneNode->addChild(sceneItem);
-		}
-
-		return;	
+		//Get columns specified from assignments
+		colNodeId = dynamic_cast<vtkIdTypeArray*>(m_inputTable->GetColumnByName(setIdField.toLatin1()));
+		colX = dynamic_cast<vtkDoubleArray*>(m_inputTable->GetColumnByName(setXField.toLatin1()));
+		colY = dynamic_cast<vtkDoubleArray*>(m_inputTable->GetColumnByName(setYField.toLatin1()));
+		colZ = dynamic_cast<vtkDoubleArray*>(m_inputTable->GetColumnByName(setZField.toLatin1()));
 	}
 
-	if (!updateTable())
-		return;
+	if (!colX || !colY || !colZ)
+		isPositionable = false;
 
-	if (!m_sceneNode || !m_entity)
-		return;
+	int nShapes = shapeTable->GetNumberOfRows();
 
-	QString setIdField = idFieldParameter->getCurrentValue();
-	QString setXField = xFieldParameter->getCurrentValue();
-	QString setYField = yFieldParameter->getCurrentValue();
-	QString setZField = zFieldParameter->getCurrentValue();
-
-	//Get columns specified from assignments
-	vtkIdTypeArray *colNodeId = dynamic_cast<vtkIdTypeArray*>(m_inputTable->GetColumnByName(setIdField.toLatin1()));
-	vtkDoubleArray *colX = dynamic_cast<vtkDoubleArray*>(m_inputTable->GetColumnByName(setXField.toLatin1()));
-	vtkDoubleArray *colY = dynamic_cast<vtkDoubleArray*>(m_inputTable->GetColumnByName(setYField.toLatin1()));
-	vtkDoubleArray *colZ = dynamic_cast<vtkDoubleArray*>(m_inputTable->GetColumnByName(setZField.toLatin1()));
-
-	destroyAllAttachedMovableObjects(m_sceneNode);
-	destroyAllChildren(m_sceneNode);
-
-	if (!colNodeId || !colX || !colY || !colZ)
-		return;
-
-	for (int i=0; i<m_inputTable->GetNumberOfRows(); i++)
+	for (vtkIdType id=0; id<nShapes; id++)
 	{
-		int colIDValue = colNodeId->GetValue(i);
-		Ogre::String nodeID(idPrefix + Ogre::StringConverter::toString(colIDValue));
+		Ogre::String nodeID(idPrefix + inputShapeMapParameter->getShapeName(id).toStdString() + ":" + Ogre::StringConverter::toString((int)id));
 
 		// create new scene node for each item
 		Ogre::SceneNode *sceneItem = sceneManager->createSceneNode(nodeID);
-
 		// create new entity for each item
-		Ogre::Entity *entityItem = m_entity->clone(nodeID);
-		
-		sceneItem->attachObject(entityItem);
+		Ogre::Entity *entityItem;
+		if (sceneManager->hasEntity(nodeID))
+			entityItem = sceneManager->getEntity(nodeID);
+		else
+			entityItem = sceneManager->createEntity(nodeID, inputShapeMapParameter->getShapeName(id).toStdString());
 
-		double x = colX->GetValue(i);
-		double y = colY->GetValue(i);
-		double z = colZ->GetValue(i);
-		sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
+		// add item node to the scene
+		sceneItem->attachObject(entityItem);
 		m_sceneNode->addChild(sceneItem);
-		
+
+		if (isPositionable)
+		{
+			// retrieve shape centroid and consider it as an offset to reposition the scene node properly
+			double * centroid = inputShapeMapParameter->getCentroid(id);
+
+			double x = colX->GetValue(id) - centroid[0];
+			double y = colY->GetValue(id) - centroid[1];
+			double z = colZ->GetValue(id) - centroid[2];
+			sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
+		}
 	}
 }
 
@@ -355,15 +356,8 @@ bool PositionMapperNode::createEntity(QString name, QString fileName)
     Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
     // create a new OGRE entity for each vertex
     m_entity = sceneManager->createEntity(name.toStdString(), fileName.toStdString());
-    if (m_entity) {
-        // set cumulative blend mode instead of Ogre::ANIMBLEND_AVERAGE which is default
-        if (m_entity->hasSkeleton()) {
-            Ogre::Skeleton *skeleton = m_entity->getSkeleton();
-            skeleton->setBlendMode(Ogre::ANIMBLEND_CUMULATIVE);
-        }
-    }
 
-    // create a container for the entity
+	// create a container for the entity
     m_entityContainer = new OgreContainer(m_entity);
     m_entity->setUserAny(Ogre::Any(m_entityContainer));
 

@@ -116,3 +116,18 @@ void ShapeMapParameter::setShapeType (const ShapeType  type)
 {
 	m_type = type;
 }
+
+
+//!
+//! Returns the centroid associated with this shape id.
+//!
+//! \return The centroid of the shape.
+//!
+double * ShapeMapParameter::getCentroid (const vtkIdType id) const
+{
+	double centroid[3];
+	centroid[0] = m_table->GetValueByName(id, "x_centroid").ToDouble();
+	centroid[1] = m_table->GetValueByName(id, "y_centroid").ToDouble();
+	centroid[2] = m_table->GetValueByName(id, "z_centroid").ToDouble();
+	return centroid;
+}

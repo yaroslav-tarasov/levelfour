@@ -31,6 +31,7 @@ Reference
 #include "EntityParameter.h"
 #include "ParameterGroup.h"
 #include "vtkUnsignedIntArray.h"
+#include "vtkStringArray.h"
 #include "OgreSceneManager.h"
 #include "OgreManager.h"
 
@@ -55,13 +56,16 @@ ShapeMapperNode::ShapeMapperNode ( const QString &name, ParameterGroup *paramete
 {
     // create the ShapeMap input parameter - multiplicity ONE 
 	inputShapeMapParameter = new ShapeMapParameter(m_inputShapeMapParameterName);
+	inputShapeMapParameter->setMultiplicity(1);
     inputShapeMapParameter->setPinType(Parameter::PT_Input);
     inputShapeMapParameter->setSelfEvaluating(true);
     parameterRoot->addParameter(inputShapeMapParameter);
 
 	// create the vtk table data input parameter 
 	inputVTKTableParameter = new VTKTableParameter(m_inputVTKTableName);
+	inputVTKTableParameter->setMultiplicity(1);
     inputVTKTableParameter->setPinType(Parameter::PT_Input);
+    inputVTKTableParameter->setSelfEvaluating(true);
     parameterRoot->addParameter(inputVTKTableParameter);
 
 	// create the geometry input parameter (shape mapper)
@@ -107,12 +111,8 @@ ShapeMapperNode::~ShapeMapperNode ()
 
 void ShapeMapperNode::processShapeMap()
 {
-	if (inputShapeMapParameter && inputShapeMapParameter->isDirty())
+	if (inputShapeMapParameter && inputShapeMapParameter->isConnected())
 	{
-		// load the source shape map parameter 
-		if (!inputShapeMapParameter->isConnected())
-			return;
-
 		// get the source parameter (output of source node) connected to the output parameter
 		ShapeMapParameter * sourceParameter = dynamic_cast<ShapeMapParameter*>(inputShapeMapParameter->getConnectedParameter());
 
@@ -127,35 +127,35 @@ void ShapeMapperNode::processShapeMap()
 	if (inputEntityParameter && inputVTKTableParameter && 
 		(inputEntityParameter->isDirty() || inputVTKTableParameter->isDirty()))
 	{
-		m_entity = inputEntityParameter->getEntity();
+		// load the source shape map parameter 
+		if (!inputEntityParameter->isConnected() || !inputVTKTableParameter->isConnected())
+			return;
 
-		Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
-		Ogre::String idPrefix = m_entity->getName() + QString(":").toStdString();
+		// get the source parameter (output of source node) connected to the output parameter
+		EntityParameter * sourceEntityParameter = dynamic_cast<EntityParameter*>(inputEntityParameter->getConnectedParameter());
 
-		// the mesh pointers array holding the pointers to each mesh
-		// this will be replaced by a mesh typed array, when it will be possible to do so with vtkTable,
-		// since for the moment only accepts vtkVariantArray as columns
-		vtkUnsignedIntArray * meshPts = vtkUnsignedIntArray::New();
-		meshPts->SetName("meshes");
+		m_entity = sourceEntityParameter->getEntity();
+		Ogre::String meshName = m_entity->getName();
+
+		// the mesh pointers array holding the names for each mesh
+		vtkStringArray * meshNames = vtkStringArray::New();
+		meshNames->SetName("mesh_names");
+
+		// get the source parameter (output of source node) connected to the inputVTKTableParameter
+		VTKTableParameter * sourceTableParameter = dynamic_cast<VTKTableParameter*>(inputVTKTableParameter->getConnectedParameter());
 
 		// vtkTable holding the shape IDs and their relative mesh pointer
-		vtkTable * table = inputVTKTableParameter->getVTKTable();
+		vtkTable * table = sourceTableParameter->getVTKTable();
 
 		if (table)
 		{
-			table->AddColumn(meshPts);
 			int rows = table->GetNumberOfRows();
+			// store the mesh name 
 			for (vtkIdType id = 0; id<rows; id++)
-			{
-				Ogre::String shapeID(idPrefix + Ogre::StringConverter::toString(id));
+				meshNames->InsertNextValue(meshName);
 
-				// create new entity for each item
-				Ogre::Entity *entityItem = m_entity->clone(shapeID);
-
-				// store the mesh pointer into the vtkUnsignedIntArray column (which holds mesh pointers)
-				unsigned int entityPtr = (unsigned int) & entityItem;
-				meshPts->InsertNextValue(entityPtr);
-			}
+			table->AddColumn(meshNames);
+			meshNames->Delete();
 		}
 
 		outputShapeMapParameter->setVTKTable(table);
