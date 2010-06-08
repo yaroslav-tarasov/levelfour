@@ -19,9 +19,11 @@ QUAD_REAL4 TexQuadPS(
 
 	QUAD_REAL4 Position	: POSITION,
     QUAD_REAL2 UV	: TEXCOORD0,
-    uniform sampler2D InputSampler : register(s0)
+	
+    uniform sampler2D SceneSampler : register(s0)
+	
 	) : COLOR
 {   
-    QUAD_REAL4 texCol = tex2D(InputSampler, UV);
+    QUAD_REAL4 texCol = tex2D(SceneSampler, UV);
     return texCol;
 }  

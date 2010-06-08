@@ -1,0 +1,156 @@
+//////////////////////////////////////////////////////
+/////////////////////////////////// vertex shader ////
+//////////////////////////////////////////////////////
+
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+////////////////////////////////////////////////////////////
+////////////////////////////////// vertex shaders //////////
+////////////////////////////////////////////////////////////
+
+void ScreenQuadVS2(
+
+	out QUAD_REAL4 Position	: POSITION,
+    out QUAD_REAL2 UV	: TEXCOORD0,
+
+    QUAD_REAL3 PositionIN : POSITION, 
+    QUAD_REAL3 TexCoord : TEXCOORD0,
+    uniform QUAD_REAL2 TexelOffsets
+) {
+    Position = QUAD_REAL4(PositionIN, 1);
+    UV = QUAD_REAL2(TexCoord.xy /* TexelOffsets ignored for OpenGL */); 
+}
+
+#if 0
+void MakeDepthMapVS(
+
+	float3 Position	: POSITION,
+    float4 UV		: TEXCOORD0,
+    float4 Tangent	: TANGENT0,
+    float4 Binormal	: BINORMAL0,
+    float4 Normal	: NORMAL,
+    
+	out float4 HPosition    : POSITION,
+    out float4 diffCol    : COLOR0,
+	
+	uniform float4x4 WorldITXf,
+    uniform float4x4 WvpXf
+) {
+    float4 Po = float4(Position.xyz,1.0);
+    float3 Nn = mul(WorldITXf,Normal).xyz;
+    Nn = normalize(Nn);
+    HPosition = mul(WvpXf,Po);
+    diffCol.xyz = float3(0.5,0.5,0.5) + (0.5 * Nn);
+    diffCol.w = 1.0;
+}
+#endif /* zero */
+
+void MakeGrayMapVS(
+
+	float3 Position	: POSITION,
+    float4 UV		: TEXCOORD0,
+    float4 Tangent	: TANGENT0,
+    float4 Binormal	: BINORMAL0,
+    float4 Normal	: NORMAL,
+    
+	out float4 HPosition    : POSITION,
+    out float4 diffCol    : COLOR0,
+    
+	uniform float4x4 WvpXf,
+    uniform float Near,
+    uniform float Far
+) {
+    float4 Po = float4(Position.xyz,1.0);
+    float4 Ph = mul(WvpXf,Po);
+    HPosition = Ph;
+    // these three could be "static"
+    float TrueFar = max(Near,Far);
+    float TrueNear = min(Near,Far);
+    float DepthRange = max((TrueFar-TrueNear),0.01);
+    float g = (Ph.z-TrueNear)/DepthRange;
+    diffCol = float4(g,g,g,1.0);
+
+}
+
+////////////// blur vertex shaders //
+
+void VS_Quad_Horizontal_9tap(
+
+			out float4 Position   : POSITION,
+			out float4 Diffuse    : COLOR0,
+			out float2 TexCoord0   : TEXCOORD0,
+			out float2 TexCoord1   : TEXCOORD1,
+			out float2 TexCoord2   : TEXCOORD2,
+			out float2 TexCoord3   : TEXCOORD3,
+			out float2 TexCoord4   : TEXCOORD4,
+			out float2 TexCoord5   : TEXCOORD5,
+			out float2 TexCoord6   : TEXCOORD6,
+			out float2 TexCoord7   : TEXCOORD7,
+			out float2 TexCoord8   : COLOR1,
+
+			float3 PositionIN : POSITION, 
+			float3 TexCoord : TEXCOORD0,
+			uniform float BlurWid
+) {
+    Position = float4(PositionIN, 1);
+    float TexelIncrement = BlurWid/QuadScreenSize.x;
+#ifdef QUAD_RESCALE
+    float2 nuv = QUAD_REAL2(TexScale.xx * TexCoord.xy);
+#else /* ! QUAD_RESCALE */
+    float2 nuv = TexCoord.xy;
+#endif /* ! QUAD_RESCALE */
+    float2 Coord = nuv;
+    TexCoord0 = float2(nuv.x + TexelIncrement, nuv.y);
+    TexCoord1 = float2(nuv.x + TexelIncrement * 2, nuv.y);
+    TexCoord2 = float2(nuv.x + TexelIncrement * 3, nuv.y);
+    TexCoord3 = float2(nuv.x + TexelIncrement * 4, nuv.y);
+    TexCoord4 = nuv;
+    TexCoord5 = float2(nuv.x - TexelIncrement, nuv.y);
+    TexCoord6 = float2(nuv.x - TexelIncrement * 2, nuv.y);
+    TexCoord7 = float2(nuv.x - TexelIncrement * 3, nuv.y);
+    TexCoord8 = float2(nuv.x - TexelIncrement * 4, nuv.y);
+}
+
+void VS_Quad_Vertical_9tap(
+			
+			out float4 Position   : POSITION,
+			out float4 Diffuse    : COLOR0,
+			out float2 TexCoord0   : TEXCOORD0,
+			out float2 TexCoord1   : TEXCOORD1,
+			out float2 TexCoord2   : TEXCOORD2,
+			out float2 TexCoord3   : TEXCOORD3,
+			out float2 TexCoord4   : TEXCOORD4,
+			out float2 TexCoord5   : TEXCOORD5,
+			out float2 TexCoord6   : TEXCOORD6,
+			out float2 TexCoord7   : TEXCOORD7,
+			out float2 TexCoord8   : COLOR1,
+
+			float3 PositionIN : POSITION, 
+			float3 TexCoord : TEXCOORD0,
+			uniform float BlurWid
+) {
+    Position = float4(PositionIN, 1);
+    float TexelIncrement = BlurWid/QuadScreenSize.y;
+#ifdef QUAD_RESCALE
+    float2 nuv = QUAD_REAL2(TexScale.xx * TexCoord.xy);
+#else /* ! QUAD_RESCALE */
+    float2 nuv = TexCoord.xy;
+#endif /* ! QUAD_RESCALE */
+    TexCoord0 = float2(nuv.x, nuv.y + TexelIncrement);
+    TexCoord1 = float2(nuv.x, nuv.y + TexelIncrement * 2);
+    TexCoord2 = float2(nuv.x, nuv.y + TexelIncrement * 3);
+    TexCoord3 = float2(nuv.x, nuv.y + TexelIncrement * 4);
+    TexCoord4 = nuv;
+    TexCoord5 = float2(nuv.x, nuv.y - TexelIncrement);
+    TexCoord6 = float2(nuv.x, nuv.y - TexelIncrement * 2);
+    TexCoord7 = float2(nuv.x, nuv.y - TexelIncrement * 3);
+    TexCoord8 = float2(nuv.x, nuv.y - TexelIncrement * 4);
+}

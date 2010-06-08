@@ -1,0 +1,71 @@
+/*
+
+% Renders the scene to an offscreen texture then re-renders it to
+% the screen, with pulsing, changing, on-screen texture
+% coordinates.  Clicking the mouse in the screen will also change
+% the effect slightly.
+
+*/
+
+vertex_program Pulsing_vs cg
+{
+	source vs_Pulsing.cg
+	profiles arbvp1
+    entry_point AnnoyVS
+	
+	default_params
+    {
+		param_named_auto 	Timer 		time_0_1 1
+		param_named 		Speed 		float 	0.25
+		param_named 		Speed2 		float 	2.2
+		param_named 		Pulse 		float 	0.65
+		param_named 		PulseE 		float 	1.5
+		param_named 		CenterX 	float 	0.5
+		param_named 		CenterY 	float 	0.5
+		// param_named_auto	MouseL	 	scene_depth_range
+        
+    }
+}
+
+
+fragment_program Pulsing_ps cg
+{
+    source ps_Pulsing.cg
+    entry_point TexQuadPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named InputSampler 	int 	0		
+	}
+}
+
+material Pulsing
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Pulsing_vs
+			{
+			
+			}
+			
+			fragment_program_ref Pulsing_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }			
+		}
+	}
+}
+

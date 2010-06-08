@@ -1,0 +1,137 @@
+//////////////////////////////////////////////////////
+/////////////////////////////////// pixel shader /////
+//////////////////////////////////////////////////////
+
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+//////////////////////////////////////////////////////
+////////////////////////////////// pixel shaders /////
+//////////////////////////////////////////////////////
+
+//////////////////////////////////////
+
+// For two-pass blur, we have chosen to do  the horizontal blur FIRST. The
+//	vertical pass includes a post-blur scale factor.
+
+// Relative filter weights indexed by distance from "home" texel
+//    This set for 9-texel sampling
+#define WT9_0 1.0
+#define WT9_1 0.9
+#define WT9_2 0.55
+#define WT9_3 0.18
+#define WT9_4 0.1
+
+// Alternate pattern -- try your own!
+// #define WT9_0 0.1
+// #define WT9_1 0.2
+// #define WT9_2 3.0
+// #define WT9_3 1.0
+// #define WT9_4 0.4
+
+#define WT9_NORMALIZE (WT9_0+2.0*(WT9_1+WT9_2+WT9_3+WT9_4))
+
+float4 PS_Blur_Horizontal_9tap(
+
+		float4 Position   : POSITION,
+		float4 Diffuse    : COLOR0,
+		float2 TexCoord0   : TEXCOORD0,
+		float2 TexCoord1   : TEXCOORD1,
+		float2 TexCoord2   : TEXCOORD2,
+		float2 TexCoord3   : TEXCOORD3,
+		float2 TexCoord4   : TEXCOORD4,
+		float2 TexCoord5   : TEXCOORD5,
+		float2 TexCoord6   : TEXCOORD6,
+		float2 TexCoord7   : TEXCOORD7,
+		float2 TexCoord8   : COLOR1,
+		
+		uniform sampler2D NormalSamp : register(s0)
+) : COLOR
+{   
+    float4 OutCol = tex2D(NormalSamp, TexCoord0) * (WT9_1/WT9_NORMALIZE);
+    OutCol += tex2D(NormalSamp, TexCoord1) * (WT9_2/WT9_NORMALIZE);
+    OutCol += tex2D(NormalSamp, TexCoord2) * (WT9_3/WT9_NORMALIZE);
+    OutCol += tex2D(NormalSamp, TexCoord3) * (WT9_4/WT9_NORMALIZE);
+    OutCol += tex2D(NormalSamp, TexCoord4) * (WT9_0/WT9_NORMALIZE);
+    OutCol += tex2D(NormalSamp, TexCoord5) * (WT9_1/WT9_NORMALIZE);
+    OutCol += tex2D(NormalSamp, TexCoord6) * (WT9_2/WT9_NORMALIZE);
+    OutCol += tex2D(NormalSamp, TexCoord7) * (WT9_3/WT9_NORMALIZE);
+    OutCol += tex2D(NormalSamp, TexCoord8) * (WT9_4/WT9_NORMALIZE);
+    return OutCol;
+} 
+
+// now that first blur is done, we can use x instead of w
+float4 PS_Blur_Vertical_9tap(
+
+		float4 Position   : POSITION,
+		float4 Diffuse    : COLOR0,
+		float2 TexCoord0   : TEXCOORD0,
+		float2 TexCoord1   : TEXCOORD1,
+		float2 TexCoord2   : TEXCOORD2,
+		float2 TexCoord3   : TEXCOORD3,
+		float2 TexCoord4   : TEXCOORD4,
+		float2 TexCoord5   : TEXCOORD5,
+		float2 TexCoord6   : TEXCOORD6,
+		float2 TexCoord7   : TEXCOORD7,
+		float2 TexCoord8   : COLOR1,
+	
+		uniform sampler2D SoftSamp1 : register(s0)
+) : COLOR
+{   
+    float4 OutCol = tex2D(SoftSamp1, TexCoord0) * (WT9_1/WT9_NORMALIZE);
+    OutCol += tex2D(SoftSamp1, TexCoord1) * (WT9_2/WT9_NORMALIZE);
+    OutCol += tex2D(SoftSamp1, TexCoord2) * (WT9_3/WT9_NORMALIZE);
+    OutCol += tex2D(SoftSamp1, TexCoord3) * (WT9_4/WT9_NORMALIZE);
+    OutCol += tex2D(SoftSamp1, TexCoord4) * (WT9_0/WT9_NORMALIZE);
+    OutCol += tex2D(SoftSamp1, TexCoord5) * (WT9_1/WT9_NORMALIZE);
+    OutCol += tex2D(SoftSamp1, TexCoord6) * (WT9_2/WT9_NORMALIZE);
+    OutCol += tex2D(SoftSamp1, TexCoord7) * (WT9_3/WT9_NORMALIZE);
+    OutCol += tex2D(SoftSamp1, TexCoord8) * (WT9_4/WT9_NORMALIZE);
+    return OutCol;
+} 
+
+/////////////////////////////////////////////////
+
+float4 maskDiffPS(
+
+	QUAD_REAL4 Position	: POSITION,
+    QUAD_REAL2 UV	: TEXCOORD0,
+	
+	uniform sampler2D NormalSamp : register(s0),
+	uniform sampler2D SoftSamp2 : register(s1)
+	
+) : COLOR
+{   
+    float s = tex2D(SoftSamp2, UV).x;
+    float n = tex2D(NormalSamp, UV).x;
+    float d  = (s - n);
+    return float4((0.5+d),d,-d,1);
+}
+
+////////////////////////// read-in overlay /////////
+
+float4 drawCombinedPS(
+
+		QUAD_REAL4 Position	: POSITION,
+		QUAD_REAL2 UV	: TEXCOORD0,
+	    
+		uniform float MaskStr,
+	    uniform float EdgeStr,
+	    uniform sampler2D MaskSamp : register(s0),
+	    uniform sampler2D ColorSamp : register(s1)
+) : COLOR
+{   
+    float4 m = tex2D(MaskSamp, UV);
+    float4 c = tex2D(ColorSamp, UV);
+    float bgDark = (1.0 - (MaskStr*c.w*m.z)); // m.y
+    float fgDark = (1.0 - (EdgeStr*c.w*m.y)); // m.y
+    return float4(fgDark*bgDark*c.xyz,c.w);
+}
+ 

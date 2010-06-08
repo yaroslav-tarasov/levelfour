@@ -1,0 +1,73 @@
+/*
+
+% An imaging effect that looked like viewing through ice-frosted glass.
+
+*/
+
+vertex_program Frost_vs cg
+{
+	source vs_Frost.cg
+	profiles arbvp1
+    entry_point ScreenQuadVS2
+	
+	default_params
+    {
+        
+    }
+}
+
+
+fragment_program Frost_ps cg
+{
+    source ps_Frost.cg
+    entry_point frostedPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+		param_named Noise2DSamp 	int 	1
+		param_named PixelX 			float 	1.5
+		param_named PixelY 			float 	1.5
+		param_named Freq 			float 	0.115
+		
+	}
+}
+
+material Frost
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref Frost_vs
+			{
+			
+			}
+			
+			fragment_program_ref Frost_ps
+			{
+			
+			}	
+			
+			texture_unit	// SceneSampler
+			{
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			}	
+
+			texture_unit	// Noise2DSamp
+			{
+                 texture Noise2D_std.dds 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			}	
+		}
+	}
+}
+

@@ -1,0 +1,41 @@
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4
+
+QUAD_REAL2 QuadScreenSize;
+
+void edgeVS(
+
+		out QUAD_REAL4 Position	: POSITION,
+		out QUAD_REAL2 UV00	: TEXCOORD0,
+		out QUAD_REAL2 UV01	: TEXCOORD1,
+		out QUAD_REAL2 UV02	: TEXCOORD2,
+		out QUAD_REAL2 UV10	: TEXCOORD3,
+		out QUAD_REAL2 UV12	: TEXCOORD4,
+		out QUAD_REAL2 UV20	: TEXCOORD5,
+		out QUAD_REAL2 UV21	: TEXCOORD6,
+		out QUAD_REAL2 UV22	: TEXCOORD7,
+
+		QUAD_REAL3 PositionIN : POSITION, 
+		QUAD_REAL3 TexCoord : TEXCOORD0,
+		uniform float NPixels
+) {
+    Position = QUAD_REAL4(PositionIN.xyz, 1);
+    QUAD_REAL2 ctr = TexCoord.xy;
+    QUAD_REAL2 ox = QUAD_REAL2(NPixels/QuadScreenSize.x,0.0);
+    QUAD_REAL2 oy = QUAD_REAL2(0.0,NPixels/QuadScreenSize.y);
+    UV00 = ctr - ox - oy;
+    UV01 = ctr - oy;
+    UV02 = ctr + ox - oy;
+    UV10 = ctr - ox;
+    UV12 = ctr + ox;
+    UV20 = ctr - ox + oy;
+    UV21 = ctr + oy;
+    UV22 = ctr + ox + oy;
+}

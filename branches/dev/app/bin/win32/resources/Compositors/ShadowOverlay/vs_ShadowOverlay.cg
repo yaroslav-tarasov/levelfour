@@ -1,0 +1,86 @@
+//////////////////////////////////////////////////////
+/////////////////////////////////// vertex shader ////
+//////////////////////////////////////////////////////
+
+#define QUAD_FLOAT
+#define QUAD_REAL float
+#define QUAD_REAL2 float2
+#define QUAD_REAL3 float3
+#define QUAD_REAL4 float4
+#define QUAD_REAL3x3 float3x3
+#define QUAD_REAL4x3 float4x3
+#define QUAD_REAL3x4 float3x4
+#define QUAD_REAL4x4 float4x4 
+
+//////////////////////////////////////////////////////
+//// VM FUNCTIONS ////////////////////////////////////
+//////////////////////////////////////////////////////
+
+float4x4 make_bias_mat(float BiasVal)
+{
+    float4x4 result = float4x4(
+	    0.5f,	0.0f,	0.0f,	0.5,
+	    0.0f,	0.5f,	0.0f,	0.5,
+	    0.0f,	0.0f,	0.5f,	0.5-BiasVal,
+	    0.0f,	0.0f,	0.0f,	1.0f );
+    return result;
+}
+
+void shadowGenVS(
+
+		float3 Position	: POSITION,
+		float4 UV		: TEXCOORD0,	// provided for potential use
+		float4 Normal	: NORMAL,	// ignored if BLACK_SHADOW_PASS
+		
+		out float4 HPosition	: POSITION,
+		out float4 diff : COLOR0,
+		
+		uniform float4x4 WorldXform,
+		uniform float4x4 WorldITXform,
+		uniform float4x4 ShadowVPXform)
+{
+    float4 Po = float4(Position.xyz,(float)1.0);
+    float4 Pw = mul(WorldXform,Po);
+    float4 Pl = mul(ShadowVPXform,Pw);  // "P" in light coords
+    HPosition = Pl; // screen clipspace coords for shadow pass
+#ifndef BLACK_SHADOW_PASS
+#ifdef SHADOW_COLORS
+    float4 N = mul(WorldITXform,Normal); // world coords
+    N = normalize(N);
+    diff = 0.5 + 0.5 * N;
+#else /* ! SHADOW_COLORS -- deliver depth info instead */
+    diff = float4(Pl.zzz,1);
+#endif /* ! SHADOW_COLORS */
+#else /* BLACK_SHADOW_PASS */
+    diff = float4(0,0,0,1);
+#endif /* BLACK_SHADOW_PASS */
+}
+
+void applyShadowVS(
+
+		float3 Position	: POSITION,
+		float4 UV		: TEXCOORD0,	// provided for potential use
+		float4 Normal	: NORMAL,	// ignored if BLACK_SHADOW_PASS
+		
+		out float4 HPosition	: POSITION,
+		out float4 BgUV		: TEXCOORD0,
+		out float4 LProj	: TEXCOORD1,	// light-projection space
+		
+		uniform float4x4 WorldXform,
+		uniform float4x4 WorldITXform,
+		uniform float4x4 WVPXform,
+		uniform float4x4 ShadowVPXform,
+		uniform float4x4 ViewIXform,
+		uniform float Bias)
+{
+    float4 Po = float4(Position.xyz,(float)1.0);	// "P" in object coords
+    float4 Pw = mul(WorldXform,Po);		// "P" in world coordinates
+    float4 Pl = mul(ShadowVPXform,Pw);  // "P" in light coords
+    //OUT.LProj = Pl;			// ...for pixel-shader shadow calcs
+    float4x4 BiasXform = make_bias_mat(Bias);
+    LProj = mul(BiasXform,Pl);		// bias to make texcoord
+    //
+    float4 hpos = mul(WVPXform,Po);	// screen clipspace coords
+    HPosition = hpos;
+    BgUV = hpos;
+}

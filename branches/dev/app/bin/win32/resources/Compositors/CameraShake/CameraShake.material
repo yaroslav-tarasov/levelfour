@@ -7,15 +7,15 @@
 vertex_program CameraShake_vs cg
 {
 	source vs_CameraShake.cg
-	profiles arbvp1 vp40
+	profiles arbvp1
     entry_point ShakerVS
 	default_params
     {
-        param_named_auto Time time_0_1 1
-		param_named Speed 		float 	21.0
-		param_named TimeScale 	float2 	1 0.2
-		param_named Shake 		float 	0.25
-		param_named Sharpness 	float 	2.2
+        param_named_auto 	Time 		time_0_1 1
+		param_named 		Speed 		float 	21.0
+		param_named 		TimeScale 	float2 	1 0.2
+		param_named 		Shake 		float 	0.25
+		param_named 		Sharpness 	float 	2.2
     }
 }
 
@@ -24,11 +24,11 @@ fragment_program CameraShake_ps cg
 {
     source ps_CameraShake.cg
     entry_point TexQuadPS
-    profiles arbfp1 fp40
+    profiles arbfp1
 
 	default_params
 	{
-		param_named InputSampler 	int 	0
+		param_named SceneSampler 	int 	0
 	}
 }
 
@@ -51,7 +51,7 @@ material CameraShake
 			
 			 texture_unit	// (scene)
 			 {
-                 // texture InputSampler 2d
+                 // texture SceneSampler 2d
 				 tex_coord_set 0
 				 tex_address_mode clamp
 				 filtering linear linear linear
