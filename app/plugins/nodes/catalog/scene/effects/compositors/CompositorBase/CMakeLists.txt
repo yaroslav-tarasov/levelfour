@@ -23,6 +23,7 @@ set( CompositorBase_src ${CompositorBase_src}
 			)
 
 set( CompositorBase_res ${CompositorBase_res}	
+			ASCII.xml
 			BadPrinting.xml
 			BleachBypass.xml
 			Bloom.xml
@@ -33,8 +34,12 @@ set( CompositorBase_res ${CompositorBase_res}
 			ColorMixerMono.xml
 			ColorSpin.xml
 			Corona.xml
+			DeepMask.xml
 			DropShadow.xml
 			EdgeDetect.xml
+			EdgeDetect3Color.xml
+			Frost.xml
+			Glass.xml
 			Glow.xml
 			GodRays.xml
 			HalfToneDots.xml
@@ -44,6 +49,8 @@ set( CompositorBase_res ${CompositorBase_res}
 			Negative.xml
 			NegativeOffset.xml
 			NightVision.xml
+			OldMovie.xml
+			OldTV.xml
 			Posterize.xml
 			RadialBlur.xml
 			ScratchedFilm.xml

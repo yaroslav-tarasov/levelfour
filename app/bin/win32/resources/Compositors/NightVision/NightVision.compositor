@@ -1,5 +1,5 @@
 //Night Vision effect
-compositor "Night Vision"
+compositor NightVisionCompositor
 {
     technique
     {

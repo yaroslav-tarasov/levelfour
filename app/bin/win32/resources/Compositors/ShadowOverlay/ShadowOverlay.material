@@ -1,0 +1,102 @@
+/*
+
+% This is much like a Photoshop(tm) "color mixer" layer -- the
+% intensities of each input red, green, and blue channels are
+% graded against the colors indicated in the paramter list, then
+% remixed.
+
+*/
+
+vertex_program ShadowOverlay_MakeShadow_vs cg
+{
+	source vs_ShadowOverlay.cg
+	profiles arbvp1
+    entry_point shadowGenVS
+	
+	default_params
+    {
+		param_named_auto	WorldXform		world_matrix
+		param_named_auto	WorldITXform	inverse_transpose_world_matrix
+		param_named_auto	ShadowVPXform	light_position 0
+        
+    }
+}
+
+vertex_program ShadowOverlay_UseShadow_vs cg
+{
+	source vs_ShadowOverlay.cg
+	profiles arbvp1
+    entry_point applyShadowVS
+	
+	default_params
+    {
+        param_named_auto	WorldXform		world_matrix
+		param_named_auto	WorldITXform	inverse_transpose_world_matrix
+		param_named_auto	WVPXform		worldviewproj_matrix 
+		param_named_auto	ShadowVPXform	light_position 0
+		param_named_auto	ViewIXform		inverse_view_matrix
+		param_named 		Bias 			float 	0.01
+    }
+}
+
+
+fragment_program ShadowOverlay_UseShadow_ps cg
+{
+    source ps_ShadowOverlay.cg
+    entry_point applyShadowPS
+    profiles arbfp1
+
+	default_params
+	{
+		param_named SceneSampler 	int 	0
+		param_named SDensity 		float 	1.0
+		
+	}
+}
+
+material ShadowOverlay_MakeShadow
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref ShadowOverlay_MakeShadow_vs
+			{
+			
+			}
+									
+		}
+	}
+}
+
+material ShadowOverlay_UseShadow
+{
+	technique
+	{
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref ShadowOverlay_UseShadow_vs
+			{
+			
+			}
+			
+			fragment_program_ref ShadowOverlay_UseShadow_ps
+			{
+			
+			}	
+			
+			 texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }			
+		}
+	}
+}
+

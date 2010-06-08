@@ -20,8 +20,9 @@ fragment_program NightVision_ps cg
 	{
 		param_named RT 				int 	0
 		param_named noiseVol 		int 	1
-		param_named lum 			float4 0.30 0.59 0.11 0.0
-		param_named_auto 			time time_0_1 1
+		param_named lum 			float4  0.30 0.59 0.11 0.0
+		param_named_auto 			time 	time_0_1 1
+		
 	}
 }
 
@@ -45,7 +46,7 @@ material NightVision
 			
 			}
 
-			texture_unit RT
+			texture_unit
 			{
 				// texture RT 2d
                 tex_coord_set 0
@@ -53,11 +54,12 @@ material NightVision
 				filtering trilinear
 			}
 			
-			texture_unit noise
+			texture_unit
 			{
 				texture Random3D.dds 3d
-				tex_address_mode wrap
 				tex_coord_set 1
+				tex_address_mode wrap
+				
 			}
 		}
 	}

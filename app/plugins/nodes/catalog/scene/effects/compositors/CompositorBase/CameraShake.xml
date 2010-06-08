@@ -19,9 +19,9 @@
       <parameter name="Input Map Scene" type="Image" pin="in" selfEvaluating="true"/>
     </parameters>
     <parameters name="Shader Parameters Pass 0">
-      <parameter name="Speed" type="Float" inputMethod="SliderPlusSpinBox" minValue="-1.0" maxValue="100.0" defaultValue="21.0" unit=""/>
-    <parameter name="Shake" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.25" unit=""/>
-    <parameter name="Sharpness" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.1" maxValue="3.0" defaultValue="2.2" unit=""/>
+      <parameter name="Speed" type="Float" inputMethod="SliderPlusSpinBox" minValue="-1.0" maxValue="100.0" defaultValue="21.0" stepSize="1.0" unit=""/>
+    <parameter name="Shake" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.0" maxValue="1.0" defaultValue="0.25" stepSize="0.01" unit=""/>
+    <parameter name="Sharpness" type="Float" inputMethod="SliderPlusSpinBox" minValue="0.1" maxValue="3.0" defaultValue="2.2" stepSize="0.01" unit=""/>
     </parameters>
   </parameters>
 </nodetype>

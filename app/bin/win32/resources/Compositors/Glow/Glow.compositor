@@ -9,17 +9,10 @@ compositor GlowCompositor
     technique
     {
 	
-		texture ScnMap target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
 		texture GlowMap1 target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
 		texture GlowMap2 target_width_scaled 0.125 target_height_scaled 0.125 PF_A8R8G8B8
 		
-		// Initial Pass
-		target ScnMap
-		{
-			input previous
-		}
-		
-        target GlowMap1
+		target GlowMap1
         {
             input none
 
@@ -27,7 +20,6 @@ compositor GlowCompositor
             {
 				identifier 0000
 				material  Glow_BlurGlowBuffer_Horz
-				input 0 ScnMap
             }
         }
 		

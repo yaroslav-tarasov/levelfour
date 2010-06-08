@@ -8,7 +8,7 @@
 vertex_program RadialBlur_vs cg
 {
 	source vs_RadialBlur.cg
-	profiles vp40
+	profiles arbvp1
     entry_point RadialBlurVS
 	
 	default_params
@@ -23,7 +23,7 @@ fragment_program RadialBlur_ps cg
 {
     source ps_RadialBlur.cg
     entry_point RadialBlurPS
-    profiles fp40
+    profiles arbfp1
 
 	default_params
 	{

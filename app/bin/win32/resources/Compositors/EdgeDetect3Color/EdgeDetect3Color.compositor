@@ -1,0 +1,17 @@
+compositor EdgeDetect3ColorCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  EdgeDetect3Color
+            }
+        }
+    }
+
+}

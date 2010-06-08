@@ -1,0 +1,22 @@
+/*
+
+% An imaging effect that looked like viewing through ice-frosted glass.
+
+*/
+
+compositor FrostCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+				material  Frost
+            }
+        }
+    }
+}

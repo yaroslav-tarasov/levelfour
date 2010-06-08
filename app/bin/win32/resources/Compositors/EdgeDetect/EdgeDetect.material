@@ -49,7 +49,7 @@ material EdgeDetect
 			
 			 texture_unit	// (scene)
 			 {
-				texture SceneSampler 2d
+				// texture SceneSampler 2d
                 tex_coord_set 0
 				tex_address_mode clamp
 				filtering none

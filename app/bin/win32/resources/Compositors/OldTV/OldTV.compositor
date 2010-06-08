@@ -1,0 +1,18 @@
+
+compositor OldTVCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+				identifier 0000
+                material OldTV
+            }
+        }
+    }
+}
+
