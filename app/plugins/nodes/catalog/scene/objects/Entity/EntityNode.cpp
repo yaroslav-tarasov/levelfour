@@ -186,42 +186,8 @@ bool EntityNode::createEntity(QString name, QString fileName)
     // destroy the entity through its scene manager
     Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
     // create a new OGRE entity for each vertex
-    m_entity = sceneManager->createEntity(name.toStdString(), fileName.toStdString());
+	m_entity = sceneManager->createEntity(fileName.toStdString(), fileName.toStdString());
 
-
-	if (m_entity) {
-        // set cumulative blend mode instead of Ogre::ANIMBLEND_AVERAGE which is default
-        if (m_entity->hasSkeleton()) {
-            Ogre::Skeleton *skeleton = m_entity->getSkeleton();
-            skeleton->setBlendMode(Ogre::ANIMBLEND_CUMULATIVE);
-        }
-    }
-
-/*	Ogre::ManualObject * manual = sceneManager->createManualObject(name.toStdString());
-	manual->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
-    manual->position(-1.0, -1.0, 0.0);
-    manual->position( 1.0, -1.0, 0.0);
-    manual->position( 1.0,  1.0, 0.0);
-    manual->position(-1.0,  1.0, 0.0);
-    manual->position(-1.0, -1.0, 1.0);
-    manual->position( 1.0, -1.0, 1.0);
-    manual->position( 1.0,  1.0, 1.0);
-    manual->position(-1.0,  1.0, 1.0);
-    manual->index(0);
-    manual->index(1);
-    manual->index(2);
-    manual->index(3);
-    manual->index(0);
-    manual->index(4);
-    manual->index(5);
-    manual->index(6);
-    manual->index(7);
-    manual->index(0);
-
-    manual->end();
-	manual->convertToMesh(name.toStdString());
-    m_entity = sceneManager->createEntity(name.toStdString(), name.toStdString());
-*/
 	// create a container for the entity
     m_entityContainer = new OgreContainer(m_entity);
     m_entity->setUserAny(Ogre::Any(m_entityContainer));
