@@ -1,0 +1,64 @@
+compositor SSAO
+{
+    technique
+    {
+		texture rt_ssaoscreen target_width target_height  PF_R8G8B8A8
+		texture rt_ssao_ao target_width target_height  PF_R8G8B8A8
+		texture rt_ssao_ao_blur1 target_width target_height  PF_R8G8B8A8
+		texture rt_ssao_ao_blur0 target_width target_height  PF_R8G8B8A8
+		texture rt_ssaodepth target_width target_height  PF_FLOAT32_R
+		texture rt_toonnormals target_width target_height  PF_R8G8B8A8
+
+        target rt_ssaoscreen 
+        {
+       		input previous
+        }
+
+        target rt_ssaodepth 
+        {
+			input none	
+			material_scheme LinearDepth
+			pass clear
+			{
+			}
+            		pass render_scene
+			{
+			}
+
+        }
+        target rt_toonnormals 
+        {
+			input none	
+			material_scheme Normals
+			pass clear
+			{
+			}
+            		pass render_scene
+			{
+			}
+        }
+
+	target rt_ssao_ao
+        {
+            input none
+            pass render_quad
+            {
+                material SSAO_mult
+				input 0 rt_ssaodepth
+				input 1 rt_ssaoscreen 
+				input 2 rt_toonnormals 
+            }
+        }
+
+	target_output
+        {
+            input none
+            pass render_quad
+            {
+                material ssao_present
+				input 0 rt_ssaoscreen 
+                input 1 rt_ssao_ao
+			}
+        }
+    }
+}
