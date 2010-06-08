@@ -43,8 +43,6 @@ EntityNode::EntityNode ( const QString &name, ParameterGroup *parameterRoot ) :
 	// set affections and functions
     addAffection("Entity File", m_outputGeometryParameterName);
     setChangeFunction("Entity File", SLOT(geometryFileChanged()));
-    setCommandFunction("Entity File", SLOT(geometryFileChanged()));
-    connect(this, SIGNAL(frameChanged(int)), SLOT(updateAll()));
 
 	INC_INSTANCE_COUNTER
 }
