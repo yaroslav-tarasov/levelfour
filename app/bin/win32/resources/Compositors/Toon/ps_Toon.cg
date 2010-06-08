@@ -1,0 +1,138 @@
+sampler2D DepthMap:register(s0);
+sampler2D Screen:register(s1);
+sampler2D Normals:register(s2);
+float near_clip_distance;
+float far_clip_distance;
+float3 camera_position;
+float4x4 projection_matrix;
+float4x4 inverse_projection_matrix;
+float4x4 worldview_matrix;
+float4 viewport_size;
+float4 mult(float2 intex :TEXCOORD0, float3 eyeray:TEXCOORD1):COLOR0
+{
+float3 normals = tex2D(Normals,intex);
+normals -= float3(.5,.5,.5);
+normals *= 2;
+normals = normalize(normals);
+float linewidth = 2;
+float2 samples[8] = { 
+float2(-1 * linewidth/viewport_size.x ,0),
+float2(1* linewidth/viewport_size.x,0),
+float2(-1* linewidth/viewport_size.x,1* linewidth/viewport_size.y),
+float2(0,1* linewidth/viewport_size.y),
+float2(1* linewidth/viewport_size.x,1* linewidth/viewport_size.y),
+float2(-1* linewidth/viewport_size.x,-1* linewidth/viewport_size.y),
+float2(0,-1* linewidth/viewport_size.y),
+float2(1* linewidth/viewport_size.x,-1* linewidth/viewport_size.y) };
+
+
+
+	float norm = tex2D(Normals,intex).r;
+	float edge = 0;
+	for (int i = 0; i< 8; i++)
+	{
+	      edge += tex2D(Normals,intex + samples[i]).r;
+	}
+	
+
+	edge /= 8;
+
+	float depth = tex2D(DepthMap,intex).r;
+	float edge2 = 0;
+	for (int i = 0; i< 8; i++)
+	{
+	      edge2 += tex2D(DepthMap,intex + samples[i]).r;
+	}
+	
+
+	edge2 /= 8;
+
+float4 color = tex2D(Screen,intex);
+
+if(dot(normals,float3(0,.7,.7)) < .5)
+	color *=.5;
+
+	return color - ((norm > edge + .02)) - ((depth > edge2 + .0001));
+}
+
+
+
+float4x4 worldviewproj_matrix : register(c0);
+float4x4 world_matrix;
+
+
+float4 toon_ps_depth(float depth:TEXCOORD0, float3 innorm :TEXCOORD1):COLOR0
+{
+		
+		float temp = depth;
+		float4 color;
+		color.r = temp;
+		color.g = innorm.x;
+		color.b = innorm.y;
+		color.a = innorm.z;
+		return color;
+}
+float4 toon_ps_normal(float depth:TEXCOORD0, float3 innorm :TEXCOORD1):COLOR0
+{
+		innorm = normalize(innorm);
+		float temp = depth;
+		float4 color;
+		innorm += float3(1,1,1);
+		innorm *= .5;
+		
+		color.r = innorm.x;
+		color.g = innorm.y;
+		color.b = innorm.z;
+		color.a = 1;
+		return color;
+}
+
+struct VS_OUTPUT_DEPTH
+{
+	float4 pos : POSITION;
+	float depth : TEXCOORD0;
+        float3 normal : TEXCOORD1;
+};
+
+VS_OUTPUT_DEPTH toon_vs_depth(float4 inpos:POSITION, float3 innorm : NORMAL, float2 intex: TEXCOORD0)
+{
+
+	VS_OUTPUT_DEPTH Out;
+	Out.pos = mul(worldviewproj_matrix, inpos);
+
+
+	float temp = (Out.pos.z / Out.pos.w);
+Out.depth = temp;
+ Out.normal = mul(worldview_matrix, innorm);
+	return Out;
+
+}
+	
+
+struct VS_OUTPUT_QUAD
+{
+    float4 pos : POSITION;
+    float2 uv0 : TEXCOORD0;
+    float3 eyeray : TEXCOORD1;
+
+};
+	
+VS_OUTPUT_QUAD toon_Quad_vp
+(
+    in float4 inPos : POSITION
+    
+)
+{
+VS_OUTPUT_QUAD Out;
+    Out.pos = mul(worldviewproj_matrix, inPos);
+    inPos.xy = sign(inPos.xy);
+    Out.uv0 = (float2(inPos.x, -inPos.y) + 1.0f) * 0.5f;
+    float3 center = float3(.5,.5,-.5);
+    float3 eyeray = normalize(inPos.xyz - center);
+    Out.eyeray = eyeray;
+   
+return Out;
+}
+
+
+	

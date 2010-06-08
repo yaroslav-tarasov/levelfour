@@ -1,0 +1,24 @@
+/*
+
+% Create a transparent "envelope" around any existing model.
+% While implemented as a "post process" effect, this effect
+%   is just a second pass on the geometry -- no render-to-texture is needed.
+
+*/
+
+compositor GlowBalloonCompositor
+{
+    technique
+    {
+        target_output
+        {
+            input none
+
+            pass render_quad
+            {
+                identifier 0000
+				material GlowBalloon
+            }
+        }
+    }
+}

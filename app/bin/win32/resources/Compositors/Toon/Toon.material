@@ -1,0 +1,94 @@
+vertex_program toon_vs_depth hlsl
+{
+	source vs_toon.cg
+	target vs_2_0
+	entry_point toon_vs_depth
+	default_params
+	{
+		param_named_auto worldviewproj_matrix worldviewproj_matrix
+		param_named_auto world_matrix world_matrix
+		param_named_auto near_clip_distance near_clip_distance
+		param_named_auto far_clip_distance far_clip_distance
+		param_named_auto worldview_matrix worldview_matrix
+				
+	}
+}
+
+vertex_program toon_Quad_vp hlsl
+{
+	source vs_toon.cg
+	entry_point toon_Quad_vp
+	target vs_2_0
+
+	default_params
+	{
+		param_named_auto worldviewproj_matrix worldviewproj_matrix
+		param_named_auto camera_position camera_position_object_space
+	}
+}
+
+fragment_program toon_mult hlsl
+{
+	source ps_toon.cg
+	entry_point mult
+	target ps_3_0 
+	default_params
+	{
+		
+		param_named_auto near_clip_distance near_clip_distance
+		param_named_auto viewport_size texture_size 0
+	
+	}
+}
+
+
+fragment_program toon_ps_depth hlsl
+{
+	source SSAO_compositor.source
+	target ps_2_0
+	entry_point toon_ps_depth
+}
+
+fragment_program toon_ps_normal hlsl
+{
+	source toon_compositor.source
+	target ps_2_0
+	entry_point toon_ps_normal
+}
+
+
+
+material toon_mult
+{
+	technique
+	{
+
+		pass
+		{
+			depth_check off
+
+			vertex_program_ref toon_Quad_vp
+			{
+			}
+
+			fragment_program_ref toon_mult
+			{
+            	}
+			texture_unit 0
+			{
+              	tex_coord_set 0
+				tex_address_mode clamp
+			}
+			texture_unit 2
+			{
+              	tex_coord_set 0
+				tex_address_mode clamp
+			}
+			texture_unit 3
+			{
+              	tex_coord_set 0
+				tex_address_mode clamp
+			}
+		}
+	}
+}

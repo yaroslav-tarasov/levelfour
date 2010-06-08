@@ -1,0 +1,207 @@
+sampler2D DepthMap:register(s0);
+sampler2D Screen:register(s1);
+sampler2D Normal:register(s2);
+sampler2D RandNormal:register(s3);
+float time;
+float near_clip_distance;
+float far_clip_distance;
+float4 camera_position;
+float4x4 projection_matrix;
+float4x4 worldview_matrix;
+float4x4 inverse_projection_matrix;
+float4 inverse_texture_size;
+float dir;
+float4 blur(float2 intex :TEXCOORD0):COLOR0
+{
+
+	float4 color = tex2D(Screen,intex);
+	float4 norm = tex2D(Normal,intex);
+	float4 depth = tex2D(DepthMap,intex);
+	float num = 1;
+	
+	int blurdist = 18;
+	float2 blurdir;
+	if(dir == 0)
+		blurdir = float2(inverse_texture_size.x,0);
+	if(dir == 1)
+		blurdir = float2(0,inverse_texture_size.y);
+	for( int i = -blurdist/2; i < 0; i++)
+	{
+		float4 newsample = tex2D(Screen, intex + i * blurdir.xy);	
+		float4 newnormal = tex2D(Normal, intex + i * blurdir.xy);
+		float4 newdepth = tex2D(DepthMap, intex + i * blurdir.xy);
+		if(distance(newnormal, norm) < .1 && length(newdepth - depth) < 10)
+		{
+			num +=   abs(i);
+			color += newsample * abs(i);
+			depth = newdepth;
+			norm = newnormal;
+		}
+		else
+			i = 1;
+	}
+
+norm = tex2D(Normal,intex);
+	depth = tex2D(DepthMap,intex);
+
+	for( int i = 0; i < blurdist/2; i++)
+	{
+		float4 newsample = tex2D(Screen, intex + i * blurdir.xy);	
+		float4 newnormal = tex2D(Normal, intex + i * blurdir.xy);
+		float4 newdepth = tex2D(DepthMap, intex + i * blurdir.xy);
+		if(distance(newnormal, norm) < .1 && length(newdepth - depth) < 10)
+		{
+			num +=  blurdist/2 - i;
+			color += newsample * (blurdist/2 - i);
+			depth = newdepth;
+			norm = newnormal;
+		}
+		else
+			i = blurdist;
+	}
+
+
+return color/num;
+
+}
+float4 ssao_present(float2 intex :TEXCOORD0, float3 eyeray:TEXCOORD1):COLOR0
+{
+	return tex2D(Screen,intex.xy) * tex2D(DepthMap,intex.xy);
+}
+
+float4 mult(float2 intex :TEXCOORD0, float3 eyeray:TEXCOORD1):COLOR0
+{
+
+	eyeray = normalize(eyeray);
+	float depth = tex2D(DepthMap,intex).r;
+	float3 pos = depth*eyeray.xyz/eyeray.z;
+	
+
+float4 samples[27] = 
+{
+float4(1.00595,-0.000276625,0.0012901,0),
+float4(-0.711506,-0.711115,0.0012901,0),
+float4(0.503747,-0.711507,-0.501922,0),
+float4(0.504023,0.711115,-0.502199,0),
+float4(0.00129056,-0.711115,0.711506,0),
+float4(0.00129038,0.711506,0.711115,0),
+float4(0.00129014,0.711115,-0.711506,0),
+float4(0.00110805,-1.00594,-0.000716925,0),
+float4(-0.501922,-0.711506,-0.503747,0),
+float4(0.504024,-0.711115,0.502198,0),
+float4(0.711506,-0.711115,-0.00129092,0),
+float4(0.711115,0.711506,-0.00129046,0),
+float4(-0.711506,0.711115,-0.00129043,0),
+float4(-0.503746,-0.711507,0.501921,0),
+float4(0.501921,0.711506,-0.503747,0),
+float4(-0.00110823,1.00595,-0.000716925,0),
+float4(-0.504023,0.711115,0.502198,0),
+float4(-0.00129068,-0.711115,-0.711507,0),
+float4(-0.503747,0.711506,-0.501922,0),
+float4(0.502198,0.711115,0.504023,0),
+float4(0.712223,-0.000276625,-0.710398,0),
+float4(0.00129032,-0.000276625,-1.00595,0),
+float4(-0.710398,-0.000276625,-0.712223,0),
+float4(-1.00595,-0.000276625,-0.00129035,0),
+float4(-0.712223,-0.000276625,0.710398,0),
+float4(-0.00129032,-0.000276625,1.00595,0),
+float4(0.710398,-0.000276625,0.712223,0)
+};
+
+float occ = 1;
+float3 orignorm = tex2D(Normal, intex.xy ) *2 - 1;
+float4 normal = normalize((tex2D(RandNormal, intex.xy * 30)));
+normal = (normal -1) * 2;
+normal = normalize(normal);
+for (int i = 0; i<27;i+=1)
+{
+	samples[i].xyz = normalize(samples[i].xyz);
+	samples[i].xyz = reflect(samples[i].xyz, normal.xyz) + orignorm/10;
+	if(dot(samples[i].xyz,orignorm.xyz) < 0)
+	samples[i].xyz =reflect(samples[i].xyz, orignorm.xyz);
+	samples[i].xyz = normalize(samples[i].xyz);
+	float3 se = pos + 600.0 *-abs(normal.x)*samples[i].xyz;
+	float2 ss = (se.xy/se.z)*float2(1,1);
+	float2 sn = (ss*float2(-.5,.5) + float2(.5,.5));
+	float samplez = tex2D(DepthMap,sn).r;
+	float zd =  max(se.z - samplez,0.0);
+
+	float3 es = normalize(float3(sn.xy,eyeray.z));
+
+	es = samplez*es.xyz/es.z;
+	float ef = distance(es,pos);
+
+
+	occ -= -1*step(zd,0.0)/(1.0 + pow(zd,2)) * 10000/pow(ef,1);
+}
+return occ/27;
+}
+
+
+
+float4x4 worldviewproj_matrix : register(c0);
+
+
+float4 SSAO_ps_depth(float depth:TEXCOORD0, float3 innorm :TEXCOORD1):COLOR0
+{
+		
+		float temp = depth;
+		float4 color;
+		color.r = temp * 5;
+		color.g = innorm.x;
+		color.b = innorm.y;
+		color.a = innorm.z;
+		return color;
+}
+
+
+struct VS_OUTPUT_DEPTH
+{
+	float4 pos : POSITION;
+	float depth : TEXCOORD0;
+        float3 normal : TEXCOORD1;
+
+};
+
+VS_OUTPUT_DEPTH SSAO_vs_depth(float4 inpos:POSITION, float3 innorm : NORMAL, float2 intex: TEXCOORD0)
+{
+
+	VS_OUTPUT_DEPTH Out;
+	Out.pos = mul(worldviewproj_matrix, inpos);
+
+
+	float temp = distance(camera_position, inpos);
+Out.depth = temp;
+ Out.normal = mul(worldviewproj_matrix, innorm);
+	return Out;
+
+}
+	
+
+struct VS_OUTPUT_QUAD
+{
+    float4 pos : POSITION;
+    float2 uv0 : TEXCOORD0;
+    float3 eyeray : TEXCOORD1;
+};
+	
+VS_OUTPUT_QUAD SSAO_Quad_vp
+(
+    in float4 inPos : POSITION
+    
+)
+{
+VS_OUTPUT_QUAD Out;
+    Out.pos = mul(worldviewproj_matrix, inPos);
+    float4 temppos = mul(worldview_matrix, inPos);
+    inPos.xy = sign(inPos.xy);
+    Out.uv0 = (float2(inPos.x, -inPos.y) + 1.0f) * 0.5f;
+    float3 center = camera_position.xyz;
+    float3 eyeray = normalize(inPos.xyz);
+    Out.eyeray = eyeray;
+   
+return Out;
+}
+
+
+	
