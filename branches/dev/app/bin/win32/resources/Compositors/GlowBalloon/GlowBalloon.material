@@ -1,0 +1,67 @@
+/*
+
+% Create a transparent "envelope" around any existing model.
+% While implemented as a "post process" effect, this effect
+%   is just a second pass on the geometry -- no render-to-texture is needed.
+
+
+*/
+
+vertex_program glowBalloon_vs cg {
+	source vs_glowBalloon.cg
+	entry_point glowBalloonVS
+	profiles arbvp1
+	
+	default_params
+	{
+		param_named 	 Inflate   float 0.06
+		param_named_auto WorldITXf inverse_transpose_world_matrix
+		param_named_auto WorldXf   world_matrix
+		param_named_auto ViewIXf   inverse_view_matrix
+		param_named_auto WvpXf     worldviewproj_matrix
+	}
+}
+
+fragment_program glowBalloon_ps cg {
+	source ps_glowBalloon.cg
+	entry_point glowBalloonPS
+	profiles arbfp1
+	
+	default_params
+	{
+		param_named GlowColor float3 1.0 0.0 0.0
+		param_named GlowExpon float  1.3
+	}
+}
+
+material GlowBalloon {
+	technique {
+	
+		pass 
+		{
+		
+			// scene_blend src_alpha one_minus_src_alpha
+			depth_check off
+			// depth_func less_equal
+						
+			vertex_program_ref glowBalloon_vs {
+				
+			}
+			
+			fragment_program_ref glowBalloon_ps {
+				
+			}
+			
+			texture_unit	// (scene)
+			 {
+                 // texture SceneSampler 2d
+				 tex_coord_set 0
+				 tex_address_mode clamp
+				 filtering linear linear linear
+			 }
+
+		}
+		
+		
+	}
+}
