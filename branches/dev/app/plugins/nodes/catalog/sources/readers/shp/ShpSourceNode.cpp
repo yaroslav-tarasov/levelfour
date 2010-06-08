@@ -36,6 +36,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "vtkCellArray.h";
 #include "vtkStringArray.h"
 #include "vtkUnsignedIntArray.h"
+#include "vtkPolygon.h"
 #include "OgreRenderOperation.h"
 #include "OgreSceneManager.h"
 #include "OgreManager.h"
@@ -46,6 +47,8 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 /// Constructors and Destructors
 ///
 
+INIT_INSTANCE_COUNTER(ShpSourceNode)
+
 
 //!
 //! Constructor of the ShpSourceNode class.
@@ -55,7 +58,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 ShpSourceNode::ShpSourceNode ( const QString &name, ParameterGroup *parameterRoot ) :
 	VTKTableNode(name, parameterRoot, "VTKTable"),
-		m_outputShapeMapParameterName("ShapeMapOutput")
+	m_outputShapeMapParameterName("ShapeMapOutput")
 {
     // create the ShapeMap output parameter - multiplicity ONE OR MORE
 	outputShapeMapParameter = new ShapeMapParameter(m_outputShapeMapParameterName);
@@ -80,7 +83,11 @@ ShpSourceNode::ShpSourceNode ( const QString &name, ParameterGroup *parameterRoo
 //!
 ShpSourceNode::~ShpSourceNode ()
 {
+	emit destroyed();
+	Log::info(QString("ShpSourceNode destroyed."), "ShpSourceNode::~ShpSourceNode");
+
 	cleanTable();
+    DEC_INSTANCE_COUNTER
 }
 
 void ShpSourceNode::shapeFileChanged()
@@ -122,20 +129,28 @@ void ShpSourceNode::shapeFileChanged()
 	// outputs the new mesh table
 	m_table = polydataToMesh(polydata, shpSource->GetType());
 	outputShapeMapParameter->setVTKTable(m_table);
+
+	VTKTableParameter * outputVTKTableParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_outputVTKTableName));
+	outputVTKTableParameter->setVTKTable(m_table);
 }
 
 vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 {
-	// the entity pointers array holding the pointers to each entity
-	// this will be replaced by a simple string array, holding the entity names
-	vtkUnsignedIntArray * entityPts = vtkUnsignedIntArray::New();
-	entityPts->SetName("entity_pointers");
+	// the array holding the ID of each mesh
+	vtkIdTypeArray * id = vtkIdTypeArray::New();
+	id->SetName("id");
 
-	// the mesh pointers array holding the pointers to each mesh
-	// this will be replaced by a mesh typed array, when it will be possible to do so with vtkTable,
-	// since for the moment only accepts vtkVariantArray as columns
-	vtkUnsignedIntArray * meshPts = vtkUnsignedIntArray::New();
-	meshPts->SetName("mesh_pointers");
+	// the array holding the X centroids for each mesh
+	vtkDoubleArray * xCentroids = vtkDoubleArray::New();
+	xCentroids->SetName("x_centroid");
+
+	// the array holding the Y centroids for each mesh
+	vtkDoubleArray * yCentroids = vtkDoubleArray::New();
+	yCentroids->SetName("y_centroid");
+
+	// the array holding the Z centroids for each mesh
+	vtkDoubleArray * zCentroids = vtkDoubleArray::New();
+	zCentroids->SetName("z_centroid");
 
 	// the mesh names 
 	vtkStringArray * meshNames = vtkStringArray::New();
@@ -144,9 +159,11 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 	// vtkTable holding the shape IDs and their relative mesh pointer
 	vtkTable * table = vtkTable::New();
 
-	table->AddColumn(meshPts);
-	table->AddColumn(entityPts);
+	table->AddColumn(id);
 	table->AddColumn(meshNames);
+	table->AddColumn(xCentroids);
+	table->AddColumn(yCentroids);
+	table->AddColumn(zCentroids);
 
 	// create a mesh for each cell
 	vtkCellArray * primArray;
@@ -188,13 +205,12 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 	// create a ManualObject for each vtkCell
 	QString filename = getStringValue("Shapefile");
 	Ogre::String meshName;
-	Ogre::Entity * entity;
 	Ogre::MeshPtr mesh;
 	// go through cells (primitives) and create a mesh for each cell
 	for (primArray->InitTraversal(); primArray->GetNextCell(npts, pts); prim++)
 	{ 
 		// prepare the name for each manual object
-		meshName = filename.toStdString() + ":" + Ogre::StringConverter::toString(prim);
+		meshName = m_name.toStdString() + ":" + filename.toStdString() + ":" + Ogre::StringConverter::toString(prim);
 		Ogre::ManualObject * manual;
 		if (sceneManager->hasManualObject(meshName))
 			manual = sceneManager->getManualObject(meshName);
@@ -202,32 +218,45 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 			manual = sceneManager->createManualObject(meshName);
 		manual->begin("BaseWhiteNoLighting", rendertype);
 
+		// prepare points arrays to calculate the centroid of the cell
+		vtkIdTypeArray * pointsIDs = vtkIdTypeArray::New();
+		vtkPoints * points = vtkPoints::New();
+
 		// go through points in cell (verts)
 		for (i=0; i < npts; i++)
 		{
 			double * vertex = polydata->GetPoint(pts[i]);
 			double x = vertex[0], y = vertex[1], z = vertex[2];
 			manual->position(x, y, z);
+			points->InsertNextPoint(vertex);
+			pointsIDs->InsertNextValue(i);
 		}
 		manual->end();
 
 		// convert the manual object into a mesh (for multiple instantiation)
-		mesh = manual->convertToMesh(meshName);
-		// create the corresponding entity
-		if (sceneManager->hasEntity(meshName))
-			entity = sceneManager->getEntity(meshName);
-		else
-			entity = sceneManager->createEntity(meshName, meshName);
+		manual->convertToMesh(meshName);
 
-		// store the mesh pointer into the mesh_pointers column (which holds mesh pointers)
-		unsigned int meshPtr = (unsigned int) mesh.getPointer();
-		meshPts->InsertNextValue(meshPtr);
+		// store the mesh name 
 		meshNames->InsertNextValue(meshName);
 
-		// store the entity pointer into the entity_pointers column (which holds entity pointers)
-		entityPts->InsertNextValue((unsigned int) entity);
+		// store id
+		id->InsertNextValue(prim);
+
+		// calculate and store centroid
+		double polyCentroid[3];
+		vtkPolygon::ComputeCentroid(pointsIDs, points, polyCentroid);
+		xCentroids->InsertNextValue(polyCentroid[0]);
+		yCentroids->InsertNextValue(polyCentroid[1]);
+		zCentroids->InsertNextValue(polyCentroid[2]);
+		pointsIDs->Delete();
+		points->Delete();
 	}
 
+	id->Delete();
+	meshNames->Delete();
+	zCentroids->Delete();
+	xCentroids->Delete();
+	yCentroids->Delete();
 	return table;
 }
 

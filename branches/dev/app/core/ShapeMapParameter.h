@@ -120,6 +120,13 @@ public: // functions
     //!
 	void setShapeType (const ShapeType  type);
 
+    //!
+    //! Returns the centroid associated with this shape id.
+    //!
+    //! \return The centroid of the shape.
+    //!
+	double * getCentroid (const vtkIdType id) const;
+
 private://
 	ShapeType m_type;
 };
