@@ -19,7 +19,8 @@
 //!
 ShapeMapParameter::ShapeMapParameter (const QString &name) :
 	AbstractMapParameter(name, Parameter::T_ShapeMap),
-		m_type(ShapeType::Un_known)
+	m_shapeType(ShapeType::Un_known),
+	m_hasCentroids(false)
 {
 }
 
@@ -105,7 +106,7 @@ void ShapeMapParameter::setAlignement (const vtkIdType id, Alignement alignement
 //!
 ShapeMapParameter::ShapeType  ShapeMapParameter::getShapeType() const
 {
-	return m_type;
+	return m_shapeType;
 }
 
 //!
@@ -114,7 +115,7 @@ ShapeMapParameter::ShapeType  ShapeMapParameter::getShapeType() const
 //!
 void ShapeMapParameter::setShapeType (const ShapeType  type)
 {
-	m_type = type;
+	m_shapeType = type;
 }
 
 
@@ -130,4 +131,33 @@ double * ShapeMapParameter::getCentroid (const vtkIdType id) const
 	centroid[1] = m_table->GetValueByName(id, "y_centroid").ToDouble();
 	centroid[2] = m_table->GetValueByName(id, "z_centroid").ToDouble();
 	return centroid;
+}
+
+//!
+//! Returns true if the shape parameter has centroids
+//!
+//! \return bool True if the shape has centroids.
+//!
+bool ShapeMapParameter::hasCentroids () const
+{
+	return m_hasCentroids;
+}
+
+//!
+//! Sets true if the shape parameter has centroids
+//!
+void ShapeMapParameter::setHasCentroids (const bool hasCentroids)
+{
+	this->m_hasCentroids = hasCentroids;
+}
+
+
+//!
+//! Copy the shape parameter into this
+//!
+void ShapeMapParameter::copyShapeParameter(ShapeMapParameter * shapeParam)
+{
+	this->m_table = shapeParam->getVTKTable();
+	this->m_shapeType = shapeParam->getShapeType();
+	this->m_hasCentroids = shapeParam->hasCentroids();
 }
