@@ -127,8 +127,30 @@ public: // functions
     //!
 	double * getCentroid (const vtkIdType id) const;
 
-private://
-	ShapeType m_type;
+    //!
+    //! Returns true if the shape parameter has centroids
+    //!
+    //! \return bool True if the shape has centroids.
+    //!
+	bool hasCentroids () const;
+
+    //!
+    //! Sets true if the shape parameter has centroids
+    //!
+	void setHasCentroids (const bool hasCentroids);
+
+    //!
+    //! Copy the shape parameter into this
+    //!
+	void copyShapeParameter(ShapeMapParameter * shapeParam);
+
+private:// data
+
+	// describe the type of shapes (geo, areas, primitives..)
+	ShapeType m_shapeType;
+
+	// true if the shape map parameter has centroids
+	bool m_hasCentroids;
 };
 
 

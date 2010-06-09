@@ -32,6 +32,7 @@ Reference
 #include "ParameterGroup.h"
 #include "vtkUnsignedIntArray.h"
 #include "vtkStringArray.h"
+#include "vtkDoubleArray.h"
 #include "OgreSceneManager.h"
 #include "OgreManager.h"
 
@@ -111,26 +112,91 @@ ShapeMapperNode::~ShapeMapperNode ()
 
 void ShapeMapperNode::processShapeMap()
 {
+	if (inputEntityParameter && inputShapeMapParameter && 
+		inputEntityParameter->isConnected() && inputShapeMapParameter->isConnected())
+	{
+		// get the source parameter (output of source node) connected to the output parameter
+		ShapeMapParameter * sourceShapeParameter = dynamic_cast<ShapeMapParameter*>(inputShapeMapParameter->getConnectedParameter());
+
+		// get the source parameter (output of source node) connected to the output parameter
+		EntityParameter * sourceEntityParameter = dynamic_cast<EntityParameter*>(inputEntityParameter->getConnectedParameter());
+
+		m_entity = sourceEntityParameter->getEntity();
+		if (!m_entity)
+			return;
+
+		Ogre::String meshName = m_entity->getName();
+
+		// the mesh pointers array holding the names for each mesh
+		vtkStringArray * meshNames = vtkStringArray::New();
+		meshNames->SetName("mesh_names");
+
+		// vtkTable holding the shape IDs and their relative mesh pointer
+		vtkTable * sourceTable = sourceShapeParameter->getVTKTable();
+		vtkTable * outputTable = vtkTable::New();
+
+		// if source shapes derived from geo shapes, than they probably have a centroid
+		bool useCentroids = useCentroids = sourceShapeParameter->hasCentroids();
+
+		// the centroids arrays
+		vtkDoubleArray * xCentroids = vtkDoubleArray::New();
+		xCentroids->SetName("x_centroid");
+		vtkDoubleArray * yCentroids = vtkDoubleArray::New();
+		yCentroids->SetName("y_centroid");
+		vtkDoubleArray * zCentroids = vtkDoubleArray::New();
+		zCentroids->SetName("z_centroid");
+
+		if (sourceTable)
+		{
+			int rows = sourceTable->GetNumberOfRows();
+			// store the mesh name 
+			for (vtkIdType id = 0; id<rows; id++)
+			{
+				meshNames->InsertNextValue(meshName);
+				if (useCentroids)
+				{
+					double * centroid = sourceShapeParameter->getCentroid(id);
+					double x = centroid[0], y = centroid[1], z = centroid[2];
+					xCentroids->InsertNextValue(x);
+					yCentroids->InsertNextValue(y);
+					zCentroids->InsertNextValue(z);
+				}
+			}
+
+			outputTable->AddColumn(meshNames);
+			if (useCentroids)
+			{
+				outputTable->AddColumn(xCentroids);
+				outputTable->AddColumn(yCentroids);
+				outputTable->AddColumn(zCentroids);
+			}
+			meshNames->Delete();
+			xCentroids->Delete();
+			yCentroids->Delete();
+			zCentroids->Delete();
+		}
+		outputShapeMapParameter->setHasCentroids(useCentroids);
+		outputShapeMapParameter->setVTKTable(outputTable);
+		outputShapeMapParameter->setShapeType(ShapeMapParameter::ShapeType::PRIMITIVE);
+		outputShapeMapParameter->propagateDirty(0);
+		return;
+	}
+
 	if (inputShapeMapParameter && inputShapeMapParameter->isConnected())
 	{
 		// get the source parameter (output of source node) connected to the output parameter
 		ShapeMapParameter * sourceParameter = dynamic_cast<ShapeMapParameter*>(inputShapeMapParameter->getConnectedParameter());
 
 		// get the vtk table that comes with the source parameter and set it into the output parameter of this node
-		outputShapeMapParameter->setVTKTable(sourceParameter->getVTKTable());
-		outputShapeMapParameter->setShapeType(sourceParameter->getShapeType());
+		outputShapeMapParameter->copyShapeParameter(sourceParameter);
 
 		outputShapeMapParameter->propagateDirty(0);
 		return;
 	}
 
 	if (inputEntityParameter && inputVTKTableParameter && 
-		(inputEntityParameter->isConnected() || inputVTKTableParameter->isConnected()))
+		inputEntityParameter->isConnected() && inputVTKTableParameter->isConnected())
 	{
-		// load the source shape map parameter 
-		if (!inputEntityParameter->isConnected() || !inputVTKTableParameter->isConnected())
-			return;
-
 		// get the source parameter (output of source node) connected to the output parameter
 		EntityParameter * sourceEntityParameter = dynamic_cast<EntityParameter*>(inputEntityParameter->getConnectedParameter());
 

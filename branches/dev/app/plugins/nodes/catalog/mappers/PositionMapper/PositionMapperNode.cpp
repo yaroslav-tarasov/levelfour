@@ -249,25 +249,28 @@ void PositionMapperNode::processScene()
 	ShapeMapParameter * sourceParameter = dynamic_cast<ShapeMapParameter*>(inputShapeMapParameter->getConnectedParameter());
 
 	// get the vtk table that comes with the source parameter and set it into the input parameter of this node
-	inputShapeMapParameter->setVTKTable(sourceParameter->getVTKTable());
-	inputShapeMapParameter->setShapeType(sourceParameter->getShapeType());
+	inputShapeMapParameter->copyShapeParameter(sourceParameter);
 
 	// if the shape table is null than do nothing
 	shapeTable = inputShapeMapParameter->getVTKTable();
 	if (!shapeTable)
 		return;
 
-	// if shape parameter is geo-typed than it can still create the scene without positioning items
-	// check if items can be positioned or not
-	bool isPositionable = false;
+	// check if there is a valid layout to position items
+	bool isLayoutedPositionable = false;
+
+	// in case there is no valid position layout && items have a centroid && their shape is not GEO
+	// than we can still position items in geo located centroids (geo symbols)
+	bool isGeoPositionable = inputShapeMapParameter->hasCentroids() && 
+							(inputShapeMapParameter->getShapeType() != ShapeMapParameter::GEO);
 
 	// update position table
-	isPositionable = updateTable();
+	isLayoutedPositionable = updateTable();
 
 	QString setIdField, setXField, setYField, setZField;
 	vtkIdTypeArray *colNodeId = 0;
 	vtkDoubleArray *colX = 0, *colY = 0, *colZ = 0;
-	if (isPositionable)
+	if (isLayoutedPositionable)
 	{
 		setIdField = idFieldParameter->getCurrentValue();
 		setXField = xFieldParameter->getCurrentValue();
@@ -282,7 +285,7 @@ void PositionMapperNode::processScene()
 	}
 
 	if (!colX || !colY || !colZ)
-		isPositionable = false;
+		isLayoutedPositionable = false;
 
 	int nShapes = shapeTable->GetNumberOfRows();
 
@@ -303,7 +306,7 @@ void PositionMapperNode::processScene()
 		sceneItem->attachObject(entityItem);
 		m_sceneNode->addChild(sceneItem);
 
-		if (isPositionable)
+		if (isLayoutedPositionable)
 		{
 			// retrieve shape centroid and consider it as an offset to reposition the scene node properly
 			double * centroid = inputShapeMapParameter->getCentroid(id);
@@ -312,7 +315,13 @@ void PositionMapperNode::processScene()
 			double y = colY->GetValue(id) - centroid[1];
 			double z = colZ->GetValue(id) - centroid[2];
 			sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
+		} else if (isGeoPositionable) {
+			// in case there is no valid position layout && items have a centroid && their shape is not GEO
+			// than we can still position items in geo located centroids (geo symbols)
+			double * centroid = inputShapeMapParameter->getCentroid(id);
+			sceneItem->setPosition(centroid[0], centroid[1], centroid[2]);
 		}
+		// if shape parameter is geo-typed than it can still create the scene without positioning items
 	}
 }
 
