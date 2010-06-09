@@ -65,6 +65,7 @@ ShpSourceNode::ShpSourceNode ( const QString &name, ParameterGroup *parameterRoo
     outputShapeMapParameter->setPinType(Parameter::PT_Output);
     outputShapeMapParameter->setSelfEvaluating(true);
 	outputShapeMapParameter->setShapeType(ShapeMapParameter::ShapeType::GEO);
+	outputShapeMapParameter->setHasCentroids(true);
     parameterRoot->addParameter(outputShapeMapParameter);
 
 	// set affections and functions
