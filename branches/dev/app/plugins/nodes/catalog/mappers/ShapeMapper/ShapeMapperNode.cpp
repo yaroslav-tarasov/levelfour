@@ -228,5 +228,13 @@ void ShapeMapperNode::processShapeMap()
 		outputShapeMapParameter->setVTKTable(outputTable);
 		outputShapeMapParameter->setShapeType(ShapeMapParameter::ShapeType::PRIMITIVE);
 		outputShapeMapParameter->propagateDirty(0);
+		return;
 	}
+
+	// if none of the above cases matches, than clean the output, there is nothing to show 
+	// it's likely an input disconnection that triggered the processShapeMap
+	outputShapeMapParameter->setVTKTable(0);
+	outputShapeMapParameter->setShapeType(ShapeMapParameter::Un_known);
+	outputShapeMapParameter->setHasCentroids(false);
+	outputShapeMapParameter->propagateDirty(0);
 }
