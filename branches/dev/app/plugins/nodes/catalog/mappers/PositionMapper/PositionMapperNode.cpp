@@ -306,7 +306,8 @@ void PositionMapperNode::processScene()
 		sceneItem->attachObject(entityItem);
 		m_sceneNode->addChild(sceneItem);
 
-		if (isLayoutedPositionable)
+		// if a position layout is applicable and the shapes are geos, than apply their centroids offset
+		if (isLayoutedPositionable && inputShapeMapParameter->getShapeType() == ShapeMapParameter::GEO)
 		{
 			// retrieve shape centroid and consider it as an offset to reposition the scene node properly
 			double * centroid = inputShapeMapParameter->getCentroid(id);
@@ -315,13 +316,19 @@ void PositionMapperNode::processScene()
 			double y = colY->GetValue(id) - centroid[1];
 			double z = colZ->GetValue(id) - centroid[2];
 			sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
+		} else if (isLayoutedPositionable && inputShapeMapParameter->getShapeType() == ShapeMapParameter::PRIMITIVE) {
+		// if a position layout is applicable and the shapes are primitives, than DON'T apply the centroid offset
+			double x = colX->GetValue(id);
+			double y = colY->GetValue(id);
+			double z = colZ->GetValue(id);
+			sceneItem->setPosition(Ogre::Real(x), Ogre::Real(y), Ogre::Real(z));
 		} else if (isGeoPositionable) {
-			// in case there is no valid position layout && items have a centroid && their shape is not GEO
-			// than we can still position items in geo located centroids (geo symbols)
+		// if shape parameter is geo-typed than it can still create the scene without positioning items
+		// if there is no position layout && shapes have a centroid && shapes are NOT geo 
+		// than we can still position items in geo located centroids (geo symbols)
 			double * centroid = inputShapeMapParameter->getCentroid(id);
 			sceneItem->setPosition(centroid[0], centroid[1], centroid[2]);
 		}
-		// if shape parameter is geo-typed than it can still create the scene without positioning items
 	}
 }
 
