@@ -263,22 +263,20 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 
 void ShpSourceNode::cleanTable()
 {
-	vtkUnsignedIntArray * meshArray = vtkUnsignedIntArray::SafeDownCast(m_table->GetColumnByName("mesh_pointers"));
-	vtkUnsignedIntArray * entityArray = vtkUnsignedIntArray::SafeDownCast(m_table->GetColumnByName("entity_pointers"));
-	
+	if (!m_table || !outputShapeMapParameter)
+		return;
+
     Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 
 	int rows = m_table->GetNumberOfRows();
+
 	for (vtkIdType id = 0; id<rows; id++)
 	{
-		// retreive the meshes from the vtkUnsignedIntArray pointers
-		Ogre::Mesh * mesh = reinterpret_cast<Ogre::Mesh*>(meshArray->GetValue(id));
-		Ogre::String meshName = mesh->getName();
+		Ogre::String meshName = outputShapeMapParameter->getShapeName(id).toStdString();
 
 		// if the mesh is already registered than destroy it
 		if (sceneManager->hasManualObject(meshName))
 			sceneManager->destroyManualObject(meshName);
-		delete mesh;
 	}
 	m_table->Delete();
 	m_table = 0;
