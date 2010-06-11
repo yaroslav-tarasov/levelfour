@@ -112,6 +112,7 @@ void ShpSourceNode::shapeFileChanged()
 
 	vtkShapefileReader * shpSource = vtkShapefileReader::New();
 	shpSource->SetFileName(filename.toLatin1());
+//	shpSource->SetFillPolygons(1);
 
 	shpSource->Update();
 
@@ -176,12 +177,11 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 		rendertype = Ogre::RenderOperation::OT_POINT_LIST;
 		break;
 	case 3: // polyline
-	case 5: 
 		primArray = polydata->GetLines();
 		rendertype = Ogre::RenderOperation::OT_LINE_LIST;
 		break;
-	case 10000: // polygon
-		primArray = polydata->GetLines();
+	case 5: // polygon
+		primArray = polydata->GetLines();//GetPolys();
 		rendertype = Ogre::RenderOperation::OT_LINE_STRIP;
 		break;
 	case 20000: // strips
@@ -215,22 +215,36 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 		Ogre::ManualObject * manual;
 		if (sceneManager->hasManualObject(meshName))
 			manual = sceneManager->getManualObject(meshName);
-		else
+		else {
 			manual = sceneManager->createManualObject(meshName);
-		manual->begin("BaseWhiteNoLighting", rendertype);
+			manual->setDynamic(true);
+		}
+		manual->clear();
+		manual->begin("", rendertype);
 
 		// prepare points arrays to calculate the centroid of the cell
 		vtkIdTypeArray * pointsIDs = vtkIdTypeArray::New();
 		vtkPoints * points = vtkPoints::New();
-
+	
+		double * vertex, x, y, z;
 		// go through points in cell (verts)
 		for (i=0; i < npts; i++)
 		{
-			double * vertex = polydata->GetPoint(pts[i]);
-			double x = vertex[0], y = vertex[1], z = vertex[2];
+			vertex = polydata->GetPoint(pts[i]);
+
+			x = vertex[0], y = vertex[1], z = vertex[2];
 			manual->position(x, y, z);
+			manual->index(i);
 			points->InsertNextPoint(vertex);
 			pointsIDs->InsertNextValue(i);
+		}
+		// if it's a polygon, than close it with the first point (don't add it again to points, otherwise centroids are wrong)
+		if (npts > 0 && rendertype == Ogre::RenderOperation::OT_LINE_STRIP)
+		{
+			vertex = polydata->GetPoint(pts[0]);
+			x = vertex[0], y = vertex[1], z = vertex[2];
+			manual->position(x, y, z);
+			manual->index(0);
 		}
 		manual->end();
 
