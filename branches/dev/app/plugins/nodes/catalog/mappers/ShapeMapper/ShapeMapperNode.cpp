@@ -110,6 +110,14 @@ ShapeMapperNode::~ShapeMapperNode ()
 	DEC_INSTANCE_COUNTER
 }
 
+// Priorities on ShapeMapParameter:
+// 1.	in case a ShapeMapper receives the inputs EntityParameter and ShapeMapParameter, 
+//		it uses the ShapeMapParameter centroids (if they exists) and use the EntityParameter as mesh.
+// 2.	in case a ShapeMapper receives the input ShapeMapParameter without EntityParameter, 
+//		it uses the ShapeMapParameter as it is (by copying it).
+// 3.	in case a ShapeMapper receives the inputs VTKTableParameter and EntityParameter 
+//		it takes the vtkTable of the VTKTableParameter and adds the column mesh_names with the EntityParameter.
+
 void ShapeMapperNode::processShapeMap()
 {
 	if (inputEntityParameter && inputShapeMapParameter && 
