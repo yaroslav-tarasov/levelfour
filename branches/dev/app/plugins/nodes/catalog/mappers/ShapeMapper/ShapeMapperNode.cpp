@@ -53,6 +53,7 @@ ShapeMapperNode::ShapeMapperNode ( const QString &name, ParameterGroup *paramete
 	m_outputShapeMapParameterName("ShapeMapOutput"),
 	m_inputShapeMapParameterName("InputShapeMap"),
 	m_inputVTKTableName("InputVTKTable"),
+	m_inputMaterialMapParameterName("MaterialMap"),
 	m_entity(0)
 {
     // create the ShapeMap input parameter - multiplicity ONE 
@@ -77,6 +78,13 @@ ShapeMapperNode::ShapeMapperNode ( const QString &name, ParameterGroup *paramete
 	parameterRoot->addParameter(inputEntityParameter);
     connect(inputEntityParameter, SIGNAL(dirtied()), SLOT(processShapeMap()));
 	
+    // create the MaterialMap input parameter
+	m_inputMaterialMapParameter = new MaterialMapParameter(m_inputMaterialMapParameterName);
+	m_inputMaterialMapParameter->setPinType(Parameter::PT_Input);
+    m_inputMaterialMapParameter->setSelfEvaluating(true);
+    parameterRoot->addParameter(m_inputMaterialMapParameter);
+    connect(m_inputMaterialMapParameter, SIGNAL(dirtied()), this, SLOT(setMaterialMap()));
+
 	// create the enumeration parameter representing the ID Field of table
 	shapeFieldParameter = new EnumerationParameter("SetShapeField", Parameter::getDefaultValue(Parameter::T_Enumeration));
 	parameterRoot->addParameter(shapeFieldParameter);
@@ -186,63 +194,70 @@ void ShapeMapperNode::processShapeMap()
 		outputShapeMapParameter->setHasCentroids(useCentroids);
 		outputShapeMapParameter->setVTKTable(outputTable);
 		outputShapeMapParameter->setShapeType(ShapeMapParameter::ShapeType::PRIMITIVE);
-		outputShapeMapParameter->propagateDirty(0);
-		return;
-	}
-
-	if (inputShapeMapParameter && inputShapeMapParameter->isConnected())
+	} else if (inputShapeMapParameter && inputShapeMapParameter->isConnected())
 	{
 		// get the source parameter (output of source node) connected to the output parameter
 		ShapeMapParameter * sourceParameter = dynamic_cast<ShapeMapParameter*>(inputShapeMapParameter->getConnectedParameter());
 
 		// get the vtk table that comes with the source parameter and set it into the output parameter of this node
 		outputShapeMapParameter->copyShapeParameter(sourceParameter);
-
-		outputShapeMapParameter->propagateDirty(0);
-		return;
-	}
-
-	if (inputEntityParameter && inputVTKTableParameter && 
+	} else if (inputEntityParameter && inputVTKTableParameter && 
 		inputEntityParameter->isConnected() && inputVTKTableParameter->isConnected())
 	{
 		// get the source parameter (output of source node) connected to the output parameter
 		EntityParameter * sourceEntityParameter = dynamic_cast<EntityParameter*>(inputEntityParameter->getConnectedParameter());
 
 		m_entity = sourceEntityParameter->getEntity();
-		Ogre::String meshName = m_entity->getName();
-
-		// the mesh pointers array holding the names for each mesh
-		vtkStringArray * meshNames = vtkStringArray::New();
-		meshNames->SetName("mesh_names");
-
-		// get the source parameter (output of source node) connected to the inputVTKTableParameter
-		VTKTableParameter * sourceTableParameter = dynamic_cast<VTKTableParameter*>(inputVTKTableParameter->getConnectedParameter());
-
-		// vtkTable holding the shape IDs and their relative mesh pointer
-		vtkTable * sourceTable = sourceTableParameter->getVTKTable();
-		vtkTable * outputTable = vtkTable::New();
-
-		if (sourceTable)
+		if (m_entity)
 		{
-			int rows = sourceTable->GetNumberOfRows();
-			// store the mesh name 
-			for (vtkIdType id = 0; id<rows; id++)
-				meshNames->InsertNextValue(meshName);
+			Ogre::String meshName = m_entity->getName();
 
-			outputTable->AddColumn(meshNames);
-			meshNames->Delete();
+			// the mesh pointers array holding the names for each mesh
+			vtkStringArray * meshNames = vtkStringArray::New();
+			meshNames->SetName("mesh_names");
+
+			// get the source parameter (output of source node) connected to the inputVTKTableParameter
+			VTKTableParameter * sourceTableParameter = dynamic_cast<VTKTableParameter*>(inputVTKTableParameter->getConnectedParameter());
+
+			// vtkTable holding the shape IDs and their relative mesh pointer
+			vtkTable * sourceTable = sourceTableParameter->getVTKTable();
+			vtkTable * outputTable = vtkTable::New();
+
+			if (sourceTable)
+			{
+				int rows = sourceTable->GetNumberOfRows();
+				// store the mesh name 
+				for (vtkIdType id = 0; id<rows; id++)
+					meshNames->InsertNextValue(meshName);
+
+				outputTable->AddColumn(meshNames);
+				meshNames->Delete();
+			}
+
+			outputShapeMapParameter->setVTKTable(outputTable);
+			outputShapeMapParameter->setShapeType(ShapeMapParameter::ShapeType::PRIMITIVE);
 		}
-
-		outputShapeMapParameter->setVTKTable(outputTable);
-		outputShapeMapParameter->setShapeType(ShapeMapParameter::ShapeType::PRIMITIVE);
-		outputShapeMapParameter->propagateDirty(0);
-		return;
+	} else {
+		// if none of the above cases matches, than clean the output, there is nothing to show 
+		// it's likely an input disconnection that triggered the processShapeMap
+		outputShapeMapParameter->setVTKTable(0);
+		outputShapeMapParameter->setShapeType(ShapeMapParameter::Un_known);
+		outputShapeMapParameter->setHasCentroids(false);
 	}
+	setMaterialMap();
+}
 
-	// if none of the above cases matches, than clean the output, there is nothing to show 
-	// it's likely an input disconnection that triggered the processShapeMap
-	outputShapeMapParameter->setVTKTable(0);
-	outputShapeMapParameter->setShapeType(ShapeMapParameter::Un_known);
-	outputShapeMapParameter->setHasCentroids(false);
+// set the material map in the shape parameter output
+void ShapeMapperNode::setMaterialMap()
+{
+	if (m_inputMaterialMapParameter && m_inputMaterialMapParameter->isConnected())
+	{
+		// get the source parameter (output of source node) connected to the input material parameter
+		MaterialMapParameter * sourceMaterialParameter = dynamic_cast<MaterialMapParameter *>(m_inputMaterialMapParameter->getConnectedParameter());
+
+		outputShapeMapParameter->setMaterialMapParameter(sourceMaterialParameter);
+	} else
+		outputShapeMapParameter->setMaterialMapParameter(0);
+
 	outputShapeMapParameter->propagateDirty(0);
 }

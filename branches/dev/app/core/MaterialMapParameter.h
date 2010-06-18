@@ -39,7 +39,7 @@ public: // functions
     //!
     //! \return The item Material.
     //!
-	Ogre::Material * getMaterial (const vtkIdType id) const;
+	Ogre::String getMaterial (const vtkIdType id) const;
 
     //!
     //! Sets the Material associated to the id.
@@ -47,7 +47,26 @@ public: // functions
     //! \param id The id.
     //! \param material The Material.
     //!
-	void setMaterial ( const vtkIdType id, Ogre::Material * material);
+	void setMaterial (const vtkIdType id, Ogre::String material);
+
+    //!
+    //! Returns the unique (if any) Material for all shapes.
+    //!
+    //! \return The item Material.
+    //!
+	Ogre::String getMaterialForAll() const;
+
+	//!
+	//! Sets unique Material for all shapes.
+	//!
+	//! \param material The Material.
+	//!
+	void MaterialMapParameter::setMaterialForAll (const Ogre::String material);
+
+private: // data
+
+	// unique material for all shapes
+	Ogre::String m_materialForAll;
 };
 
 

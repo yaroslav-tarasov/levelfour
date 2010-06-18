@@ -54,6 +54,7 @@ target_link_libraries(ShpSource
 			optimized vtkFiltering debug vtkFiltering
 			optimized vtkInfovis debug vtkInfovis
 			optimized vtkCommon debug vtkCommon
+			optimized vtkGraphics debug vtkGraphics
 			)
 
 # Install files
