@@ -174,6 +174,9 @@ private: // data
     //! The parameters that defines the edgeFrom/To and vertices for the graph.
     //!
 	EnumerationParameter * idFieldParameter, * xFieldParameter, * yFieldParameter, * zFieldParameter;
+
+	// the current material
+	Ogre::String m_material;
 };
 
 

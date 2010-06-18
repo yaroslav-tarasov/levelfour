@@ -6,8 +6,10 @@
 #include "FilenameParameter.h"
 #include "OgreManager.h"
 #include "OgreTools.h"
+#include "OgreScriptCompiler.h"
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QTextStream>
 #include <QtCore/QTime>
 #include "VTKTableParameter.h"
 #include "vtkVariantArray.h"
@@ -37,9 +39,10 @@ PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *pa
 	m_oldResourceGroupName(""),
 	m_inputVTKTableParameterName("VTKTableInput"),
 	m_inputShapeMapParameterName("InputShapeMap"),
-	m_inputGeometryParameterName("Geometry")
+	m_inputGeometryParameterName("Geometry"),
+	m_material("")
 {
-    // create the vtk table input parameter - multiplicity ONE OR MORE
+	// create the vtk table input parameter - multiplicity ONE OR MORE
 	VTKTableParameter * inputVTKTableParameter = new VTKTableParameter(m_inputVTKTableParameterName);
 	inputVTKTableParameter->setMultiplicity(1);
     inputVTKTableParameter->setPinType(Parameter::PT_Input);
@@ -63,9 +66,9 @@ PositionMapperNode::PositionMapperNode ( const QString &name, ParameterGroup *pa
     connect(inputGeometryParameter, SIGNAL(dirtied()), SLOT(setGeometry()));
 	
 	// set affections and functions
-    addAffection("Geometry File", m_outputGeometryName);
-    setChangeFunction("Geometry File", SLOT(geometryFileChanged()));
-    setCommandFunction("Geometry File", SLOT(geometryFileChanged()));
+    addAffection("Material File", m_outputGeometryName);
+    setChangeFunction("Material File", SLOT(geometryFileChanged()));
+    setCommandFunction("Material File", SLOT(geometryFileChanged()));
     connect(this, SIGNAL(frameChanged(int)), SLOT(updateAll()));
 
 	// create the enumeration parameter representing the ID Field of table
@@ -137,12 +140,9 @@ PositionMapperNode::~PositionMapperNode ()
 //!
 bool PositionMapperNode::loadMesh ()
 {
-    // destroy an existing OGRE entity for the mesh
-    destroyEntity();
-
-	QString filename = getStringValue("Geometry File");
+	QString filename = getStringValue("Material File");
     if (filename == "") {
-        Log::debug(QString("Geometry file has not been set yet. (\"%1\")").arg(m_name), "PositionMapperNode::loadMesh");
+        Log::debug(QString("Material file has not been set yet. (\"%1\")").arg(m_name), "PositionMapperNode::loadMesh");
         return false;
     }
 
@@ -152,27 +152,45 @@ bool PositionMapperNode::loadMesh ()
         return false;
     }
 
-    // split the absolute filename to path and base filename
+	// load material file
+	QFile file(filename);
+	if (!file.open(QIODevice::Text | QIODevice::ReadOnly))
+		return false;
+
+	QByteArray fileText = file.readAll();
+	Ogre::String scriptText(QString(fileText).toStdString());
+
+	// split the absolute filename to path and base filename
     int lastSlashIndex = filename.lastIndexOf('/');
     QString path = "";
     if (lastSlashIndex > -1) {
         path = filename.mid(0, lastSlashIndex);
         filename = filename.mid(lastSlashIndex + 1);
     }
-    if (!filename.endsWith(".mesh")) {
-        Log::error("The geometry file has to be an OGRE mesh file.", "PositionMapperNode::loadMesh");
+    if (!filename.endsWith(".material")) {
+        Log::error("The Material file has to be an OGRE material script.", "PositionMapperNode::loadMesh");
         return false;
-    }
-	// destroy old resource group and generate new one
-    QString resourceGroupName = QString::fromStdString(createUniqueName("ResourceGroup_" + filename + "_PositionMapperNode"));
-    OgreTools::destroyResourceGroup(m_oldResourceGroupName);
-    m_oldResourceGroupName = resourceGroupName;
-    OgreTools::createResourceGroup(resourceGroupName, path);
+	} else {
+		// remove .material 
+		int lastDot = filename.lastIndexOf('.');
+        filename = filename.mid(0, lastDot);
+	}
 
-    // recreating the entity
-	createEntity(m_name, filename);
+	m_material = filename.toStdString();
 
-    Log::info(QString("Mesh file \"%1\" loaded.").arg(filename), "PositionMapperNode::loadMesh");
+	Ogre::ResourceGroupManager * rgm = Ogre::ResourceGroupManager::getSingletonPtr();
+	rgm->createResourceGroup("AddedResource");
+	rgm->addResourceLocation(path.toStdString(), "FileSystem", "AddedResource");
+	rgm->declareResource(m_material, "Material", "AddedResource");
+	rgm->initialiseResourceGroup("AddedResource");
+	rgm->loadResourceGroup("AddedResource");
+	Ogre::ResourceBackgroundQueue::getSingleton().loadResourceGroup("AddedResource");
+
+//	scriptcompiler->compile("material test{   technique   {   pass {   texture_unit   {   texture rockwall.jpg } } }}",materialName,Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+//	scriptcompiler->compile(scriptText,materialName,Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+//	Ogre::MaterialPtr compilematerial = Ogre::MaterialManager::getSingleton().getByName(materialName);
+
+	Log::info(QString("Material file \"%1\" loaded.").arg(QString(fileText)), "PositionMapperNode::loadMesh");
     return true;
 }
 
@@ -233,7 +251,7 @@ void PositionMapperNode::processScene()
 	Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 	Ogre::String idPrefix(QString(m_name + ":").toStdString());
 
-//	destroyAllAttachedMovableObjects(m_sceneNode);
+	destroyAllAttachedMovableObjects(m_sceneNode);
 	destroyAllChildren(m_sceneNode);
 
 	// load the source shape map parameter 
@@ -304,6 +322,9 @@ void PositionMapperNode::processScene()
 
 		// add item node to the scene
 		sceneItem->attachObject(entityItem);
+		m_material = inputShapeMapParameter->getMaterial(id);
+		if (m_material != "")
+			entityItem->setMaterialName(m_material);
 		m_sceneNode->addChild(sceneItem);
 
 		// if a position layout is applicable and the shapes are geos, than apply their centroids offset
@@ -473,7 +494,7 @@ void PositionMapperNode::destroyAllChildren( Ogre::SceneNode* i_pSceneNode )
    while ( itChild.hasMoreElements() )
    {
       Ogre::SceneNode* pChildNode = static_cast<Ogre::SceneNode*>(itChild.getNext());
-//      destroyAllAttachedMovableObjects( pChildNode );
+      destroyAllAttachedMovableObjects( pChildNode );
 	  // obtain the OGRE scene manager
 	  Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
 	  if (pChildNode != m_sceneNode)

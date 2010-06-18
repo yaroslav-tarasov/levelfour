@@ -37,6 +37,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #include "OgreTools.h"
 #include "EntityParameter.h"
 #include "ShapeMapParameter.h";
+#include "MaterialMapParameter.h"
 
 // OGRE
 #include <Ogre.h>
@@ -74,7 +75,11 @@ public: // constructors and destructors
     virtual ~ShapeMapperNode ();
 
 private slots: //
+	// process inputs to create the shape map parameter output
 	void processShapeMap();
+
+	// set the material map in the shape parameter output
+	void setMaterialMap();
 
 private: // functions
 
@@ -114,8 +119,17 @@ private: //data
     //! The ôutput shape map parameter. If set, than it's directly used as shape mapper
     //!
 	ShapeMapParameter * outputShapeMapParameter;
+	//!
+    //! The ôutput shape map parameter name. 
+    //!
+	QString m_inputMaterialMapParameterName;
 
     //!
+    //! The ôutput shape map parameter. If set, than it's directly used as shape mapper
+    //!
+	MaterialMapParameter * m_inputMaterialMapParameter;
+
+	//!
     //! The name of the vtk table input parameter.
     //!
 	QString m_inputVTKTableName; 

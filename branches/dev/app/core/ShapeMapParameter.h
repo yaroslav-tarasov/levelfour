@@ -11,6 +11,7 @@
 
 #include "FrapperPrerequisites.h"
 #include "AbstractMapParameter.h"
+#include "MaterialMapParameter.h"
 #include "OgreEntity.h"
 
 //!
@@ -144,6 +145,23 @@ public: // functions
     //!
 	void copyShapeParameter(ShapeMapParameter * shapeParam);
 
+	//!
+	//! Returns the Material associate with the id.
+	//!
+	//! \return The item Material.
+	//!
+	Ogre::String getMaterial (const vtkIdType id) const;
+
+	//!
+	//! Set the Material map input.
+	//!
+	void setMaterialMapParameter (MaterialMapParameter * materialMap);
+
+	//!
+	//! Get the Material map input.
+	//!
+	MaterialMapParameter * getMaterialMapParameter () const;
+
 private:// data
 
 	// describe the type of shapes (geo, areas, primitives..)
@@ -151,6 +169,8 @@ private:// data
 
 	// true if the shape map parameter has centroids
 	bool m_hasCentroids;
+
+	MaterialMapParameter * m_materialMap;
 };
 
 

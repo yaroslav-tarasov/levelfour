@@ -13,6 +13,7 @@
 <nodetype name="MaterialMapper" category="Mappers" color="40, 40, 40" plugin="materialMapper.dll">
   <parameters>
     <parameter name="Description" type="TextInfo" defaultValue="..."/>
+    <parameter name="Material File" type="Filename" filter="Material Files (*.material)"/>
     <parameters name="Attributes">
       <parameter name="LOD Strategy" type="TextInfo" defaultValue="."/>
 	<parameter name="LOD Values" type="TextInfo" defaultValue="."/>
@@ -51,6 +52,6 @@
     <parameter name="Table" type="VTKTable" pin="in" visible="false"/>
     <parameter name="MaterialIn" type="Image" pin="in" visible="false"/>
     <!-- output parameters -->
-    <parameter name="MaterialOut" type="Image" pin="out" visible="false"/>
+<!--    <parameter name="MaterialOut" type="Image" pin="out" visible="false"/> -->
   </parameters>
 </nodetype>

@@ -33,6 +33,7 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 #define MaterialMapperNODE_H
 
 #include "Node.h"
+#include "MaterialMapParameter.h"
 
 // OGRE
 #include <Ogre.h>
@@ -69,6 +70,35 @@ public: // constructors and destructors
     //!
     virtual ~MaterialMapperNode ();
 
+private slots: // slots
+	//!
+	//!
+	//! \return True, if successful loading of material
+	//!            False, otherwise.
+	//!
+	bool loadMaterial();
+
+	// update the material map output
+	void updateMaterialOuput();
+
+private: // functions
+	
+	// Check if resource exists
+	bool resourceGroupExists(Ogre::String &name) const;
+
+private: // data
+	
+	// the current material
+	Ogre::String m_material;
+
+	// the resource group associated with this node
+	Ogre::String m_resourceGroup;
+
+	// output material map parameter
+	MaterialMapParameter * m_outputMaterialMapParameter;
+
+	// output material map parameter name
+	QString m_outputMaterialMapParameterName;
 };
 
 

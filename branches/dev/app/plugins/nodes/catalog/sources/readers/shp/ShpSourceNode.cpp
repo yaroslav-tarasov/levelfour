@@ -31,17 +31,26 @@ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 //!
 
 #include "ShpSourceNode.h"
-#include "vtkShapefileReader.h"
 #include <QFile>
-#include "vtkCellArray.h";
+
+#include "vtkShapefileReader.h"
+#include "vtkCellArray.h"
+#include "vtkCellData.h"
 #include "vtkStringArray.h"
 #include "vtkUnsignedIntArray.h"
 #include "vtkPolygon.h"
+#include "vtkLinearExtrusionFilter.h"
+#include "vtkTriangleFilter.h"
+#include "vtkMath.h"
+#include "vtkPolyDataNormals.h"
+#include "vtkPointData.h"
+
 #include "OgreRenderOperation.h"
 #include "OgreSceneManager.h"
 #include "OgreManager.h"
 #include "OgreEntity.h"
 #include "OgreSceneNode.h"
+
 
 ///
 /// Constructors and Destructors
@@ -58,20 +67,24 @@ INIT_INSTANCE_COUNTER(ShpSourceNode)
 //!
 ShpSourceNode::ShpSourceNode ( const QString &name, ParameterGroup *parameterRoot ) :
 	VTKTableNode(name, parameterRoot, "VTKTable"),
-	m_outputShapeMapParameterName("ShapeMapOutput")
+	m_outputShapeMapParameterName("ShapeMapOutput"),
+	m_polydata(0),
+	m_ShapeType(0),
+	m_extrude(false)
 {
     // create the ShapeMap output parameter - multiplicity ONE OR MORE
 	outputShapeMapParameter = new ShapeMapParameter(m_outputShapeMapParameterName);
     outputShapeMapParameter->setPinType(Parameter::PT_Output);
     outputShapeMapParameter->setSelfEvaluating(true);
 	outputShapeMapParameter->setShapeType(ShapeMapParameter::ShapeType::GEO);
-	outputShapeMapParameter->setHasCentroids(true);
     parameterRoot->addParameter(outputShapeMapParameter);
 
 	// set affections and functions
-    addAffection("Shapefile", m_outputShapeMapParameterName);
     setChangeFunction("Shapefile", SLOT(shapeFileChanged()));
     setCommandFunction("Shapefile", SLOT(shapeFileChanged()));
+
+	setChangeFunction("Extrude", SLOT(processOutput()));
+    setCommandFunction("Extrude", SLOT(processOutput()));
 }
 
 
@@ -84,10 +97,25 @@ ShpSourceNode::ShpSourceNode ( const QString &name, ParameterGroup *parameterRoo
 //!
 ShpSourceNode::~ShpSourceNode ()
 {
-	emit destroyed();
 	Log::info(QString("ShpSourceNode destroyed."), "ShpSourceNode::~ShpSourceNode");
 
+	if (m_polydata)
+	{
+		m_polydata->DeleteCells();
+		m_polydata->DeleteLinks();
+		if (m_polydata->GetPoints())
+			m_polydata->GetPoints()->Delete();
+		if (m_polydata->GetPolys())
+			m_polydata->GetPolys()->Delete();
+		if (m_polydata->GetStrips())
+			m_polydata->GetStrips()->Delete();
+
+		m_polydata = 0;
+	}
+	m_ShapeType = NULL;
+
 	cleanTable();
+	emit destroyed();
     DEC_INSTANCE_COUNTER
 }
 
@@ -112,33 +140,47 @@ void ShpSourceNode::shapeFileChanged()
 
 	vtkShapefileReader * shpSource = vtkShapefileReader::New();
 	shpSource->SetFileName(filename.toLatin1());
-//	shpSource->SetFillPolygons(1);
+	shpSource->SetFillPolygons(1);
 
 	shpSource->Update();
 
 	int nrecs = shpSource->GetNumberOfRecords();
-	vtkPolyData * polydata = shpSource->GetOutput();
+
+	m_polydata = shpSource->GetOutput();
+	m_ShapeType = shpSource->GetType();
+
+	processOutput();
+}
+
+void ShpSourceNode::processOutput()
+{
+	m_extrude = getBoolValue("Extrude");
+
+	cleanTable();
+	m_table = polydataToMesh(m_polydata, m_ShapeType);
 
 	// if non-empty clean the current table and destroy its meshes pointers
-	if (outputShapeMapParameter->getVTKTable())
+	if (outputShapeMapParameter->getVTKTable() != m_table)
 	{
-		m_table->Delete();
-		m_table = 0;
+		// outputs the new mesh table
 		outputShapeMapParameter->setVTKTable(m_table);
-//		cleanTable();
+		VTKTableParameter * outputVTKTableParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_outputVTKTableName));
+		outputVTKTableParameter->setVTKTable(m_table);
+
+		outputShapeMapParameter->propagateDirty(this);
+		outputVTKTableParameter->propagateDirty(this);
 	}
-
-	// outputs the new mesh table
-	m_table = polydataToMesh(polydata, shpSource->GetType());
-	outputShapeMapParameter->setVTKTable(m_table);
-
-	VTKTableParameter * outputVTKTableParameter = dynamic_cast<VTKTableParameter*>(getParameter(m_outputVTKTableName));
-	outputVTKTableParameter->setVTKTable(m_table);
 }
 
 vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 {
-	// the array holding the ID of each mesh
+	if (!polydata)
+		return 0;
+
+	// get the records IDs of the shapefile 
+	vtkUnsignedIntArray * recIDs = vtkUnsignedIntArray::SafeDownCast(polydata->GetCellData()->GetScalars("rec_id"));
+	
+	// the array holding the unique ID of each mesh
 	vtkIdTypeArray * id = vtkIdTypeArray::New();
 	id->SetName("id");
 
@@ -163,12 +205,10 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 
 	table->AddColumn(id);
 	table->AddColumn(meshNames);
-	table->AddColumn(xCentroids);
-	table->AddColumn(yCentroids);
-	table->AddColumn(zCentroids);
 
 	// create a mesh for each cell
 	vtkCellArray * primArray;
+
 	Ogre::RenderOperation::OperationType rendertype;
 	switch (type)
 	{
@@ -181,10 +221,12 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 		rendertype = Ogre::RenderOperation::OT_LINE_LIST;
 		break;
 	case 5: // polygon
-		primArray = polydata->GetLines();//GetPolys();
-		rendertype = Ogre::RenderOperation::OT_LINE_STRIP;
-		break;
 	case 20000: // strips
+		primArray = polydata ->GetPolys();
+		if (m_extrude)
+			rendertype = Ogre::RenderOperation::OT_TRIANGLE_LIST;
+		else
+			rendertype = Ogre::RenderOperation::OT_LINE_LIST;
 		break;
 	}
 
@@ -199,75 +241,166 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 
 	// copy data from vtk prim array to osg Geometry
 	unsigned int prim = 0, vert = 0;
-	int i, npts, totpts = 0, *pts, transparentFlag = 0;;
+	int i, npts, totpts = 0, *pts, transparentFlag = 0, trianglePointsIndex = 0;
 
     Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
+
+	vtkIdType oldRecID = NULL;
+	bool isNewMesh = false;
 
 	// create a ManualObject for each vtkCell
 	QString filename = getStringValue("Shapefile");
 	Ogre::String meshName;
 	Ogre::MeshPtr mesh;
+
 	// go through cells (primitives) and create a mesh for each cell
-	for (primArray->InitTraversal(); primArray->GetNextCell(npts, pts); prim++)
-	{ 
-		// prepare the name for each manual object
-		meshName = m_name.toStdString() + ":" + filename.toStdString() + ":" + Ogre::StringConverter::toString(prim);
-		Ogre::ManualObject * manual;
-		if (sceneManager->hasManualObject(meshName))
-			manual = sceneManager->getManualObject(meshName);
-		else {
-			manual = sceneManager->createManualObject(meshName);
-			manual->setDynamic(true);
-		}
-		manual->clear();
-		manual->begin("", rendertype);
+	if (rendertype != Ogre::RenderOperation::OT_TRIANGLE_LIST)
+	{
+		table->AddColumn(xCentroids);
+		table->AddColumn(yCentroids);
+		table->AddColumn(zCentroids);
+		for (primArray->InitTraversal(); primArray->GetNextCell(npts, pts); prim++)
+		{ 
+			// get record id
+			vtkIdType recID = recIDs->GetValue(prim);
 
-		// prepare points arrays to calculate the centroid of the cell
-		vtkIdTypeArray * pointsIDs = vtkIdTypeArray::New();
-		vtkPoints * points = vtkPoints::New();
-	
+			// prepare the name for each manual object
+			meshName = m_name.toStdString() + ":" + filename.toStdString() + ":" + Ogre::StringConverter::toString(prim);
+			Ogre::ManualObject * manual;
+			if (sceneManager->hasManualObject(meshName))
+				manual = sceneManager->getManualObject(meshName);
+			else {
+				manual = sceneManager->createManualObject(meshName);
+			}
+			manual->clear();
+			manual->begin("", rendertype);
+
+			// prepare points arrays to calculate the centroid of the cell
+			vtkIdTypeArray * pointsIDs = vtkIdTypeArray::New();
+			vtkPoints * points = vtkPoints::New();
+		
+			double * vertex, x, y, z;
+			// go through points in cell (verts)
+			for (i=0; i < npts; i++)
+			{
+				vertex = polydata->GetPoint(pts[i]);
+
+				x = vertex[0], y = vertex[1], z = vertex[2];
+				points->InsertNextPoint(vertex);
+				pointsIDs->InsertNextValue(i);
+				manual->position(x, y, z);
+				manual->index(i);
+			}
+			// if it's a polygon, than close it with the first point (don't add it again to points, otherwise centroids are wrong)
+			if (npts > 0 && rendertype == Ogre::RenderOperation::OT_LINE_STRIP)
+			{
+				vertex = polydata->GetPoint(pts[0]);
+				x = vertex[0], y = vertex[1], z = vertex[2];
+				manual->position(x, y, z);
+				manual->index(0);
+			}
+
+			manual->end();
+
+			// convert the manual object into a mesh (for multiple instantiation)
+			manual->convertToMesh(meshName);
+
+			// store the mesh name 
+			meshNames->InsertNextValue(meshName);
+
+			// store record id
+			id->InsertNextValue(prim);
+
+			// calculate and store centroid
+			double polyCentroid[3];
+			vtkPolygon::ComputeCentroid(pointsIDs, points, polyCentroid);
+			xCentroids->InsertNextValue(polyCentroid[0]);
+			yCentroids->InsertNextValue(polyCentroid[1]);
+			zCentroids->InsertNextValue(polyCentroid[2]);
+			pointsIDs->Delete();
+			points->Delete();
+		}
+		table->AddColumn(recIDs);
+		outputShapeMapParameter->setHasCentroids(true);
+	} else {
 		double * vertex, x, y, z;
-		// go through points in cell (verts)
-		for (i=0; i < npts; i++)
-		{
-			vertex = polydata->GetPoint(pts[i]);
 
-			x = vertex[0], y = vertex[1], z = vertex[2];
-			manual->position(x, y, z);
-			manual->index(i);
-			points->InsertNextPoint(vertex);
-			pointsIDs->InsertNextValue(i);
+		// create a polydata for each rec_id
+		vtkPolyData * polyGroup = vtkPolyData::New();
+
+		vtkCellArray * cellsGroup = vtkCellArray::New();
+
+		for (primArray->InitTraversal(); primArray->GetNextCell(npts, pts); prim++)
+		{ 
+			// get record id
+			vtkIdType recID = recIDs->GetValue(prim);
+
+			if (oldRecID == NULL)
+				oldRecID = recID;
+
+			// create a unique polydata for all cells derived from the same rec_id
+			if (recID != oldRecID)
+			{
+				polyGroup->SetPolys(cellsGroup);
+				polyGroup->SetPoints(polydata->GetPoints());
+
+				// extrude the polydata to make it 3D
+				// prepare the extrusion in case of polygons or triangulated shape
+				double scaleFactor = vtkMath::Random(0,5);
+				vtkLinearExtrusionFilter * extrude = vtkLinearExtrusionFilter::New();
+				extrude->SetInput(polyGroup);
+				extrude->SetScaleFactor(scaleFactor);
+				extrude->SetExtrusionTypeToNormalExtrusion();
+				extrude->SetVector(0,0,1);
+				extrude->CappingOn();
+				extrude->Update();
+
+				// create polydata with list of triangles from extruded mesh
+				vtkTriangleFilter * triangles = vtkTriangleFilter::New();
+				triangles->SetInput(extrude->GetOutput());
+				triangles->Update();
+
+				// add normals to the triangles
+				vtkPolyDataNormals * normals = vtkPolyDataNormals::New();
+				normals->SetInputConnection(triangles->GetOutputPort());
+				normals->SetFeatureAngle(60.0);
+				normals->Update();
+
+				Ogre::ColourValue color(vtkMath::Random(0,1),vtkMath::Random(0,1),vtkMath::Random(0,1),1);
+				// prepare the name for each manual object
+				meshName = m_name.toStdString() + ":extruded:" + filename.toStdString() + ":" + Ogre::StringConverter::toString(oldRecID);
+				extrudedPolydataToMesh(normals->GetOutput(), meshName, color);
+
+				// store the mesh name 
+				meshNames->InsertNextValue(meshName);
+				// store id
+				id->InsertNextValue(oldRecID);
+
+				triangles->Delete();
+				extrude->Delete();
+				polyGroup->Delete();
+				cellsGroup->Delete();
+
+				polyGroup = vtkPolyData::New();
+
+				// create new polydata for the new rec_id
+				polyGroup = vtkPolyData::New();
+				cellsGroup = vtkCellArray::New();
+
+				oldRecID = recID;
+			}
+
+			cellsGroup->InsertNextCell(npts, pts);
 		}
-		// if it's a polygon, than close it with the first point (don't add it again to points, otherwise centroids are wrong)
-		if (npts > 0 && rendertype == Ogre::RenderOperation::OT_LINE_STRIP)
-		{
-			vertex = polydata->GetPoint(pts[0]);
-			x = vertex[0], y = vertex[1], z = vertex[2];
-			manual->position(x, y, z);
-			manual->index(0);
-		}
-		manual->end();
-
-		// convert the manual object into a mesh (for multiple instantiation)
-		manual->convertToMesh(meshName);
-
-		// store the mesh name 
-		meshNames->InsertNextValue(meshName);
-
-		// store id
-		id->InsertNextValue(prim);
-
-		// calculate and store centroid
-		double polyCentroid[3];
-		vtkPolygon::ComputeCentroid(pointsIDs, points, polyCentroid);
-		xCentroids->InsertNextValue(polyCentroid[0]);
-		yCentroids->InsertNextValue(polyCentroid[1]);
-		zCentroids->InsertNextValue(polyCentroid[2]);
-		pointsIDs->Delete();
-		points->Delete();
+		outputShapeMapParameter->setHasCentroids(false);
+		polyGroup->Delete();
+		cellsGroup->Delete();
 	}
 
+//	primArray->Delete();
+//	extrude->Delete();
 	id->Delete();
+//	recIDs->Delete();
 	meshNames->Delete();
 	zCentroids->Delete();
 	xCentroids->Delete();
@@ -275,6 +408,7 @@ vtkTable * ShpSourceNode::polydataToMesh(vtkPolyData * polydata, int type)
 	return table;
 }
 
+// Empty the table and destroy all meshes contained on it
 void ShpSourceNode::cleanTable()
 {
 	if (!m_table || !outputShapeMapParameter)
@@ -295,4 +429,72 @@ void ShpSourceNode::cleanTable()
 	m_table->Delete();
 	m_table = 0;
 	outputShapeMapParameter->setVTKTable(m_table);
+}
+
+// Create a mesh from an extruded polydata
+void ShpSourceNode::extrudedPolydataToMesh(vtkPolyData * polydata, Ogre::String meshName, Ogre::ColourValue color)
+{
+	// retrieve cells from polydata
+	vtkCellArray * triangles = polydata->GetPolys();
+
+	// retrieve normals from polydata
+	vtkDataArray * normals = polydata->GetPointData()->GetNormals();
+	bool normalPerVertex = false, normalPerCell = false;
+	if (normals)
+		normalPerVertex = true;
+	else 
+	{
+		normals = polydata->GetCellData()->GetNormals();
+		if (normals)
+			normalPerCell = true;
+	}
+
+	// if there are no triangles, return
+	if (triangles->GetNumberOfCells() <= 0)
+		return;
+
+	// create or retrieve manual object
+    Ogre::SceneManager *sceneManager = OgreManager::getSceneManager();
+	Ogre::ManualObject * manual;
+	if (sceneManager->hasManualObject(meshName))
+		manual = sceneManager->getManualObject(meshName);
+	else {
+		manual = sceneManager->createManualObject(meshName);
+	}
+	manual->clear();
+	manual->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+
+	double * vertex, x, y, z, * pointNormals;
+	unsigned int prim = 0;
+	int i, npts, *pts;
+	for (triangles->InitTraversal(); triangles->GetNextCell(npts, pts); prim+=3)
+	{ 
+		for (int i=0; i<npts; i++)
+		{
+			// go through points in each triangle (cell)
+			vertex = polydata->GetPoint(pts[i]);
+			x = vertex[0], y = vertex[1], z = vertex[2];
+			manual->position(x, y, z);
+			if (normalPerVertex)
+			{
+				pointNormals = normals->GetTuple(pts[i]);
+				manual->normal(pointNormals[0], pointNormals[1], pointNormals[2]);
+				if (pointNormals[2] > 0)
+					manual->textureCoord((float)z,(float)0);
+				else if (pointNormals[2] < 0)
+					manual->textureCoord((float)z,(float)y);
+				else
+					manual->textureCoord((float)x,(float)z);
+			}
+			manual->textureCoord((float)0,(float)0);
+			manual->index(prim+i);
+			manual->colour(color.r,color.g,color.b);
+		}
+	}
+
+	manual->end();
+
+	manual->setCastShadows(true);
+	// convert the manual object into a mesh (for multiple instantiation)
+	manual->convertToMesh(meshName);
 }

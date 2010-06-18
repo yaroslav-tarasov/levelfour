@@ -711,7 +711,7 @@ void vtkShapefileReader::Execute()
 	if (this->GenerateIds)
 	{
 		ids = vtkUnsignedIntArray::New();
-		ids->SetName("ids");
+		ids->SetName("rec_id");
 	}
 
 	printf("%d\n",idlist->GetNumberOfIds());

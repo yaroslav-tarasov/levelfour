@@ -77,7 +77,12 @@ public: // constructors and destructors
 private slots: // slots
 	void shapeFileChanged();
 
+	void processOutput();
+
 private: // function 
+
+	// Create a mesh from an extruded polydata
+	void extrudedPolydataToMesh(vtkPolyData * polydata, Ogre::String meshName, Ogre::ColourValue color);
 
 	// Create the table that will contain an Ogre mesh for each shape contained in the shapefile
 	vtkTable * polydataToMesh(vtkPolyData * polydata, int type);
@@ -88,7 +93,17 @@ private: // function
 private: // data
 	QString m_outputShapeMapParameterName;
 
+	// The shape output parameter
 	ShapeMapParameter * outputShapeMapParameter;
+
+	// Store the polydata resulting from the shapefile
+	vtkPolyData * m_polydata;
+
+	// Shapefile type
+	int m_ShapeType;
+
+	// True if we want to extrude the resulting shapes
+	bool m_extrude;
 };
 
 
