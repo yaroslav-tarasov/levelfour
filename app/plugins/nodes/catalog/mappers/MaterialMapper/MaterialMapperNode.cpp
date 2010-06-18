@@ -153,7 +153,6 @@ bool MaterialMapperNode::loadMaterial()
 	rgm->addResourceLocation(path.toStdString(), "FileSystem", m_resourceGroup);
 	rgm->declareResource(m_material, "Material", m_resourceGroup);
 	rgm->initialiseResourceGroup(m_resourceGroup);
-	rgm->loadResourceGroup(m_resourceGroup);
 	Ogre::ResourceBackgroundQueue::getSingleton().loadResourceGroup(m_resourceGroup);
 
 //	Ogre::MaterialPtr compilematerial = Ogre::MaterialManager::getSingleton().getByName(materialName);
