@@ -20,7 +20,8 @@
 ShapeMapParameter::ShapeMapParameter (const QString &name) :
 	AbstractMapParameter(name, Parameter::T_ShapeMap),
 	m_shapeType(ShapeType::Un_known),
-	m_hasCentroids(false)
+	m_hasCentroids(false),
+	m_materialMap(0)
 {
 }
 
@@ -160,4 +161,35 @@ void ShapeMapParameter::copyShapeParameter(ShapeMapParameter * shapeParam)
 	this->m_table = shapeParam->getVTKTable();
 	this->m_shapeType = shapeParam->getShapeType();
 	this->m_hasCentroids = shapeParam->hasCentroids();
+	this->m_materialMap = shapeParam->getMaterialMapParameter();
+}
+
+
+//!
+//! Returns the Material associate with the id.
+//!
+//! \return The item Material.
+//!
+Ogre::String ShapeMapParameter::getMaterial (const vtkIdType id) const
+{
+	if (m_materialMap)
+		return m_materialMap->getMaterial(id);
+
+	return "";
+}
+
+//!
+//! Set the Material map input.
+//!
+void ShapeMapParameter::setMaterialMapParameter (MaterialMapParameter * materialMap)
+{
+	m_materialMap = materialMap;
+}
+
+//!
+//! Get the Material map input.
+//!
+MaterialMapParameter * ShapeMapParameter::getMaterialMapParameter () const
+{
+	return m_materialMap;
 }

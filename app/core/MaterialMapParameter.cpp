@@ -18,7 +18,8 @@
 //! \param name The name of the parameter.
 //!
 MaterialMapParameter::MaterialMapParameter ( const QString &name ) :
-	AbstractMapParameter(name, Parameter::T_MaterialMap)
+	AbstractMapParameter(name, Parameter::T_MaterialMap),
+	m_materialForAll("")
 {
 
 }
@@ -29,14 +30,17 @@ MaterialMapParameter::MaterialMapParameter ( const QString &name ) :
 MaterialMapParameter::~MaterialMapParameter ()
 {
 }
+
 //!
 //! Returns the Material associate with the id.
 //!
 //! \return The item Material.
 //!
-Ogre::Material * MaterialMapParameter::getMaterial (const vtkIdType id) const
+Ogre::String MaterialMapParameter::getMaterial (const vtkIdType id) const
 {
-	return 0;
+	if (m_materialForAll != "")
+		return m_materialForAll;
+	return "Default";
 }
 
 //!
@@ -45,7 +49,27 @@ Ogre::Material * MaterialMapParameter::getMaterial (const vtkIdType id) const
 //! \param id The id.
 //! \param material The Material.
 //!
-void MaterialMapParameter::setMaterial ( const vtkIdType id, Ogre::Material * material)
+void MaterialMapParameter::setMaterial (const vtkIdType id, Ogre::String material)
 {
 
+}
+
+//!
+//! Returns the unique (if any) Material for all shapes.
+//!
+//! \return The item Material.
+//!
+Ogre::String MaterialMapParameter::getMaterialForAll() const
+{
+	return m_materialForAll;
+}
+
+//!
+//! Sets unique Material for all shapes.
+//!
+//! \param material The Material.
+//!
+void MaterialMapParameter::setMaterialForAll(const Ogre::String material)
+{
+	m_materialForAll = material;
 }
